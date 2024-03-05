@@ -1,0 +1,31 @@
+- **Control Nodes**:
+	- Internal nodes that define how to traverse the behavior tree
+	- These nodes will always contain at least one child whether it is another control node or an execution node
+	- Sequence (→):
+		- Execute children in order until one child returns a "Failure" or all children return a "Success"
+	- Fallback (?):
+		- Execute children in order until one of them returns a "Success" or all children return a "Failure"
+		- These nodes are key in designing recovery behaviors for your autonomous agents
+		- Opposite of Sequence
+	- Parallel (->->):
+		- Executes all children in "parallel"
+		- Returns a "Success" when 1 to n children return a "Success"
+		- Returns a "Failure" when all children return a "Failure"
+	- Decorator (&):
+		- Typically only have one child, and modifies its behavior with some custom defined policy
+		- Common policies:
+			- Invert
+			- Repeat/Retry
+			- Timeout
+			- Force Failure
+			- Success Is Failure
+		- Should use decorators sparingly as they can add unnecessary complexity
+- **Execution Nodes**:
+	- Usually the leaves of the tree, these should not have any children elements
+	- Condition:
+		- Returns a "Success" or "Failure" within a single tick
+		- Generally represent simple checks (e.g., "Is door open?")
+	- Action:
+		- Can span over multiple ticks by returning "Running"
+		- Generally represent complex Actions (e.g., "Open the door")
+	- Order of Action/Conditions do matter. For example if the condition is first and returns a "Failure" the action will not be ran.

@@ -1,0 +1,167 @@
+{
+  "main": {
+    "id": "519c4dcde81a0ead",
+    "type": "split",
+    "children": [
+      {
+        "id": "6cf4d32f6354b8fe",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "251a8e83b6f1e9ee",
+            "type": "leaf",
+            "state": {
+              "type": "kanban",
+              "state": {
+                "file": "Tasks.md"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "a51179f226e3bca2",
+    "type": "split",
+    "children": [
+      {
+        "id": "b10f39415852f3c3",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "9682be7d84c0dbf7",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "4bb7fb44cc014ef4",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              }
+            }
+          },
+          {
+            "id": "0133a75acb3b04a5",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {}
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "214f76aa8349c96f",
+    "type": "split",
+    "children": [
+      {
+        "id": "be89b017e4255051",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "72a53651f2740253",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Tasks.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "8de8525c963077f3",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Tasks.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              }
+            }
+          },
+          {
+            "id": "94fdffd244005d0b",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              }
+            }
+          },
+          {
+            "id": "5ae85f4fbbf65db0",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Tasks.md"
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
+    }
+  },
+  "active": "9682be7d84c0dbf7",
+  "lastOpenFiles": [
+    "Untitled.md",
+    "Tasks.md",
+    "Wizards/Behavior Trees/General Behavior Trees.md",
+    "Test/Untitled Kanban.md",
+    "Tasks.md",
+    "Test",
+    "Wizards/Behavior Tree Notes.md",
+    "Wizards/Behavior Trees/Loiter State.canvas",
+    "Wizards/Behavior Trees/Untitled.canvas",
+    "Wizards/Earth Wizard/State Machine.canvas",
+    "Wizards/Behavior Trees",
+    "Wizards/Earth Wizard",
+    "Wizards",
+    "Untitled.canvas",
+    "2024-03-03.md",
+    "Welcome.md",
+    "create a link.md"
+  ]
+}
