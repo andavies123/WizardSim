@@ -36,14 +36,14 @@ kanban-plugin: basic
 
 ## In Progress
 
-- [ ] **Gameplay UI Pause Button**<br><br>The main gameplay screen should have a pause button that will pause the game and open the pause menu
-- [ ] **Pause Menu Play Button**<br><br>The pause menu should have a play button that resumes the game and hides the pause menu
-- [ ] **Pause Menu Quit Button**<br><br>The pause menu should have a quit button that will close the current scene and load the Main Menu Scene
 
 
 ## Completed
 
 **Complete**
+- [x] **Pause Menu Quit Button**<br><br>The pause menu should have a quit button that will close the current scene and load the Main Menu Scene
+- [x] **Pause Menu Play Button**<br><br>The pause menu should have a play button that resumes the game and hides the pause menu
+- [x] **Gameplay UI Pause Button**<br><br>The main gameplay screen should have a pause button that will pause the game and open the pause menu
 - [x] Add Quit Button to Start Menu that will quit the game when pressed
 - [x] Add Play Button to Start Menu that will run the Game Scene when pressed
 - [x] Move Obsidian files over to new repo
