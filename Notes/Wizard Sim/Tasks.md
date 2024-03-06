@@ -25,6 +25,8 @@ kanban-plugin: basic
 
 ## Coding Backlog
 
+- [ ] Multiplayer<br><br>Set up multiplayer for the new project
+- [ ] Game World<br><br>Create a base flat world object group. This would include chunks and the Base WorldGameObject
 - [ ] Mouse Tile Selection<br><br>Add ability to get the tile that is being clicked on with the mouse
 - [ ] **Tile Hover Highlighting**<br><br>The tile that is being hovered over by the player mouse should show that by changing color or something along those lines
 - [ ] WorldObject Architecture<br><br>Create the architecture for the world objects such as rocks, trees, bushes, etc...
@@ -34,9 +36,9 @@ kanban-plugin: basic
 
 ## In Progress
 
-- [ ] Add Pause Button that will pause the game when pressed
-- [ ] Multiplayer<br><br>Set up multiplayer for the new project
-- [ ] Game World<br><br>Create a base flat world object group. This would include chunks and the Base WorldGameObject
+- [ ] **Gameplay UI Pause Button**<br><br>The main gameplay screen should have a pause button that will pause the game and open the pause menu
+- [ ] **Pause Menu Play Button**<br><br>The pause menu should have a play button that resumes the game and hides the pause menu
+- [ ] **Pause Menu Quit Button**<br><br>The pause menu should have a quit button that will close the current scene and load the Main Menu Scene
 
 
 ## Completed
