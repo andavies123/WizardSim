@@ -25,8 +25,6 @@ kanban-plugin: basic
 
 ## Coding Backlog
 
-- [ ] Multiplayer<br><br>Set up multiplayer for the new project
-- [ ] Game World<br><br>Create a base flat world object group. This would include chunks and the Base WorldGameObject
 - [ ] Mouse Tile Selection<br><br>Add ability to get the tile that is being clicked on with the mouse
 - [ ] **Tile Hover Highlighting**<br><br>The tile that is being hovered over by the player mouse should show that by changing color or something along those lines
 - [ ] WorldObject Architecture<br><br>Create the architecture for the world objects such as rocks, trees, bushes, etc...
@@ -36,6 +34,8 @@ kanban-plugin: basic
 
 ## In Progress
 
+- [ ] Game World<br><br>Create a base flat world object group. This would include chunks and the Base WorldGameObject
+- [ ] Multiplayer<br><br>Set up multiplayer for the new project
 
 
 ## Completed
