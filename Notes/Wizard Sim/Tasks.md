@@ -34,13 +34,14 @@ kanban-plugin: basic
 
 ## In Progress
 
-- [ ] Game World<br><br>Create a base flat world object group. This would include chunks and the Base WorldGameObject
+- [ ] **Camera Controller**<br><br>The player should be able to have control over the camera.<br>- [ ] Move camera position<br>- [ ] Free rotate camera
 - [ ] Multiplayer<br><br>Set up multiplayer for the new project
 
 
 ## Completed
 
 **Complete**
+- [x] Game World<br><br>Create a base flat world object group. This would include chunks and the Base WorldGameObject
 - [x] **Pause Menu Quit Button**<br><br>The pause menu should have a quit button that will close the current scene and load the Main Menu Scene
 - [x] **Pause Menu Play Button**<br><br>The pause menu should have a play button that resumes the game and hides the pause menu
 - [x] **Gameplay UI Pause Button**<br><br>The main gameplay screen should have a pause button that will pause the game and open the pause menu
