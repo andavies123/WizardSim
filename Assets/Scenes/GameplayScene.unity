@@ -249,8 +249,10 @@ MonoBehaviour:
   playerCamera: {fileID: 1688352104}
   cameraMoveSpeed: 10
   cameraRotationSpeed: 10
-  cameraXRotationMin: 30
-  cameraXRotationMax: 85
+  minCameraHeight: 1
+  maxCameraHeight: 10
+  minVerticalRotation: 30
+  maxVerticalRotation: 85
 --- !u!1 &488779272
 GameObject:
   m_ObjectHideFlags: 0

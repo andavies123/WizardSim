@@ -12,6 +12,8 @@ namespace PlayerControllers
 		[SerializeField] private float cameraRotationSpeed = 1f;
 
 		[Header("Clamps")]
+		[SerializeField] private float minCameraHeight = 1f;
+		[SerializeField] private float maxCameraHeight = 100f;
 		[SerializeField] private float minVerticalRotation = 45f;
 		[SerializeField] private float maxVerticalRotation = 90f;
 
@@ -54,7 +56,10 @@ namespace PlayerControllers
 			Vector3 yVector = Vector3.up * yMovement;
 			Vector3 zVector = new Vector3(cameraForward.x, 0, cameraForward.z).normalized * zMovement;
 
-			_cameraTransform.position += (xVector + yVector + zVector).normalized * (Time.deltaTime * cameraMoveSpeed);
+			// Set position and clamp the height
+			Vector3 newPosition = _cameraTransform.position + (xVector + yVector + zVector).normalized * (Time.deltaTime * cameraMoveSpeed);
+			newPosition = new Vector3(newPosition.x, Mathf.Clamp(newPosition.y, minCameraHeight, maxCameraHeight), newPosition.z);
+			_cameraTransform.position = newPosition;
 		}
 
 		private float _currentVerticalRotation;

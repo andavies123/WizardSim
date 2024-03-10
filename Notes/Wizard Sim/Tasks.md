@@ -35,7 +35,7 @@ kanban-plugin: basic
 ## In Progress
 
 - [ ] Create a texture for tiles so it is not just a blank white background
-- [ ] **Camera Controller**<br><br>The player should be able to have control over the camera.<br>- [x] Move camera position<br>- [x] Free rotate camera<br>- [ ] Zoom in/out<br>- [ ] Camera clamps
+- [ ] **Camera Controller**<br><br>The player should be able to have control over the camera.<br>- [x] Move camera position<br>- [x] Free rotate camera<br>- [ ] Zoom in/out<br>- [x] Camera clamps
 - [ ] Multiplayer<br><br>Set up multiplayer for the new project
 
 
