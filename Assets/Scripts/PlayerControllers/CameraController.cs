@@ -10,14 +10,19 @@ namespace PlayerControllers
 		[Header("Speeds")]
 		[SerializeField] private float cameraMoveSpeed = 1f;
 		[SerializeField] private float cameraRotationSpeed = 1f;
+		[SerializeField] private float zoomSpeed = 1f;
 
 		[Header("Clamps")]
 		[SerializeField] private float minCameraHeight = 1f;
 		[SerializeField] private float maxCameraHeight = 100f;
 		[SerializeField] private float minVerticalRotation = 45f;
 		[SerializeField] private float maxVerticalRotation = 90f;
+		[SerializeField] private float minZoom = 30f;
+		[SerializeField] private float maxZoom = 70f;
 
 		private Transform _cameraTransform;
+		private float _currentVerticalRotation;
+		private float _currentHorizontalRotation;
 
 		private void Awake()
 		{
@@ -28,6 +33,7 @@ namespace PlayerControllers
 		{
 			ControlPosition();
 			ControlRotation();
+			ControlZoom();
 		}
 
 		private void ControlPosition()
@@ -62,9 +68,6 @@ namespace PlayerControllers
 			_cameraTransform.position = newPosition;
 		}
 
-		private float _currentVerticalRotation;
-		private float _currentHorizontalRotation;
-
 		private void ControlRotation()
 		{
 			if (!Input.GetMouseButton((int) MouseButton.Middle))
@@ -75,6 +78,13 @@ namespace PlayerControllers
 			_currentVerticalRotation = Mathf.Clamp(_currentVerticalRotation, minVerticalRotation, maxVerticalRotation);
 
 			_cameraTransform.eulerAngles = new Vector3(_currentVerticalRotation, _currentHorizontalRotation, 0f);
+		}
+
+		private void ControlZoom()
+		{
+			float zoomAmount = Input.GetAxis("Mouse ScrollWheel");
+			float newFieldOfView = playerCamera.fieldOfView - zoomAmount * zoomSpeed;
+			playerCamera.fieldOfView = Mathf.Clamp(newFieldOfView, minZoom, maxZoom);
 		}
 	}
 }
