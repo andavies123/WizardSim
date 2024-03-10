@@ -247,7 +247,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCamera: {fileID: 1688352104}
-  cameraSpeed: 10
+  cameraMoveSpeed: 10
+  cameraRotationSpeed: 10
+  cameraXRotationMin: 30
+  cameraXRotationMax: 85
 --- !u!1 &488779272
 GameObject:
   m_ObjectHideFlags: 0
