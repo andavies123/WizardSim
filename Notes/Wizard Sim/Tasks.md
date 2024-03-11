@@ -35,13 +35,13 @@ kanban-plugin: basic
 ## In Progress
 
 - [ ] Create a texture for tiles so it is not just a blank white background
-- [ ] **Camera Controller**<br><br>The player should be able to have control over the camera.<br>- [x] Move camera position<br>- [x] Free rotate camera<br>- [ ] Zoom in/out<br>- [x] Camera clamps
 - [ ] Multiplayer<br><br>Set up multiplayer for the new project
 
 
 ## Completed
 
 **Complete**
+- [x] **Camera Controller**<br><br>The player should be able to have control over the camera.<br>- [x] Move camera position<br>- [x] Free rotate camera<br>- [x] Zoom in/out<br>- [x] Camera clamps
 - [x] Game World<br><br>Create a base flat world object group. This would include chunks and the Base WorldGameObject
 - [x] **Pause Menu Quit Button**<br><br>The pause menu should have a quit button that will close the current scene and load the Main Menu Scene
 - [x] **Pause Menu Play Button**<br><br>The pause menu should have a play button that resumes the game and hides the pause menu

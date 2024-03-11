@@ -250,8 +250,8 @@ MonoBehaviour:
   cameraMoveSpeed: 10
   cameraRotationSpeed: 10
   zoomSpeed: 10
-  minCameraHeight: 1
-  maxCameraHeight: 10
+  minCameraHeight: 5
+  maxCameraHeight: 50
   minVerticalRotation: 30
   maxVerticalRotation: 85
   minZoom: 30
@@ -1390,7 +1390,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 26.991467
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
