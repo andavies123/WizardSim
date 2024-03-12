@@ -29,6 +29,13 @@ namespace PlayerControllers
 			_cameraTransform = playerCamera.GetComponent<Transform>();
 		}
 
+		private void Start()
+		{
+			ClampCameraPosition();
+			ClampCameraRotation();
+			ClampCameraZoom();
+		}
+
 		private void Update()
 		{
 			ControlPosition();
@@ -64,8 +71,15 @@ namespace PlayerControllers
 
 			// Set position and clamp the height
 			Vector3 newPosition = _cameraTransform.position + (xVector + yVector + zVector).normalized * (Time.deltaTime * cameraMoveSpeed);
-			newPosition = new Vector3(newPosition.x, Mathf.Clamp(newPosition.y, minCameraHeight, maxCameraHeight), newPosition.z);
 			_cameraTransform.position = newPosition;
+			
+			ClampCameraPosition();
+		}
+
+		private void ClampCameraPosition()
+		{
+			Vector3 currentCameraPosition = _cameraTransform.position;
+			_cameraTransform.position = new Vector3(currentCameraPosition.x, Mathf.Clamp(currentCameraPosition.y, minCameraHeight, maxCameraHeight), currentCameraPosition.z);
 		}
 
 		private void ControlRotation()
@@ -75,16 +89,30 @@ namespace PlayerControllers
 
 			_currentHorizontalRotation += Input.GetAxisRaw("Mouse X") * cameraRotationSpeed;
 			_currentVerticalRotation -= Input.GetAxisRaw("Mouse Y") * cameraRotationSpeed;
-			_currentVerticalRotation = Mathf.Clamp(_currentVerticalRotation, minVerticalRotation, maxVerticalRotation);
 
 			_cameraTransform.eulerAngles = new Vector3(_currentVerticalRotation, _currentHorizontalRotation, 0f);
+			
+			ClampCameraRotation();
+		}
+
+		private void ClampCameraRotation()
+		{
+			Vector3 currentRotation = _cameraTransform.eulerAngles;
+			_currentVerticalRotation = Mathf.Clamp(_currentVerticalRotation, minVerticalRotation, maxVerticalRotation);
+			_cameraTransform.eulerAngles = new Vector3(_currentVerticalRotation, currentRotation.y, currentRotation.z);
 		}
 
 		private void ControlZoom()
 		{
 			float zoomAmount = Input.GetAxis("Mouse ScrollWheel");
-			float newFieldOfView = playerCamera.fieldOfView - zoomAmount * zoomSpeed;
-			playerCamera.fieldOfView = Mathf.Clamp(newFieldOfView, minZoom, maxZoom);
+			playerCamera.fieldOfView -= zoomAmount * zoomSpeed;
+			
+			ClampCameraZoom();
+		}
+
+		private void ClampCameraZoom()
+		{
+			playerCamera.fieldOfView = Mathf.Clamp(playerCamera.fieldOfView, minZoom, maxZoom);
 		}
 	}
 }
