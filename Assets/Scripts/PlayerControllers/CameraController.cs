@@ -1,5 +1,5 @@
-﻿using Unity.VisualScripting;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace PlayerControllers
 {
@@ -84,7 +84,7 @@ namespace PlayerControllers
 
 		private void ControlRotation()
 		{
-			if (!Input.GetMouseButton((int) MouseButton.Middle))
+			if (!Input.GetMouseButton((int) MouseButton.MiddleMouse))
 				return;
 
 			_currentHorizontalRotation += Input.GetAxisRaw("Mouse X") * cameraRotationSpeed;

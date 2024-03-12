@@ -25,16 +25,17 @@ kanban-plugin: basic
 
 ## Coding Backlog
 
+- [ ] Multiplayer<br><br>Set up multiplayer for the new project
 - [ ] Mouse Tile Selection<br><br>Add ability to get the tile that is being clicked on with the mouse
 - [ ] **Tile Hover Highlighting**<br><br>The tile that is being hovered over by the player mouse should show that by changing color or something along those lines
 - [ ] WorldObject Architecture<br><br>Create the architecture for the world objects such as rocks, trees, bushes, etc...
 - [ ] Wizard Architecture<br><br>Create the architecture for wizards<br>- [ ] Wizard Manager<br>- [ ] Wizard Prefab<br>- [ ] Base Wizard Class
-- [ ] **Input Basics**<br><br>Set up the basics for input<br>- [ ] Create Input Asset<br>- [ ] Create Input class
 
 
 ## In Progress
 
-- [ ] Multiplayer<br><br>Set up multiplayer for the new project
+- [ ] **BUG**<br><br>Unity takes a while to build and load
+- [ ] **Input Basics**<br><br>Set up the basics for input<br>- [ ] Create Input Asset<br>- [ ] Create Input class
 
 
 ## Completed
