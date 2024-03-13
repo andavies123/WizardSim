@@ -1,31 +1,56 @@
+using Game;
 using UnityEngine;
 
 namespace UIManagers
 {
 	public class GameSceneUIManager : MonoBehaviour
 	{
-		[SerializeField] private PlayMenuUIManager playMenuUIManager;
+		[SerializeField] private GameManager gameManager;
+		[SerializeField] private GameplayUIManager gameplayUIManager;
 		[SerializeField] private PauseMenuUIManager pauseMenuUIManager;
 
-		private void Start()
+		public void ShowGameplayUI()
 		{
-			playMenuUIManager.PauseButtonPressed += OnPauseButtonPressed;
-			pauseMenuUIManager.ResumeButtonPressed += OnResumeButtonPressed;
-		
-			playMenuUIManager.gameObject.SetActive(true);
+			gameplayUIManager.gameObject.SetActive(true);
 			pauseMenuUIManager.gameObject.SetActive(false);
 		}
-	
-		private void OnPauseButtonPressed()
+
+		public void ShowPauseMenuUI()
 		{
-			playMenuUIManager.gameObject.SetActive(false);
+			gameplayUIManager.gameObject.SetActive(false);
 			pauseMenuUIManager.gameObject.SetActive(true);
 		}
 
-		private void OnResumeButtonPressed()
+		private void Awake()
 		{
-			playMenuUIManager.gameObject.SetActive(true);
-			pauseMenuUIManager.gameObject.SetActive(false);
+			gameManager.GamePaused += OnGamePaused;
+			gameManager.GameResumed += OnGameResumed;
+			
+			gameplayUIManager.PauseButtonPressed += OnPauseButtonPressed;
+			pauseMenuUIManager.ResumeButtonPressed += OnResumeButtonPressed;
+			pauseMenuUIManager.QuitButtonPressed += OnQuitButtonPressed;
 		}
+
+		private void Start()
+		{
+			ShowGameplayUI();
+		}
+
+		private void OnDestroy()
+		{
+			gameManager.GamePaused -= OnGamePaused;
+			gameManager.GameResumed -= OnGameResumed;
+			
+			gameplayUIManager.PauseButtonPressed -= OnPauseButtonPressed;
+			pauseMenuUIManager.ResumeButtonPressed -= OnResumeButtonPressed;
+			pauseMenuUIManager.QuitButtonPressed -= OnQuitButtonPressed;
+		}
+
+		private void OnGamePaused() => ShowPauseMenuUI();
+		private void OnGameResumed() => ShowGameplayUI();
+
+		private void OnPauseButtonPressed() => gameManager.PauseGame();
+		private void OnResumeButtonPressed() => gameManager.ResumeGame();
+		private void OnQuitButtonPressed() => gameManager.QuitGame();
 	}
 }

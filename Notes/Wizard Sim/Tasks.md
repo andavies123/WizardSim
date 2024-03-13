@@ -34,13 +34,13 @@ kanban-plugin: basic
 
 ## In Progress
 
-- [ ] **BUG**<br><br>Unity takes a while to build and load
 - [ ] **Input Basics**<br><br>Set up the basics for input<br>- [ ] Create Input Asset<br>- [ ] Create Input class
 
 
 ## Completed
 
 **Complete**
+- [x] **BUG**<br><br>Unity takes a while to build and load
 - [x] **BUG**<br><br>Camera doesn't snap to clamps at startup
 - [x] Create a texture for tiles so it is not just a blank white background
 - [x] **Camera Controller**<br><br>The player should be able to have control over the camera.<br>- [x] Move camera position<br>- [x] Free rotate camera<br>- [x] Zoom in/out<br>- [x] Camera clamps
