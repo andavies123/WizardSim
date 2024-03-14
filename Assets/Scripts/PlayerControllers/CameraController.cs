@@ -1,11 +1,12 @@
-﻿using UnityEngine;
-using UnityEngine.UIElements;
+﻿using InputStates;
+using UnityEngine;
 
 namespace PlayerControllers
 {
 	public class CameraController : MonoBehaviour
 	{
 		[SerializeField] private Camera playerCamera;
+		[SerializeField] private GameplayInputState gameplayInputState;
 		
 		[Header("Speeds")]
 		[SerializeField] private float cameraMoveSpeed = 1f;
@@ -27,6 +28,9 @@ namespace PlayerControllers
 		private void Awake()
 		{
 			_cameraTransform = playerCamera.GetComponent<Transform>();
+
+			gameplayInputState.CameraZoomInPerformed += OnCameraZoomInPerformed;
+			gameplayInputState.CameraZoomOutPerformed += OnCameraZoomOutPerformed;
 		}
 
 		private void Start()
@@ -38,36 +42,30 @@ namespace PlayerControllers
 
 		private void Update()
 		{
-			ControlPosition();
-			ControlRotation();
-			ControlZoom();
+			if (gameplayInputState.IsMoveActive || gameplayInputState.IsVerticalMoveActive)
+				ControlPosition(gameplayInputState.CurrentMoveValue);
+			if (gameplayInputState.IsCameraLookActivated && gameplayInputState.IsLookActive)
+				ControlRotation(gameplayInputState.CurrentLookValue);
+			
+			//ControlZoom();
 		}
 
-		private void ControlPosition()
+		private void OnDestroy()
 		{
-			float xMovement = 0f;
-			if (Input.GetKey(KeyCode.A))
-				xMovement -= 1;
-			if (Input.GetKey(KeyCode.D))
-				xMovement += 1;
-			
-			float zMovement = 0f;
-			if (Input.GetKey(KeyCode.S))
-				zMovement -= 1;
-			if (Input.GetKey(KeyCode.W))
-				zMovement += 1;
+			gameplayInputState.CameraZoomInPerformed -= OnCameraZoomInPerformed;
+			gameplayInputState.CameraZoomOutPerformed -= OnCameraZoomOutPerformed;
+		}
 
-			float yMovement = 0f;
-			if (Input.GetKey(KeyCode.LeftShift))
-				yMovement -= 1;
-			if (Input.GetKey(KeyCode.Space))
-				yMovement += 1;
+		private void OnCameraZoomInPerformed() => ControlZoom(-1);
+		private void OnCameraZoomOutPerformed() => ControlZoom(1);
 
+		private void ControlPosition(Vector3 moveVector)
+		{
 			Vector3 cameraForward = _cameraTransform.forward;
 			
-			Vector3 xVector = _cameraTransform.right * xMovement;
-			Vector3 yVector = Vector3.up * yMovement;
-			Vector3 zVector = new Vector3(cameraForward.x, 0, cameraForward.z).normalized * zMovement;
+			Vector3 xVector = _cameraTransform.right * moveVector.x;
+			Vector3 yVector = Vector3.up * moveVector.y;
+			Vector3 zVector = new Vector3(cameraForward.x, 0, cameraForward.z).normalized * moveVector.z;
 
 			// Set position and clamp the height
 			Vector3 newPosition = _cameraTransform.position + (xVector + yVector + zVector).normalized * (Time.deltaTime * cameraMoveSpeed);
@@ -82,13 +80,10 @@ namespace PlayerControllers
 			_cameraTransform.position = new Vector3(currentCameraPosition.x, Mathf.Clamp(currentCameraPosition.y, minCameraHeight, maxCameraHeight), currentCameraPosition.z);
 		}
 
-		private void ControlRotation()
+		private void ControlRotation(Vector2 lookVector)
 		{
-			if (!Input.GetMouseButton((int) MouseButton.MiddleMouse))
-				return;
-
-			_currentHorizontalRotation += Input.GetAxisRaw("Mouse X") * cameraRotationSpeed;
-			_currentVerticalRotation -= Input.GetAxisRaw("Mouse Y") * cameraRotationSpeed;
+			_currentHorizontalRotation += lookVector.x * cameraRotationSpeed;
+			_currentVerticalRotation -= lookVector.y * cameraRotationSpeed;
 
 			_cameraTransform.eulerAngles = new Vector3(_currentVerticalRotation, _currentHorizontalRotation, 0f);
 			
@@ -102,10 +97,9 @@ namespace PlayerControllers
 			_cameraTransform.eulerAngles = new Vector3(_currentVerticalRotation, currentRotation.y, currentRotation.z);
 		}
 
-		private void ControlZoom()
+		private void ControlZoom(int zoomAmount)
 		{
-			float zoomAmount = Input.GetAxis("Mouse ScrollWheel");
-			playerCamera.fieldOfView -= zoomAmount * zoomSpeed;
+			playerCamera.fieldOfView += zoomAmount * zoomSpeed;
 			
 			ClampCameraZoom();
 		}

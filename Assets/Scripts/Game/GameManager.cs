@@ -47,14 +47,14 @@ namespace Game
 		
 		private void Awake()
 		{
-			gameplayInputState.PauseKeyPressed += PauseGame;
-			pauseMenuInputState.ResumeKeyPressed += ResumeGame;
+			gameplayInputState.PauseActionPerformed += PauseGame;
+			pauseMenuInputState.ResumeActionPerformed += ResumeGame;
 		}
 
 		private void OnDestroy()
 		{
-			gameplayInputState.PauseKeyPressed -= PauseGame;
-			pauseMenuInputState.ResumeKeyPressed -= ResumeGame;
+			gameplayInputState.PauseActionPerformed -= PauseGame;
+			pauseMenuInputState.ResumeActionPerformed -= ResumeGame;
 		}
 	}
 }
