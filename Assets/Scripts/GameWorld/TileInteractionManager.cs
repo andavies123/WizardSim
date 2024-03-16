@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UI;
+using UnityEngine;
 
 namespace GameWorld
 {
@@ -6,25 +7,24 @@ namespace GameWorld
 	public class TileInteractionManager : MonoBehaviour
 	{
 		private static readonly int IsHovered = Shader.PropertyToID("_IsHovered");
+		private static readonly int IsContextMenuOpen = Shader.PropertyToID("_IsContextMenuOpen");
 
 		[SerializeField] private Renderer meshRenderer;
 		[SerializeField] private MouseInteractionEvents mouseInteractionEvents;
-
-		private Tile _tile;
+		[SerializeField] private TileContextMenuUser tileContextMenuUser;
 
 		private void Awake()
 		{
-			_tile = GetComponent<Tile>();
-
 			if (mouseInteractionEvents != null)
 			{
 				mouseInteractionEvents.MouseEntered += OnMouseEntered;
 				mouseInteractionEvents.MouseExited += OnMouseExited;
 				mouseInteractionEvents.RightMousePressed += OnRightMousePressed;
 			}
-			else
+
+			if (tileContextMenuUser != null)
 			{
-				Debug.LogError("Unable to subscribe to Mouse Interaction Events. Script is missing...", mouseInteractionEvents);
+				tileContextMenuUser.MenuClosed += OnContextMenuClosed;
 			}
 		}
 
@@ -36,10 +36,28 @@ namespace GameWorld
 				mouseInteractionEvents.MouseExited -= OnMouseExited;
 				mouseInteractionEvents.RightMousePressed -= OnRightMousePressed;
 			}
+
+			if (tileContextMenuUser != null)
+			{
+				tileContextMenuUser.MenuClosed -= OnContextMenuClosed;
+			}
 		}
 
 		private void OnMouseEntered() => meshRenderer.material.SetFloat(IsHovered, 1);
 		private void OnMouseExited() => meshRenderer.material.SetFloat(IsHovered, 0);
-		private void OnRightMousePressed() => print($"Right Mouse Down on {_tile.TilePosition}");
+
+		private void OnRightMousePressed()
+		{
+			if (tileContextMenuUser == null)
+				return;
+
+			tileContextMenuUser.OpenMenu();
+			meshRenderer.material.SetFloat(IsContextMenuOpen, 1);
+		}
+
+		private void OnContextMenuClosed()
+		{
+			meshRenderer.material.SetFloat(IsContextMenuOpen, 0);
+		}
 	}
 }

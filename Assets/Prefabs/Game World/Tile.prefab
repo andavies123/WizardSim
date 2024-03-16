@@ -130,6 +130,7 @@ GameObject:
   - component: {fileID: 2859662155011041617}
   - component: {fileID: -5100131755638846822}
   - component: {fileID: 692093908698099926}
+  - component: {fileID: 1938675790559664110}
   m_Layer: 0
   m_Name: Tile
   m_TagString: Untagged
@@ -179,3 +180,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   meshRenderer: {fileID: 2235466628899657055}
   mouseInteractionEvents: {fileID: 1847093443300039086}
+  tileContextMenuUser: {fileID: 1938675790559664110}
+--- !u!114 &1938675790559664110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6905772132014365446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f090f1b23f40452f8e5baaf30eb551c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  contextMenuEvents: {fileID: 11400000, guid: 35ab239d931d85347be959101007800e, type: 2}

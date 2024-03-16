@@ -28,11 +28,12 @@ kanban-plugin: basic
 - [ ] Multiplayer<br><br>Set up multiplayer for the new project
 - [ ] WorldObject Architecture<br><br>Create the architecture for the world objects such as rocks, trees, bushes, etc...
 - [ ] Wizard Architecture<br><br>Create the architecture for wizards<br>- [ ] Wizard Manager<br>- [ ] Wizard Prefab<br>- [ ] Base Wizard Class
+- [ ] **Save System**<br><br>Create a save system that can be saved/loaded at will<br><br>- [ ] Add save pause menu button<br>- [ ] Game world should be saved<br>- [ ] Wizard stats should be saved<br>- [ ] Add load main menu button
 
 
 ## In Progress
 
-- [ ] **Tile Context Menu**<br><br>Add a context menu to the tiles when the player right clicks on one.<br>- [ ] Add popup UI at mouse position on right click<br>- [ ] Add ability to add items to menu<br>- [ ] Each menu item should have a following action
+- [ ] **Tile Context Menu**<br><br>Add a context menu to the tiles when the player right clicks on one.<br>- [x] Add popup UI at mouse position on right click<br>- [x] Menu should always face towards the camera<br>- [x] Add ability to add items to menu<br>- [x] Each menu item should have a following action<br>- [x] Menu should close when an item is clicked<br>- [x] Menu should close when clicking out of it<br>- [x] Tile should change colors when the context menu is open for it<br>- [ ] Add a title for the context menu to describe what is selected
 
 
 ## Completed
