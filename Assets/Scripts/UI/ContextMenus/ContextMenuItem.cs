@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UI
+namespace UI.ContextMenus
 {
 	public abstract class ContextMenuItem
 	{

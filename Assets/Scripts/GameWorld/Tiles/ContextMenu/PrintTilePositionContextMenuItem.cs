@@ -1,7 +1,6 @@
-﻿using GameWorld;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace UI
+namespace GameWorld.Tiles.ContextMenu
 {
 	public class PrintTilePositionContextMenuItem : TileContextMenuItem
 	{

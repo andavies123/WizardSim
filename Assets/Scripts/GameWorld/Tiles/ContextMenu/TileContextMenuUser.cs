@@ -1,7 +1,7 @@
-﻿using GameWorld;
+﻿using UI.ContextMenus;
 using UnityEngine;
 
-namespace UI
+namespace GameWorld.Tiles.ContextMenu
 {
 	[RequireComponent(typeof(Tile))]
 	public class TileContextMenuUser : ContextMenuUser<TileContextMenuItem>

@@ -1,7 +1,8 @@
-﻿using UI;
+﻿using GameWorld.Tiles.ContextMenu;
+using UI;
 using UnityEngine;
 
-namespace GameWorld
+namespace GameWorld.Tiles
 {
 	[RequireComponent(typeof(Tile))]
 	public class TileInteractionManager : MonoBehaviour

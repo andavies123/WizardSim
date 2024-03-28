@@ -2,7 +2,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace UI
+namespace UI.ContextMenus
 {
 	public class ContextMenuItemUI : MonoBehaviour
 	{

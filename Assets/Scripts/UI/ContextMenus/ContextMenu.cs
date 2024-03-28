@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace UI
+namespace UI.ContextMenus
 {
 	public class ContextMenu : MonoBehaviour
 	{

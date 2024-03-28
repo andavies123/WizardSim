@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace UI
+namespace UI.ContextMenus
 {
 	[CreateAssetMenu(menuName = "Context Menu Events", fileName = "ContextMenuEvents", order = 0)]
 	public class ContextMenuEvents : ScriptableObject

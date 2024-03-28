@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem.LowLevel;
 
-namespace GameWorld
+namespace UI
 {
 	/// <summary>
 	/// Helpful class that can be put on the same GameObject as the collider and expose the

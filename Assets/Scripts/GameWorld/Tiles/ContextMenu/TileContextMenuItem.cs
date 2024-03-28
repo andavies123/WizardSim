@@ -1,6 +1,6 @@
-﻿using GameWorld;
+﻿using UI.ContextMenus;
 
-namespace UI
+namespace GameWorld.Tiles.ContextMenu
 {
 	public abstract class TileContextMenuItem : ContextMenuItem
 	{

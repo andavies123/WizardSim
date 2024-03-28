@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace UI
+namespace UI.ContextMenus
 {
 	public abstract class ContextMenuUser : MonoBehaviour
 	{

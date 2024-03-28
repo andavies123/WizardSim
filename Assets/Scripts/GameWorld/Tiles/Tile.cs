@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace GameWorld
+namespace GameWorld.Tiles
 {
 	public class Tile : MonoBehaviour
 	{
