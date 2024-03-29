@@ -4,6 +4,7 @@ namespace InputStates
 {
 	public abstract class InputState : ScriptableObject
 	{
-		public string actionMapName;
+		public abstract void EnableInputs();
+		public abstract void DisableInputs();
 	}
 }

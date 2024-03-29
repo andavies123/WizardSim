@@ -7,12 +7,30 @@ namespace InputStates
 	[CreateAssetMenu(fileName = "PauseMenuInputState", menuName = "Input State/Pause Menu Input State", order = 0)]
 	public class PauseMenuInputState : InputState
 	{
-		public event Action ResumeActionPerformed;
+		private PlayerInputActions _playerInputActions;
 		
-		public void OnResumeAction(InputAction.CallbackContext context)
+		public event Action ResumeActionPerformed;
+
+		public override void EnableInputs()
 		{
-			if (context.performed)
-				ResumeActionPerformed?.Invoke();
+			_playerInputActions ??= new PlayerInputActions();
+
+			_playerInputActions.PauseMenu.ResumeGame.performed += OnResumeActionPerformed;
+			
+			_playerInputActions.PauseMenu.Enable();
 		}
+
+		public override void DisableInputs()
+		{
+			_playerInputActions.PauseMenu.Disable();
+
+			_playerInputActions.PauseMenu.ResumeGame.performed -= OnResumeActionPerformed;
+		}
+
+		#region Resume Action
+
+			private void OnResumeActionPerformed(InputAction.CallbackContext context) => ResumeActionPerformed?.Invoke();
+		
+		#endregion
 	}
 }
