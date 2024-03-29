@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ddc8597c15152d34392d7706e688a42a, type: 2}
+  - {fileID: -876546973899608171, guid: 19ca4c0169d0c164f94f01bf1307e85d, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -129,8 +129,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2859662155011041617}
   - component: {fileID: -5100131755638846822}
-  - component: {fileID: 692093908698099926}
   - component: {fileID: 1938675790559664110}
+  - component: {fileID: 5786707372662330356}
   m_Layer: 0
   m_Name: Tile
   m_TagString: Untagged
@@ -166,21 +166,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d20e7dc40e94f94b2c2a3fc1f1828ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &692093908698099926
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6905772132014365446}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4b10c8b645249eab792a5e50422b621, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  meshRenderer: {fileID: 2235466628899657055}
-  mouseInteractionEvents: {fileID: 1847093443300039086}
-  tileContextMenuUser: {fileID: 1938675790559664110}
 --- !u!114 &1938675790559664110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,3 +179,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   contextMenuEvents: {fileID: 11400000, guid: 35ab239d931d85347be959101007800e, type: 2}
+--- !u!114 &5786707372662330356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6905772132014365446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e998094e9364dfba96718fc9a010386, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mouseInteractionEvents: {fileID: 1847093443300039086}
+  contextMenuUser: {fileID: 1938675790559664110}
+  meshRenderer: {fileID: 2235466628899657055}
+  baseTexture: {fileID: 2800000, guid: 67dc852ebf71340439ae1fe97d5a89fa, type: 3}
+  baseColor: {r: 0.015686275, g: 0.5647059, b: 0, a: 0}

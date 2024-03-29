@@ -74,6 +74,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mouseInteractionEvents: {fileID: 8389175553906808023}
   contextMenuUser: {fileID: -5138710094409622619}
+  meshRenderer: {fileID: 1173640702274741866}
+  baseTexture: {fileID: 0}
+  baseColor: {r: 0.010679938, g: 0.04584955, b: 0.754717, a: 0}
 --- !u!1 &3636136914844696014
 GameObject:
   m_ObjectHideFlags: 0
@@ -137,7 +140,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: -876546973899608171, guid: 19ca4c0169d0c164f94f01bf1307e85d, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
