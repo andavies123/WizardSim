@@ -9,7 +9,7 @@ namespace Wizards.ContextMenu
 	{
 		private Wizard _wizard;
 
-		public override string MenuTitle => $"Wizard {_wizard.Name}";
+		public override string MenuTitle => _wizard.Name;
 
 		private void Awake()
 		{
