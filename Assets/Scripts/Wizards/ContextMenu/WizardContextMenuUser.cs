@@ -15,9 +15,10 @@ namespace Wizards.ContextMenu
 		{
 			_wizard = GetComponent<Wizard>();
 
-			MenuItems.AddRange(new[]
+			MenuItems.AddRange(new WizardContextMenuItem[]
 			{
-				new PrintWizardNameContextMenuItem(_wizard)
+				new PrintNameWizardContextMenuItem(_wizard),
+				new IdleWizardContextMenuItem(_wizard)
 			});
 		}
 	}

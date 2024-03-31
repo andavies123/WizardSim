@@ -29,16 +29,18 @@ kanban-plugin: basic
 - [ ] **WorldObject Architecture**<br><br>Create the architecture for the world objects such as rocks, trees, bushes, etc...
 - [ ] **Save System**<br><br>Create a save system that can be saved/loaded at will<br><br>- [ ] Add save pause menu button<br>- [ ] Game world should be saved<br>- [ ] Wizard stats should be saved<br>- [ ] Add load main menu button
 - [ ] **Wizard Move To Action**<br>- [ ] Add a tile context menu item that will move the closest wizard to that tile<br>- [ ] Add a Move To wizard state to achieve this on the wizard side
+- [ ] **State Machine Editor**<br><br>- [ ] Create a base StateMachine Behaviour class<br>- [ ] Create an editor class for the StateMachine<br>- [ ] Display the current state<br>- [ ] Display the current state status
 
 
 ## In Progress
 
-- [ ] **Wizard Idle State**<br>- [ ] Create idle state<br>- [ ] Idle state should be default state<br>- [ ] Wizard should move to random position<br>- [ ] Wizard should wait at position for a time then move again
+- [ ] **Wizard Context Menu Update**<br><br>- [ ] Add state machine text to the context menu
 
 
 ## Completed
 
 **Complete**
+- [x] **Wizard Idle State**<br>- [x] Create idle state<br>- [x] Idle state should be default state<br>- [x] Wizard should move to random position<br>- [x] Wizard should wait at position for a time then move again<br>- [x] Add to the wizard context menu to Idle
 - [x] **Unity Events**<br><br>Change the way that events are listened to. They should be setup via scripting to avoid disambiguity
 - [x] **Interaction Shader**<br><br>Update the shader for interactions to work well with any item<br>- [x] Update shader to work well with any item<br>- [x] Add shader logic to the Context Menu Interactions or Mouse Interactions script<br>- [x] Update existing Tile interaction to separate the logic
 - [x] **Random Name Generator**<br><br>Add a random name generator that wizards can call when they are created so all wizards don't share the same name<br>- [x] Generate a random name from a list of first and last names<br>- [x] Read the names from a text file<br>- [x] Implement wizards to use these names

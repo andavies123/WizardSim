@@ -2,9 +2,9 @@
 
 namespace Wizards.ContextMenu.ContextMenuItems
 {
-	public class PrintWizardNameContextMenuItem : WizardContextMenuItem
+	public class PrintNameWizardContextMenuItem : WizardContextMenuItem
 	{
-		public PrintWizardNameContextMenuItem(Wizard wizard) : base(wizard) { }
+		public PrintNameWizardContextMenuItem(Wizard wizard) : base(wizard) { }
 		
 		public override string MenuName => "Print Name";
 
