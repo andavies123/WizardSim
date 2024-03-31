@@ -8,7 +8,7 @@ namespace UI
 	/// Helpful class that can be put on the same GameObject as the collider and expose the
 	/// Unity Mouse Events
 	/// </summary>
-	[RequireComponent(typeof(Collider))]
+	//[RequireComponent(typeof(Collider))]
 	public class MouseInteractionEvents : MonoBehaviour
 	{
 		public event Action MouseEntered;

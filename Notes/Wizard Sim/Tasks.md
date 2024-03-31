@@ -40,6 +40,7 @@ kanban-plugin: basic
 ## Completed
 
 **Complete**
+- [x] **BUG**<br><br>Unable to open the context menu for tiles or wizards<br><br>**FOUND FIX**<br><br>Adding the rigidbody to the prefabs made the MouseInteractionEvents component not work. Changing the script to not need a collider and moving it to the object that the rigidbody was on was able to fix the issue
 - [x] **Wizard Idle State**<br>- [x] Create idle state<br>- [x] Idle state should be default state<br>- [x] Wizard should move to random position<br>- [x] Wizard should wait at position for a time then move again<br>- [x] Add to the wizard context menu to Idle
 - [x] **Unity Events**<br><br>Change the way that events are listened to. They should be setup via scripting to avoid disambiguity
 - [x] **Interaction Shader**<br><br>Update the shader for interactions to work well with any item<br>- [x] Update shader to work well with any item<br>- [x] Add shader logic to the Context Menu Interactions or Mouse Interactions script<br>- [x] Update existing Tile interaction to separate the logic
