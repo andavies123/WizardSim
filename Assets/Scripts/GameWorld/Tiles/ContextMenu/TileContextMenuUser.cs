@@ -9,6 +9,7 @@ namespace GameWorld.Tiles.ContextMenu
 		private Tile _tile;
 
 		public override string MenuTitle => $"Tile {_tile.TilePosition}";
+		public override string InfoText {get; protected set; } = "Info";
 
 		private void Awake()
 		{

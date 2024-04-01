@@ -13,6 +13,7 @@ namespace UI.ContextMenus
 		
 		public abstract IReadOnlyList<ContextMenuItem> AllMenuItems { get; }
 		public abstract string MenuTitle { get; }
+		public abstract string InfoText { get; protected set; }
 		
 		public abstract void OpenMenu();
 

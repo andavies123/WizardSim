@@ -10,6 +10,7 @@ namespace Wizards.ContextMenu
 		private Wizard _wizard;
 
 		public override string MenuTitle => _wizard.Name;
+		public override string InfoText { get; protected set; }
 
 		private void Awake()
 		{
@@ -20,6 +21,11 @@ namespace Wizards.ContextMenu
 				new PrintNameWizardContextMenuItem(_wizard),
 				new IdleWizardContextMenuItem(_wizard)
 			});
+		}
+
+		private void Update()
+		{
+			InfoText = _wizard.StateMachine.CurrentStateDisplayStatus;
 		}
 	}
 }

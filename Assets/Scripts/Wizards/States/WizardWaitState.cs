@@ -27,6 +27,8 @@ namespace Wizards.States
 
 			if (_currentWaitTime > WaitTime)
 				WaitFinished?.Invoke();
+			else
+				DisplayStatus = $"{_currentWaitTime / WaitTime * 100:0.0}%";
 		}
 		
 		public override void End() { }

@@ -33,7 +33,7 @@ namespace Wizards.States
 		public override void Update()
 		{
 			_stateMachine.Update();
-			DisplayStatus = _stateMachine.CurrentStateDisplayStatus;
+			DisplayStatus = $"{_stateMachine.CurrentStateDisplayName} - {_stateMachine.CurrentStateDisplayStatus}";
 		}
 		
 		public override void End() { }

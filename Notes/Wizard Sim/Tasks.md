@@ -29,17 +29,17 @@ kanban-plugin: basic
 - [ ] **WorldObject Architecture**<br><br>Create the architecture for the world objects such as rocks, trees, bushes, etc...
 - [ ] **Save System**<br><br>Create a save system that can be saved/loaded at will<br><br>- [ ] Add save pause menu button<br>- [ ] Game world should be saved<br>- [ ] Wizard stats should be saved<br>- [ ] Add load main menu button
 - [ ] **Wizard Move To Action**<br>- [ ] Add a tile context menu item that will move the closest wizard to that tile<br>- [ ] Add a Move To wizard state to achieve this on the wizard side
-- [ ] **State Machine Editor**<br><br>- [ ] Create a base StateMachine Behaviour class<br>- [ ] Create an editor class for the StateMachine<br>- [ ] Display the current state<br>- [ ] Display the current state status
 
 
 ## In Progress
 
-- [ ] **Wizard Context Menu Update**<br><br>- [ ] Add state machine text to the context menu
+- [ ] **State Machine Editor**<br><br>- [ ] Create a base StateMachine Behaviour class<br>- [ ] Create an editor class for the StateMachine<br>- [ ] Display the current state<br>- [ ] Display the current state status
 
 
 ## Completed
 
 **Complete**
+- [x] **Wizard Context Menu Update**<br><br>- [x] Add state machine text to the context menu
 - [x] **BUG**<br><br>Unable to open the context menu for tiles or wizards<br><br>**FOUND FIX**<br><br>Adding the rigidbody to the prefabs made the MouseInteractionEvents component not work. Changing the script to not need a collider and moving it to the object that the rigidbody was on was able to fix the issue
 - [x] **Wizard Idle State**<br>- [x] Create idle state<br>- [x] Idle state should be default state<br>- [x] Wizard should move to random position<br>- [x] Wizard should wait at position for a time then move again<br>- [x] Add to the wizard context menu to Idle
 - [x] **Unity Events**<br><br>Change the way that events are listened to. They should be setup via scripting to avoid disambiguity

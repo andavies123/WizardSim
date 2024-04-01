@@ -2,6 +2,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
 namespace UI.ContextMenus
 {
@@ -13,6 +14,7 @@ namespace UI.ContextMenus
 
 		[Header("UI Components")]
 		[SerializeField] private TMP_Text titleText;
+		[FormerlySerializedAs("intoText")] [SerializeField] private TMP_Text infoText;
 
 		private readonly List<ContextMenuItemUI> _contextMenuItemUIs = new();
 		private ContextMenuUser _contextMenuUser;
@@ -29,6 +31,9 @@ namespace UI.ContextMenus
 
 		private void Update()
 		{
+			if (_contextMenuUser != null)
+				infoText.SetText(_contextMenuUser.InfoText);
+			
 			if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
 				DisableMenu();
 		}
@@ -63,6 +68,7 @@ namespace UI.ContextMenus
 				return;
 
 			titleText.SetText(_contextMenuUser.MenuTitle);
+			infoText.SetText(_contextMenuUser.InfoText);
 			SynchronizeContextMenuItemCollectionLengths();
 			BuildContextMenuItems();
 		}

@@ -14,6 +14,9 @@ namespace Wizards
 		private Wizard _wizard;
 		private WizardIdleState _idleState;
 
+		public string CurrentStateDisplayName => _stateMachine.CurrentStateDisplayName;
+		public string CurrentStateDisplayStatus => _stateMachine.CurrentStateDisplayStatus;
+
 		public void Idle()
 		{
 			_idleState.IdleRadius = idleRadius;
