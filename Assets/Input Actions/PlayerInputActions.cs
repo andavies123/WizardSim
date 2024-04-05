@@ -883,6 +883,34 @@ namespace UnityEngine.InputSystem
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Interaction"",
+            ""id"": ""f28b0278-d76b-449c-bef0-d0706674380b"",
+            ""actions"": [
+                {
+                    ""name"": ""Cancel Interaction"",
+                    ""type"": ""Button"",
+                    ""id"": ""daf05b2e-c688-4ec2-b5bd-7d4a3d4b2a9c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""6b4e8fc0-1db9-453c-8a7f-6eee35cab431"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel Interaction"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -971,6 +999,9 @@ namespace UnityEngine.InputSystem
             m_UI_RightClick = m_UI.FindAction("RightClick", throwIfNotFound: true);
             m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
             m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
+            // Interaction
+            m_Interaction = asset.FindActionMap("Interaction", throwIfNotFound: true);
+            m_Interaction_CancelInteraction = m_Interaction.FindAction("Cancel Interaction", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -1278,6 +1309,52 @@ namespace UnityEngine.InputSystem
             }
         }
         public UIActions @UI => new UIActions(this);
+
+        // Interaction
+        private readonly InputActionMap m_Interaction;
+        private List<IInteractionActions> m_InteractionActionsCallbackInterfaces = new List<IInteractionActions>();
+        private readonly InputAction m_Interaction_CancelInteraction;
+        public struct InteractionActions
+        {
+            private @PlayerInputActions m_Wrapper;
+            public InteractionActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+            public InputAction @CancelInteraction => m_Wrapper.m_Interaction_CancelInteraction;
+            public InputActionMap Get() { return m_Wrapper.m_Interaction; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(InteractionActions set) { return set.Get(); }
+            public void AddCallbacks(IInteractionActions instance)
+            {
+                if (instance == null || m_Wrapper.m_InteractionActionsCallbackInterfaces.Contains(instance)) return;
+                m_Wrapper.m_InteractionActionsCallbackInterfaces.Add(instance);
+                @CancelInteraction.started += instance.OnCancelInteraction;
+                @CancelInteraction.performed += instance.OnCancelInteraction;
+                @CancelInteraction.canceled += instance.OnCancelInteraction;
+            }
+
+            private void UnregisterCallbacks(IInteractionActions instance)
+            {
+                @CancelInteraction.started -= instance.OnCancelInteraction;
+                @CancelInteraction.performed -= instance.OnCancelInteraction;
+                @CancelInteraction.canceled -= instance.OnCancelInteraction;
+            }
+
+            public void RemoveCallbacks(IInteractionActions instance)
+            {
+                if (m_Wrapper.m_InteractionActionsCallbackInterfaces.Remove(instance))
+                    UnregisterCallbacks(instance);
+            }
+
+            public void SetCallbacks(IInteractionActions instance)
+            {
+                foreach (var item in m_Wrapper.m_InteractionActionsCallbackInterfaces)
+                    UnregisterCallbacks(item);
+                m_Wrapper.m_InteractionActionsCallbackInterfaces.Clear();
+                AddCallbacks(instance);
+            }
+        }
+        public InteractionActions @Interaction => new InteractionActions(this);
         private int m_KeyboardMouseSchemeIndex = -1;
         public InputControlScheme KeyboardMouseScheme
         {
@@ -1348,6 +1425,10 @@ namespace UnityEngine.InputSystem
             void OnRightClick(InputAction.CallbackContext context);
             void OnTrackedDevicePosition(InputAction.CallbackContext context);
             void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
+        }
+        public interface IInteractionActions
+        {
+            void OnCancelInteraction(InputAction.CallbackContext context);
         }
     }
 }

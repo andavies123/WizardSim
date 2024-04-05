@@ -8,17 +8,17 @@ namespace Wizards.States
 		private readonly StateMachine<WizardState> _stateMachine = new();
 		
 		private readonly WizardWaitState _waitState;
-		private readonly WizardMoveState _moveState;
+		private readonly WizardMoveToState _moveToState;
 
 		private Vector3 _centerIdlePosition;
 
 		public WizardIdleState(Wizard wizard) : base(wizard)
 		{
 			_waitState = new WizardWaitState(wizard);
-			_moveState = new WizardMoveState(wizard);
+			_moveToState = new WizardMoveToState(wizard);
 
 			_waitState.WaitFinished += OnIdleWaitFinished;
-			_moveState.ArrivedAtPosition += OnMoveArrivedAtPosition;
+			_moveToState.ArrivedAtPosition += OnMoveToArrivedAtPosition;
 		}
 
 		public override string DisplayName => "Idling";
@@ -39,7 +39,7 @@ namespace Wizards.States
 		public override void End() { }
 
 		private void OnIdleWaitFinished() => ChangeToMoveState();
-		private void OnMoveArrivedAtPosition() => ChangeToWaitState();
+		private void OnMoveToArrivedAtPosition() => ChangeToWaitState();
 
 		private Vector3 GetNextMoveToPosition()
 		{
@@ -57,8 +57,8 @@ namespace Wizards.States
 
 		private void ChangeToMoveState()
 		{
-			_moveState.MoveToPosition = GetNextMoveToPosition();
-			_stateMachine.SetCurrentState(_moveState);
+			_moveToState.MoveToPosition = GetNextMoveToPosition();
+			_stateMachine.SetCurrentState(_moveToState);
 		}
 	}
 }

@@ -6,6 +6,7 @@ kanban-plugin: basic
 
 ## Bugs
 
+- [ ] **BUG**<br><br>**PROBLEM**<br>When selecting a wizard context menu option, then right clicking a tile, an error is thrown for a rect transform not found<br><br>**FIX**
 
 
 ## Visuals Backlog
@@ -32,12 +33,13 @@ kanban-plugin: basic
 
 ## In Progress
 
-- [ ] **Wizard Move To Action**<br>- [ ] Add a tile context menu item that will move the closest wizard to that tile<br>- [ ] Add a Move To wizard state to achieve this on the wizard side
+- [ ] **Update Object Hovering**<br><br>- [ ] Create script that will be in charge of raycasting from the camera<br>- [ ] These raycast should hit objects with a certain script on it to say they should be hit<br>- [ ] This script on the objects should be in charge of coloring<br>- [ ] The raycasting script should be handled from the input state as certain input states shouldn't handle raycasting
 
 
 ## Completed
 
 **Complete**
+- [x] **Wizard Move To Action**<br>- [x] Add a wizard context menu item that will move a wizard to a select spot<br>- [x] Add a Move To wizard state to achieve this on the wizard side<br>- [x] When selecting the context menu item, the player should be able to select a tile on the map to have the wizard move
 - [x] **State Machine Editor**<br><br>- [x] Create a base StateMachine Behaviour class<br>- [x] Create an editor class for the StateMachine<br>- [x] Display the current state<br>- [x] Display the current state status
 - [x] **Wizard Context Menu Update**<br><br>- [x] Add state machine text to the context menu
 - [x] **BUG**<br><br>Unable to open the context menu for tiles or wizards<br><br>**FOUND FIX**<br><br>Adding the rigidbody to the prefabs made the MouseInteractionEvents component not work. Changing the script to not need a collider and moving it to the object that the rigidbody was on was able to fix the issue

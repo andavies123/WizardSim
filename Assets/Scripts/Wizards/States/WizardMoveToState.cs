@@ -3,12 +3,12 @@ using UnityEngine;
 
 namespace Wizards.States
 {
-	public class WizardMoveState : WizardState
+	public class WizardMoveToState : WizardState
 	{
 		private Vector3 _startMovePosition;
 		private float _startDistance;
 		
-		public WizardMoveState(Wizard wizard) : base(wizard) { }
+		public WizardMoveToState(Wizard wizard) : base(wizard) { }
 
 		public event Action ArrivedAtPosition;
 

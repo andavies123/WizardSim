@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 namespace InputStates
 {
-	[CreateAssetMenu(fileName = "PauseMenuInputState", menuName = "Input State/Pause Menu Input State", order = 0)]
+	[CreateAssetMenu(menuName = "Input State/Pause Menu Input State", fileName = "PauseMenuInputState", order = 0)]
 	public class PauseMenuInputState : InputState
 	{
 		private PlayerInputActions _playerInputActions;

@@ -1,4 +1,5 @@
-﻿using UI.ContextMenus;
+﻿using UI;
+using UI.ContextMenus;
 using UnityEngine;
 using Wizards.ContextMenu.ContextMenuItems;
 
@@ -7,6 +8,8 @@ namespace Wizards.ContextMenu
 	[RequireComponent(typeof(Wizard))]
 	public class WizardContextMenuUser : ContextMenuUser<WizardContextMenuItem>
 	{
+		[SerializeField] private InteractionEvents interactionEvents;
+		
 		private Wizard _wizard;
 
 		public override string MenuTitle => _wizard.Name;
@@ -19,7 +22,8 @@ namespace Wizards.ContextMenu
 			MenuItems.AddRange(new WizardContextMenuItem[]
 			{
 				new PrintNameWizardContextMenuItem(_wizard),
-				new IdleWizardContextMenuItem(_wizard)
+				new IdleWizardContextMenuItem(_wizard),
+				new MoveToWizardContextMenuItem(_wizard, interactionEvents)
 			});
 		}
 

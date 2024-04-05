@@ -65,6 +65,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   contextMenuEvents: {fileID: 11400000, guid: 35ab239d931d85347be959101007800e, type: 2}
+  interactionEvents: {fileID: 11400000, guid: 89a1d675a54ad9c4aa8a9f2d62d3ea13, type: 2}
 --- !u!114 &8962483651604178840
 MonoBehaviour:
   m_ObjectHideFlags: 0

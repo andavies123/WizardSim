@@ -1,5 +1,5 @@
 {
-    "name": "DefaultInputActions",
+    "name": "PlayerInputActions",
     "maps": [
         {
             "name": "Gameplay",
@@ -855,6 +855,34 @@
                     "processors": "",
                     "groups": "XR",
                     "action": "TrackedDeviceOrientation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Interaction",
+            "id": "f28b0278-d76b-449c-bef0-d0706674380b",
+            "actions": [
+                {
+                    "name": "Cancel Interaction",
+                    "type": "Button",
+                    "id": "daf05b2e-c688-4ec2-b5bd-7d4a3d4b2a9c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "6b4e8fc0-1db9-453c-8a7f-6eee35cab431",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Cancel Interaction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
