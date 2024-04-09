@@ -1,12 +1,13 @@
 ﻿using InputStates;
 using UnityEngine;
 
-namespace PlayerControllers
+namespace CameraComponents
 {
 	public class CameraController : MonoBehaviour
 	{
+		[Header("Components")]
 		[SerializeField] private Camera playerCamera;
-		[SerializeField] private GameplayInputState gameplayInputState;
+		[SerializeField] private GameSceneInputManager inputManager;
 		
 		[Header("Speeds")]
 		[SerializeField] private float cameraMoveSpeed = 1f;
@@ -21,6 +22,7 @@ namespace PlayerControllers
 		[SerializeField] private float minZoom = 30f;
 		[SerializeField] private float maxZoom = 70f;
 
+		private GameplayInputState _gameplayInputState;
 		private Transform _cameraTransform;
 		private float _currentVerticalRotation;
 		private float _currentHorizontalRotation;
@@ -28,13 +30,15 @@ namespace PlayerControllers
 		private void Awake()
 		{
 			_cameraTransform = playerCamera.GetComponent<Transform>();
-
-			gameplayInputState.CameraZoomInPerformed += OnCameraZoomInPerformed;
-			gameplayInputState.CameraZoomOutPerformed += OnCameraZoomOutPerformed;
 		}
 
 		private void Start()
 		{
+			_gameplayInputState = inputManager.GameplayInputState;
+
+			_gameplayInputState.CameraZoomInPerformed += OnCameraZoomInPerformed;
+			_gameplayInputState.CameraZoomOutPerformed += OnCameraZoomOutPerformed;
+			
 			ClampCameraPosition();
 			ClampCameraRotation();
 			ClampCameraZoom();
@@ -42,18 +46,16 @@ namespace PlayerControllers
 
 		private void Update()
 		{
-			if (gameplayInputState.IsMoveActive || gameplayInputState.IsVerticalMoveActive)
-				ControlPosition(gameplayInputState.CurrentMoveValue);
-			if (gameplayInputState.IsCameraLookActivated && gameplayInputState.IsLookActive)
-				ControlRotation(gameplayInputState.CurrentLookValue);
-			
-			//ControlZoom();
+			if (_gameplayInputState.IsMoveActive || _gameplayInputState.IsVerticalMoveActive)
+				ControlPosition(_gameplayInputState.CurrentMoveValue);
+			if (_gameplayInputState.IsCameraLookActivated && _gameplayInputState.IsLookActive)
+				ControlRotation(_gameplayInputState.CurrentLookValue);
 		}
 
 		private void OnDestroy()
 		{
-			gameplayInputState.CameraZoomInPerformed -= OnCameraZoomInPerformed;
-			gameplayInputState.CameraZoomOutPerformed -= OnCameraZoomOutPerformed;
+			_gameplayInputState.CameraZoomInPerformed -= OnCameraZoomInPerformed;
+			_gameplayInputState.CameraZoomOutPerformed -= OnCameraZoomOutPerformed;
 		}
 
 		private void OnCameraZoomInPerformed() => ControlZoom(-1);

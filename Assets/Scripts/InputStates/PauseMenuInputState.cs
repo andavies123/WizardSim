@@ -1,36 +1,30 @@
 ﻿using System;
-using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace InputStates
 {
-	[CreateAssetMenu(menuName = "Input State/Pause Menu Input State", fileName = "PauseMenuInputState", order = 0)]
-	public class PauseMenuInputState : InputState
+	public class PauseMenuInputState : IInputState
 	{
-		private PlayerInputActions _playerInputActions;
+		private readonly PlayerInputActions _playerInputActions = new();
 		
 		public event Action ResumeActionPerformed;
 
-		public override void EnableInputs()
-		{
-			_playerInputActions ??= new PlayerInputActions();
+		public bool ShowInteractions => false;
 
+		public void Enable()
+		{
 			_playerInputActions.PauseMenu.ResumeGame.performed += OnResumeActionPerformed;
 			
 			_playerInputActions.PauseMenu.Enable();
 		}
 
-		public override void DisableInputs()
-		{
+		public void Disable()
+		{	
 			_playerInputActions.PauseMenu.Disable();
 
 			_playerInputActions.PauseMenu.ResumeGame.performed -= OnResumeActionPerformed;
 		}
-
-		#region Resume Action
-
-			private void OnResumeActionPerformed(InputAction.CallbackContext context) => ResumeActionPerformed?.Invoke();
 		
-		#endregion
+		private void OnResumeActionPerformed(InputAction.CallbackContext context) => ResumeActionPerformed?.Invoke();
 	}
 }

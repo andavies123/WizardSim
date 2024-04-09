@@ -16,6 +16,8 @@ GameObject:
   - component: {fileID: -3329930143130891345}
   - component: {fileID: 6896444120881679524}
   - component: {fileID: 3851168372653227296}
+  - component: {fileID: 323713175569000968}
+  - component: {fileID: -1428322788903751413}
   m_Layer: 0
   m_Name: Wizard
   m_TagString: Untagged
@@ -80,9 +82,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mouseInteractionEvents: {fileID: 3851168372653227296}
   contextMenuUser: {fileID: -5138710094409622619}
-  meshRenderer: {fileID: 1173640702274741866}
-  baseTexture: {fileID: 0}
-  baseColor: {r: 0.010679938, g: 0.04584955, b: 0.754717, a: 0}
 --- !u!114 &2806402656234556708
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -147,6 +146,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2770044f2fc240f593408986ff4c662e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &323713175569000968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2414322042265852574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b300eabee1624c15a8fee72b4ef559af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-1428322788903751413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2414322042265852574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72c05ef2b9484f62a08ce348f3c04cf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseTexture: {fileID: 0}
+  baseColor: {r: 0, g: 0.26714152, b: 0.8584906, a: 0}
+  meshRenderer: {fileID: 1173640702274741866}
+  interactable: {fileID: 323713175569000968}
+  contextMenuInteractions: {fileID: 8962483651604178840}
 --- !u!1 &3636136914844696014
 GameObject:
   m_ObjectHideFlags: 0

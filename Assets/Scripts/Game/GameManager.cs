@@ -7,12 +7,10 @@ namespace Game
 {
 	public class GameManager : MonoBehaviour
 	{
-		[Header("Input States")]
-		[SerializeField] private GameplayInputState gameplayInputState;
-		[SerializeField] private PauseMenuInputState pauseMenuInputState;
-
-		[Header("Scene Names")] [SerializeField]
-		private string mainMenuSceneName;
+		[SerializeField] private GameSceneInputManager inputManager;
+		
+		[Header("Scene Names")]
+		[SerializeField] private string mainMenuSceneName;
 		
 		private bool _isGamePaused = false;
 
@@ -45,16 +43,16 @@ namespace Game
 			SceneManager.LoadScene(mainMenuSceneName);
 		}
 		
-		private void Awake()
+		private void Start()
 		{
-			gameplayInputState.PauseActionPerformed += PauseGame;
-			pauseMenuInputState.ResumeActionPerformed += ResumeGame;
+			inputManager.GameplayInputState.PauseActionPerformed += PauseGame;
+			inputManager.PauseMenuInputState.ResumeActionPerformed += ResumeGame;
 		}
 
 		private void OnDestroy()
 		{
-			gameplayInputState.PauseActionPerformed -= PauseGame;
-			pauseMenuInputState.ResumeActionPerformed -= ResumeGame;
+			inputManager.GameplayInputState.PauseActionPerformed -= PauseGame;
+			inputManager.PauseMenuInputState.ResumeActionPerformed -= ResumeGame;
 		}
 	}
 }

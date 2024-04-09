@@ -26,19 +26,21 @@ kanban-plugin: basic
 
 ## Coding Backlog
 
-- [ ] **Multiplayer**<br><br>Set up multiplayer for the new project
 - [ ] **WorldObject Architecture**<br><br>Create the architecture for the world objects such as rocks, trees, bushes, etc...
 - [ ] **Save System**<br><br>Create a save system that can be saved/loaded at will<br><br>- [ ] Add save pause menu button<br>- [ ] Game world should be saved<br>- [ ] Wizard stats should be saved<br>- [ ] Add load main menu button
+- [ ] **Basic Enemy**<br><br>- [ ] Add a basic enemy prefab<br>- [ ] Basic enemy should find the nearest wizard and attack<br>- [ ] Add context menu to tile to spawn an enemy
+- [ ] **Canvas Updates**<br><br>- [ ] Update all UI States to use their own canvas due to the fact that each canvas updates everything on them
+- [ ] **Info Window**<br><br>- [ ] Add an Info window when left clicking on an interactable<br>- [ ] Window should contain useful info of the interactable<br>- [ ] Remove useful data from context menu window<br>- [ ] Have info window pop up along with context menu when right clicking interactable
 
 
 ## In Progress
 
-- [ ] **Update Object Hovering**<br><br>- [ ] Create script that will be in charge of raycasting from the camera<br>- [ ] These raycast should hit objects with a certain script on it to say they should be hit<br>- [ ] This script on the objects should be in charge of coloring<br>- [ ] The raycasting script should be handled from the input state as certain input states shouldn't handle raycasting
 
 
 ## Completed
 
 **Complete**
+- [x] **Update Object Hovering**<br><br>- [x] Create script that will be in charge of raycasting from the camera<br>- [x] These raycast should hit objects with a certain script on it to say they should be hit<br>- [x] This script on the objects should be in charge of coloring<br>- [x] The raycasting script should be handled from the input state as certain input states shouldn't handle raycasting
 - [x] **Wizard Move To Action**<br>- [x] Add a wizard context menu item that will move a wizard to a select spot<br>- [x] Add a Move To wizard state to achieve this on the wizard side<br>- [x] When selecting the context menu item, the player should be able to select a tile on the map to have the wizard move
 - [x] **State Machine Editor**<br><br>- [x] Create a base StateMachine Behaviour class<br>- [x] Create an editor class for the StateMachine<br>- [x] Display the current state<br>- [x] Display the current state status
 - [x] **Wizard Context Menu Update**<br><br>- [x] Add state machine text to the context menu

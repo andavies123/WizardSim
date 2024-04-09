@@ -1,45 +1,30 @@
 ﻿using System;
-using UI;
-using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace InputStates
 {
-	[CreateAssetMenu(menuName = "Input State/Interaction Input State", fileName = "InteractionInputState", order = 0)]
-	public class InteractionInputState : InputState
+	public class InteractionInputState : IInputState
 	{
-		private PlayerInputActions _playerInputActions;
+		private readonly PlayerInputActions _playerInputActions = new();
 		
 		public event Action CancelInteractionActionPerformed;
+		
+		public bool ShowInteractions => true;
 
-		public event Action<MonoBehaviour> InteractableSelected;
-
-		public override void EnableInputs()
+		public void Enable()
 		{
-			_playerInputActions ??= new PlayerInputActions();
-
 			_playerInputActions.Interaction.CancelInteraction.performed += OnCancelInteractionActionPerformed;
 			
 			_playerInputActions.Interaction.Enable();
-
-			Interactable.LeftMousePressed += OnInteractableLeftMousePressed;
 		}
 
-		public override void DisableInputs()
+		public void Disable()
 		{
 			_playerInputActions.Interaction.Disable();
 
 			_playerInputActions.Interaction.CancelInteraction.performed -= OnCancelInteractionActionPerformed;
-
-			Interactable.LeftMousePressed -= OnInteractableLeftMousePressed;
 		}
 
-		#region Cancel Interaction Action
-
 		private void OnCancelInteractionActionPerformed(InputAction.CallbackContext context) => CancelInteractionActionPerformed?.Invoke();
-		
-		#endregion
-
-		private void OnInteractableLeftMousePressed(MonoBehaviour monoBehaviour) => InteractableSelected?.Invoke(monoBehaviour);
 	}
 }

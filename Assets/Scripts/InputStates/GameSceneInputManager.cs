@@ -1,4 +1,5 @@
 ﻿using System;
+using CameraComponents;
 using Game;
 using UI;
 using UnityEngine;
@@ -7,30 +8,34 @@ namespace InputStates
 {
 	public class GameSceneInputManager : MonoBehaviour
 	{
+		[Header("Components")]
 		[SerializeField] private GameManager gameManager;
+		[SerializeField] private InteractableRaycaster interactableRaycaster;
 		
 		[Header("Events")]
 		[SerializeField] private InteractionEvents interactionEvents;
 
-		[Header("Input States")]
-		[SerializeField] private GameplayInputState gameplayInputState;
-		[SerializeField] private PauseMenuInputState pauseMenuInputState;
-		[SerializeField] private InteractionInputState interactionInputState;
-
-		private InputState _activeInputState;
+		private IInputState _activeInputState;
 		private Action<MonoBehaviour> _interactionResponse;
+		
+		public GameplayInputState GameplayInputState { get; private set; }
+		public PauseMenuInputState PauseMenuInputState { get; private set; }
+		public InteractionInputState InteractionInputState { get; private set; }
 		
 		private void Awake()
 		{
+			GameplayInputState = new GameplayInputState();
+			PauseMenuInputState = new PauseMenuInputState();
+			InteractionInputState = new InteractionInputState();
+			
 			gameManager.GamePaused += OnGamePaused;
 			gameManager.GameResumed += OnGameResumed;
 			
 			interactionEvents.InteractionRequested += OnInteractionRequested;
+			InteractionInputState.CancelInteractionActionPerformed += OnInteractionCanceled;
+			interactableRaycaster.InteractableSelectedPrimary += OnInteractableSelected;
 			
-			interactionInputState.CancelInteractionActionPerformed += OnInteractionCanceled;
-			interactionInputState.InteractableSelected += OnInteractableSelected;
-			
-			SetActiveInputState(gameplayInputState);
+			SetActiveInputState(GameplayInputState);
 		}
 
 		private void OnDestroy()
@@ -39,30 +44,33 @@ namespace InputStates
 			gameManager.GameResumed -= OnGameResumed;
 
 			interactionEvents.InteractionRequested -= OnInteractionRequested;
-			
-			interactionInputState.CancelInteractionActionPerformed -= OnInteractionCanceled;
-			interactionInputState.InteractableSelected -= OnInteractableSelected;
+			InteractionInputState.CancelInteractionActionPerformed -= OnInteractionCanceled;
+			interactableRaycaster.InteractableSelectedPrimary -= OnInteractableSelected;
 		}
 		
-		private void OnGamePaused() => SetActiveInputState(pauseMenuInputState);
-		private void OnGameResumed() => SetActiveInputState(gameplayInputState);
+		private void OnGamePaused() => SetActiveInputState(PauseMenuInputState);
+		private void OnGameResumed() => SetActiveInputState(GameplayInputState);
 
 		private void OnInteractionRequested(Action<MonoBehaviour> interactionResponse)
 		{
 			_interactionResponse = interactionResponse;
-			SetActiveInputState(interactionInputState);
+			SetActiveInputState(InteractionInputState);
 		}
 		
-		private void OnInteractionCanceled() => SetActiveInputState(gameplayInputState);
+		private void OnInteractionCanceled() => SetActiveInputState(GameplayInputState);
 		private void OnInteractableSelected(MonoBehaviour monoBehaviour) => _interactionResponse?.Invoke(monoBehaviour);
 
-		private void SetActiveInputState(InputState inputState)
+		private void SetActiveInputState(IInputState inputState)
 		{
-			if (_activeInputState != null)
-				_activeInputState.DisableInputs();
-
+			_activeInputState?.Disable();
+			if (_activeInputState?.ShowInteractions ?? false)
+				interactableRaycaster.enabled = false;
+			
 			_activeInputState = inputState;
-			_activeInputState.EnableInputs();
+			
+			_activeInputState?.Enable();
+			if (_activeInputState?.ShowInteractions ?? false)
+				interactableRaycaster.enabled = true;
 		}
 	}
 }

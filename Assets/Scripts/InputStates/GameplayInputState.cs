@@ -4,8 +4,7 @@ using UnityEngine.InputSystem;
 
 namespace InputStates
 {
-	[CreateAssetMenu(fileName = "GameplayInputState", menuName = "Input State/Gameplay Input State", order = 0)]
-	public class GameplayInputState : InputState
+	public class GameplayInputState : IInputState
 	{
 		private PlayerInputActions _playerInputActions;
 		
@@ -36,13 +35,14 @@ namespace InputStates
 		public Vector2 CurrentHorizontalMoveValue => _latestMoveContext.ReadValue<Vector2>();
 		public Vector2 CurrentLookValue => _latestLookContext.ReadValue<Vector2>();
 		public float CurrentVerticalMoveValue => _latestVerticalMoveContext.ReadValue<float>();
-		
+
+		public bool ShowInteractions => true;
 		public bool IsMoveActive { get; private set; }
 		public bool IsLookActive { get; private set; }
 		public bool IsVerticalMoveActive { get; private set; }
 		public bool IsCameraLookActivated { get; private set; }
 		
-		public override void EnableInputs()
+		public void Enable()
 		{
 			_playerInputActions ??= new PlayerInputActions();
 			
@@ -68,7 +68,7 @@ namespace InputStates
 			_playerInputActions.Gameplay.Enable();
 		}
 
-		public override void DisableInputs()
+		public void Disable()
 		{
 			_playerInputActions.Gameplay.Disable();
 			_playerInputActions.Gameplay.PauseGame.performed -= OnPauseActionPerformed;

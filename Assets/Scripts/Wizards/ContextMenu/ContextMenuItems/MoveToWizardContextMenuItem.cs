@@ -22,10 +22,12 @@ namespace Wizards.ContextMenu.ContextMenuItems
 
 		private void OnInteraction(MonoBehaviour component)
 		{
-			if (component is not Tile tile)
+			if (!component.TryGetComponent(out Tile tile))
 				return;
 
-			Wizard.StateMachine.MoveTo(tile.transform.position);
+			Vector3 tilePosition = tile.Transform.position;
+			Vector3 moveToPosition = new(tilePosition.x, Wizard.Transform.position.y, tilePosition.z);
+			Wizard.StateMachine.MoveTo(moveToPosition);
 		}
 	}
 }

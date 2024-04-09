@@ -3,27 +3,53 @@ using UnityEngine;
 
 namespace UI
 {
-	[RequireComponent(typeof(MouseInteractionEvents))]
 	public class Interactable : MonoBehaviour
 	{
-		public static event Action<MonoBehaviour> LeftMousePressed;
+		private bool _isHovered = false;
+		private bool _isSelectedPrimary = false;
+		private bool _isSelectedSecondary = false;
 
-		[SerializeField] private MonoBehaviour mainComponent;
+		public event Action<bool> IsHoveredValueChanged;
+		public event Action<bool> IsSelectedPrimaryValueChanged;
+		public event Action<bool> IsSelectedSecondaryValueChanged;
 		
-		private MouseInteractionEvents _mouseInteractionEvents;
-
-		private void Awake()
+		public bool IsHovered
 		{
-			_mouseInteractionEvents = GetComponent<MouseInteractionEvents>();
-
-			_mouseInteractionEvents.LeftMousePressed += OnLeftMousePressed;
+			get => _isHovered;
+			set
+			{
+				if (_isHovered == value)
+					return;
+				
+				_isHovered = value;
+				IsHoveredValueChanged?.Invoke(_isHovered);
+			}
 		}
 
-		private void OnDestroy()
+		public bool IsSelectedPrimary
 		{
-			_mouseInteractionEvents.LeftMousePressed -= OnLeftMousePressed;
+			get => _isSelectedPrimary;
+			set
+			{
+				if (_isSelectedPrimary == value)
+					return;
+
+				_isSelectedPrimary = value;
+				IsSelectedPrimaryValueChanged?.Invoke(_isSelectedPrimary);
+			}
 		}
 
-		private void OnLeftMousePressed() => LeftMousePressed?.Invoke(mainComponent);
+		public bool IsSelectedSecondary
+		{
+			get => _isSelectedSecondary;
+			set
+			{
+				if (_isSelectedSecondary == value)
+					return;
+
+				_isSelectedSecondary = value;
+				IsSelectedSecondaryValueChanged?.Invoke(_isSelectedSecondary);
+			}
+		}
 	}
 }
