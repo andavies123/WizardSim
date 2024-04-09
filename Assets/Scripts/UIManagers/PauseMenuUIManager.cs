@@ -1,10 +1,8 @@
 using System;
-using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace UIManagers
 {
-	public class PauseMenuUIManager : MonoBehaviour
+	public class PauseMenuUIManager : UIManager
 	{
 		public event Action ResumeButtonPressed;
 		public event Action QuitButtonPressed;

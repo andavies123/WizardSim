@@ -9,17 +9,10 @@ namespace UIManagers
 		[SerializeField] private GameplayUIManager gameplayUIManager;
 		[SerializeField] private PauseMenuUIManager pauseMenuUIManager;
 
-		public void ShowGameplayUI()
-		{
-			gameplayUIManager.gameObject.SetActive(true);
-			pauseMenuUIManager.gameObject.SetActive(false);
-		}
+		private UIManager _activeUIManager;
 
-		public void ShowPauseMenuUI()
-		{
-			gameplayUIManager.gameObject.SetActive(false);
-			pauseMenuUIManager.gameObject.SetActive(true);
-		}
+		public void ShowGameplayUI() => SetActiveUI(gameplayUIManager);
+		public void ShowPauseMenuUI() => SetActiveUI(pauseMenuUIManager);
 
 		private void Awake()
 		{
@@ -33,6 +26,9 @@ namespace UIManagers
 
 		private void Start()
 		{
+			gameplayUIManager.Disable();
+			pauseMenuUIManager.Disable();
+			
 			ShowGameplayUI();
 		}
 
@@ -52,5 +48,16 @@ namespace UIManagers
 		private void OnPauseButtonPressed() => gameManager.PauseGame();
 		private void OnResumeButtonPressed() => gameManager.ResumeGame();
 		private void OnQuitButtonPressed() => gameManager.QuitGame();
+
+		private void SetActiveUI(UIManager uiManager)
+		{
+			if (_activeUIManager)
+				_activeUIManager.Disable();
+
+			_activeUIManager = uiManager;
+			
+			if (_activeUIManager)
+				_activeUIManager.Enable();
+		}
 	}
 }

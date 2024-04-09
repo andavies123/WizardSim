@@ -29,12 +29,12 @@ kanban-plugin: basic
 - [ ] **WorldObject Architecture**<br><br>Create the architecture for the world objects such as rocks, trees, bushes, etc...
 - [ ] **Save System**<br><br>Create a save system that can be saved/loaded at will<br><br>- [ ] Add save pause menu button<br>- [ ] Game world should be saved<br>- [ ] Wizard stats should be saved<br>- [ ] Add load main menu button
 - [ ] **Basic Enemy**<br><br>- [ ] Add a basic enemy prefab<br>- [ ] Basic enemy should find the nearest wizard and attack<br>- [ ] Add context menu to tile to spawn an enemy
-- [ ] **Canvas Updates**<br><br>- [ ] Update all UI States to use their own canvas due to the fact that each canvas updates everything on them
 - [ ] **Info Window**<br><br>- [ ] Add an Info window when left clicking on an interactable<br>- [ ] Window should contain useful info of the interactable<br>- [ ] Remove useful data from context menu window<br>- [ ] Have info window pop up along with context menu when right clicking interactable
 
 
 ## In Progress
 
+- [ ] **Canvas Updates**<br><br>- [ ] Update all UI States to use their own canvas due to the fact that each canvas updates everything on them
 
 
 ## Completed
