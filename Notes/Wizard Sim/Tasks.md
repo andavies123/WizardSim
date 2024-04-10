@@ -6,7 +6,6 @@ kanban-plugin: basic
 
 ## Bugs
 
-- [ ] **BUG**<br><br>**PROBLEM**<br>When selecting a wizard context menu option, then right clicking a tile, an error is thrown for a rect transform not found<br><br>**FIX**
 
 
 ## Visuals Backlog
@@ -34,12 +33,14 @@ kanban-plugin: basic
 
 ## In Progress
 
-- [ ] **Canvas Updates**<br><br>- [ ] Update all UI States to use their own canvas due to the fact that each canvas updates everything on them
+- [ ] **BUG**<br><br>**PROBLEM**<br>When selecting a wizard context menu option, then right clicking a tile, an error is thrown for a rect transform not found<br><br>**FIX**<br>N/A
 
 
 ## Completed
 
 **Complete**
+- [x] **BUG**<br><br>**PROBLEM**<br>When the game is paused, I can still interact with interactable objects<br><br>**FIX**<br>The issue was that I moved to using interactables and the interactableRaycaster but the context menu was still using the mouse interaction events which weren't be turned off when the game was paused
+- [x] **Canvas Updates**<br><br>- [x] Update all UI States to use their own canvas due to the fact that each canvas updates everything on them
 - [x] **Update Object Hovering**<br><br>- [x] Create script that will be in charge of raycasting from the camera<br>- [x] These raycast should hit objects with a certain script on it to say they should be hit<br>- [x] This script on the objects should be in charge of coloring<br>- [x] The raycasting script should be handled from the input state as certain input states shouldn't handle raycasting
 - [x] **Wizard Move To Action**<br>- [x] Add a wizard context menu item that will move a wizard to a select spot<br>- [x] Add a Move To wizard state to achieve this on the wizard side<br>- [x] When selecting the context menu item, the player should be able to select a tile on the map to have the wizard move
 - [x] **State Machine Editor**<br><br>- [x] Create a base StateMachine Behaviour class<br>- [x] Create an editor class for the StateMachine<br>- [x] Display the current state<br>- [x] Display the current state status

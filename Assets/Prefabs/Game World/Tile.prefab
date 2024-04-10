@@ -118,7 +118,6 @@ GameObject:
   - component: {fileID: -5100131755638846822}
   - component: {fileID: 1938675790559664110}
   - component: {fileID: 5786707372662330356}
-  - component: {fileID: 4852631493787974621}
   - component: {fileID: -72692409299606396}
   - component: {fileID: 5228919932028046421}
   - component: {fileID: -6468190929811103841}
@@ -182,20 +181,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e998094e9364dfba96718fc9a010386, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseInteractionEvents: {fileID: 4852631493787974621}
+  interactable: {fileID: 5228919932028046421}
   contextMenuUser: {fileID: 1938675790559664110}
---- !u!114 &4852631493787974621
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6905772132014365446}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2770044f2fc240f593408986ff4c662e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &-72692409299606396
 Rigidbody:
   m_ObjectHideFlags: 0

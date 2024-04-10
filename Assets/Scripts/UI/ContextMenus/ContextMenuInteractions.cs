@@ -5,8 +5,10 @@ namespace UI.ContextMenus
 {
 	public class ContextMenuInteractions : MonoBehaviour
 	{
-		[SerializeField] private MouseInteractionEvents mouseInteractionEvents;
+		//[SerializeField] private MouseInteractionEvents mouseInteractionEvents;
+		[SerializeField] private Interactable interactable;
 		[SerializeField] private ContextMenuUser contextMenuUser;
+		
 
 		private bool _isContextMenuOpen = false;
 		
@@ -27,25 +29,25 @@ namespace UI.ContextMenus
 
 		private void Awake()
 		{
-			if (mouseInteractionEvents != null)
-				mouseInteractionEvents.RightMousePressed += OnRightMousePressed;
+			if (interactable)
+				interactable.SecondaryActionSelected += OnInteractableSecondaryActionSelected;
 		
-			if (contextMenuUser != null)
+			if (contextMenuUser)
 				contextMenuUser.MenuClosed += OnContextMenuClosed;
 		}
 		
 		private void OnDestroy()
 		{
-			if (mouseInteractionEvents != null)
-				mouseInteractionEvents.RightMousePressed -= OnRightMousePressed;
+			if (interactable)
+				interactable.SecondaryActionSelected -= OnInteractableSecondaryActionSelected;
 		
 			if (contextMenuUser != null)
 				contextMenuUser.MenuClosed -= OnContextMenuClosed;
 		}
 
-		private void OnRightMousePressed()
+		private void OnInteractableSecondaryActionSelected()
 		{
-			if (contextMenuUser == null)
+			if (!contextMenuUser)
 				return;
 			
 			contextMenuUser.OpenMenu();

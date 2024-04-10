@@ -29,12 +29,18 @@ namespace CameraComponents
 			}
 			
 			BeginNewHover(interactable);
-			
+
 			if (Input.GetMouseButtonDown(InputUtilities.LeftMouseButton))
+			{
+				interactable.PrimaryActionSelect();
 				InteractableSelectedPrimary?.Invoke(interactable);
-			
+			}
+
 			if (Input.GetMouseButtonDown(InputUtilities.RightMouseButton))
+			{
+				interactable.SecondaryActionSelect();
 				InteractableSelectedSecondary?.Invoke(interactable);
+			}
 		}
 
 		private void BeginNewHover(Interactable newHover)

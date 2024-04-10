@@ -6,12 +6,11 @@ namespace UI
 	public class Interactable : MonoBehaviour
 	{
 		private bool _isHovered = false;
-		private bool _isSelectedPrimary = false;
-		private bool _isSelectedSecondary = false;
 
 		public event Action<bool> IsHoveredValueChanged;
-		public event Action<bool> IsSelectedPrimaryValueChanged;
-		public event Action<bool> IsSelectedSecondaryValueChanged;
+
+		public event Action PrimaryActionSelected;
+		public event Action SecondaryActionSelected;
 		
 		public bool IsHovered
 		{
@@ -26,30 +25,7 @@ namespace UI
 			}
 		}
 
-		public bool IsSelectedPrimary
-		{
-			get => _isSelectedPrimary;
-			set
-			{
-				if (_isSelectedPrimary == value)
-					return;
-
-				_isSelectedPrimary = value;
-				IsSelectedPrimaryValueChanged?.Invoke(_isSelectedPrimary);
-			}
-		}
-
-		public bool IsSelectedSecondary
-		{
-			get => _isSelectedSecondary;
-			set
-			{
-				if (_isSelectedSecondary == value)
-					return;
-
-				_isSelectedSecondary = value;
-				IsSelectedSecondaryValueChanged?.Invoke(_isSelectedSecondary);
-			}
-		}
+		public void PrimaryActionSelect() => PrimaryActionSelected?.Invoke();
+		public void SecondaryActionSelect() => SecondaryActionSelected?.Invoke();
 	}
 }
