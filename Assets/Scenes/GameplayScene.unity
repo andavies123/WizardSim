@@ -1474,7 +1474,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1017350127}
   - component: {fileID: 1017350128}
-  - component: {fileID: 1017350129}
   - component: {fileID: 1017350130}
   m_Layer: 5
   m_Name: Context Menu
@@ -1520,20 +1519,6 @@ MonoBehaviour:
   contextMenuEvents: {fileID: 11400000, guid: 35ab239d931d85347be959101007800e, type: 2}
   titleText: {fileID: 338619164}
   infoText: {fileID: 786712373}
---- !u!114 &1017350129
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1017350126}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalFit: 0
-  m_VerticalFit: 1
 --- !u!114 &1017350130
 MonoBehaviour:
   m_ObjectHideFlags: 0

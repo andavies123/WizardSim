@@ -2,7 +2,6 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 
 namespace UI.ContextMenus
 {
@@ -14,7 +13,7 @@ namespace UI.ContextMenus
 
 		[Header("UI Components")]
 		[SerializeField] private TMP_Text titleText;
-		[FormerlySerializedAs("intoText")] [SerializeField] private TMP_Text infoText;
+		[SerializeField] private TMP_Text infoText;
 
 		private readonly List<ContextMenuItemUI> _contextMenuItemUIs = new();
 		private ContextMenuUser _contextMenuUser;
@@ -31,7 +30,7 @@ namespace UI.ContextMenus
 
 		private void Update()
 		{
-			if (_contextMenuUser != null)
+			if (_contextMenuUser)
 				infoText.SetText(_contextMenuUser.InfoText);
 			
 			if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
@@ -40,8 +39,9 @@ namespace UI.ContextMenus
 
 		private void OnContextMenuOpenRequested(ContextMenuUser contextMenuUser)
 		{
-			if (_contextMenuUser != null)
+			if (_contextMenuUser)
 				_contextMenuUser.CloseMenu();
+			
 			_contextMenuUser = contextMenuUser;
 			EnableMenu();
 		}
@@ -49,22 +49,24 @@ namespace UI.ContextMenus
 		private void EnableMenu()
 		{
 			BuildContextMenu();
-			gameObject.SetActive(true);	
+			
+			gameObject.SetActive(true);
 		}
 		
 		private void DisableMenu()
 		{
-			if (_contextMenuUser != null)
+			gameObject.SetActive(false);
+			
+			if (_contextMenuUser)
 			{
 				_contextMenuUser.CloseMenu();
 				_contextMenuUser = null;
 			}
-			gameObject.SetActive(false);	
 		}
 
 		private void BuildContextMenu()
 		{
-			if (_contextMenuUser == null || _contextMenuUser.AllMenuItems.Count == 0)
+			if (!_contextMenuUser || _contextMenuUser.AllMenuItems.Count == 0)
 				return;
 
 			titleText.SetText(_contextMenuUser.MenuTitle);
