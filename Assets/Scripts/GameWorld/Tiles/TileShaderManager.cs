@@ -1,4 +1,5 @@
-﻿using UI;
+﻿using System.ComponentModel;
+using UI;
 using UI.ContextMenus;
 using UnityEngine;
 using Utilities;
@@ -39,7 +40,7 @@ namespace GameWorld.Tiles
 			SetIsContextMenuOpenShaderValue(contextMenuInteractions && contextMenuInteractions.IsContextMenuOpen);
 
 			if (interactable)
-				interactable.IsHoveredValueChanged += OnIsHoveredValueChanged;
+				interactable.PropertyChanged += OnInteractablePropertyChanged;
 
 			if (contextMenuInteractions)
 				contextMenuInteractions.IsContextMenuOpenValueChanged += OnIsContextMenuOpenValueChanged;
@@ -48,14 +49,18 @@ namespace GameWorld.Tiles
 		private void OnDisable()
 		{
 			if (interactable)
-				interactable.IsHoveredValueChanged -= OnIsHoveredValueChanged;
+				interactable.PropertyChanged -= OnInteractablePropertyChanged;
 			
 			if (contextMenuInteractions)
 				contextMenuInteractions.IsContextMenuOpenValueChanged -= OnIsContextMenuOpenValueChanged;
 		}
 
-		private void OnIsHoveredValueChanged(bool value) => SetIsHoveredShaderValue(value);
 		private void OnIsContextMenuOpenValueChanged(bool value) => SetIsContextMenuOpenShaderValue(value);
+		private void OnInteractablePropertyChanged(object sender, PropertyChangedEventArgs args)
+		{
+			if (args.PropertyName == nameof(Interactable.IsHovered))
+				SetIsHoveredShaderValue(interactable.IsHovered);
+		}
 
 		private void SetIsHoveredShaderValue(bool isHovered) =>
 			meshRenderer.material.SetFloat(IsHoveredShaderId, ShaderUtilities.BoolToShaderFloat(isHovered));

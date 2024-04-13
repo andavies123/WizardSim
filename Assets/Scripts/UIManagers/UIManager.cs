@@ -17,9 +17,12 @@ namespace UIManagers
 			_canvas.enabled = false;
 		}
 
-		private void Awake()
+		protected virtual void Awake()
 		{
 			_canvas = GetComponent<Canvas>();
+			
+			if (!_canvas)
+				Debug.LogWarning("No canvas found on this UIManager");
 		}
 	}
 }

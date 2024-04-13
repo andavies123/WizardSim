@@ -5,10 +5,8 @@ namespace UI.ContextMenus
 {
 	public class ContextMenuInteractions : MonoBehaviour
 	{
-		//[SerializeField] private MouseInteractionEvents mouseInteractionEvents;
 		[SerializeField] private Interactable interactable;
 		[SerializeField] private ContextMenuUser contextMenuUser;
-		
 
 		private bool _isContextMenuOpen = false;
 		

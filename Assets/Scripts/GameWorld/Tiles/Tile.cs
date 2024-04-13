@@ -1,9 +1,12 @@
-﻿using UnityEngine;
+﻿using UI;
+using UnityEngine;
 
 namespace GameWorld.Tiles
 {
 	public class Tile : MonoBehaviour
 	{
+		private Interactable _interactable;
+		
 		public Transform Transform { get; private set; }
 		public Vector2Int TilePosition { get; private set; }
 
@@ -15,6 +18,16 @@ namespace GameWorld.Tiles
 		private void Awake()
 		{
 			Transform = transform;
+			_interactable = GetComponent<Interactable>();
+		}
+
+		private void Start()
+		{
+			if (_interactable)
+			{
+				_interactable.TitleText = "Ground";
+				_interactable.InfoText = $"{TilePosition}";
+			}
 		}
 	}
 }

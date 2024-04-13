@@ -29,16 +29,21 @@ kanban-plugin: basic
 - [ ] **Save System**<br><br>Create a save system that can be saved/loaded at will<br><br>- [ ] Add save pause menu button<br>- [ ] Game world should be saved<br>- [ ] Wizard stats should be saved<br>- [ ] Add load main menu button
 - [ ] **Basic Enemy**<br><br>- [ ] Add a basic enemy prefab<br>- [ ] Basic enemy should find the nearest wizard and attack<br>- [ ] Add context menu to tile to spawn an enemy
 - [ ] **GameObject Pools**<br>- [ ] Create an Game Object Pool class<br>- [ ] This class should take in a prefab<br>- [ ] This class should take a max held objects<br>- [ ] This class should be able to supply objects when asked<br>- [ ] This class should be able to return objects to the pool when asked<br>- [ ] Create a Game Object Pool User class<br>- [ ] This class should be able to initialize when necessary<br>- [ ] This class should be able to clean up when necessary
+- [ ] **Wizard Naming**<br><br>- [ ] When a wizard is created, the GameObject name should reflect the name of the wizard
+- [ ] <font color="cyan">**Redo Info/Context Menu**</font><br>- [ ] Info/Context Menu should not be incharge of editing the Interactable info
+- [ ] <font color="cyan">**Template**</font><br>- [ ] task
 
 
 ## In Progress
 
-- [ ] **Info Window**<br><br>- [ ] Add an Info window when left clicking on an interactable<br>- [ ] Window should contain useful info of the interactable<br>- [ ] Remove useful data from context menu window<br>- [ ] Have info window pop up along with context menu when right clicking interactable
+- [ ] <font color="cyan">**Wizard Spawn Context Menu Item**</font><br><br>- [ ] Add context menu item to tiles that will spawn a wizard on that tile<br>- [ ] Wizard should be spawned down the correct paths using the wizard spawner
 
 
 ## Completed
 
 **Complete**
+- [x] <font color="cyan">**Info Window**</font><br><br>- [x] Add an Info window when left clicking on an interactable<br>- [x] Window should contain useful info of the interactable<br>- [x] Remove useful data from context menu window<br>- [x] Have info window pop up along with context menu when right clicking interactable<br>- [x] Info window should disappear when clicking on nothing interactable<br>- [x] Show something in the shader to show that an object is selected without the context menu
+- [x] <font color="red">**BUG**</font><br><br>**Problem**<br>Pause button is not pausing the game when selected<br><br>**Fix**<br>The unity event for when the button is pressed was removed. I updated it to listen for the event via the code rather than the inspector
 - [x] **BUG**<br><br>**PROBLEM**<br>When selecting a wizard context menu option, then right clicking a tile, an error is thrown for a rect transform not found<br><br>**FIX**<br>Removed Content Size Fitter script from a parent of the context menu. Apparently that was all that was needed to fix...
 - [x] **BUG**<br><br>**PROBLEM**<br>When the game is paused, I can still interact with interactable objects<br><br>**FIX**<br>The issue was that I moved to using interactables and the interactableRaycaster but the context menu was still using the mouse interaction events which weren't be turned off when the game was paused
 - [x] **Canvas Updates**<br><br>- [x] Update all UI States to use their own canvas due to the fact that each canvas updates everything on them

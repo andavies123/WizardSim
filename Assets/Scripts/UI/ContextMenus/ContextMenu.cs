@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using TMPro;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace UI.ContextMenus
 {
@@ -9,51 +8,26 @@ namespace UI.ContextMenus
 	{
 		[SerializeField] private GameObject contextMenuItemPrefab;
 		[SerializeField] private Transform contextMenuItemParent;
-		[SerializeField] private ContextMenuEvents contextMenuEvents;
-
-		[Header("UI Components")]
-		[SerializeField] private TMP_Text titleText;
-		[SerializeField] private TMP_Text infoText;
 
 		private readonly List<ContextMenuItemUI> _contextMenuItemUIs = new();
 		private ContextMenuUser _contextMenuUser;
 
-		private void Awake()
-		{
-			contextMenuEvents.ContextMenuOpenRequested += OnContextMenuOpenRequested;
-		}
+		public event Action MenuClosed;
 
-		private void OnDestroy()
-		{
-			contextMenuEvents.ContextMenuOpenRequested -= OnContextMenuOpenRequested;
-		}
+		public bool IsOpen { get; private set; }
 
-		private void Update()
-		{
-			if (_contextMenuUser)
-				infoText.SetText(_contextMenuUser.InfoText);
-			
-			if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
-				DisableMenu();
-		}
-
-		private void OnContextMenuOpenRequested(ContextMenuUser contextMenuUser)
+		public void OpenMenu(ContextMenuUser user)
 		{
 			if (_contextMenuUser)
 				_contextMenuUser.CloseMenu();
-			
-			_contextMenuUser = contextMenuUser;
-			EnableMenu();
-		}
 
-		private void EnableMenu()
-		{
+			_contextMenuUser = user;
 			BuildContextMenu();
-			
 			gameObject.SetActive(true);
+			IsOpen = true;
 		}
 		
-		private void DisableMenu()
+		public void CloseMenu()
 		{
 			gameObject.SetActive(false);
 			
@@ -62,6 +36,9 @@ namespace UI.ContextMenus
 				_contextMenuUser.CloseMenu();
 				_contextMenuUser = null;
 			}
+
+			IsOpen = false;
+			MenuClosed?.Invoke();
 		}
 
 		private void BuildContextMenu()
@@ -69,8 +46,6 @@ namespace UI.ContextMenus
 			if (!_contextMenuUser || _contextMenuUser.AllMenuItems.Count == 0)
 				return;
 
-			titleText.SetText(_contextMenuUser.MenuTitle);
-			infoText.SetText(_contextMenuUser.InfoText);
 			SynchronizeContextMenuItemCollectionLengths();
 			BuildContextMenuItems();
 		}
@@ -111,7 +86,7 @@ namespace UI.ContextMenus
 			Destroy(menuItemUI.gameObject);
 		}
 
-		private void OnMenuItemSelected() => DisableMenu();
+		private void OnMenuItemSelected() => CloseMenu();
 
 		private void BuildContextMenuItems()
 		{

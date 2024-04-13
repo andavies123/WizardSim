@@ -11,11 +11,14 @@ namespace CameraComponents
 		[SerializeField] private float maxRaycastDistance = 1000;
 
 		private Interactable _currentHover;
+		private Interactable _currentSelected;
         
 		public event Action<Interactable> InteractableSelectedPrimary;
         public event Action<Interactable> InteractableSelectedSecondary;
         public event Action<Interactable> InteractableHoverBegin;
         public event Action<Interactable> InteractableHoverEnd;
+
+        public bool IsInteractableCurrentlyHovered => _currentHover;
 
 		private void Update()
 		{
@@ -31,15 +34,27 @@ namespace CameraComponents
 			BeginNewHover(interactable);
 
 			if (Input.GetMouseButtonDown(InputUtilities.LeftMouseButton))
-			{
-				interactable.PrimaryActionSelect();
-				InteractableSelectedPrimary?.Invoke(interactable);
-			}
+				BeginNewSelection(interactable);
 
 			if (Input.GetMouseButtonDown(InputUtilities.RightMouseButton))
 			{
-				interactable.SecondaryActionSelect();
+				interactable.SelectSecondaryAction();
 				InteractableSelectedSecondary?.Invoke(interactable);
+			}
+		}
+
+		private void BeginNewSelection(Interactable newSelection)
+		{
+			if (_currentSelected)
+				_currentSelected.IsSelected = false;
+
+			_currentSelected = newSelection;
+
+			if (_currentSelected)
+			{
+				_currentSelected.IsSelected = true;
+				_currentSelected.SelectPrimaryAction();
+				InteractableSelectedPrimary?.Invoke(_currentSelected);
 			}
 		}
 
