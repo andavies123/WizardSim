@@ -9,6 +9,7 @@ namespace GameWorld.Tiles
 	public class TileShaderManager : MonoBehaviour
 	{
 		private static readonly int IsHoveredShaderId = Shader.PropertyToID("_IsHovered");
+		private static readonly int IsSelectedShaderId = Shader.PropertyToID("_IsSelected");
 		private static readonly int IsContextMenuOpenShaderId = Shader.PropertyToID("_IsContextMenuOpen");
 		private static readonly int BaseTexture = Shader.PropertyToID("_BaseTexture");
 		private static readonly int BaseColor = Shader.PropertyToID("_BaseColor");
@@ -58,12 +59,22 @@ namespace GameWorld.Tiles
 		private void OnIsContextMenuOpenValueChanged(bool value) => SetIsContextMenuOpenShaderValue(value);
 		private void OnInteractablePropertyChanged(object sender, PropertyChangedEventArgs args)
 		{
-			if (args.PropertyName == nameof(Interactable.IsHovered))
-				SetIsHoveredShaderValue(interactable.IsHovered);
+			switch (args.PropertyName)
+			{
+				case nameof(Interactable.IsHovered):
+					SetIsHoveredShaderValue(interactable.IsHovered);
+					break;
+				case nameof(Interactable.IsSelected):
+					SetIsSelectedShaderValue(interactable.IsSelected);
+					break;
+			}
 		}
 
 		private void SetIsHoveredShaderValue(bool isHovered) =>
 			meshRenderer.material.SetFloat(IsHoveredShaderId, ShaderUtilities.BoolToShaderFloat(isHovered));
+		
+		private void SetIsSelectedShaderValue(bool isSelected) =>
+			meshRenderer.material.SetFloat(IsSelectedShaderId, ShaderUtilities.BoolToShaderFloat(isSelected));
 
 		private void SetIsContextMenuOpenShaderValue(bool isContextMenuOpen) =>
 			meshRenderer.material.SetFloat(IsContextMenuOpenShaderId, ShaderUtilities.BoolToShaderFloat(isContextMenuOpen));

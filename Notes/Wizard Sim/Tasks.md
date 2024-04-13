@@ -4,8 +4,15 @@ kanban-plugin: basic
 
 ---
 
+## Card Templates
+
+- [ ] <font color="cyan">**Task Template**</font><br>- [ ] task
+- [ ] <font color="red">**Bug Template**</font><br><br>**Problem**<br>Describe Here<br><br>**Fix**<br>Not fixed yet
+
+
 ## Bugs
 
+- [ ] <font color="red">**Bug Template**</font><br><br>**Problem**<br>When opening up the context menu on an interactable then opening up an info window on a different interactable, the context menu does not close<br><br>**Fix**<br>Not fixed yet
 
 
 ## Visuals Backlog
@@ -25,13 +32,12 @@ kanban-plugin: basic
 
 ## Coding Backlog
 
-- [ ] **WorldObject Architecture**<br><br>Create the architecture for the world objects such as rocks, trees, bushes, etc...
-- [ ] **Save System**<br><br>Create a save system that can be saved/loaded at will<br><br>- [ ] Add save pause menu button<br>- [ ] Game world should be saved<br>- [ ] Wizard stats should be saved<br>- [ ] Add load main menu button
-- [ ] **Basic Enemy**<br><br>- [ ] Add a basic enemy prefab<br>- [ ] Basic enemy should find the nearest wizard and attack<br>- [ ] Add context menu to tile to spawn an enemy
-- [ ] **GameObject Pools**<br>- [ ] Create an Game Object Pool class<br>- [ ] This class should take in a prefab<br>- [ ] This class should take a max held objects<br>- [ ] This class should be able to supply objects when asked<br>- [ ] This class should be able to return objects to the pool when asked<br>- [ ] Create a Game Object Pool User class<br>- [ ] This class should be able to initialize when necessary<br>- [ ] This class should be able to clean up when necessary
-- [ ] **Wizard Naming**<br><br>- [ ] When a wizard is created, the GameObject name should reflect the name of the wizard
+- [ ] <font color="cyan">**WorldObject Architecture**</font><br><br>Create the architecture for the world objects such as rocks, trees, bushes, etc...
+- [ ] <font color="cyan">**Save System**</font><br>- [ ] Add save pause menu button<br>- [ ] Game world should be saved<br>- [ ] Wizard stats should be saved<br>- [ ] Add load main menu button
+- [ ] <font color="cyan">**Basic Enemy**</font><br><br>- [ ] Add a basic enemy prefab<br>- [ ] Basic enemy should find the nearest wizard and attack<br>- [ ] Add context menu to tile to spawn an enemy
+- [ ] <font color="cyan">**GameObject Pools**</font><br>- [ ] Create an Game Object Pool class<br>- [ ] This class should take in a prefab<br>- [ ] This class should take a max held objects<br>- [ ] This class should be able to supply objects when asked<br>- [ ] This class should be able to return objects to the pool when asked<br>- [ ] Create a Game Object Pool User class<br>- [ ] This class should be able to initialize when necessary<br>- [ ] This class should be able to clean up when necessary
+- [ ] <font color="cyan">**Wizard Naming**</font><br><br>- [ ] When a wizard is created, the GameObject name should reflect the name of the wizard
 - [ ] <font color="cyan">**Redo Info/Context Menu**</font><br>- [ ] Info/Context Menu should not be incharge of editing the Interactable info
-- [ ] <font color="cyan">**Template**</font><br>- [ ] task
 
 
 ## In Progress
