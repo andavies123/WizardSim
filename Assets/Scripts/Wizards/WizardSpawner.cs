@@ -1,13 +1,12 @@
-﻿using GameWorld;
-using UnityEngine;
+﻿using UnityEngine;
 using Utilities;
+using Random = UnityEngine.Random;
 
 namespace Wizards
 {
 	public class WizardSpawner : MonoBehaviour
 	{
 		[SerializeField] private WizardManager wizardManager;
-		[SerializeField] private World world;
 
 		[Header("Prefabs")]
 		[SerializeField] private GameObject wizardPrefab;
@@ -17,20 +16,41 @@ namespace Wizards
 		[SerializeField] private Vector3Int spawnCenter = Vector3Int.zero;
 		[SerializeField] private int spawnRadius = 10;
 
-		private void Start()
-		{
-			LoopUtilities.Loop(initialSpawns, SpawnWizard);
-		}
+		[Header("Game Events")]
+		[SerializeField] private GameEventVector3 wizardSpawnRequestEvent;
 
-		private void SpawnWizard()
+		public void SpawnWizard(Vector3 spawnPosition)
 		{
 			GameObject wizard = Instantiate(wizardPrefab, wizardManager.transform);
-
-			Vector2 randomSpawn = Random.insideUnitCircle * spawnRadius;
-			wizard.transform.position = new Vector3(
-				(int)randomSpawn.x + spawnCenter.x + 0.5f,
-				1, 
-				(int)randomSpawn.y + spawnCenter.z + 0.5f);
+			wizard.transform.position = spawnPosition;
+			wizardManager.AddWizard(wizard.GetComponent<Wizard>());
 		}
+
+		private void Awake()
+		{
+			wizardSpawnRequestEvent.Raised += OnWizardSpawnRequestEvent;
+		}
+
+		private void Start()
+		{
+			LoopUtilities.Loop(initialSpawns, SpawnRandomWizard);
+		}
+
+		private void OnDestroy()
+		{
+			wizardSpawnRequestEvent.Raised += OnWizardSpawnRequestEvent;
+		}
+
+		private void SpawnRandomWizard()
+		{
+			Vector2 randomSpawn = Random.insideUnitCircle * spawnRadius;
+			
+			SpawnWizard(new Vector3(
+				(int)randomSpawn.x + spawnCenter.x + 0.5f,
+				1,
+				(int)randomSpawn.y + spawnCenter.z + 0.5f));
+		}
+
+		private void OnWizardSpawnRequestEvent(Vector3 position) => SpawnWizard(position);
 	}
 }

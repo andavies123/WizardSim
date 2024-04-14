@@ -1,11 +1,14 @@
 ﻿using UI.ContextMenus;
 using UnityEngine;
+using Utilities;
 
 namespace GameWorld.Tiles.ContextMenu
 {
 	[RequireComponent(typeof(Tile))]
 	public class TileContextMenuUser : ContextMenuUser<TileContextMenuItem>
 	{
+		[SerializeField] private GameEventVector3 wizardSpawnRequest;
+		
 		private Tile _tile;
 
 		public override string MenuTitle => $"Tile {_tile.TilePosition}";
@@ -15,9 +18,9 @@ namespace GameWorld.Tiles.ContextMenu
 		{
 			_tile = GetComponent<Tile>();
 
-			MenuItems.AddRange(new[]
+			MenuItems.AddRange(new TileContextMenuItem[]
 			{
-				new PrintTilePositionContextMenuItem(_tile)
+				new SpawnWizardContextMenuItem(_tile, wizardSpawnRequest)
 			});
 		}
 	}

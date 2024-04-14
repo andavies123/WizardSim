@@ -1674,11 +1674,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wizardManager: {fileID: 1202947228}
-  world: {fileID: 2007172221}
   wizardPrefab: {fileID: 2414322042265852574, guid: 4bfb0bac7ec87bb4ca8c5e6e14993c85, type: 3}
   initialSpawns: 5
   spawnCenter: {x: 0, y: 0, z: 0}
   spawnRadius: 10
+  wizardSpawnRequestEvent: {fileID: 11400000, guid: c0b1021543f2ead4aa6a05a612bc47fe, type: 2}
 --- !u!114 &1202947228
 MonoBehaviour:
   m_ObjectHideFlags: 0
