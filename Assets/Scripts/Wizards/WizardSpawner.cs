@@ -21,9 +21,11 @@ namespace Wizards
 
 		public void SpawnWizard(Vector3 spawnPosition)
 		{
-			GameObject wizard = Instantiate(wizardPrefab, wizardManager.transform);
-			wizard.transform.position = spawnPosition;
-			wizardManager.AddWizard(wizard.GetComponent<Wizard>());
+			GameObject wizardGameObject = Instantiate(wizardPrefab, wizardManager.transform);
+			wizardGameObject.transform.position = spawnPosition;
+			Wizard wizard = wizardGameObject.GetComponent<Wizard>();
+			wizardGameObject.gameObject.name = $"Wizard ({wizard.Name})";
+			wizardManager.AddWizard(wizard);
 		}
 
 		private void Awake()
