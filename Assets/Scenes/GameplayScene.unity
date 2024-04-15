@@ -390,6 +390,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   camera: {fileID: 1688352104}
   maxRaycastDistance: 1000
+--- !u!1 &486601006
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 486601007}
+  m_Layer: 5
+  m_Name: Inactive Item Container
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &486601007
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 486601006}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1017350127}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &488779272
 GameObject:
   m_ObjectHideFlags: 0
@@ -1454,7 +1489,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1017350127}
   - component: {fileID: 1017350128}
-  - component: {fileID: 1017350130}
+  - component: {fileID: 1017350129}
   m_Layer: 5
   m_Name: Context Menu
   m_TagString: Untagged
@@ -1475,6 +1510,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1833700352}
+  - {fileID: 486601007}
   m_Father: {fileID: 688369677}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
@@ -1496,7 +1532,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contextMenuItemPrefab: {fileID: 1759081526333787294, guid: 9e5e510da09207242b66733bc9eff030, type: 3}
   contextMenuItemParent: {fileID: 1833700352}
---- !u!114 &1017350130
+  inactiveMenuItemContainer: {fileID: 486601007}
+--- !u!114 &1017350129
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2434,7 +2471,7 @@ GameObject:
   - component: {fileID: 1833700353}
   - component: {fileID: 1833700356}
   m_Layer: 5
-  m_Name: Item Parent
+  m_Name: Active Item Container
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

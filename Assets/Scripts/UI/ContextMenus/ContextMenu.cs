@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GameObjectPools;
 using UnityEngine;
 
 namespace UI.ContextMenus
@@ -8,8 +9,10 @@ namespace UI.ContextMenus
 	{
 		[SerializeField] private GameObject contextMenuItemPrefab;
 		[SerializeField] private Transform contextMenuItemParent;
-
+		[SerializeField] private Transform inactiveMenuItemContainer;
+		
 		private readonly List<ContextMenuItemUI> _contextMenuItemUIs = new();
+		private GameObjectPool _menuItemPool;
 		private ContextMenuUser _contextMenuUser;
 
 		public event Action MenuClosed;
@@ -29,6 +32,7 @@ namespace UI.ContextMenus
 		
 		public void CloseMenu()
 		{
+			IsOpen = false;
 			gameObject.SetActive(false);
 			
 			if (_contextMenuUser)
@@ -36,9 +40,20 @@ namespace UI.ContextMenus
 				_contextMenuUser.CloseMenu();
 				_contextMenuUser = null;
 			}
-
-			IsOpen = false;
+			
+			foreach (ContextMenuItemUI menuItemUI in _contextMenuItemUIs)
+				_menuItemPool.ReleaseToPool(menuItemUI.gameObject);
+			_contextMenuItemUIs.Clear();
+			
 			MenuClosed?.Invoke();
+		}
+
+		private void Awake()
+		{
+			_menuItemPool = new GameObjectPool(
+				contextMenuItemPrefab,
+				inactiveMenuItemContainer,
+				5, 20);
 		}
 
 		private void BuildContextMenu()
@@ -70,7 +85,9 @@ namespace UI.ContextMenus
 
 		private void AddMenuItemToEnd()
 		{
-			ContextMenuItemUI menuItemUI = Instantiate(contextMenuItemPrefab, contextMenuItemParent).GetComponent<ContextMenuItemUI>();
+			if (!_menuItemPool.GetFromPool(contextMenuItemParent).TryGetComponent(out ContextMenuItemUI menuItemUI))
+				return;
+			
 			menuItemUI.ItemSelected += OnMenuItemSelected;
 			_contextMenuItemUIs.Add(menuItemUI);
 		}
@@ -82,8 +99,8 @@ namespace UI.ContextMenus
 
 			ContextMenuItemUI menuItemUI = _contextMenuItemUIs[^1];
 			menuItemUI.ItemSelected -= OnMenuItemSelected;
-			_contextMenuItemUIs.RemoveAt(_contextMenuItemUIs.Count - 1);
-			Destroy(menuItemUI.gameObject);
+			_contextMenuItemUIs.Remove(menuItemUI);
+			_menuItemPool.ReleaseToPool(menuItemUI.gameObject);
 		}
 
 		private void OnMenuItemSelected() => CloseMenu();

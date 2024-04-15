@@ -40,7 +40,7 @@ kanban-plugin: basic
 
 ## In Progress
 
-- [ ] <font color="cyan">**GameObject Pools**</font><br>- [ ] Create an Game Object Pool class<br>- [ ] This class should take in a prefab<br>- [ ] This class should take a max held objects<br>- [ ] This class should be able to supply objects when asked<br>- [ ] This class should be able to return objects to the pool when asked<br>- [ ] Create a Game Object Pool User class<br>- [ ] This class should be able to initialize when necessary<br>- [ ] This class should be able to clean up when necessary
+- [ ] <font color="cyan">**GameObject Pools**</font><br>- [x] Create an Game Object Pool class<br>- [x] This class should take in a prefab<br>- [x] This class should take a max held objects<br>- [x] This class should be able to supply objects when asked<br>- [x] This class should be able to return objects to the pool when asked<br>- [ ] Add assembly definition to folder
 
 
 ## Completed
