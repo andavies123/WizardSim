@@ -14,5 +14,18 @@ namespace GameWorld
 			Position = position;
 			_tiles = tiles;
 		}
+
+		public bool TryGetTile(Vector2Int tilePosition, out Tile tile) => TryGetTile(tilePosition.x, tilePosition.y, out tile);
+
+		public bool TryGetTile(int tileXPosition, int tileZPosition, out Tile tile)
+		{
+			tile = null;
+			
+			if (tileXPosition < 0 || tileXPosition >= _tiles.GetLength(0) || tileZPosition < 0 || tileZPosition >= _tiles.GetLength(1))
+				return false;
+
+			tile = _tiles[tileXPosition, tileZPosition];
+			return true;
+		}
 	}
 }

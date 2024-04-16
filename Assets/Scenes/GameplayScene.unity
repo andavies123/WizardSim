@@ -1475,10 +1475,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   world: {fileID: 2007172221}
-  chunkPrefab: {fileID: 4135288140020288548, guid: 852cec6006c9f024987856a29cf067dd, type: 3}
-  tilePrefab: {fileID: 6905772132014365446, guid: 04fed489bf74d4a48a404d5ea25fd3d5, type: 3}
   initialGenerationRadius: 2
-  chunkSize: 10
 --- !u!1 &1017350126
 GameObject:
   m_ObjectHideFlags: 0
@@ -2697,6 +2694,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abc150a2ebfd450b812810b105dd46b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  worldDetails: {fileID: 11400000, guid: e582ff65a9a14e9418ca71ac487ff365, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

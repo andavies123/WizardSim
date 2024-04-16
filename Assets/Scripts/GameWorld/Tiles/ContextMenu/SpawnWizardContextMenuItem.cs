@@ -16,12 +16,9 @@ namespace GameWorld.Tiles.ContextMenu
 
 		protected override void OnMenuItemSelected()
 		{
-			Vector3 tilePosition = Tile.Transform.position;
-
-			Vector3 spawnPosition = new(
-				tilePosition.x + 0.5f,
-				1,
-				tilePosition.z + 0.5f);
+			Vector2 tileWorldPosition = Tile.ParentWorld.WorldPositionFromTile(Tile, centerOfTile: true);
+			Vector3 spawnPosition = new(tileWorldPosition.x, 1, tileWorldPosition.y);
+			
 			_wizardSpawnRequest.RaiseEvent(spawnPosition);
 		}
 	}

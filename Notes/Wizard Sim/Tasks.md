@@ -32,20 +32,23 @@ kanban-plugin: basic
 
 ## Coding Backlog
 
-- [ ] <font color="cyan">**WorldObject Architecture**</font><br><br>Create the architecture for the world objects such as rocks, trees, bushes, etc...
+- [ ] <font color="cyan">**WorldObject Architecture**</font><br><br>- [ ] Create the architecture for world objects such as rocks, trees, bushes<br>- [ ] Add tile context menu items to place these objects for testing
 - [ ] <font color="cyan">**Save System**</font><br>- [ ] Add save pause menu button<br>- [ ] Game world should be saved<br>- [ ] Wizard stats should be saved<br>- [ ] Add load main menu button
-- [ ] <font color="cyan">**Basic Enemy**</font><br><br>- [ ] Add a basic enemy prefab<br>- [ ] Basic enemy should find the nearest wizard and attack<br>- [ ] Add context menu to tile to spawn an enemy
 - [ ] <font color="cyan">**Redo Info/Context Menu**</font><br>- [ ] Info/Context Menu should not be incharge of editing the Interactable info
+- [ ] <font color="cyan">**Health Script**</font><br>- [ ] Create a health script<br>- [ ] Health should be able to heal<br>- [ ] Health should be able to go down<br>- [ ] Event should be raised when health reaches 0<br>- [ ] Event should be raised when health reaches 100%
+- [ ] <font color="cyan">**Basic Enemy**</font><br><br>- [ ] Add a basic enemy prefab<br>- [ ] Basic enemy should find the nearest wizard and attack<br>- [ ] Add context menu to tile to spawn an enemy
 
 
 ## In Progress
 
-- [ ] <font color="cyan">**GameObject Pools**</font><br>- [x] Create an Game Object Pool class<br>- [x] This class should take in a prefab<br>- [x] This class should take a max held objects<br>- [x] This class should be able to supply objects when asked<br>- [x] This class should be able to return objects to the pool when asked<br>- [ ] Add assembly definition to folder
+- [ ] <font color="cyan">**Update Rider**</font><br>- [ ] Download<br>- [ ] Install
 
 
 ## Completed
 
 **Complete**
+- [x] <font color="cyan">**World Position Helpers**</font><br>- [x] Add methods to help get positions based on a given tile<br>- [x] Add a world generation details scriptable object that holds helpful information
+- [x] <font color="cyan">**GameObject Pools**</font><br>- [x] Create an Game Object Pool class<br>- [x] This class should take in a prefab<br>- [x] This class should take a max held objects<br>- [x] This class should be able to supply objects when asked<br>- [x] This class should be able to return objects to the pool when asked<br>- [x] Add assembly definition to folder
 - [x] <font color="cyan">**Wizard Naming**</font><br><br>- [x] When a wizard is created, the GameObject name should reflect the name of the wizard
 - [x] <font color="cyan">**Wizard Spawn Context Menu Item**</font><br><br>- [x] Add context menu item to tiles that will spawn a wizard on that tile<br>- [x] Wizard should be spawned down the correct paths using the wizard spawner
 - [x] <font color="cyan">**Info Window**</font><br><br>- [x] Add an Info window when left clicking on an interactable<br>- [x] Window should contain useful info of the interactable<br>- [x] Remove useful data from context menu window<br>- [x] Have info window pop up along with context menu when right clicking interactable<br>- [x] Info window should disappear when clicking on nothing interactable<br>- [x] Show something in the shader to show that an object is selected without the context menu

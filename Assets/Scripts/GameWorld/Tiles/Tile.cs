@@ -6,12 +6,16 @@ namespace GameWorld.Tiles
 	public class Tile : MonoBehaviour
 	{
 		private Interactable _interactable;
-		
+
+		public World ParentWorld { get; private set; }
+		public Chunk ParentChunk { get; private set; }
 		public Transform Transform { get; private set; }
 		public Vector2Int TilePosition { get; private set; }
 
-		public void Initialize(Vector2Int tilePosition)
+		public void Initialize(World parentWorld, Chunk parentChunk, Vector2Int tilePosition)
 		{
+			ParentWorld = parentWorld;
+			ParentChunk = parentChunk;
 			TilePosition = tilePosition;
 		}
 
