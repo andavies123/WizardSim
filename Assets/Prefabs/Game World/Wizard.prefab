@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 6896444120881679524}
   - component: {fileID: 323713175569000968}
   - component: {fileID: -1428322788903751413}
+  - component: {fileID: 3362692198579881813}
   m_Layer: 0
   m_Name: Wizard
   m_TagString: Untagged
@@ -162,6 +163,19 @@ MonoBehaviour:
   meshRenderer: {fileID: 1173640702274741866}
   interactable: {fileID: 323713175569000968}
   contextMenuInteractions: {fileID: 8962483651604178840}
+--- !u!114 &3362692198579881813
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2414322042265852574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d85b78308f34138a9b86b6d553f0c40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 50
 --- !u!1 &3636136914844696014
 GameObject:
   m_ObjectHideFlags: 0

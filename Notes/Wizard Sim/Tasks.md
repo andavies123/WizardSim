@@ -35,18 +35,19 @@ kanban-plugin: basic
 - [ ] <font color="cyan">**WorldObject Architecture**</font><br><br>- [ ] Create the architecture for world objects such as rocks, trees, bushes<br>- [ ] Add tile context menu items to place these objects for testing
 - [ ] <font color="cyan">**Save System**</font><br>- [ ] Add save pause menu button<br>- [ ] Game world should be saved<br>- [ ] Wizard stats should be saved<br>- [ ] Add load main menu button
 - [ ] <font color="cyan">**Redo Info/Context Menu**</font><br>- [ ] Info/Context Menu should not be incharge of editing the Interactable info
-- [ ] <font color="cyan">**Health Script**</font><br>- [ ] Create a health script<br>- [ ] Health should be able to heal<br>- [ ] Health should be able to go down<br>- [ ] Event should be raised when health reaches 0<br>- [ ] Event should be raised when health reaches 100%
 - [ ] <font color="cyan">**Basic Enemy**</font><br><br>- [ ] Add a basic enemy prefab<br>- [ ] Basic enemy should find the nearest wizard and attack<br>- [ ] Add context menu to tile to spawn an enemy
+- [ ] <font color="cyan">**Health Bar UI**</font><br>- [ ] Create a UI for wizards health<br>- [ ] Should only display on mouse hover<br>- [ ] Health bar should be circular to save space
 
 
 ## In Progress
 
-- [ ] <font color="cyan">**Update Rider**</font><br>- [ ] Download<br>- [ ] Install
+- [ ] <font color="cyan">**Health Script**</font><br>- [x] Create a health script<br>- [x] Health should be able to heal<br>- [x] Health should be able to go down<br>- [x] Event should be raised when health reaches 0<br>- [x] Event should be raised when health reaches 100%<br>- [x] See if it would make sense to keep it in its own assembly definition
 
 
 ## Completed
 
 **Complete**
+- [x] <font color="cyan">**Update Rider**</font><br>- [x] Download<br>- [x] Install
 - [x] <font color="cyan">**World Position Helpers**</font><br>- [x] Add methods to help get positions based on a given tile<br>- [x] Add a world generation details scriptable object that holds helpful information
 - [x] <font color="cyan">**GameObject Pools**</font><br>- [x] Create an Game Object Pool class<br>- [x] This class should take in a prefab<br>- [x] This class should take a max held objects<br>- [x] This class should be able to supply objects when asked<br>- [x] This class should be able to return objects to the pool when asked<br>- [x] Add assembly definition to folder
 - [x] <font color="cyan">**Wizard Naming**</font><br><br>- [x] When a wizard is created, the GameObject name should reflect the name of the wizard

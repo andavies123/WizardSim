@@ -1,4 +1,5 @@
 ﻿using System;
+using HealthComponents;
 using UI;
 using UnityEngine;
 using Utilities;
@@ -17,6 +18,8 @@ namespace Wizards
 		public Transform Transform { get; private set; }
 		public WizardStateMachine StateMachine { get; private set; }
 		public WizardMovement Movement { get; private set; }
+		public Health Health { get; private set; }
+		
 		public WizardStats Stats => stats;
 		
 		private void Awake()
@@ -24,6 +27,7 @@ namespace Wizards
 			Transform = transform;
 			StateMachine = GetComponent<WizardStateMachine>();
 			Movement = GetComponent<WizardMovement>();
+			Health = GetComponent<Health>();
 			_interactable = GetComponent<Interactable>();
 			
 			Name = NameGenerator.GetNewName();
