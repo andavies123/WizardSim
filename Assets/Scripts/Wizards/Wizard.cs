@@ -1,4 +1,5 @@
 ﻿using System;
+using Extensions;
 using HealthComponents;
 using UI;
 using UnityEngine;
@@ -38,7 +39,7 @@ namespace Wizards
 			if (_interactable)
 			{
 				_interactable.TitleText = Name;
-				_interactable.InfoText = $"Wizard - {Transform.position}";
+				_interactable.InfoText = $"Wizard - {Health.CurrentHealth:#}/{Health.MaxHealth:#} ({Health.CurrentHealth.PercentageOf(Health.MaxHealth):#}%)";
 			}
 		}
 	}

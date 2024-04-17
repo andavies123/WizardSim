@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace HealthComponents
 {
@@ -39,6 +40,8 @@ namespace HealthComponents
 
 		public void IncreaseHealth(float amount) => CurrentHealth += amount;
 		public void DecreaseHealth(float amount) => CurrentHealth -= amount;
+
+		private void Awake() => CurrentHealth = Random.Range(MinHealth, MaxHealth);
 
 		private void OnReachedMaxHealth(float currentHealth) =>
 			ReachedMaxHealth?.Invoke(this, new ReachedMaxHealthEventArgs(currentHealth));

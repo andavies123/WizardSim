@@ -4,49 +4,53 @@ kanban-plugin: basic
 
 ---
 
-## Card Templates
+## <font color="lightblue">**Card Templates**</font>
 
+- [ ] <font color="orange">**Visuals Template**</font>
+- [ ] <font color="lightgreen">**Audio Template**</font>
 - [ ] <font color="cyan">**Task Template**</font><br>- [ ] task
 - [ ] <font color="red">**Bug Template**</font><br><br>**Problem**<br>Describe Here<br><br>**Fix**<br>Not fixed yet
 
 
-## Bugs
+## <font color="red">**Bugs**</font>
 
 - [ ] <font color="red">**Bug Template**</font><br><br>**Problem**<br>When opening up the context menu on an interactable then opening up an info window on a different interactable, the context menu does not close<br><br>**Fix**<br>Not fixed yet
 
 
-## Visuals Backlog
+## <font color="orange">**Visuals Backlog**</font>
 
-- [ ] Wizard 3D Model
-- [ ] Bush 3D Model
-- [ ] Tree 3D Model
-- [ ] Rock 3D Model
-- [ ] Grass 3D Model
-
-
-## Audio Backlog
-
-- [ ] Button Hover Audio
-- [ ] Button Click Audio
+- [ ] <font color="orange">**Wizard 3D Model**</font>
+- [ ] <font color="orange">**Bush 3D Model**</font>
+- [ ] <font color="orange">**Tree 3D Model**</font>
+- [ ] <font color="orange">**Rock 3D Model**</font>
+- [ ] <font color="orange">**Grass 3D Model**</font>
 
 
-## Coding Backlog
+## <font color="lightgreen">**Audio Backlog**</font>
+
+- [ ] <font color="lightgreen">**Button Hover Audio**</font>
+- [ ] <font color="lightgreen">**Button Click Audio**</font>
+
+
+## <font color="cyan">**Coding Backlog**</font>
 
 - [ ] <font color="cyan">**WorldObject Architecture**</font><br><br>- [ ] Create the architecture for world objects such as rocks, trees, bushes<br>- [ ] Add tile context menu items to place these objects for testing
 - [ ] <font color="cyan">**Save System**</font><br>- [ ] Add save pause menu button<br>- [ ] Game world should be saved<br>- [ ] Wizard stats should be saved<br>- [ ] Add load main menu button
 - [ ] <font color="cyan">**Redo Info/Context Menu**</font><br>- [ ] Info/Context Menu should not be incharge of editing the Interactable info
 - [ ] <font color="cyan">**Basic Enemy**</font><br><br>- [ ] Add a basic enemy prefab<br>- [ ] Basic enemy should find the nearest wizard and attack<br>- [ ] Add context menu to tile to spawn an enemy
-- [ ] <font color="cyan">**Health Bar UI**</font><br>- [ ] Create a UI for wizards health<br>- [ ] Should only display on mouse hover<br>- [ ] Health bar should be circular to save space
 
 
 ## In Progress
 
-- [ ] <font color="cyan">**Health Script**</font><br>- [x] Create a health script<br>- [x] Health should be able to heal<br>- [x] Health should be able to go down<br>- [x] Event should be raised when health reaches 0<br>- [x] Event should be raised when health reaches 100%<br>- [x] See if it would make sense to keep it in its own assembly definition
+- [ ] <font color="orange">**Ring Health Bar**</font>
+- [ ] <font color="cyan">**Health Context Menu Items**</font><br>- [ ] Add a heal 10% menu item<br>- [ ] Add a hurt 10% menu item<br>- [ ] Add a Full Heal menu item<br>- [ ] Add a Full Hurt menu item
 
 
 ## Completed
 
 **Complete**
+- [x] <font color=cyan>**Health Bar UI**</font><br>- [x] Create a UI for wizards health<br>- [x] Should only display on mouse hover<br>- [x] Follows around the health gameobject<br>- [x] Health bar should be circular to save space<br>- [x] Add health to the info window<br>- [x] Update the color based on the health
+- [x] <font color="cyan">**Health Script**</font><br>- [x] Create a health script<br>- [x] Health should be able to heal<br>- [x] Health should be able to go down<br>- [x] Event should be raised when health reaches 0<br>- [x] Event should be raised when health reaches 100%<br>- [x] See if it would make sense to keep it in its own assembly definition
 - [x] <font color="cyan">**Update Rider**</font><br>- [x] Download<br>- [x] Install
 - [x] <font color="cyan">**World Position Helpers**</font><br>- [x] Add methods to help get positions based on a given tile<br>- [x] Add a world generation details scriptable object that holds helpful information
 - [x] <font color="cyan">**GameObject Pools**</font><br>- [x] Create an Game Object Pool class<br>- [x] This class should take in a prefab<br>- [x] This class should take a max held objects<br>- [x] This class should be able to supply objects when asked<br>- [x] This class should be able to return objects to the pool when asked<br>- [x] Add assembly definition to folder
