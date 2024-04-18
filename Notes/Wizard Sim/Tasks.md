@@ -42,13 +42,14 @@ kanban-plugin: basic
 
 ## In Progress
 
-- [ ] <font color="orange">**Ring Health Bar**</font>
-- [ ] <font color="cyan">**Health Context Menu Items**</font><br>- [ ] Add a heal 10% menu item<br>- [ ] Add a hurt 10% menu item<br>- [ ] Add a Full Heal menu item<br>- [ ] Add a Full Hurt menu item
+- [ ] <font color="red">**Info Window wizard health not updating**</font><br><br>**Problem**<br>When selecting a wizard, the info window will show the current health. When the wizards health changes, the info window does not update.<br><br>**Fix**<br>The interactable info text is only set once on startup, it doesn't update. Added event listeners when a wizards health changes
 
 
 ## Completed
 
 **Complete**
+- [x] <font color="cyan">**Health Context Menu Items**</font><br>- [x] Add a heal 10% menu item<br>- [x] Add a hurt 10% menu item<br>- [x] Add a Full Heal menu item<br>- [x] Add a Full Hurt menu item
+- [x] <font color="orange">**Ring Health Bar**</font>
 - [x] <font color=cyan>**Health Bar UI**</font><br>- [x] Create a UI for wizards health<br>- [x] Should only display on mouse hover<br>- [x] Follows around the health gameobject<br>- [x] Health bar should be circular to save space<br>- [x] Add health to the info window<br>- [x] Update the color based on the health
 - [x] <font color="cyan">**Health Script**</font><br>- [x] Create a health script<br>- [x] Health should be able to heal<br>- [x] Health should be able to go down<br>- [x] Event should be raised when health reaches 0<br>- [x] Event should be raised when health reaches 100%<br>- [x] See if it would make sense to keep it in its own assembly definition
 - [x] <font color="cyan">**Update Rider**</font><br>- [x] Download<br>- [x] Install

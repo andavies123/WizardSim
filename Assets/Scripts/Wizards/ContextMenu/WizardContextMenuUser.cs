@@ -21,9 +21,12 @@ namespace Wizards.ContextMenu
 
 			MenuItems.AddRange(new WizardContextMenuItem[]
 			{
-				new PrintNameWizardContextMenuItem(_wizard),
 				new IdleWizardContextMenuItem(_wizard),
-				new MoveToWizardContextMenuItem(_wizard, interactionEvents)
+				new MoveToWizardContextMenuItem(_wizard, interactionEvents),
+				new HealWizardPercentageContextMenuItem(_wizard, 10),
+				new HurtWizardPercentageContextMenuItem(_wizard, 10),
+				new HealWizardPercentageContextMenuItem(_wizard, 100),
+				new HurtWizardPercentageContextMenuItem(_wizard, 100),
 			});
 		}
 
