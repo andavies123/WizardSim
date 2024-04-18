@@ -32,6 +32,8 @@ namespace Wizards
 			_interactable = GetComponent<Interactable>();
 			
 			Name = NameGenerator.GetNewName();
+
+			Health.CurrentHealthChanged += OnCurrentHealthChanged;
 		}
 
 		private void Start()
@@ -39,8 +41,21 @@ namespace Wizards
 			if (_interactable)
 			{
 				_interactable.TitleText = Name;
-				_interactable.InfoText = $"Wizard - {Health.CurrentHealth:#}/{Health.MaxHealth:#} ({Health.CurrentHealth.PercentageOf(Health.MaxHealth):#}%)";
+				UpdateInteractableInfoText();
 			}
 		}
+
+		private void OnDestroy()
+		{
+			Health.CurrentHealthChanged -= OnCurrentHealthChanged;
+		}
+
+		private void UpdateInteractableInfoText()
+		{
+			if (_interactable)
+				_interactable.InfoText = $"Wizard - {Health.CurrentHealth:0}/{Health.MaxHealth:0} ({Health.CurrentHealth.PercentageOf(Health.MaxHealth):0}%)";
+		}
+
+		private void OnCurrentHealthChanged(object sender, HealthChangedEventArgs args) => UpdateInteractableInfoText();
 	}
 }

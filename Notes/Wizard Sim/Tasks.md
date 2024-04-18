@@ -37,17 +37,17 @@ kanban-plugin: basic
 - [ ] <font color="cyan">**WorldObject Architecture**</font><br><br>- [ ] Create the architecture for world objects such as rocks, trees, bushes<br>- [ ] Add tile context menu items to place these objects for testing
 - [ ] <font color="cyan">**Save System**</font><br>- [ ] Add save pause menu button<br>- [ ] Game world should be saved<br>- [ ] Wizard stats should be saved<br>- [ ] Add load main menu button
 - [ ] <font color="cyan">**Redo Info/Context Menu**</font><br>- [ ] Info/Context Menu should not be incharge of editing the Interactable info
-- [ ] <font color="cyan">**Basic Enemy**</font><br><br>- [ ] Add a basic enemy prefab<br>- [ ] Basic enemy should find the nearest wizard and attack<br>- [ ] Add context menu to tile to spawn an enemy
 
 
 ## In Progress
 
-- [ ] <font color="red">**Info Window wizard health not updating**</font><br><br>**Problem**<br>When selecting a wizard, the info window will show the current health. When the wizards health changes, the info window does not update.<br><br>**Fix**<br>The interactable info text is only set once on startup, it doesn't update. Added event listeners when a wizards health changes
+- [ ] <font color="cyan">**Basic Enemy**</font><br><br>- [ ] Add a basic enemy prefab<br>- [ ] Basic enemy should find the nearest wizard and attack<br>- [ ] Add context menu to tile to spawn an enemy
 
 
 ## Completed
 
 **Complete**
+- [x] <font color="red">**Info Window wizard health not updating**</font><br><br>**Problem**<br>When selecting a wizard, the info window will show the current health. When the wizards health changes, the info window does not update.<br><br>**Fix**<br>The interactable info text is only set once on startup, it doesn't update. Added event listeners when a wizards health changes
 - [x] <font color="cyan">**Health Context Menu Items**</font><br>- [x] Add a heal 10% menu item<br>- [x] Add a hurt 10% menu item<br>- [x] Add a Full Heal menu item<br>- [x] Add a Full Hurt menu item
 - [x] <font color="orange">**Ring Health Bar**</font>
 - [x] <font color=cyan>**Health Bar UI**</font><br>- [x] Create a UI for wizards health<br>- [x] Should only display on mouse hover<br>- [x] Follows around the health gameobject<br>- [x] Health bar should be circular to save space<br>- [x] Add health to the info window<br>- [x] Update the color based on the health
