@@ -16,8 +16,8 @@ GameObject:
   - component: {fileID: -3329930143130891345}
   - component: {fileID: 6896444120881679524}
   - component: {fileID: 323713175569000968}
-  - component: {fileID: -1428322788903751413}
   - component: {fileID: 3362692198579881813}
+  - component: {fileID: 6069462510127050324}
   m_Layer: 0
   m_Name: Wizard
   m_TagString: Untagged
@@ -146,23 +146,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b300eabee1624c15a8fee72b4ef559af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-1428322788903751413
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2414322042265852574}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72c05ef2b9484f62a08ce348f3c04cf0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseTexture: {fileID: 0}
-  baseColor: {r: 0, g: 0.26714152, b: 0.8584906, a: 0}
-  meshRenderer: {fileID: 1173640702274741866}
-  interactable: {fileID: 323713175569000968}
-  contextMenuInteractions: {fileID: 8962483651604178840}
 --- !u!114 &3362692198579881813
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -176,6 +159,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 50
+--- !u!114 &6069462510127050324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2414322042265852574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6336935f880644388ac3a9199c804290, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseTexture: {fileID: 0}
+  baseColor: {r: 0, g: 0.26666668, b: 0.8588236, a: 0}
+  meshRenderer: {fileID: 1173640702274741866}
+  interactable: {fileID: 323713175569000968}
+  contextMenuInteractions: {fileID: 8962483651604178840}
 --- !u!1 &3636136914844696014
 GameObject:
   m_ObjectHideFlags: 0

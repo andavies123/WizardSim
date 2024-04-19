@@ -4,13 +4,13 @@ using UI.ContextMenus;
 using UnityEngine;
 using Utilities;
 
-namespace GameWorld.Tiles
+namespace GeneralBehaviours.ShaderManagers
 {
-	public class TileShaderManager : MonoBehaviour
+	public class InteractionShaderManager : MonoBehaviour
 	{
 		private static readonly int IsHoveredShaderId = Shader.PropertyToID("_IsHovered");
-		private static readonly int IsSelectedShaderId = Shader.PropertyToID("_IsSelected");
 		private static readonly int IsContextMenuOpenShaderId = Shader.PropertyToID("_IsContextMenuOpen");
+		private static readonly int IsSelectedShaderId = Shader.PropertyToID("_IsSelected");
 		private static readonly int BaseTexture = Shader.PropertyToID("_BaseTexture");
 		private static readonly int BaseColor = Shader.PropertyToID("_BaseColor");
 		
@@ -27,7 +27,7 @@ namespace GameWorld.Tiles
 		{
 			if (meshRenderer == null)
 			{
-				Debug.LogWarning($"{nameof(meshRenderer)} is null. Removing the {nameof(TileShaderManager)} component on this GameObject: {gameObject.name}", this);
+				Debug.LogWarning($"{nameof(meshRenderer)} is null. Removing the {nameof(InteractionShaderManager)} component on this GameObject: {gameObject.name}", this);
 				Destroy(this);
 			}
 		}
@@ -59,21 +59,16 @@ namespace GameWorld.Tiles
 		private void OnIsContextMenuOpenValueChanged(bool value) => SetIsContextMenuOpenShaderValue(value);
 		private void OnInteractablePropertyChanged(object sender, PropertyChangedEventArgs args)
 		{
-			switch (args.PropertyName)
-			{
-				case nameof(Interactable.IsHovered):
-					SetIsHoveredShaderValue(interactable.IsHovered);
-					break;
-				case nameof(Interactable.IsSelected):
-					SetIsSelectedShaderValue(interactable.IsSelected);
-					break;
-			}
+			if (args.PropertyName == nameof(Interactable.IsHovered))
+				SetIsHoveredShaderValue(interactable.IsHovered);
+			if (args.PropertyName == nameof(Interactable.IsSelected))
+				SetIsSelectedShaderValue(interactable.IsSelected);
 		}
 
 		private void SetIsHoveredShaderValue(bool isHovered) =>
 			meshRenderer.material.SetFloat(IsHoveredShaderId, ShaderUtilities.BoolToShaderFloat(isHovered));
-		
-		private void SetIsSelectedShaderValue(bool isSelected) =>
+
+		private void SetIsSelectedShaderValue(bool isSelected) => 
 			meshRenderer.material.SetFloat(IsSelectedShaderId, ShaderUtilities.BoolToShaderFloat(isSelected));
 
 		private void SetIsContextMenuOpenShaderValue(bool isContextMenuOpen) =>

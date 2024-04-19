@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 6896444120881679524}
   - component: {fileID: 323713175569000968}
   - component: {fileID: 3362692198579881813}
-  - component: {fileID: 8050015194912243616}
+  - component: {fileID: -564846168271158495}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -173,7 +173,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 50
---- !u!114 &8050015194912243616
+--- !u!114 &-564846168271158495
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -182,11 +182,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2414322042265852574}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2fefb4e0dd847538b90004336945b20, type: 3}
+  m_Script: {fileID: 11500000, guid: 6336935f880644388ac3a9199c804290, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   baseTexture: {fileID: 0}
-  baseColor: {r: 0.6509434, g: 0, b: 0, a: 0}
+  baseColor: {r: 0.6509804, g: 0, b: 0, a: 0}
   meshRenderer: {fileID: 1173640702274741866}
   interactable: {fileID: 323713175569000968}
   contextMenuInteractions: {fileID: 8962483651604178840}
