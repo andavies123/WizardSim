@@ -170,6 +170,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   contextMenuEvents: {fileID: 11400000, guid: 35ab239d931d85347be959101007800e, type: 2}
   wizardSpawnRequest: {fileID: 11400000, guid: c0b1021543f2ead4aa6a05a612bc47fe, type: 2}
+  enemySpawnRequest: {fileID: 11400000, guid: 167c011ee629cfb4fbc772892500f9aa, type: 2}
 --- !u!114 &5786707372662330356
 MonoBehaviour:
   m_ObjectHideFlags: 0

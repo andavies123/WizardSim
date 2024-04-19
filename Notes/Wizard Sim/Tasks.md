@@ -20,10 +20,11 @@ kanban-plugin: basic
 ## <font color="orange">**Visuals Backlog**</font>
 
 - [ ] <font color="orange">**Wizard 3D Model**</font>
+- [ ] <font color="orange">**Enemy 3D Model**</font>
 - [ ] <font color="orange">**Bush 3D Model**</font>
 - [ ] <font color="orange">**Tree 3D Model**</font>
 - [ ] <font color="orange">**Rock 3D Model**</font>
-- [ ] <font color="orange">**Grass 3D Model**</font>
+- [ ] <font color="orange">**Town Hall 3D Model**</font>
 
 
 ## <font color="lightgreen">**Audio Backlog**</font>
@@ -41,12 +42,13 @@ kanban-plugin: basic
 
 ## In Progress
 
-- [ ] <font color="cyan">**Basic Enemy**</font><br><br>- [ ] Add a basic enemy prefab<br>- [ ] Basic enemy should find the nearest wizard and attack<br>- [ ] Add context menu to tile to spawn an enemy
+- [ ] <font color="cyan">**Refactoring Components**</font><br>- [ ] Look into a way to not have so many "WizardXYZ" and "EnemyXYZ" scripts
 
 
 ## Completed
 
 **Complete**
+- [x] <font color="cyan">**Basic Enemy**</font><br><br>- [x] Add a basic enemy prefab<br>- [x] Add context menu to tile to spawn an enemy
 - [x] <font color="red">**Info Window wizard health not updating**</font><br><br>**Problem**<br>When selecting a wizard, the info window will show the current health. When the wizards health changes, the info window does not update.<br><br>**Fix**<br>The interactable info text is only set once on startup, it doesn't update. Added event listeners when a wizards health changes
 - [x] <font color="cyan">**Health Context Menu Items**</font><br>- [x] Add a heal 10% menu item<br>- [x] Add a hurt 10% menu item<br>- [x] Add a Full Heal menu item<br>- [x] Add a Full Hurt menu item
 - [x] <font color="orange">**Ring Health Bar**</font>

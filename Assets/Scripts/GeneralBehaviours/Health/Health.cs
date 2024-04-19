@@ -2,7 +2,7 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace HealthComponents
+namespace GeneralBehaviours.Health
 {
 	public class Health : MonoBehaviour
 	{

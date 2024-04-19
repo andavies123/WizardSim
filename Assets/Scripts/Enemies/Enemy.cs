@@ -3,35 +3,30 @@ using GameWorld;
 using GeneralBehaviours.Health;
 using UI;
 using UnityEngine;
-using Utilities;
 
-namespace Wizards
+namespace Enemies
 {
-	public class Wizard : Entity
+	public class Enemy : Entity
 	{
-		[SerializeField] private WizardStats stats;
+		[SerializeField] private EnemyStats stats;
 
 		private Interactable _interactable;
 		
-		public string Name { get; set; }
-		
 		public Transform Transform { get; private set; }
-		public WizardStateMachine StateMachine { get; private set; }
-		public WizardMovement Movement { get; private set; }
+		public EnemyStateMachine StateMachine { get; private set; }
+		public EnemyMovement Movement { get; private set; }
 		public Health Health { get; private set; }
-
-		public override string DisplayName => Name;
-		public WizardStats Stats => stats;
+		
+		public override string DisplayName => "Enemy";
+		public EnemyStats Stats => stats;
 		
 		private void Awake()
 		{
 			Transform = transform;
-			StateMachine = GetComponent<WizardStateMachine>();
-			Movement = GetComponent<WizardMovement>();
+			StateMachine = GetComponent<EnemyStateMachine>();
+			Movement = GetComponent<EnemyMovement>();
 			Health = GetComponent<Health>();
 			_interactable = GetComponent<Interactable>();
-			
-			Name = NameGenerator.GetNewName();
 
 			Health.CurrentHealthChanged += OnCurrentHealthChanged;
 		}
@@ -40,7 +35,7 @@ namespace Wizards
 		{
 			if (_interactable)
 			{
-				_interactable.TitleText = Name;
+				_interactable.TitleText = DisplayName;
 				UpdateInteractableInfoText();
 			}
 		}
@@ -53,7 +48,7 @@ namespace Wizards
 		private void UpdateInteractableInfoText()
 		{
 			if (_interactable)
-				_interactable.InfoText = $"Wizard - {Health.CurrentHealth:0}/{Health.MaxHealth:0} ({Health.CurrentHealth.PercentageOf(Health.MaxHealth):0}%)";
+				_interactable.InfoText = $"Enemy - {Health.CurrentHealth:0}/{Health.MaxHealth:0} ({Health.CurrentHealth.PercentageOf(Health.MaxHealth):0}%)";
 		}
 
 		private void OnCurrentHealthChanged(object sender, HealthChangedEventArgs args) => UpdateInteractableInfoText();

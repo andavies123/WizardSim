@@ -19,7 +19,7 @@ namespace GameWorld.Tiles.ContextMenu
 			Vector2 tileWorldPosition = Tile.ParentWorld.WorldPositionFromTile(Tile, centerOfTile: true);
 			Vector3 spawnPosition = new(tileWorldPosition.x, 1, tileWorldPosition.y);
 			
-			_wizardSpawnRequest.RaiseEvent(spawnPosition);
+			_wizardSpawnRequest.RaiseEvent(Tile, spawnPosition);
 		}
 	}
 }

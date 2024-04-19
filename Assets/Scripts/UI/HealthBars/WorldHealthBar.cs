@@ -1,5 +1,5 @@
 ﻿using Extensions;
-using HealthComponents;
+using GeneralBehaviours.Health;
 using UnityEngine;
 using UnityEngine.UI;
 

@@ -1,12 +1,12 @@
 ﻿using StateMachines;
 
-namespace Wizards
+namespace Enemies.States
 {
-	public abstract class WizardState : IState
+	public abstract class EnemyState : IState
 	{
-		protected Wizard Wizard;
+		protected readonly Enemy Enemy;
 
-		protected WizardState(Wizard wizard) => Wizard = wizard;
+		protected EnemyState(Enemy enemy) => Enemy = enemy;
 
 		public abstract string DisplayName { get; }
 		public abstract string DisplayStatus { get; protected set; }

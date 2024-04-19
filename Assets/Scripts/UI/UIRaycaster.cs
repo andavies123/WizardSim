@@ -1,4 +1,4 @@
-﻿using HealthComponents;
+﻿using GeneralBehaviours.Health;
 using UI.HealthBars;
 using UnityEngine;
 

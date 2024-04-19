@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HealthComponents
+namespace GeneralBehaviours.Health
 {
 	public class HealthChangedEventArgs : EventArgs
 	{

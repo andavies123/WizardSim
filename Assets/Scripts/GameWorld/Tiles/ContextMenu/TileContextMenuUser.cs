@@ -8,6 +8,7 @@ namespace GameWorld.Tiles.ContextMenu
 	public class TileContextMenuUser : ContextMenuUser<TileContextMenuItem>
 	{
 		[SerializeField] private GameEventVector3 wizardSpawnRequest;
+		[SerializeField] private GameEventVector3 enemySpawnRequest;
 		
 		private Tile _tile;
 
@@ -20,7 +21,8 @@ namespace GameWorld.Tiles.ContextMenu
 
 			MenuItems.AddRange(new TileContextMenuItem[]
 			{
-				new SpawnWizardContextMenuItem(_tile, wizardSpawnRequest)
+				new SpawnWizardContextMenuItem(_tile, wizardSpawnRequest),
+				new SpawnEnemyContextMenuItem(_tile, enemySpawnRequest)
 			});
 		}
 	}
