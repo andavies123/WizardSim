@@ -1,12 +1,13 @@
-﻿using UnityEngine;
+﻿using Stats;
+using UnityEngine;
 
 namespace Wizards
 {
-	[CreateAssetMenu(menuName = "Create WizardStats", fileName = "WizardStats", order = 0)]
+	[CreateAssetMenu(menuName = "Stats/Wizard", fileName = "WizardStats", order = 0)]
 	public class WizardStats : ScriptableObject
 	{
-		[SerializeField] private float movementSpeed = 2;
+		[SerializeField] private MovementStats movementStats;
 
-		public float MovementSpeed => movementSpeed;
+		public MovementStats MovementStats => movementStats;
 	}
 }

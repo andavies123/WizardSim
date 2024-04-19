@@ -1,13 +1,14 @@
-﻿using UnityEngine;
+﻿using GameWorld;
+using UnityEngine;
 
-namespace Wizards
+namespace GeneralBehaviours
 {
-	[RequireComponent(typeof(Wizard))]
+	[RequireComponent(typeof(Entity))]
 	[RequireComponent(typeof(Rigidbody))]
-	public class WizardMovement : MonoBehaviour
+	public class Movement : MonoBehaviour
 	{
+		private Entity _entity;
 		private Transform _transform;
-		private Wizard _wizard;
 		private Rigidbody _rigidbody;
 
 		private Vector3? _targetPosition;
@@ -29,8 +30,8 @@ namespace Wizards
 		private void Awake()
 		{
 			_transform = transform;
-			_wizard = GetComponent<Wizard>();
 			_rigidbody = GetComponent<Rigidbody>();
+			_entity = GetComponent<Entity>();
 		}
 
 		private void FixedUpdate()
@@ -40,7 +41,7 @@ namespace Wizards
 
 			Vector3 currentPosition = _transform.position;
 			Vector3 direction = (_targetPosition.Value - currentPosition).normalized;
-			Vector3 newPosition = currentPosition + direction * (_wizard.Stats.MovementSpeed * Time.fixedDeltaTime);
+			Vector3 newPosition = currentPosition + direction * (_entity.MovementStats.Speed * Time.fixedDeltaTime);
 			_rigidbody.MovePosition(newPosition);
 
 			if (Vector3.Distance(_transform.position, _targetPosition.Value) <= 0.1f)

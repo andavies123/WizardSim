@@ -1,6 +1,8 @@
 ﻿using Extensions;
 using GameWorld;
+using GeneralBehaviours;
 using GeneralBehaviours.Health;
+using Stats;
 using UI;
 using UnityEngine;
 
@@ -14,17 +16,18 @@ namespace Enemies
 		
 		public Transform Transform { get; private set; }
 		public EnemyStateMachine StateMachine { get; private set; }
-		public EnemyMovement Movement { get; private set; }
+		public Movement Movement { get; private set; }
 		public Health Health { get; private set; }
 		
 		public override string DisplayName => "Enemy";
+		public override MovementStats MovementStats => Stats.MovementStats;
 		public EnemyStats Stats => stats;
 		
 		private void Awake()
 		{
 			Transform = transform;
 			StateMachine = GetComponent<EnemyStateMachine>();
-			Movement = GetComponent<EnemyMovement>();
+			Movement = GetComponent<Movement>();
 			Health = GetComponent<Health>();
 			_interactable = GetComponent<Interactable>();
 

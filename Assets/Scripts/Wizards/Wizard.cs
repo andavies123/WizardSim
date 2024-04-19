@@ -1,6 +1,8 @@
 ﻿using Extensions;
 using GameWorld;
+using GeneralBehaviours;
 using GeneralBehaviours.Health;
+using Stats;
 using UI;
 using UnityEngine;
 using Utilities;
@@ -17,17 +19,18 @@ namespace Wizards
 		
 		public Transform Transform { get; private set; }
 		public WizardStateMachine StateMachine { get; private set; }
-		public WizardMovement Movement { get; private set; }
+		public Movement Movement { get; private set; }
 		public Health Health { get; private set; }
 
 		public override string DisplayName => Name;
+		public override MovementStats MovementStats => Stats.MovementStats;
 		public WizardStats Stats => stats;
 		
 		private void Awake()
 		{
 			Transform = transform;
 			StateMachine = GetComponent<WizardStateMachine>();
-			Movement = GetComponent<WizardMovement>();
+			Movement = GetComponent<Movement>();
 			Health = GetComponent<Health>();
 			_interactable = GetComponent<Interactable>();
 			

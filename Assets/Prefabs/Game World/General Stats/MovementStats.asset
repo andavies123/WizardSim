@@ -9,7 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f30855e60d74cbaa897d4595396368d, type: 3}
-  m_Name: DefaultWizardStats
+  m_Script: {fileID: 11500000, guid: 6bdb45ba1d784b2189246b1ffc09a59c, type: 3}
+  m_Name: MovementStats
   m_EditorClassIdentifier: 
-  movementSpeed: 2
+  speed: 2
+  rotationSpeed: 1
