@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 namespace Game
 {
+	[DisallowMultipleComponent]
 	public class GameManager : MonoBehaviour
 	{
 		[SerializeField] private GameSceneInputManager inputManager;
@@ -14,9 +15,11 @@ namespace Game
 		
 		private bool _isGamePaused = false;
 
-		public event Action GamePaused;
-		public event Action GameResumed;
+		public event EventHandler GamePaused;
+		public event EventHandler GameResumed;
 
+		public static GameManager Instance { get; private set; }
+		
 		public void PauseGame()
 		{
 			if (_isGamePaused)
@@ -24,7 +27,7 @@ namespace Game
 			
 			_isGamePaused = true;
 			Time.timeScale = 0f;
-			GamePaused?.Invoke();
+			GamePaused?.Invoke(this, EventArgs.Empty);
 		}
 
 		public void ResumeGame()
@@ -34,7 +37,7 @@ namespace Game
 			
 			_isGamePaused = false;
 			Time.timeScale = 1f;
-			GameResumed?.Invoke();
+			GameResumed?.Invoke(this, EventArgs.Empty);
 		}
 
 		public void QuitGame()
@@ -42,9 +45,18 @@ namespace Game
 			// Todo: Add a save game call here
 			SceneManager.LoadScene(mainMenuSceneName);
 		}
-		
-		private void Start()
+
+		private void Awake()
 		{
+			if (Instance)
+			{
+				Debug.Log($"Unable to have multiple {nameof(GameManager)}. Deleting this instance.", gameObject);
+				Destroy(this);
+				return;
+			}
+
+			Instance = this;
+			
 			inputManager.GameplayInputState.PauseActionPerformed += PauseGame;
 			inputManager.PauseMenuInputState.ResumeActionPerformed += ResumeGame;
 		}

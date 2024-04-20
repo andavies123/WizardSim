@@ -9,7 +9,6 @@ namespace InputStates
 	public class GameSceneInputManager : MonoBehaviour
 	{
 		[Header("Components")]
-		[SerializeField] private GameManager gameManager;
 		[SerializeField] private InteractableRaycaster interactableRaycaster;
 		
 		[Header("Events")]
@@ -28,8 +27,8 @@ namespace InputStates
 			PauseMenuInputState = new PauseMenuInputState();
 			InteractionInputState = new InteractionInputState();
 			
-			gameManager.GamePaused += OnGamePaused;
-			gameManager.GameResumed += OnGameResumed;
+			GameManager.Instance.GamePaused += OnGamePaused;
+			GameManager.Instance.GameResumed += OnGameResumed;
 			
 			interactionEvents.InteractionRequested += OnInteractionRequested;
 			InteractionInputState.CancelInteractionActionPerformed += OnInteractionCanceled;
@@ -40,16 +39,16 @@ namespace InputStates
 
 		private void OnDestroy()
 		{
-			gameManager.GamePaused -= OnGamePaused;
-			gameManager.GameResumed -= OnGameResumed;
+			GameManager.Instance.GamePaused -= OnGamePaused;
+			GameManager.Instance.GameResumed -= OnGameResumed;
 
 			interactionEvents.InteractionRequested -= OnInteractionRequested;
 			InteractionInputState.CancelInteractionActionPerformed -= OnInteractionCanceled;
 			interactableRaycaster.InteractableSelectedPrimary -= OnInteractableSelected;
 		}
 		
-		private void OnGamePaused() => SetActiveInputState(PauseMenuInputState);
-		private void OnGameResumed() => SetActiveInputState(GameplayInputState);
+		private void OnGamePaused(object sender, EventArgs args) => SetActiveInputState(PauseMenuInputState);
+		private void OnGameResumed(object sender, EventArgs args) => SetActiveInputState(GameplayInputState);
 
 		private void OnInteractionRequested(Action<MonoBehaviour> interactionResponse)
 		{

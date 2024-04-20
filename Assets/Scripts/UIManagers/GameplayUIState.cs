@@ -10,7 +10,7 @@ using ContextMenu = UI.ContextMenus.ContextMenu;
 
 namespace UIManagers
 {
-	public class GameplayUIManager : UIManager
+	public class GameplayUIState : UIState
 	{
 		[Header("UI Elements")]
 		[SerializeField] private Button pauseButton;
@@ -25,12 +25,10 @@ namespace UIManagers
 		[Header("General Components")]
 		[SerializeField] private InteractableRaycaster interactableRaycaster;
 		
-		public event Action PauseButtonPressed;
-		
-		protected override void Awake()
+		public event EventHandler PauseButtonPressed;
+
+		protected override void OnStateEnabled()
 		{
-			base.Awake();
-			
 			if (pauseButton)
 				pauseButton.onClick.AddListener(OnPauseButtonPressed);
 
@@ -42,6 +40,21 @@ namespace UIManagers
 			
 			if (interactableRaycaster)
 				interactableRaycaster.InteractableSelectedPrimary += OnInteractableSelectedPrimary;
+		}
+
+		protected override void OnStateDisabled()
+		{
+			if (pauseButton)
+				pauseButton.onClick.RemoveListener(OnPauseButtonPressed);
+
+			if (contextMenu && contextMenuEvents)
+				contextMenuEvents.ContextMenuOpenRequested -= OnContextMenuOpenRequested;
+
+			if (contextMenu)
+				contextMenu.MenuClosed -= OnContextMenuClosed;
+			
+			if (interactableRaycaster)
+				interactableRaycaster.InteractableSelectedPrimary -= OnInteractableSelectedPrimary;
 		}
 
 		protected void Update()
@@ -58,22 +71,7 @@ namespace UIManagers
 			}
 		}
 
-		protected void OnDestroy()
-		{
-			if (pauseButton)
-				pauseButton.onClick.RemoveListener(OnPauseButtonPressed);
-
-			if (contextMenuEvents)
-				contextMenuEvents.ContextMenuOpenRequested -= OnContextMenuOpenRequested;
-
-			if (contextMenu)
-				contextMenu.MenuClosed -= OnContextMenuClosed;
-
-			if (interactableRaycaster)
-				interactableRaycaster.InteractableSelectedPrimary -= OnInteractableSelectedPrimary;
-		}
-
-		private void OnPauseButtonPressed() => PauseButtonPressed?.Invoke();
+		private void OnPauseButtonPressed() => PauseButtonPressed?.Invoke(this, EventArgs.Empty);
 
 		private void OnContextMenuOpenRequested(ContextMenuUser user)
 		{

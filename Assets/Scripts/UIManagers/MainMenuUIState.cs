@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace UIManagers
 {
-	public class MainMenuUIManager : MonoBehaviour
+	public class MainMenuUIState : UIState
 	{
 		[SerializeField] private string gameplaySceneName;
         
@@ -12,21 +12,20 @@ namespace UIManagers
         [SerializeField] private Button playButton;
         [SerializeField] private Button quitButton;
 
-        private void Awake()
+        protected override void OnStateEnabled()
         {
 	        playButton.onClick.AddListener(OnPlayButtonPressed);
 	        quitButton.onClick.AddListener(OnQuitButtonPressed);
         }
 
-        private void OnDestroy()
+        protected override void OnStateDisabled()
         {
 	        playButton.onClick.RemoveListener(OnPlayButtonPressed);
 	        quitButton.onClick.RemoveListener(OnQuitButtonPressed);
         }
 
         private void OnPlayButtonPressed() => SceneManager.LoadScene(gameplaySceneName);
-
-		private void OnQuitButtonPressed()
+		private static void OnQuitButtonPressed()
 		{
 			#if UNITY_STANDALONE
 			Application.Quit();

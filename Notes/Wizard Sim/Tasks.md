@@ -42,12 +42,14 @@ kanban-plugin: basic
 
 ## In Progress
 
-- [ ] <font color="cyan">**Refactoring Components**</font><br>- [ ] Look into a way to not have so many "WizardXYZ" and "EnemyXYZ" scripts
+- [ ] <font color="cyan">**Game State**</font><br>- [ ] Create a game state object<br>- [ ] Game state should combine input states and ui states<br>- [ ] Create a game state manager class
 
 
 ## Completed
 
 **Complete**
+- [x] <font color="cyan">**UI Manager Updates**</font><br>- [x] Make UI Manager a Singleton<br>- [x] Have a public CurrentUIState or something like that
+- [x] <font color="cyan">**Refactoring Components**</font><br>- [x] Look into a way to not have so many "WizardXYZ" and "EnemyXYZ" scripts
 - [x] <font color="cyan">**Basic Enemy**</font><br><br>- [x] Add a basic enemy prefab<br>- [x] Add context menu to tile to spawn an enemy
 - [x] <font color="red">**Info Window wizard health not updating**</font><br><br>**Problem**<br>When selecting a wizard, the info window will show the current health. When the wizards health changes, the info window does not update.<br><br>**Fix**<br>The interactable info text is only set once on startup, it doesn't update. Added event listeners when a wizards health changes
 - [x] <font color="cyan">**Health Context Menu Items**</font><br>- [x] Add a heal 10% menu item<br>- [x] Add a hurt 10% menu item<br>- [x] Add a Full Heal menu item<br>- [x] Add a Full Hurt menu item
