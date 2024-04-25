@@ -3,11 +3,11 @@ using UnityEngine.InputSystem;
 
 namespace InputStates
 {
-	public class PauseMenuInputState : IInputState
+	public class PauseMenuInput : IInput
 	{
 		private readonly PlayerInputActions _playerInputActions = new();
-		
-		public event Action ResumeActionPerformed;
+
+		public event EventHandler ResumeActionPerformed;
 
 		public bool ShowInteractions => false;
 
@@ -24,7 +24,7 @@ namespace InputStates
 
 			_playerInputActions.PauseMenu.ResumeGame.performed -= OnResumeActionPerformed;
 		}
-		
-		private void OnResumeActionPerformed(InputAction.CallbackContext context) => ResumeActionPerformed?.Invoke();
+
+		private void OnResumeActionPerformed(InputAction.CallbackContext context) => ResumeActionPerformed?.Invoke(this, EventArgs.Empty);
 	}
 }

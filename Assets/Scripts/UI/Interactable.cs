@@ -13,8 +13,8 @@ namespace UI
 		private string _titleText = string.Empty;
 		private string _infoText = string.Empty;
 
-		public event Action PrimaryActionSelected;
-		public event Action SecondaryActionSelected;
+		public event EventHandler PrimaryActionSelected;
+		public event EventHandler SecondaryActionSelected;
 
 		public bool IsHovered
 		{
@@ -40,19 +40,19 @@ namespace UI
 			set => SetValue(ref _infoText, value);
 		}
 
-		public void SelectPrimaryAction() => PrimaryActionSelected?.Invoke();
-		public void SelectSecondaryAction() => SecondaryActionSelected?.Invoke();
+		public void SelectPrimaryAction() => PrimaryActionSelected?.Invoke(this, EventArgs.Empty);
+		public void SelectSecondaryAction() => SecondaryActionSelected?.Invoke(this, EventArgs.Empty);
 
 		#region INotifyPropertyChanged Implementation
 
 		public event PropertyChangedEventHandler PropertyChanged;
 		
-		protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+		protected void OnPropertyChanged([CallerMemberName]string propertyName = null)
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 
-		protected void SetValue<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+		protected void SetValue<T>(ref T field, T value, [CallerMemberName]string propertyName = null)
 		{
 			if (EqualityComparer<T>.Default.Equals(field, value)) 
 				return;

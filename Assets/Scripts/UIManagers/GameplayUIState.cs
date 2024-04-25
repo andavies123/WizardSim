@@ -1,10 +1,8 @@
 using System;
-using CameraComponents;
 using UI;
 using UI.ContextMenus;
 using UI.InfoWindows;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using ContextMenu = UI.ContextMenus.ContextMenu;
 
@@ -21,11 +19,14 @@ namespace UIManagers
 		[Header("Context Menu")]
 		[SerializeField] private ContextMenu contextMenu;
 		[SerializeField] private ContextMenuEvents contextMenuEvents;
-
-		[Header("General Components")]
-		[SerializeField] private InteractableRaycaster interactableRaycaster;
 		
 		public event EventHandler PauseButtonPressed;
+
+		public void OpenInfoWindow(Interactable interactable) => infoWindow.OpenWindow(interactable);
+		public void CloseInfoWindow() => infoWindow.CloseWindow();
+		
+		public void OpenContextMenu(ContextMenuUser contextMenuUser) => contextMenu.OpenMenu(contextMenuUser);
+		public void CloseContextMenu() => contextMenu.CloseMenu();
 
 		protected override void OnStateEnabled()
 		{
@@ -37,9 +38,6 @@ namespace UIManagers
 
 			if (contextMenu)
 				contextMenu.MenuClosed += OnContextMenuClosed;
-			
-			if (interactableRaycaster)
-				interactableRaycaster.InteractableSelectedPrimary += OnInteractableSelectedPrimary;
 		}
 
 		protected override void OnStateDisabled()
@@ -52,34 +50,16 @@ namespace UIManagers
 
 			if (contextMenu)
 				contextMenu.MenuClosed -= OnContextMenuClosed;
-			
-			if (interactableRaycaster)
-				interactableRaycaster.InteractableSelectedPrimary -= OnInteractableSelectedPrimary;
-		}
-
-		protected void Update()
-		{
-			if (contextMenu.IsOpen || infoWindow.IsOpen)
-			{
-				if (Input.GetMouseButtonDown(0) && 
-				    !EventSystem.current.IsPointerOverGameObject() &&
-				    !interactableRaycaster.IsInteractableCurrentlyHovered)
-				{
-					contextMenu.CloseMenu();
-					infoWindow.CloseWindow();
-				}
-			}
 		}
 
 		private void OnPauseButtonPressed() => PauseButtonPressed?.Invoke(this, EventArgs.Empty);
+		private void OnContextMenuClosed(object sender, EventArgs args) => CloseInfoWindow();
 
 		private void OnContextMenuOpenRequested(ContextMenuUser user)
 		{
-			contextMenu.OpenMenu(user);
-			infoWindow.OpenWindow(user.GetComponent<Interactable>());
+			OpenContextMenu(user);
+			OpenInfoWindow(user.GetComponent<Interactable>());
 		}
 
-		private void OnContextMenuClosed() => infoWindow.CloseWindow();
-		private void OnInteractableSelectedPrimary(Interactable interactable) => infoWindow.OpenWindow(interactable);
 	}
 }

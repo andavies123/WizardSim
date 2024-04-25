@@ -1,28 +1,29 @@
 ﻿using System;
+using InputStates.Enums;
+using InputStates.InputEventArgs;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace InputStates
 {
-	public class GameplayInputState : IInputState
+	public class GameplayInput : IInput
 	{
-		private PlayerInputActions _playerInputActions;
+		private PlayerInputActions _playerInputActions = new();
 		
 		private InputAction.CallbackContext _latestMoveContext;
 		private InputAction.CallbackContext _latestLookContext;
 		private InputAction.CallbackContext _latestVerticalMoveContext;
         
-		public event Action PauseActionPerformed;
-		public event Action MoveActionStarted;
-		public event Action MoveActionEnded;
-		public event Action LookActionStarted;
-		public event Action LookActionEnded;
-		public event Action VerticalMoveActionStarted;
-		public event Action VerticalMoveActionEnded;
-		public event Action CameraLookActivatedStarted;
-		public event Action CameraLookActivatedEnded;
-		public event Action CameraZoomInPerformed;
-		public event Action CameraZoomOutPerformed;
+		public event EventHandler PauseActionPerformed;
+		public event EventHandler MoveActionStarted;
+		public event EventHandler MoveActionEnded;
+		public event EventHandler LookActionStarted;
+		public event EventHandler LookActionEnded;
+		public event EventHandler VerticalMoveActionStarted;
+		public event EventHandler VerticalMoveActionEnded;
+		public event EventHandler CameraLookActivatedStarted;
+		public event EventHandler CameraLookActivatedEnded;
+		public event EventHandler<CameraZoomInputEventArgs> CameraZoomInputPerformed;
 
 		public Vector3 CurrentMoveValue
 		{
@@ -41,7 +42,7 @@ namespace InputStates
 		public bool IsLookActive { get; private set; }
 		public bool IsVerticalMoveActive { get; private set; }
 		public bool IsCameraLookActivated { get; private set; }
-		
+
 		public void Enable()
 		{
 			_playerInputActions ??= new PlayerInputActions();
@@ -91,93 +92,70 @@ namespace InputStates
 			_playerInputActions.Gameplay.CameraZoom.performed -= OnCameraZoomActionPerformed;
 		}
 
-		#region Pause Action
-		
-		private void OnPauseActionPerformed(InputAction.CallbackContext callbackContext) => PauseActionPerformed?.Invoke();
-
-		#endregion
-
-		#region Move Action
+		private void OnPauseActionPerformed(InputAction.CallbackContext callbackContext) => PauseActionPerformed?.Invoke(this, EventArgs.Empty);
 
 		private void OnMoveActionStarted(InputAction.CallbackContext callbackContext)
 		{
 			IsMoveActive = true;
-			MoveActionStarted?.Invoke();
+			MoveActionStarted?.Invoke(this, EventArgs.Empty);
 		}
 
 		private void OnMoveActionCanceled(InputAction.CallbackContext callbackContext)
 		{
 			IsMoveActive = false;
-			MoveActionEnded?.Invoke();
+			MoveActionEnded?.Invoke(this, EventArgs.Empty);
 		}
 
 		private void OnMoveActionPerformed(InputAction.CallbackContext callbackContext) => _latestMoveContext = callbackContext;
 
-		#endregion
-
-		#region Vertical Move Action
-
 		private void OnVerticalMoveActionStarted(InputAction.CallbackContext callbackContext)
 		{
 			IsVerticalMoveActive = true;
-			VerticalMoveActionStarted?.Invoke();
+			VerticalMoveActionStarted?.Invoke(this, EventArgs.Empty);
 		}
 		
 		private void OnVerticalMoveActionCanceled(InputAction.CallbackContext callbackContext)
 		{
 			IsVerticalMoveActive = false;
-			VerticalMoveActionEnded?.Invoke();
+			VerticalMoveActionEnded?.Invoke(this, EventArgs.Empty);
 		}
 
 		private void OnVerticalMoveActionPerformed(InputAction.CallbackContext callbackContext) => _latestVerticalMoveContext = callbackContext;
 
-		#endregion
-
-		#region Camera Look Action
-
 		private void OnCameraLookActionStarted(InputAction.CallbackContext callbackContext)
 		{
 			IsLookActive = true;
-			LookActionStarted?.Invoke();
+			LookActionStarted?.Invoke(this, EventArgs.Empty);
 		}
 
 		private void OnCameraLookActionCanceled(InputAction.CallbackContext callbackContext)
 		{
 			IsLookActive = false;
-			LookActionEnded?.Invoke();
+			LookActionEnded?.Invoke(this, EventArgs.Empty);
 		}
 
 		private void OnCameraLookActionPerformed(InputAction.CallbackContext callbackContext) => _latestLookContext = callbackContext;
 
-		#endregion
-
-		#region Camera Look Activate Action
-
 		private void OnCameraLookActivateActionStarted(InputAction.CallbackContext callbackContext)
 		{
 			IsCameraLookActivated = true;
-			CameraLookActivatedStarted?.Invoke();
+			CameraLookActivatedStarted?.Invoke(this, EventArgs.Empty);
 		}
 
 		private void OnCameraLookActivateActionCanceled(InputAction.CallbackContext callbackContext)
 		{
 			IsCameraLookActivated = false;
-			CameraLookActivatedEnded?.Invoke();
+			CameraLookActivatedEnded?.Invoke(this, EventArgs.Empty);
 		}
-
-		#endregion
-
-		#region Camera Zoom Action
 
 		private void OnCameraZoomActionPerformed(InputAction.CallbackContext callbackContext)
 		{
 			float inputValue = callbackContext.ReadValue<float>();
-			if (inputValue < 0)
-				CameraZoomInPerformed?.Invoke();
-			else if (inputValue > 0)
-				CameraZoomOutPerformed?.Invoke();
-		}
+			if (inputValue == 0)
+				return;
 
-		#endregion
+			ZoomType zoomType = inputValue < 0 ? ZoomType.In : ZoomType.Out;
+			CameraZoomInputPerformed?.Invoke(this, new CameraZoomInputEventArgs(zoomType));
+		}
 	}
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace UIManagers
 {
+	[DisallowMultipleComponent]
 	public class UIManager : MonoBehaviour
 	{
 		[SerializeField] private GameplayUIState gameplayUIState;

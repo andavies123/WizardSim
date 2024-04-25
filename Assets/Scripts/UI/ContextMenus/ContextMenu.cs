@@ -15,7 +15,7 @@ namespace UI.ContextMenus
 		private GameObjectPool _menuItemPool;
 		private ContextMenuUser _contextMenuUser;
 
-		public event Action MenuClosed;
+		public event EventHandler MenuClosed;
 
 		public bool IsOpen { get; private set; }
 
@@ -45,7 +45,7 @@ namespace UI.ContextMenus
 				_menuItemPool.ReleaseToPool(menuItemUI.gameObject);
 			_contextMenuItemUIs.Clear();
 			
-			MenuClosed?.Invoke();
+			MenuClosed?.Invoke(this, EventArgs.Empty);
 		}
 
 		private void Awake()

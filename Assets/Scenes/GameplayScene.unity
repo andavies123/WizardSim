@@ -172,7 +172,7 @@ MonoBehaviour:
   entityPrefab: {fileID: 2414322042265852574, guid: acf0f75cea44c4242994f8240489675b, type: 3}
   initialSpawns: 50
   spawnCenter: {x: 0, y: 0, z: 0}
-  spawnRadius: 100
+  spawnRadius: 10
   spawnRequestEvent: {fileID: 11400000, guid: 167c011ee629cfb4fbc772892500f9aa, type: 2}
 --- !u!114 &262803725
 MonoBehaviour:
@@ -196,7 +196,7 @@ GameObject:
   m_Component:
   - component: {fileID: 276745013}
   - component: {fileID: 276745016}
-  - component: {fileID: 276745017}
+  - component: {fileID: 276745018}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -231,9 +231,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2db150c6ef314bda9a88dc7b21b16bdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputManager: {fileID: 276745017}
-  mainMenuSceneName: MainMenuScene
---- !u!114 &276745017
+--- !u!114 &276745018
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -242,9 +240,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 276745012}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 919a7249e49b4d3eba68b2f4b1da2f03, type: 3}
+  m_Script: {fileID: 11500000, guid: 46fcce4a3a994f59b2ba6c69c5add84d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameplayUIState: {fileID: 688369681}
+  pauseMenuUIState: {fileID: 516069490}
   interactableRaycaster: {fileID: 391488598}
   interactionEvents: {fileID: 11400000, guid: 89a1d675a54ad9c4aa8a9f2d62d3ea13, type: 2}
 --- !u!1 &305748071
@@ -428,7 +428,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCamera: {fileID: 1688352104}
-  inputManager: {fileID: 276745017}
+  inputManager: {fileID: 0}
   cameraMoveSpeed: 20
   cameraRotationSpeed: 0.5
   zoomSpeed: 5
@@ -962,7 +962,6 @@ MonoBehaviour:
   infoWindow: {fileID: 1685961581}
   contextMenu: {fileID: 1017350128}
   contextMenuEvents: {fileID: 11400000, guid: 35ab239d931d85347be959101007800e, type: 2}
-  interactableRaycaster: {fileID: 391488598}
 --- !u!1 &709951699
 GameObject:
   m_ObjectHideFlags: 0
@@ -2451,7 +2450,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1614439690}
-  - component: {fileID: 1614439691}
   - component: {fileID: 1614439692}
   m_Layer: 0
   m_Name: UI
@@ -2477,20 +2475,6 @@ Transform:
   - {fileID: 846429020}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1614439691
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1614439689}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8628e17bc5348f243b23ca9c4b5d1265, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameplayUIState: {fileID: 688369681}
-  pauseMenuUIState: {fileID: 516069490}
 --- !u!114 &1614439692
 MonoBehaviour:
   m_ObjectHideFlags: 0

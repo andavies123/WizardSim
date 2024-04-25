@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace UIManagers
 {
@@ -6,6 +7,8 @@ namespace UIManagers
 	public abstract class UIState : MonoBehaviour
 	{
 		private Canvas _canvas;
+
+		public bool IsMouseOverGameObject => EventSystem.current.IsPointerOverGameObject();
 
 		public void Enable()
 		{

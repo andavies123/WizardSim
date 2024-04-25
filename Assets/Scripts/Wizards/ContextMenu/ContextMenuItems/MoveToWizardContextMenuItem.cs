@@ -17,7 +17,7 @@ namespace Wizards.ContextMenu.ContextMenuItems
 
 		protected override void OnMenuItemSelected()
 		{
-			_interactionEvents.RequestInteraction(OnInteraction);
+			_interactionEvents.RequestInteraction(Wizard, OnInteraction);
 		}
 
 		private void OnInteraction(MonoBehaviour component)
@@ -28,6 +28,7 @@ namespace Wizards.ContextMenu.ContextMenuItems
 			Vector3 tilePosition = tile.Transform.position;
 			Vector3 moveToPosition = new(tilePosition.x, Wizard.Transform.position.y, tilePosition.z);
 			Wizard.StateMachine.MoveTo(moveToPosition);
+			_interactionEvents.EndInteraction(Wizard);
 		}
 	}
 }

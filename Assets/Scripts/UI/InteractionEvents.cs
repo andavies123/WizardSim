@@ -6,17 +6,17 @@ namespace UI
 	[CreateAssetMenu(menuName = "Interaction Events", fileName = "InteractionEvents", order = 0)]
 	public class InteractionEvents : ScriptableObject
 	{
-		public event Action<Action<MonoBehaviour>> InteractionRequested;
-		public event Action InteractionCanceled;
+		public event EventHandler<InteractionRequestEventArgs> InteractionRequested;
+		public event EventHandler InteractionEnded;
 
-		public void RequestInteraction(Action<MonoBehaviour> onInteraction)
+		public void RequestInteraction(object sender, Action<MonoBehaviour> onInteraction)
 		{
-			InteractionRequested?.Invoke(onInteraction);
+			InteractionRequested?.Invoke(sender, new InteractionRequestEventArgs(onInteraction));
 		}
 
-		public void CancelInteraction()
+		public void EndInteraction(object sender)
 		{
-			InteractionCanceled?.Invoke();
+			InteractionEnded?.Invoke(sender, EventArgs.Empty);
 		}
 	}
 }

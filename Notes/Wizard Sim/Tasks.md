@@ -7,6 +7,7 @@ kanban-plugin: basic
 ## <font color="lightblue">**Card Templates**</font>
 
 - [ ] <font color="orange">**Visuals Template**</font>
+- [ ] <font color="violet">**Documentation Template**</font>
 - [ ] <font color="lightgreen">**Audio Template**</font>
 - [ ] <font color="cyan">**Task Template**</font><br>- [ ] task
 - [ ] <font color="red">**Bug Template**</font><br><br>**Problem**<br>Describe Here<br><br>**Fix**<br>Not fixed yet
@@ -17,6 +18,11 @@ kanban-plugin: basic
 - [ ] <font color="red">**Bug Template**</font><br><br>**Problem**<br>When opening up the context menu on an interactable then opening up an info window on a different interactable, the context menu does not close<br><br>**Fix**<br>Not fixed yet
 
 
+## Documentation
+
+- [ ] <font color="violet">**Add a diagram for the UIManager**</font>
+
+
 ## <font color="orange">**Visuals Backlog**</font>
 
 - [ ] <font color="orange">**Wizard 3D Model**</font>
@@ -25,6 +31,7 @@ kanban-plugin: basic
 - [ ] <font color="orange">**Tree 3D Model**</font>
 - [ ] <font color="orange">**Rock 3D Model**</font>
 - [ ] <font color="orange">**Town Hall 3D Model**</font>
+- [ ] <font color="orange">**Settings Menu**</font><br><br>- [ ] Add UI for pause menu settings menu<br>- [ ] Add button on pause menu to go to the settings menu<br>- [ ] Add back button to go back to main pause menu<br>- [ ] Add tabbed area for different types of settings
 
 
 ## <font color="lightgreen">**Audio Backlog**</font>
@@ -38,11 +45,12 @@ kanban-plugin: basic
 - [ ] <font color="cyan">**WorldObject Architecture**</font><br><br>- [ ] Create the architecture for world objects such as rocks, trees, bushes<br>- [ ] Add tile context menu items to place these objects for testing
 - [ ] <font color="cyan">**Save System**</font><br>- [ ] Add save pause menu button<br>- [ ] Game world should be saved<br>- [ ] Wizard stats should be saved<br>- [ ] Add load main menu button
 - [ ] <font color="cyan">**Redo Info/Context Menu**</font><br>- [ ] Info/Context Menu should not be incharge of editing the Interactable info
+- [ ] <font color="cyan">**Settings Menu**</font><br>- [ ] Wire up buttons for settings menu<br>- [ ] Wire up pause menu settings button
 
 
 ## In Progress
 
-- [ ] <font color="cyan">**Game State**</font><br>- [ ] Create a game state object<br>- [ ] Game state should combine input states and ui states<br>- [ ] Create a game state manager class
+- [ ] <font color="cyan">**Game State**</font><br>- [x] Create a game state object<br>- [x] Game state should combine input states and ui states<br>- [x] Create a game state manager class<br>- [ ] Have each game state have their own ui state machine and input state machine
 
 
 ## Completed

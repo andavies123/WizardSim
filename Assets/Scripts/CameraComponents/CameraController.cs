@@ -1,4 +1,7 @@
-﻿using InputStates;
+﻿using Game;
+using InputStates;
+using InputStates.Enums;
+using InputStates.InputEventArgs;
 using UnityEngine;
 
 namespace CameraComponents
@@ -7,7 +10,6 @@ namespace CameraComponents
 	{
 		[Header("Components")]
 		[SerializeField] private Camera playerCamera;
-		[SerializeField] private GameSceneInputManager inputManager;
 		
 		[Header("Speeds")]
 		[SerializeField] private float cameraMoveSpeed = 1f;
@@ -22,22 +24,20 @@ namespace CameraComponents
 		[SerializeField] private float minZoom = 30f;
 		[SerializeField] private float maxZoom = 70f;
 
-		private GameplayInputState _gameplayInputState;
+		private GameplayInput _gameplayInput;
 		private Transform _cameraTransform;
 		private float _currentVerticalRotation;
 		private float _currentHorizontalRotation;
 
 		private void Awake()
 		{
+			_gameplayInput = Dependencies.GetDependency<GameplayInput>();
 			_cameraTransform = playerCamera.GetComponent<Transform>();
 		}
 
 		private void Start()
 		{
-			_gameplayInputState = inputManager.GameplayInputState;
-
-			_gameplayInputState.CameraZoomInPerformed += OnCameraZoomInPerformed;
-			_gameplayInputState.CameraZoomOutPerformed += OnCameraZoomOutPerformed;
+			_gameplayInput.CameraZoomInputPerformed += OnCameraZoomInputPerformed;
 			
 			ClampCameraPosition();
 			ClampCameraRotation();
@@ -46,20 +46,18 @@ namespace CameraComponents
 
 		private void Update()
 		{
-			if (_gameplayInputState.IsMoveActive || _gameplayInputState.IsVerticalMoveActive)
-				ControlPosition(_gameplayInputState.CurrentMoveValue);
-			if (_gameplayInputState.IsCameraLookActivated && _gameplayInputState.IsLookActive)
-				ControlRotation(_gameplayInputState.CurrentLookValue);
+			if (_gameplayInput.IsMoveActive || _gameplayInput.IsVerticalMoveActive)
+				ControlPosition(_gameplayInput.CurrentMoveValue);
+			if (_gameplayInput.IsCameraLookActivated && _gameplayInput.IsLookActive)
+				ControlRotation(_gameplayInput.CurrentLookValue);
 		}
 
 		private void OnDestroy()
 		{
-			_gameplayInputState.CameraZoomInPerformed -= OnCameraZoomInPerformed;
-			_gameplayInputState.CameraZoomOutPerformed -= OnCameraZoomOutPerformed;
+			_gameplayInput.CameraZoomInputPerformed -= OnCameraZoomInputPerformed;
 		}
 
-		private void OnCameraZoomInPerformed() => ControlZoom(-1);
-		private void OnCameraZoomOutPerformed() => ControlZoom(1);
+		private void OnCameraZoomInputPerformed(object sender, CameraZoomInputEventArgs args) => ControlZoom(ZoomTypeToValue(args.Zoom));
 
 		private void ControlPosition(Vector3 moveVector)
 		{
@@ -110,5 +108,7 @@ namespace CameraComponents
 		{
 			playerCamera.fieldOfView = Mathf.Clamp(playerCamera.fieldOfView, minZoom, maxZoom);
 		}
+
+		private static int ZoomTypeToValue(ZoomType zoomType) => zoomType == ZoomType.In ? -1 : 1;
 	}
 }

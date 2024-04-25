@@ -17,7 +17,7 @@ namespace Enemies.ContextMenu.ContextMenuItems
 
 		protected override void OnMenuItemSelected()
 		{
-			_interactionEvents.RequestInteraction(OnInteraction);
+			_interactionEvents.RequestInteraction(Enemy, OnInteraction);
 		}
 
 		private void OnInteraction(MonoBehaviour component)
@@ -28,6 +28,7 @@ namespace Enemies.ContextMenu.ContextMenuItems
 			Vector3 tilePosition = tile.Transform.position;
 			Vector3 moveToPosition = new(tilePosition.x, Enemy.Transform.position.y, tilePosition.z);
 			//Enemy.StateMachine.MoveTo(moveToPosition);
+			_interactionEvents.EndInteraction(Enemy);
 		}
 	}
 }

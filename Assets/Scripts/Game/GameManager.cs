@@ -1,5 +1,4 @@
 ﻿using System;
-using InputStates;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,11 +7,6 @@ namespace Game
 	[DisallowMultipleComponent]
 	public class GameManager : MonoBehaviour
 	{
-		[SerializeField] private GameSceneInputManager inputManager;
-		
-		[Header("Scene Names")]
-		[SerializeField] private string mainMenuSceneName;
-		
 		private bool _isGamePaused = false;
 
 		public event EventHandler GamePaused;
@@ -43,7 +37,7 @@ namespace Game
 		public void QuitGame()
 		{
 			// Todo: Add a save game call here
-			SceneManager.LoadScene(mainMenuSceneName);
+			SceneManager.LoadScene("Scenes/MainMenuScene");
 		}
 
 		private void Awake()
@@ -56,15 +50,6 @@ namespace Game
 			}
 
 			Instance = this;
-			
-			inputManager.GameplayInputState.PauseActionPerformed += PauseGame;
-			inputManager.PauseMenuInputState.ResumeActionPerformed += ResumeGame;
-		}
-
-		private void OnDestroy()
-		{
-			inputManager.GameplayInputState.PauseActionPerformed -= PauseGame;
-			inputManager.PauseMenuInputState.ResumeActionPerformed -= ResumeGame;
 		}
 	}
 }

@@ -43,7 +43,7 @@ namespace UI.ContextMenus
 				contextMenuUser.MenuClosed -= OnContextMenuClosed;
 		}
 
-		private void OnInteractableSecondaryActionSelected()
+		private void OnInteractableSecondaryActionSelected(object sender, EventArgs args)
 		{
 			if (!contextMenuUser)
 				return;

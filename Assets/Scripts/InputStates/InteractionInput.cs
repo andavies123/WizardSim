@@ -3,11 +3,11 @@ using UnityEngine.InputSystem;
 
 namespace InputStates
 {
-	public class InteractionInputState : IInputState
+	public class InteractionInput : IInput
 	{
 		private readonly PlayerInputActions _playerInputActions = new();
 		
-		public event Action CancelInteractionActionPerformed;
+		public event EventHandler CancelInteractionActionPerformed;
 		
 		public bool ShowInteractions => true;
 
@@ -25,6 +25,6 @@ namespace InputStates
 			_playerInputActions.Interaction.CancelInteraction.performed -= OnCancelInteractionActionPerformed;
 		}
 
-		private void OnCancelInteractionActionPerformed(InputAction.CallbackContext context) => CancelInteractionActionPerformed?.Invoke();
+		private void OnCancelInteractionActionPerformed(InputAction.CallbackContext context) => CancelInteractionActionPerformed?.Invoke(this, EventArgs.Empty);
 	}
 }
