@@ -15,7 +15,6 @@ kanban-plugin: basic
 
 ## <font color="red">**Bugs**</font>
 
-- [ ] <font color="red">**Bug Template**</font><br><br>**Problem**<br>When opening up the context menu on an interactable then opening up an info window on a different interactable, the context menu does not close<br><br>**Fix**<br>Not fixed yet
 
 
 ## Documentation
@@ -42,20 +41,21 @@ kanban-plugin: basic
 
 ## <font color="cyan">**Coding Backlog**</font>
 
-- [ ] <font color="cyan">**WorldObject Architecture**</font><br><br>- [ ] Create the architecture for world objects such as rocks, trees, bushes<br>- [ ] Add tile context menu items to place these objects for testing
 - [ ] <font color="cyan">**Save System**</font><br>- [ ] Add save pause menu button<br>- [ ] Game world should be saved<br>- [ ] Wizard stats should be saved<br>- [ ] Add load main menu button
-- [ ] <font color="cyan">**Redo Info/Context Menu**</font><br>- [ ] Info/Context Menu should not be incharge of editing the Interactable info
 - [ ] <font color="cyan">**Settings Menu**</font><br>- [ ] Wire up buttons for settings menu<br>- [ ] Wire up pause menu settings button
 
 
 ## In Progress
 
-- [ ] <font color="cyan">**Game State**</font><br>- [x] Create a game state object<br>- [x] Game state should combine input states and ui states<br>- [x] Create a game state manager class<br>- [ ] Have each game state have their own ui state machine and input state machine
+- [ ] <font color="cyan">**WorldObject Architecture**</font><br><br>- [ ] Create the architecture for world objects such as rocks, trees, bushes<br>- [ ] Add tile context menu items to place these objects for testing
 
 
 ## Completed
 
 **Complete**
+- [x] <font color="red">**Bug Template**</font><br><br>**Problem**<br>When opening up the context menu on an interactable then opening up an info window on a different interactable, the context menu does not close<br><br>**Fix**<br>Updated game state manager
+- [x] <font color="cyan">**Redo Info/Context Menu**</font><br>- [x] Info/Context Menu should not be incharge of editing the Interactable info
+- [x] <font color="cyan">**Game State**</font><br>- [x] Create a game state object<br>- [x] Game state should combine input states and ui states<br>- [x] Create a game state manager class<br>- [x] Have each game state have their own ui state machine and input state machine
 - [x] <font color="cyan">**UI Manager Updates**</font><br>- [x] Make UI Manager a Singleton<br>- [x] Have a public CurrentUIState or something like that
 - [x] <font color="cyan">**Refactoring Components**</font><br>- [x] Look into a way to not have so many "WizardXYZ" and "EnemyXYZ" scripts
 - [x] <font color="cyan">**Basic Enemy**</font><br><br>- [x] Add a basic enemy prefab<br>- [x] Add context menu to tile to spawn an enemy

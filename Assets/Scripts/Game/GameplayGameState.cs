@@ -86,9 +86,11 @@ namespace Game
 
 		private void OnInteractablePrimaryActionSelected(object sender, InteractableRaycasterEventArgs args)
 		{
-			Console.WriteLine("interaction callback");
 			if (_interactionCallback != null)
+			{
 				_interactionCallback.Invoke(args.Interactable);
+				args.Interactable.IsSelected = false; // Gets marked as selected
+			}
 			else
 			{
 				_gameplayUIState.CloseContextMenu();
