@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using GameWorld.Tiles;
 using GameWorld.WorldObjects;
 using UnityEngine;
@@ -19,6 +18,7 @@ namespace GameWorld
 
 		public void Initialize(Vector2Int sizeInTiles, Vector2Int position, Tile[,] tiles)
 		{
+			SizeInTiles = sizeInTiles;
 			Position = position;
 			_tiles = tiles;
 			_worldObjects = new WorldObject[sizeInTiles.x, sizeInTiles.y]; // Should be same size as tile array
@@ -39,18 +39,18 @@ namespace GameWorld
 			return true;
 		}
 
-		public bool TryAddWorldObject(WorldObject worldObject, Vector2Int localChunkPosition)
+		public bool TryAddWorldObject(WorldObject worldObject)
 		{
 			List<Vector2Int> positions = new();
 
-			for (int x = localChunkPosition.x; x < worldObject.Size.x; x++)
+			for (int x = worldObject.LocalChunkPosition.x; x < worldObject.Size.x; x++)
 			{
-				for (int z = localChunkPosition.y; z < worldObject.Size.y; z++)
+				for (int z = worldObject.LocalChunkPosition.y; z < worldObject.Size.y; z++)
 				{
 					Vector2Int position = new(x, z);
 					
 					// Make sure the positions are valid and there isn't anything here
-					// Todo: Might be an issue for objects that span multiple chunks
+					// BUG: Might be an issue for objects that span multiple chunks
 					if (!IsValidTilePosition(position) || !IsWorldObjectSpaceEmpty(position))
 						return false;
 					
@@ -64,11 +64,11 @@ namespace GameWorld
 			return true;
 		}
 
-		private bool IsValidTilePosition(Vector2Int tilePosition) =>
+		public bool IsValidTilePosition(Vector2Int tilePosition) =>
 			tilePosition.x >= 0 && tilePosition.x < SizeInTiles.x &&
 			tilePosition.y >= 0 && tilePosition.y < SizeInTiles.y;
 
-		private bool IsWorldObjectSpaceEmpty(Vector2Int worldObjectPosition) =>
-			!_worldObjects[worldObjectPosition.x, worldObjectPosition.y];
+		public bool IsWorldObjectSpaceEmpty(Vector2Int localChunkPosition) =>
+			!_worldObjects[localChunkPosition.x, localChunkPosition.y];
 	}
 }

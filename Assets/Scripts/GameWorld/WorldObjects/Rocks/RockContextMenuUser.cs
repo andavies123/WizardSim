@@ -1,7 +1,7 @@
 ﻿using UI.ContextMenus;
 using UnityEngine;
 
-namespace GameWorld.WorldObjects
+namespace GameWorld.WorldObjects.Rocks
 {
 	public class RockContextMenuUser : ContextMenuUser<RockContextMenuItem>
 	{
@@ -10,23 +10,27 @@ namespace GameWorld.WorldObjects
 		
 		private void Awake()
 		{
+			Rock rock = GetComponent<Rock>();
+			
 			MenuItems.AddRange(new RockContextMenuItem[]
 			{
-				new ClearRockContextMenuItem(gameObject)
+				new ClearRockContextMenuItem(rock, gameObject)
 			});
 		}
 	}
 
 	public abstract class RockContextMenuItem : ContextMenuItem
 	{
+		protected RockContextMenuItem(Rock rock) => Rock = rock;
 		
+		protected Rock Rock { get; }
 	}
 
 	public class ClearRockContextMenuItem : RockContextMenuItem
 	{
 		private readonly GameObject _gameObject;
 
-		public ClearRockContextMenuItem(GameObject gameObject) => _gameObject = gameObject;
+		public ClearRockContextMenuItem(Rock rock, GameObject gameObject) : base(rock) => _gameObject = gameObject;
 		
 		public override string MenuName => "Clear Rock";
 

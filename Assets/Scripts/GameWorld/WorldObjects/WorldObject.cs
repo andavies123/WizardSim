@@ -7,11 +7,11 @@ namespace GameWorld.WorldObjects
 		[SerializeField] private Vector2Int size;
 
 		public Vector2Int Size => size;
-		public Vector2Int WorldPosition { get; private set; }
+		public Vector2Int LocalChunkPosition { get; private set; }
 
-		public void Init(Vector2Int worldPosition)
+		public void Init(Vector2Int localChunkPosition)
 		{
-			WorldPosition = worldPosition;
+			LocalChunkPosition = localChunkPosition;
 		}
 	}
 }

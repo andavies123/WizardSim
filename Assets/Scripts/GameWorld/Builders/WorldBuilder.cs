@@ -1,12 +1,10 @@
 ﻿using System;
-using Extensions;
 using Game;
 using GameWorld.Tiles;
-using GameWorld.WorldObjects;
 using UnityEngine;
 using Utilities;
 
-namespace GameWorld.Utilities
+namespace GameWorld.Builders
 {
 	public class WorldBuilder : MonoBehaviour
 	{
@@ -20,50 +18,13 @@ namespace GameWorld.Utilities
 		[SerializeField] private GameObject rockPrefab;
 		[SerializeField] private int rocksPerChunk;
 
-		public bool TrySpawnRock(Vector2Int chunkPosition, Vector2Int tilePosition)
-		{
-			Vector3 worldPosition = world.WorldPositionFromTilePosition(tilePosition, chunkPosition).ToVector3(VectorSub.XSubY);
-			
-			Chunk chunk = world.Chunks[chunkPosition];
-			
-			WorldObject rock = Instantiate(rockPrefab, worldObjectParent).GetComponent<WorldObject>();
-			rock.transform.SetPositionAndRotation(worldPosition, Quaternion.identity);
-			rock.gameObject.name = "Rock";
-				
-			// Try and add it to the chunk. If unable to we should destroy it and move on.
-			// Todo: Update this so that it doesn't keep instantiating a ton of rocks while it looks for somewhere to put it
-			if (!chunk.TryAddWorldObject(rock, tilePosition))
-			{
-				Destroy(rock.gameObject);
-				return false;
-			}
-
-			return true;
-		}
-
-		private bool TrySpawnRock(Chunk chunk, Vector2Int tilePosition)
-		{
-			Vector3 worldPosition = world.WorldPositionFromTilePosition(tilePosition, chunk.Position).ToVector3(VectorSub.XSubY);
-			
-			WorldObject rock = Instantiate(rockPrefab, worldObjectParent).GetComponent<WorldObject>();
-			rock.transform.SetPositionAndRotation(worldPosition, Quaternion.identity);
-			rock.gameObject.name = "Rock";
-				
-			// Try and add it to the chunk. If unable to we should destroy it and move on.
-			// Todo: Update this so that it doesn't keep instantiating a ton of rocks while it looks for somewhere to put it
-			if (!chunk.TryAddWorldObject(rock, tilePosition))
-			{
-				Destroy(rock.gameObject);
-				return false;
-			}
-
-			return true;
-		}
+		public RockWorldBuilder RockWorldBuilder { get; private set; }
 
 		private void Awake()
 		{
 			Dependencies.RegisterDependency(this);
-			
+
+			RockWorldBuilder = new RockWorldBuilder(world, rockPrefab);
 			GenerateWorld();
 		}
 
@@ -130,7 +91,7 @@ namespace GameWorld.Utilities
 					0, world.WorldDetails.ChunkTiles.x,
 					0, world.WorldDetails.ChunkTiles.y);
 
-				if (TrySpawnRock(chunk, localChunkPosition))
+				if (RockWorldBuilder.TrySpawnSingle(chunk, localChunkPosition))
 					addedRocks++;
 			}
 		}

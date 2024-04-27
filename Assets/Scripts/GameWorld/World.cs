@@ -7,11 +7,13 @@ namespace GameWorld
 	public class World : MonoBehaviour
 	{
 		[SerializeField] private WorldDetails worldDetails;
+		[SerializeField] private Transform worldObjectContainer;
 		
 		private readonly Dictionary<Vector2Int, Chunk> _chunks = new();
 
 		public WorldDetails WorldDetails => worldDetails;
 		public IReadOnlyDictionary<Vector2Int, Chunk> Chunks => _chunks;
+		public Transform WorldObjectContainer => worldObjectContainer;
 
 		public void AddChunk(Chunk chunk)
 		{
@@ -97,7 +99,7 @@ namespace GameWorld
 			// Calculate the chunk position in world coordinates
 			Vector2Int chunkWorldPosition = chunkPosition * worldDetails.ChunkSize;
 			
-			// Find the local position inside of the chunk
+			// Find the local position inside the chunk
 			Vector2 localPosition = worldPosition - chunkWorldPosition;
 			
 			// Based off the local position, calculate which tile it is

@@ -1,5 +1,5 @@
 ﻿using Game;
-using GameWorld.Utilities;
+using GameWorld.Builders;
 using UI.ContextMenus;
 using UnityEngine;
 using Utilities;
@@ -27,7 +27,7 @@ namespace GameWorld.Tiles.ContextMenu
 			{
 				new SpawnWizardContextMenuItem(_tile, wizardSpawnRequest),
 				new SpawnEnemyContextMenuItem(_tile, enemySpawnRequest),
-				new SpawnWorldObjectContextMenuItem(_tile, "Spawn Rock", () => _worldBuilder.TrySpawnRock(_tile.ParentChunk.Position, _tile.TilePosition))
+				new SpawnWorldObjectContextMenuItem(_tile, "Spawn Rock", () => _worldBuilder.RockWorldBuilder.TrySpawnSingle(_tile.ParentChunk, _tile.TilePosition))
 			});
 		}
 	}
