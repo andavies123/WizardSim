@@ -37,6 +37,8 @@ namespace Wizards
 			Name = NameGenerator.GetNewName();
 
 			Health.CurrentHealthChanged += OnCurrentHealthChanged;
+			
+			gameObject.name = $"Wizard - {Name}";
 		}
 
 		private void Start()

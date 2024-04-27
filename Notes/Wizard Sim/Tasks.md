@@ -9,7 +9,7 @@ kanban-plugin: basic
 - [ ] <font color="orange">**Visuals Template**</font>
 - [ ] <font color="violet">**Documentation Template**</font>
 - [ ] <font color="lightgreen">**Audio Template**</font>
-- [ ] <font color="cyan">**Task Template**</font><br>- [ ] task
+- [ ] <font color="cyan">**Task Template**</font>
 - [ ] <font color="red">**Bug Template**</font><br><br>**Problem**<br>Describe Here<br><br>**Fix**<br>Not fixed yet
 
 
@@ -31,6 +31,7 @@ kanban-plugin: basic
 - [ ] <font color="orange">**Rock 3D Model**</font>
 - [ ] <font color="orange">**Town Hall 3D Model**</font>
 - [ ] <font color="orange">**Settings Menu**</font><br><br>- [ ] Add UI for pause menu settings menu<br>- [ ] Add button on pause menu to go to the settings menu<br>- [ ] Add back button to go back to main pause menu<br>- [ ] Add tabbed area for different types of settings
+- [ ] <font color="orange">**Hot Bar UI**</font><br>- [ ] UI should contain a horizontal layout to hold different buttons for placing objects on the ground<br>- [ ] UI should contain clickable buttons<br>- [ ] UI should be set up to easily add new items
 
 
 ## <font color="lightgreen">**Audio Backlog**</font>
@@ -43,16 +44,20 @@ kanban-plugin: basic
 
 - [ ] <font color="cyan">**Save System**</font><br>- [ ] Add save pause menu button<br>- [ ] Game world should be saved<br>- [ ] Wizard stats should be saved<br>- [ ] Add load main menu button
 - [ ] <font color="cyan">**Settings Menu**</font><br>- [ ] Wire up buttons for settings menu<br>- [ ] Wire up pause menu settings button
+- [ ] <font color="cyan">**Context Menu User**</font><br>- [ ] Update the way context menu user scripts work<br>- [ ] Should be more generic if possible
+- [ ] <font color="cyan">**Hot Bar**</font><br>- [ ] When a button is pressed the user should be able to place an item on the map<br>- [ ] A preview should be shown when placing<br>- [ ] The object should be added to the the world collection
+- [ ] <font color="cyan">**Context Menu Item Validation**</font><br>- [ ] Context menu items should have a validation on whether or not they should show up in the menu<br>- [ ] Items that are invalid don't show up in the menu on open<br>- [ ] Items that are valid should show up in the menu on open
 
 
 ## In Progress
 
-- [ ] <font color="cyan">**WorldObject Architecture**</font><br><br>- [ ] Create the architecture for world objects such as rocks, trees, bushes<br>- [ ] Add tile context menu items to place these objects for testing
+- [ ] <font color="cyan">**World Generators**</font><br>- [ ] World generators should have their own classes<br>- [ ] These classes could be private and held inside of the WorldBuilder to save space
 
 
 ## Completed
 
 **Complete**
+- [x] <font color="cyan">**WorldObject Architecture**</font><br><br>- [x] Create the architecture for world objects such as rocks, trees, bushes<br>- [x] Add tile context menu items to place these objects for testing
 - [x] <font color="red">**Bug Template**</font><br><br>**Problem**<br>When opening up the context menu on an interactable then opening up an info window on a different interactable, the context menu does not close<br><br>**Fix**<br>Updated game state manager
 - [x] <font color="cyan">**Redo Info/Context Menu**</font><br>- [x] Info/Context Menu should not be incharge of editing the Interactable info
 - [x] <font color="cyan">**Game State**</font><br>- [x] Create a game state object<br>- [x] Game state should combine input states and ui states<br>- [x] Create a game state manager class<br>- [x] Have each game state have their own ui state machine and input state machine

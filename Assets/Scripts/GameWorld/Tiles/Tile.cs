@@ -17,6 +17,8 @@ namespace GameWorld.Tiles
 			ParentWorld = parentWorld;
 			ParentChunk = parentChunk;
 			TilePosition = tilePosition;
+
+			gameObject.name = $"Tile - {tilePosition}";
 		}
 
 		private void Awake()

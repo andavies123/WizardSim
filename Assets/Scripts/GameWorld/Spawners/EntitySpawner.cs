@@ -23,7 +23,6 @@ namespace GameWorld.Spawners
 			GameObject entityGameObject = Instantiate(entityPrefab, entityManager.transform);
 			entityGameObject.transform.position = spawnPosition;
 			Entity entity = entityGameObject.GetComponent<Entity>();
-			entityGameObject.gameObject.name = $"Entity ({entity.DisplayName})";
 			entityManager.Add(entity);
 		}
 

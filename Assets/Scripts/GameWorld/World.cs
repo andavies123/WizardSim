@@ -24,16 +24,26 @@ namespace GameWorld
 		/// <param name="tile">The tile object containing chunk and tile information</param>
 		/// <param name="centerOfTile">True if the position at the center of the tile will be returned. False if not</param>
 		/// <returns>The world position in unity units of the given tile</returns>
-		public Vector2 WorldPositionFromTile(Tile tile, bool centerOfTile = true)
-		{
-			Vector2 tilePosition = tile.TilePosition * worldDetails.TileSize;
-			Vector2 chunkPosition = tile.ParentChunk.Position * worldDetails.ChunkSize;
+		public Vector2 WorldPositionFromTile(Tile tile, bool centerOfTile = true) =>
+			WorldPositionFromTilePosition(tile.TilePosition, tile.ParentChunk.Position, centerOfTile);
 
-			Vector2 worldPosition = chunkPosition + tilePosition;
+		/// <summary>
+		/// Calculates the world position based off a given tile and chunk position
+		/// </summary>
+		/// <param name="tilePosition">The position of the tile inside the chunk</param>
+		/// <param name="chunkPosition">The position of the chunk in chunk coordinates</param>
+		/// <param name="centerOfTile">True if the position at the center of the tile will be returned. False otherwise</param>
+		/// <returns>The world position in unity units of the given tile/chunk position</returns>
+		public Vector2 WorldPositionFromTilePosition(Vector2Int tilePosition, Vector2Int chunkPosition, bool centerOfTile = true)
+		{
+			Vector2 tilePositionInChunk = tilePosition * worldDetails.TileSize;
+			Vector2 chunkPositionInWorld = chunkPosition * worldDetails.ChunkSize;
+
+			Vector2 worldPosition = chunkPositionInWorld + tilePositionInChunk;
 
 			if (centerOfTile)
 				worldPosition += worldDetails.TileSize / 2;
-
+			
 			return worldPosition;
 		}
 
