@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using GameObjectPools;
 using UnityEngine;
 
@@ -67,16 +68,19 @@ namespace UI.ContextMenus
 
 		private void SynchronizeContextMenuItemCollectionLengths()
 		{
-			if (_contextMenuItemUIs.Count < _contextMenuUser.AllMenuItems.Count)
+			_contextMenuUser.UpdateMenuItems();
+			int visibleMenuItems = _contextMenuUser.AllMenuItems.Count(item => item.IsVisible);
+			
+			if (_contextMenuItemUIs.Count < visibleMenuItems)
 			{
-				while (_contextMenuItemUIs.Count < _contextMenuUser.AllMenuItems.Count)
+				while (_contextMenuItemUIs.Count < visibleMenuItems)
 				{
 					AddMenuItemToEnd();
 				}
 			}
-			else if (_contextMenuItemUIs.Count > _contextMenuUser.AllMenuItems.Count)
+			else if (_contextMenuItemUIs.Count > visibleMenuItems)
 			{
-				while (_contextMenuItemUIs.Count > _contextMenuUser.AllMenuItems.Count)
+				while (_contextMenuItemUIs.Count > visibleMenuItems)
 				{
 					RemoveLastMenuItem();
 				}
@@ -105,17 +109,25 @@ namespace UI.ContextMenus
 
 		private void OnMenuItemSelected() => CloseMenu();
 
+		// ReSharper disable Unity.PerformanceAnalysis
 		private void BuildContextMenuItems()
 		{
-			if (_contextMenuItemUIs.Count != _contextMenuUser.AllMenuItems.Count)
+			List<ContextMenuItem> menuItems = _contextMenuUser.AllMenuItems.Where(item => item.IsVisible).ToList();
+			
+			if (_contextMenuItemUIs.Count != menuItems.Count)
 			{
 				Debug.LogWarning("Unable to build context menu items. Collection lengths don't match", this);
 				return;
 			}
 
-			for (int index = 0; index < _contextMenuUser.AllMenuItems.Count; index++)
+			for (int index = 0; index < menuItems.Count; index++)
 			{
-				_contextMenuItemUIs[index].SetContextMenuItem(_contextMenuUser.AllMenuItems[index]);
+				ContextMenuItem menuItem = _contextMenuUser.AllMenuItems[index];
+				
+				if (!menuItem.IsVisible)
+					continue;
+				
+				_contextMenuItemUIs[index].SetContextMenuItem(menuItem);
 			}
 		}
 	}

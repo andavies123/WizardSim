@@ -12,27 +12,19 @@ namespace Wizards.ContextMenu
 		
 		private Wizard _wizard;
 
-		public override string MenuTitle => _wizard.Name;
-		public override string InfoText { get; protected set; }
-
 		private void Awake()
 		{
 			_wizard = GetComponent<Wizard>();
 
 			MenuItems.AddRange(new ContextMenuItem[]
 			{
-				new("Idle", () => _wizard.StateMachine.Idle()),
-				new("Move To", () => interactionEvents.RequestInteraction(_wizard, OnInteractionCallback)),
-				new("Heal 10%", () => _wizard.Health.IncreaseHealth(_wizard.Health.MaxHealth * .1f)),
-				new("Hurt 10%", () => _wizard.Health.DecreaseHealth(_wizard.Health.MaxHealth * .1f)),
-				new("Heal 10%", () => _wizard.Health.IncreaseHealth(_wizard.Health.MaxHealth)),
-				new("Hurt 10%", () => _wizard.Health.DecreaseHealth(_wizard.Health.MaxHealth))
+				new("Idle", () => _wizard.StateMachine.Idle(), () => !_wizard.IsIdling, AlwaysTrue),
+				new("Move To", () => interactionEvents.RequestInteraction(_wizard, OnInteractionCallback), AlwaysTrue, AlwaysTrue),
+				new("Heal 10%", () => IncreaseHealth(.1f), IsNotAtMaxHealth, AlwaysTrue),
+				new("Hurt 10%", () => DecreaseHealth(.1f), IsNotAtMinHealth, AlwaysTrue),
+				new("Heal 100%", () => IncreaseHealth(1), IsNotAtMaxHealth, AlwaysTrue),
+				new("Hurt 100%", () => DecreaseHealth(1), IsNotAtMinHealth, AlwaysTrue)
 			});
-		}
-
-		private void Update()
-		{
-			InfoText = _wizard.StateMachine.CurrentStateDisplayStatus;
 		}
 		
 		private void OnInteractionCallback(MonoBehaviour component)
@@ -45,5 +37,11 @@ namespace Wizards.ContextMenu
 			_wizard.StateMachine.MoveTo(moveToPosition);
 			interactionEvents.EndInteraction(_wizard);
 		}
+
+		private void IncreaseHealth(float percent01) => _wizard.Health.IncreaseHealth(_wizard.Health.MaxHealth * percent01);
+		private void DecreaseHealth(float percent01) => _wizard.Health.DecreaseHealth(_wizard.Health.MaxHealth * percent01);
+
+		private bool IsNotAtMaxHealth() => !_wizard.Health.IsAtMaxHealth;
+		private bool IsNotAtMinHealth() => !_wizard.Health.IsAtMinHealth;
 	}
 }

@@ -12,27 +12,19 @@ namespace Enemies.ContextMenu
 		
 		private Enemy _enemy;
 
-		public override string MenuTitle => _enemy.DisplayName;
-		public override string InfoText { get; protected set; }
-
 		private void Awake()
 		{
 			_enemy = GetComponent<Enemy>();
 
 			MenuItems.AddRange(new ContextMenuItem[]
 			{
-				new("Idle", () => print("Idling not setup")),
-				new("Move To", () => interactionEvents.RequestInteraction(_enemy, OnInteractionCallback)),
-				new("Heal 10%", () => _enemy.Health.IncreaseHealth(_enemy.Health.MaxHealth * .1f)),
-				new("Hurt 10%", () => _enemy.Health.DecreaseHealth(_enemy.Health.MaxHealth * .1f)),
-				new("Heal 10%", () => _enemy.Health.IncreaseHealth(_enemy.Health.MaxHealth)),
-				new("Hurt 10%", () => _enemy.Health.DecreaseHealth(_enemy.Health.MaxHealth))
+				new("Idle", () => print("Idling not setup"), AlwaysFalse, AlwaysTrue),
+				new("Move To", () => interactionEvents.RequestInteraction(_enemy, OnInteractionCallback), AlwaysFalse, AlwaysTrue),
+				new("Heal 10%", () => IncreaseHealth(.1f), IsNotAtMaxHealth, AlwaysTrue),
+				new("Hurt 10%", () => DecreaseHealth(.1f), IsNotAtMinHealth, AlwaysTrue),
+				new("Heal 100%", () => IncreaseHealth(1), IsNotAtMaxHealth, AlwaysTrue),
+				new("Hurt 100%", () => DecreaseHealth(1), IsNotAtMinHealth, AlwaysTrue)
 			});
-		}
-
-		private void Update()
-		{
-			InfoText = _enemy.StateMachine.CurrentStateDisplayStatus;
 		}
 
 		private void OnInteractionCallback(MonoBehaviour component)
@@ -46,5 +38,11 @@ namespace Enemies.ContextMenu
 			//Enemy.StateMachine.MoveTo(moveToPosition);
 			interactionEvents.EndInteraction(_enemy);
 		}
+
+		private void IncreaseHealth(float percent01) => _enemy.Health.IncreaseHealth(_enemy.Health.MaxHealth * percent01);
+		private void DecreaseHealth(float percent01) => _enemy.Health.DecreaseHealth(_enemy.Health.MaxHealth * percent01);
+
+		private bool IsNotAtMaxHealth() => !_enemy.Health.IsAtMaxHealth;
+		private bool IsNotAtMinHealth() => !_enemy.Health.IsAtMinHealth;
 	}
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace UI.ContextMenus
@@ -14,8 +13,6 @@ namespace UI.ContextMenus
 		public event Action MenuClosed;
 
 		public IReadOnlyList<ContextMenuItem> AllMenuItems => MenuItems;
-		public abstract string MenuTitle { get; }
-		public abstract string InfoText { get; protected set; }
 
 		public void OpenMenu()
 		{
@@ -26,5 +23,13 @@ namespace UI.ContextMenus
 		{
 			MenuClosed?.Invoke();
 		}
+
+		public void UpdateMenuItems()
+		{
+			MenuItems.ForEach(item => item.RecalculateVisibility());
+		}
+
+		protected static bool AlwaysTrue() => true;
+		protected static bool AlwaysFalse() => false;
 	}
 }

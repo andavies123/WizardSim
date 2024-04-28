@@ -18,6 +18,7 @@ namespace GeneralBehaviours.Health
 		
 		public float MaxHealth => maxHealth;
 		public bool IsAtMaxHealth => Mathf.Approximately(CurrentHealth, MaxHealth);
+		public bool IsAtMinHealth => Mathf.Approximately(CurrentHealth, MinHealth);
 
 		public float CurrentHealth
 		{

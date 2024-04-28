@@ -6,6 +6,7 @@ using Stats;
 using UI;
 using UnityEngine;
 using Utilities;
+using Wizards.States;
 
 namespace Wizards
 {
@@ -25,6 +26,8 @@ namespace Wizards
 		public override string DisplayName => Name;
 		public override MovementStats MovementStats => Stats.MovementStats;
 		public WizardStats Stats => stats;
+
+		public bool IsIdling => StateMachine.CurrentState is WizardIdleState;
 		
 		private void Awake()
 		{

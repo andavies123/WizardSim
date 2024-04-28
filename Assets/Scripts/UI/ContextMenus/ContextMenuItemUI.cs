@@ -1,13 +1,15 @@
 ﻿using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace UI.ContextMenus
 {
 	public class ContextMenuItemUI : MonoBehaviour
 	{
+		[SerializeField] private Button button;
 		[SerializeField] private TMP_Text itemName;
-
+		
 		private ContextMenuItem _contextMenuItem;
 		
 		public event Action ItemSelected;
@@ -34,6 +36,18 @@ namespace UI.ContextMenus
 				return;
 			
 			itemName.SetText(_contextMenuItem.Name);
+
+			button.interactable = _contextMenuItem.IsEnabled;
+		}
+
+		private void Awake()
+		{
+			button.onClick.AddListener(OnContextMenuItemSelected);
+		}
+
+		private void OnDestroy()
+		{
+			button.onClick.RemoveListener(OnContextMenuItemSelected);
 		}
 	}
 }

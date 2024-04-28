@@ -2,21 +2,20 @@
 {
 	public class StateMachine<TStateBase> where TStateBase : IState
 	{
-		private IState _currentState;
+		public string CurrentStateDisplayName => CurrentState?.DisplayName ?? "N/A";
+		public string CurrentStateDisplayStatus => CurrentState?.DisplayStatus ?? "N/A";
+		public IState CurrentState { get; private set; }
 
-		public string CurrentStateDisplayName => _currentState?.DisplayName ?? "N/A";
-		public string CurrentStateDisplayStatus => _currentState?.DisplayStatus ?? "N/A";
-		
 		public void SetCurrentState(TStateBase newState)
 		{
-			_currentState?.End();
-			_currentState = newState;
-			_currentState?.Begin();
+			CurrentState?.End();
+			CurrentState = newState;
+			CurrentState?.Begin();
 		}
 
 		public void Update()
 		{
-			_currentState?.Update();
+			CurrentState?.Update();
 		}
 	}
 }

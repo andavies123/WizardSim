@@ -15,9 +15,6 @@ namespace GameWorld.Tiles.ContextMenu
 		private Tile _tile;
 		private WorldBuilder _worldBuilder;
 
-		public override string MenuTitle => $"Tile {_tile.TilePosition}";
-		public override string InfoText {get; protected set; } = "Info";
-
 		private void Start()
 		{
 			_tile = GetComponent<Tile>();
@@ -25,9 +22,9 @@ namespace GameWorld.Tiles.ContextMenu
 
 			MenuItems.AddRange(new ContextMenuItem[]
 			{
-				new("Spawn Wizard", SpawnWizard),
-				new("Spawn Enemy", SpawnEnemy),
-				new("Spawn Rock", () => _worldBuilder.RockWorldBuilder.TrySpawnSingle(_tile.ParentChunk, _tile.TilePosition))
+				new("Spawn Wizard", SpawnWizard, AlwaysTrue, AlwaysTrue),
+				new("Spawn Enemy", SpawnEnemy, AlwaysTrue, AlwaysTrue),
+				new("Spawn Rock", SpawnRock, AlwaysTrue, AlwaysTrue)
 			});
 		}
 
@@ -45,6 +42,11 @@ namespace GameWorld.Tiles.ContextMenu
 			Vector3 spawnPosition = new(tileWorldPosition.x, 1, tileWorldPosition.y);
 			
 			enemySpawnRequest.RaiseEvent(this, spawnPosition);
+		}
+
+		private void SpawnRock()
+		{
+			_worldBuilder.RockWorldBuilder.TrySpawnSingle(_tile.ParentChunk, _tile.TilePosition);
 		}
 	}
 }

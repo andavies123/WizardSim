@@ -45,17 +45,17 @@ kanban-plugin: basic
 - [ ] <font color="cyan">**Save System**</font><br>- [ ] Add save pause menu button<br>- [ ] Game world should be saved<br>- [ ] Wizard stats should be saved<br>- [ ] Add load main menu button
 - [ ] <font color="cyan">**Settings Menu**</font><br>- [ ] Wire up buttons for settings menu<br>- [ ] Wire up pause menu settings button
 - [ ] <font color="cyan">**Hot Bar**</font><br>- [ ] When a button is pressed the user should be able to place an item on the map<br>- [ ] A preview should be shown when placing<br>- [ ] The object should be added to the the world collection
-- [ ] <font color="cyan">**Context Menu Item Validation**</font><br>- [ ] Context menu items should have a validation on whether or not they should show up in the menu<br>- [ ] Items that are invalid don't show up in the menu on open<br>- [ ] Items that are valid should show up in the menu on open
 
 
 ## In Progress
 
-- [ ] <font color="cyan">**Context Menu User**</font><br>- [ ] Update the way context menu user scripts work<br>- [ ] Should be more generic if possible
+- [ ] <font color="cyan">**Context Menu Item Validation**</font><br>- [ ] Context menu items should have a validation on whether or not they should show up in the menu<br>- [ ] Items that are invalid don't show up in the menu on open<br>- [ ] Items that are valid should show up in the menu on open
 
 
 ## Completed
 
 **Complete**
+- [x] <font color="cyan">**Context Menu User**</font><br>- [x] Update the way context menu user scripts work<br>- [x] Should be more generic if possible
 - [x] <font color="cyan">**World Generators**</font><br>- [x] World generators should have their own classes<br>- [x] These classes could be private and held inside of the WorldBuilder to save space
 - [x] <font color="cyan">**WorldObject Architecture**</font><br><br>- [x] Create the architecture for world objects such as rocks, trees, bushes<br>- [x] Add tile context menu items to place these objects for testing
 - [x] <font color="red">**Bug Template**</font><br><br>**Problem**<br>When opening up the context menu on an interactable then opening up an info window on a different interactable, the context menu does not close<br><br>**Fix**<br>Updated game state manager

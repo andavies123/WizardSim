@@ -9,6 +9,7 @@ namespace GeneralBehaviours
 		
 		public override string CurrentStateDisplayName => StateMachine.CurrentStateDisplayName;
 		public override string CurrentStateDisplayStatus => StateMachine.CurrentStateDisplayStatus;
+		public IState CurrentState => StateMachine.CurrentState;
 	}
 
 	public abstract class StateMachineComponent : MonoBehaviour
