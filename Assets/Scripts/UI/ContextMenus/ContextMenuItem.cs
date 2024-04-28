@@ -2,12 +2,15 @@
 
 namespace UI.ContextMenus
 {
-	public abstract class ContextMenuItem
+	public class ContextMenuItem
 	{
-		public abstract string MenuName { get; }
-		public Action MenuItemSelectedAction => OnMenuItemSelected;
+		public ContextMenuItem(string name, Action menuClickCallback)
+		{
+			Name = name;
+			MenuClickCallback = menuClickCallback;
+		}
 		
-		protected abstract void OnMenuItemSelected();
-		
+		public string Name { get; }
+		public Action MenuClickCallback { get; }
 	}
 }

@@ -24,7 +24,7 @@ namespace UI.ContextMenus
 			if (_contextMenuItem != null)
 			{
 				ItemSelected?.Invoke();
-				_contextMenuItem.MenuItemSelectedAction?.Invoke();
+				_contextMenuItem.MenuClickCallback?.Invoke();
 			}
 		}
 
@@ -33,7 +33,7 @@ namespace UI.ContextMenus
 			if (_contextMenuItem == null)
 				return;
 			
-			itemName.SetText(_contextMenuItem.MenuName);
+			itemName.SetText(_contextMenuItem.Name);
 		}
 	}
 }

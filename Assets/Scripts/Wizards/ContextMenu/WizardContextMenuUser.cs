@@ -1,12 +1,12 @@
-﻿using UI;
+﻿using GameWorld.Tiles;
+using UI;
 using UI.ContextMenus;
 using UnityEngine;
-using Wizards.ContextMenu.ContextMenuItems;
 
 namespace Wizards.ContextMenu
 {
 	[RequireComponent(typeof(Wizard))]
-	public class WizardContextMenuUser : ContextMenuUser<WizardContextMenuItem>
+	public class WizardContextMenuUser : ContextMenuUser
 	{
 		[SerializeField] private InteractionEvents interactionEvents;
 		
@@ -19,20 +19,31 @@ namespace Wizards.ContextMenu
 		{
 			_wizard = GetComponent<Wizard>();
 
-			MenuItems.AddRange(new WizardContextMenuItem[]
+			MenuItems.AddRange(new ContextMenuItem[]
 			{
-				new IdleWizardContextMenuItem(_wizard),
-				new MoveToWizardContextMenuItem(_wizard, interactionEvents),
-				new HealWizardPercentageContextMenuItem(_wizard, 10),
-				new HurtWizardPercentageContextMenuItem(_wizard, 10),
-				new HealWizardPercentageContextMenuItem(_wizard, 100),
-				new HurtWizardPercentageContextMenuItem(_wizard, 100),
+				new("Idle", () => _wizard.StateMachine.Idle()),
+				new("Move To", () => interactionEvents.RequestInteraction(_wizard, OnInteractionCallback)),
+				new("Heal 10%", () => _wizard.Health.IncreaseHealth(_wizard.Health.MaxHealth * .1f)),
+				new("Hurt 10%", () => _wizard.Health.DecreaseHealth(_wizard.Health.MaxHealth * .1f)),
+				new("Heal 10%", () => _wizard.Health.IncreaseHealth(_wizard.Health.MaxHealth)),
+				new("Hurt 10%", () => _wizard.Health.DecreaseHealth(_wizard.Health.MaxHealth))
 			});
 		}
 
 		private void Update()
 		{
 			InfoText = _wizard.StateMachine.CurrentStateDisplayStatus;
+		}
+		
+		private void OnInteractionCallback(MonoBehaviour component)
+		{
+			if (!component.TryGetComponent(out Tile tile))
+				return;
+
+			Vector3 tilePosition = tile.Transform.position;
+			Vector3 moveToPosition = new(tilePosition.x, _wizard.Transform.position.y, tilePosition.z);
+			_wizard.StateMachine.MoveTo(moveToPosition);
+			interactionEvents.EndInteraction(_wizard);
 		}
 	}
 }

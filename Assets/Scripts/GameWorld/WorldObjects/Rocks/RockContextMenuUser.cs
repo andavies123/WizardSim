@@ -1,9 +1,9 @@
-﻿using UI.ContextMenus;
-using UnityEngine;
+﻿using Extensions;
+using UI.ContextMenus;
 
 namespace GameWorld.WorldObjects.Rocks
 {
-	public class RockContextMenuUser : ContextMenuUser<RockContextMenuItem>
+	public class RockContextMenuUser : ContextMenuUser
 	{
 		public override string MenuTitle => "Rock";
 		public override string InfoText { get; protected set; } = "---";
@@ -12,31 +12,10 @@ namespace GameWorld.WorldObjects.Rocks
 		{
 			Rock rock = GetComponent<Rock>();
 			
-			MenuItems.AddRange(new RockContextMenuItem[]
+			MenuItems.AddRange(new ContextMenuItem[]
 			{
-				new ClearRockContextMenuItem(rock, gameObject)
+				new("Destroy", () => rock.gameObject.Destroy())
 			});
-		}
-	}
-
-	public abstract class RockContextMenuItem : ContextMenuItem
-	{
-		protected RockContextMenuItem(Rock rock) => Rock = rock;
-		
-		protected Rock Rock { get; }
-	}
-
-	public class ClearRockContextMenuItem : RockContextMenuItem
-	{
-		private readonly GameObject _gameObject;
-
-		public ClearRockContextMenuItem(Rock rock, GameObject gameObject) : base(rock) => _gameObject = gameObject;
-		
-		public override string MenuName => "Clear Rock";
-
-		protected override void OnMenuItemSelected()
-		{
-			Object.Destroy(_gameObject);
 		}
 	}
 }

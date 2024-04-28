@@ -1,4 +1,4 @@
-﻿using Enemies.ContextMenu.ContextMenuItems;
+﻿using GameWorld.Tiles;
 using UI;
 using UI.ContextMenus;
 using UnityEngine;
@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Enemies.ContextMenu
 {
 	[RequireComponent(typeof(Enemy))]
-	public class EnemyContextMenuUser : ContextMenuUser<EnemyContextMenuItem>
+	public class EnemyContextMenuUser : ContextMenuUser
 	{
 		[SerializeField] private InteractionEvents interactionEvents;
 		
@@ -19,20 +19,32 @@ namespace Enemies.ContextMenu
 		{
 			_enemy = GetComponent<Enemy>();
 
-			MenuItems.AddRange(new EnemyContextMenuItem[]
+			MenuItems.AddRange(new ContextMenuItem[]
 			{
-				new IdleEnemyContextMenuItem(_enemy),
-				new MoveToEnemyContextMenuItem(_enemy, interactionEvents),
-				new HealEnemyPercentageContextMenuItem(_enemy, 10),
-				new HurtEnemyPercentageContextMenuItem(_enemy, 10),
-				new HealEnemyPercentageContextMenuItem(_enemy, 100),
-				new HurtEnemyPercentageContextMenuItem(_enemy, 100),
+				new("Idle", () => print("Idling not setup")),
+				new("Move To", () => interactionEvents.RequestInteraction(_enemy, OnInteractionCallback)),
+				new("Heal 10%", () => _enemy.Health.IncreaseHealth(_enemy.Health.MaxHealth * .1f)),
+				new("Hurt 10%", () => _enemy.Health.DecreaseHealth(_enemy.Health.MaxHealth * .1f)),
+				new("Heal 10%", () => _enemy.Health.IncreaseHealth(_enemy.Health.MaxHealth)),
+				new("Hurt 10%", () => _enemy.Health.DecreaseHealth(_enemy.Health.MaxHealth))
 			});
 		}
 
 		private void Update()
 		{
 			InfoText = _enemy.StateMachine.CurrentStateDisplayStatus;
+		}
+
+		private void OnInteractionCallback(MonoBehaviour component)
+		{
+			print("Moving is not setup for Enemies");
+			if (!component.TryGetComponent(out Tile tile))
+				return;
+
+			Vector3 tilePosition = tile.Transform.position;
+			Vector3 moveToPosition = new(tilePosition.x, _enemy.Transform.position.y, tilePosition.z);
+			//Enemy.StateMachine.MoveTo(moveToPosition);
+			interactionEvents.EndInteraction(_enemy);
 		}
 	}
 }

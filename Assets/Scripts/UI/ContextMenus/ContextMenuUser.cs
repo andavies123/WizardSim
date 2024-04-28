@@ -9,29 +9,22 @@ namespace UI.ContextMenus
 	{
 		[SerializeField] protected ContextMenuEvents contextMenuEvents;
 
+		protected readonly List<ContextMenuItem> MenuItems = new();
+        
 		public event Action MenuClosed;
-		
-		public abstract IReadOnlyList<ContextMenuItem> AllMenuItems { get; }
+
+		public IReadOnlyList<ContextMenuItem> AllMenuItems => MenuItems;
 		public abstract string MenuTitle { get; }
 		public abstract string InfoText { get; protected set; }
-		
-		public abstract void OpenMenu();
+
+		public void OpenMenu()
+		{
+			contextMenuEvents.RequestMenuOpen(this);
+		}
 
 		public void CloseMenu()
 		{
 			MenuClosed?.Invoke();
-		}
-	}
-	
-	public abstract class ContextMenuUser<T> : ContextMenuUser where T : ContextMenuItem
-	{
-		protected readonly List<T> MenuItems = new();
-
-		public override IReadOnlyList<ContextMenuItem> AllMenuItems => MenuItems.Cast<ContextMenuItem>().ToList();
-
-		public override void OpenMenu()
-		{
-			contextMenuEvents.RequestMenuOpen(this);
 		}
 	}
 }
