@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace UI.ContextMenus
 {
+	[DisallowMultipleComponent]
 	public class ContextMenuUser : MonoBehaviour
 	{
 		private readonly List<ContextMenuItem> _menuItems = new();
