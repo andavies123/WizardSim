@@ -10,11 +10,12 @@ kanban-plugin: basic
 - [ ] <font color="violet">**Documentation Template**</font>
 - [ ] <font color="lightgreen">**Audio Template**</font>
 - [ ] <font color="cyan">**Task Template**</font>
-- [ ] <font color="red">**Bug Template**</font><br><br>**Problem**<br>Describe Here<br><br>**Fix**<br>Not fixed yet
+- [ ] <font color="red">**Bug Template**</font>
 
 
 ## <font color="red">**Bugs**</font>
 
+- [ ] <font color="red">**Floating Health Bar Bug**</font><br><br>The floating healthbar for wizards/enemies do not always face the camera
 
 
 ## Documentation
@@ -31,7 +32,6 @@ kanban-plugin: basic
 - [ ] <font color="orange">**Rock 3D Model**</font>
 - [ ] <font color="orange">**Town Hall 3D Model**</font>
 - [ ] <font color="orange">**Settings Menu**</font><br><br>- [ ] Add UI for pause menu settings menu<br>- [ ] Add button on pause menu to go to the settings menu<br>- [ ] Add back button to go back to main pause menu<br>- [ ] Add tabbed area for different types of settings
-- [ ] <font color="orange">**Hot Bar UI**</font><br>- [ ] UI should contain a horizontal layout to hold different buttons for placing objects on the ground<br>- [ ] UI should contain clickable buttons<br>- [ ] UI should be set up to easily add new items
 
 
 ## <font color="lightgreen">**Audio Backlog**</font>
@@ -44,11 +44,12 @@ kanban-plugin: basic
 
 - [ ] <font color="cyan">**Save System**</font><br>- [ ] Add save pause menu button<br>- [ ] Game world should be saved<br>- [ ] Wizard stats should be saved<br>- [ ] Add load main menu button
 - [ ] <font color="cyan">**Settings Menu**</font><br>- [ ] Wire up buttons for settings menu<br>- [ ] Wire up pause menu settings button
-- [ ] <font color="cyan">**Hot Bar**</font><br>- [ ] When a button is pressed the user should be able to place an item on the map<br>- [ ] A preview should be shown when placing<br>- [ ] The object should be added to the the world collection
 
 
 ## In Progress
 
+- [ ] <font color="orange">**Hot Bar UI**</font><br>- [ ] UI should contain a horizontal layout to hold different buttons for placing objects on the ground<br>- [ ] UI should contain clickable buttons<br>- [ ] UI should be set up to easily add new items
+- [ ] <font color="cyan">**Hot Bar**</font><br>- [ ] When a button is pressed the user should be able to place an item on the map<br>- [ ] A preview should be shown when placing<br>- [ ] The object should be added to the the world collection
 
 
 ## Completed

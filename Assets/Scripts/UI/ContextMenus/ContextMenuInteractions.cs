@@ -52,7 +52,7 @@ namespace UI.ContextMenus
 			IsContextMenuOpen = true;
 		}
 		
-		private void OnContextMenuClosed()
+		private void OnContextMenuClosed(object sender, EventArgs args)
 		{
 			IsContextMenuOpen = false;
 		}

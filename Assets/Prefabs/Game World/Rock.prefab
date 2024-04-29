@@ -118,8 +118,8 @@ GameObject:
   - component: {fileID: 3103338598070281259}
   - component: {fileID: -2688453110167885317}
   - component: {fileID: 4550045356574457020}
+  - component: {fileID: 834820806091084490}
   - component: {fileID: -7084425321684881284}
-  - component: {fileID: 3863475527032861120}
   - component: {fileID: 259842188948108905}
   m_Layer: 0
   m_Name: Rock
@@ -194,7 +194,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactable: {fileID: -2688453110167885317}
-  contextMenuUser: {fileID: 3863475527032861120}
+  contextMenuUser: {fileID: 834820806091084490}
+--- !u!114 &834820806091084490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9090978207146980024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77f396fb3a734918ba467592d0b07b8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  contextMenuEvents: {fileID: 11400000, guid: 35ab239d931d85347be959101007800e, type: 2}
 --- !u!114 &-7084425321684881284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -212,19 +225,6 @@ MonoBehaviour:
   meshRenderer: {fileID: 8988517148617743278}
   interactable: {fileID: -2688453110167885317}
   contextMenuInteractions: {fileID: 4550045356574457020}
---- !u!114 &3863475527032861120
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9090978207146980024}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2d66d4dc3c44423ab09fb8e306d9cb2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  contextMenuEvents: {fileID: 11400000, guid: 35ab239d931d85347be959101007800e, type: 2}
 --- !u!54 &259842188948108905
 Rigidbody:
   m_ObjectHideFlags: 0

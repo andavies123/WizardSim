@@ -121,6 +121,7 @@ GameObject:
   - component: {fileID: -72692409299606396}
   - component: {fileID: 5228919932028046421}
   - component: {fileID: 4250150672241257233}
+  - component: {fileID: 6061456006641987701}
   m_Layer: 0
   m_Name: Tile
   m_TagString: Untagged
@@ -156,6 +157,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d20e7dc40e94f94b2c2a3fc1f1828ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wizardSpawnRequest: {fileID: 11400000, guid: c0b1021543f2ead4aa6a05a612bc47fe, type: 2}
+  enemySpawnRequest: {fileID: 11400000, guid: 167c011ee629cfb4fbc772892500f9aa, type: 2}
 --- !u!114 &1938675790559664110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165,12 +168,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 6905772132014365446}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f090f1b23f40452f8e5baaf30eb551c6, type: 3}
+  m_Script: {fileID: 11500000, guid: 77f396fb3a734918ba467592d0b07b8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  contextMenuEvents: {fileID: 11400000, guid: 35ab239d931d85347be959101007800e, type: 2}
-  wizardSpawnRequest: {fileID: 11400000, guid: c0b1021543f2ead4aa6a05a612bc47fe, type: 2}
-  enemySpawnRequest: {fileID: 11400000, guid: 167c011ee629cfb4fbc772892500f9aa, type: 2}
 --- !u!114 &5786707372662330356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -241,3 +241,15 @@ MonoBehaviour:
   meshRenderer: {fileID: 2235466628899657055}
   interactable: {fileID: 5228919932028046421}
   contextMenuInteractions: {fileID: 5786707372662330356}
+--- !u!114 &6061456006641987701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6905772132014365446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77f396fb3a734918ba467592d0b07b8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

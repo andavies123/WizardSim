@@ -18,7 +18,6 @@ namespace UIManagers
 		
 		[Header("Context Menu")]
 		[SerializeField] private ContextMenu contextMenu;
-		[SerializeField] private ContextMenuEvents contextMenuEvents;
 		
 		public event EventHandler PauseButtonPressed;
 
@@ -33,8 +32,7 @@ namespace UIManagers
 			if (pauseButton)
 				pauseButton.onClick.AddListener(OnPauseButtonPressed);
 
-			if (contextMenu && contextMenuEvents)
-				contextMenuEvents.ContextMenuOpenRequested += OnContextMenuOpenRequested;
+			ContextMenuUser.RequestMenuOpen += OnContextMenuOpenRequested;
 
 			if (contextMenu)
 				contextMenu.MenuClosed += OnContextMenuClosed;
@@ -45,8 +43,7 @@ namespace UIManagers
 			if (pauseButton)
 				pauseButton.onClick.RemoveListener(OnPauseButtonPressed);
 
-			if (contextMenu && contextMenuEvents)
-				contextMenuEvents.ContextMenuOpenRequested -= OnContextMenuOpenRequested;
+			ContextMenuUser.RequestMenuOpen -= OnContextMenuOpenRequested;
 
 			if (contextMenu)
 				contextMenu.MenuClosed -= OnContextMenuClosed;
@@ -55,10 +52,10 @@ namespace UIManagers
 		private void OnPauseButtonPressed() => PauseButtonPressed?.Invoke(this, EventArgs.Empty);
 		private void OnContextMenuClosed(object sender, EventArgs args) => CloseInfoWindow();
 
-		private void OnContextMenuOpenRequested(ContextMenuUser user)
+		private void OnContextMenuOpenRequested(object sender, ContextMenuUserEventArgs args)
 		{
-			OpenContextMenu(user);
-			OpenInfoWindow(user.GetComponent<Interactable>());
+			OpenContextMenu(args.ContextMenuUser);
+			OpenInfoWindow(args.ContextMenuUser.GetComponent<Interactable>());
 		}
 
 	}
