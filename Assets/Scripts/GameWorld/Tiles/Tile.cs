@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace GameWorld.Tiles
 {
-	public class Tile : MonoBehaviour
+	public partial class Tile : MonoBehaviour
 	{
 		private Interactable _interactable;
-
+		
 		public World ParentWorld { get; private set; }
 		public Chunk ParentChunk { get; private set; }
 		public Transform Transform { get; private set; }

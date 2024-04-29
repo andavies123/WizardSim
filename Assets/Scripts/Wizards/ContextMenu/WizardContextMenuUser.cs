@@ -15,16 +15,13 @@ namespace Wizards.ContextMenu
 		private void Awake()
 		{
 			_wizard = GetComponent<Wizard>();
-
-			MenuItems.AddRange(new ContextMenuItem[]
-			{
-				new("Idle", () => _wizard.StateMachine.Idle(), () => !_wizard.IsIdling, AlwaysTrue),
-				new("Move To", () => interactionEvents.RequestInteraction(_wizard, OnInteractionCallback), AlwaysTrue, AlwaysTrue),
-				new("Heal 10%", () => IncreaseHealth(.1f), IsNotAtMaxHealth, AlwaysTrue),
-				new("Hurt 10%", () => DecreaseHealth(.1f), IsNotAtMinHealth, AlwaysTrue),
-				new("Heal 100%", () => IncreaseHealth(1), IsNotAtMaxHealth, AlwaysTrue),
-				new("Hurt 100%", () => DecreaseHealth(1), IsNotAtMinHealth, AlwaysTrue)
-			});
+			
+			AddMenuItem(new ContextMenuItem("Idle", () => _wizard.StateMachine.Idle(), isEnabledFunc: () => !_wizard.IsIdling));
+			AddMenuItem(new ContextMenuItem("Move To", () => interactionEvents.RequestInteraction(_wizard, OnInteractionCallback)));
+			AddMenuItem(new ContextMenuItem("Heal 10%", () => IncreaseHealth(0.1f), isEnabledFunc: IsNotAtMaxHealth));
+			AddMenuItem(new ContextMenuItem("Hurt 10%", () => DecreaseHealth(0.1f), isEnabledFunc: IsNotAtMinHealth));
+			AddMenuItem(new ContextMenuItem("Heal 100%", () => IncreaseHealth(1), isEnabledFunc: IsNotAtMaxHealth));
+			AddMenuItem(new ContextMenuItem("Hurt 100%", () => DecreaseHealth(1), isEnabledFunc: IsNotAtMinHealth));
 		}
 		
 		private void OnInteractionCallback(MonoBehaviour component)

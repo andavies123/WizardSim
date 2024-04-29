@@ -49,12 +49,12 @@ kanban-plugin: basic
 
 ## In Progress
 
-- [ ] <font color="cyan">**Context Menu Item Validation**</font><br>- [ ] Context menu items should have a validation on whether or not they should show up in the menu<br>- [ ] Items that are invalid don't show up in the menu on open<br>- [ ] Items that are valid should show up in the menu on open
 
 
 ## Completed
 
 **Complete**
+- [x] <font color="cyan">**Context Menu Item Validation**</font><br>- [x] Context menu items should have a validation on whether or not they should show up in the menu<br>- [x] Items that are invalid don't show up in the menu on open<br>- [x] Items that are valid should show up in the menu on open
 - [x] <font color="cyan">**Context Menu User**</font><br>- [x] Update the way context menu user scripts work<br>- [x] Should be more generic if possible
 - [x] <font color="cyan">**World Generators**</font><br>- [x] World generators should have their own classes<br>- [x] These classes could be private and held inside of the WorldBuilder to save space
 - [x] <font color="cyan">**WorldObject Architecture**</font><br><br>- [x] Create the architecture for world objects such as rocks, trees, bushes<br>- [x] Add tile context menu items to place these objects for testing

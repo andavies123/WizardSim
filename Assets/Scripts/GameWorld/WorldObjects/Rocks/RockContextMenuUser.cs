@@ -9,10 +9,7 @@ namespace GameWorld.WorldObjects.Rocks
 		{
 			Rock rock = GetComponent<Rock>();
 			
-			MenuItems.AddRange(new ContextMenuItem[]
-			{
-				new("Destroy", () => rock.gameObject.Destroy(), AlwaysTrue, AlwaysTrue)
-			});
+			AddMenuItem(new ContextMenuItem("Destroy", () => rock.gameObject.Destroy()));
 		}
 	}
 }

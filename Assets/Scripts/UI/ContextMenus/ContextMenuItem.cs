@@ -7,14 +7,16 @@ namespace UI.ContextMenus
 		private readonly Func<bool> _isEnabledFunc;
 		private readonly Func<bool> _isVisibleFunc;
 		
-		public ContextMenuItem(string name, Action menuClickCallback, Func<bool> isEnabledFunc, Func<bool> isVisibleFunc)
+		public ContextMenuItem(
+			string name, 
+			Action menuClickCallback, 
+            Func<bool> isEnabledFunc = null, 
+            Func<bool> isVisibleFunc = null)
 		{
 			Name = name;
 			MenuClickCallback = menuClickCallback;
-			_isEnabledFunc = isEnabledFunc;
-			_isVisibleFunc = isVisibleFunc;
-
-			RecalculateVisibility();
+			_isEnabledFunc = isEnabledFunc ?? AlwaysTrue;
+			_isVisibleFunc = isVisibleFunc ?? AlwaysTrue;
 		}
 		
 		public string Name { get; }
@@ -27,5 +29,8 @@ namespace UI.ContextMenus
 			IsEnabled = _isEnabledFunc?.Invoke() ?? false;
 			IsVisible = _isVisibleFunc?.Invoke() ?? false;
 		}
+
+		public static bool AlwaysTrue() => true;
+		public static bool AlwaysFalse() => false;
 	}
 }

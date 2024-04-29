@@ -20,12 +20,9 @@ namespace GameWorld.Tiles.ContextMenu
 			_tile = GetComponent<Tile>();
 			_worldBuilder = Dependencies.GetDependency<WorldBuilder>();
 
-			MenuItems.AddRange(new ContextMenuItem[]
-			{
-				new("Spawn Wizard", SpawnWizard, AlwaysTrue, AlwaysTrue),
-				new("Spawn Enemy", SpawnEnemy, AlwaysTrue, AlwaysTrue),
-				new("Spawn Rock", SpawnRock, AlwaysTrue, AlwaysTrue)
-			});
+			AddMenuItem(new ContextMenuItem("Spawn Wizard", SpawnWizard));
+			AddMenuItem(new ContextMenuItem("Spawn Enemy", SpawnEnemy));
+			AddMenuItem(new ContextMenuItem("Spawn Rock", SpawnRock));
 		}
 
 		private void SpawnWizard()

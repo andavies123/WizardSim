@@ -16,15 +16,12 @@ namespace Enemies.ContextMenu
 		{
 			_enemy = GetComponent<Enemy>();
 
-			MenuItems.AddRange(new ContextMenuItem[]
-			{
-				new("Idle", () => print("Idling not setup"), AlwaysFalse, AlwaysTrue),
-				new("Move To", () => interactionEvents.RequestInteraction(_enemy, OnInteractionCallback), AlwaysFalse, AlwaysTrue),
-				new("Heal 10%", () => IncreaseHealth(.1f), IsNotAtMaxHealth, AlwaysTrue),
-				new("Hurt 10%", () => DecreaseHealth(.1f), IsNotAtMinHealth, AlwaysTrue),
-				new("Heal 100%", () => IncreaseHealth(1), IsNotAtMaxHealth, AlwaysTrue),
-				new("Hurt 100%", () => DecreaseHealth(1), IsNotAtMinHealth, AlwaysTrue)
-			});
+			AddMenuItem(new ContextMenuItem("Idle", null, isEnabledFunc: ContextMenuItem.AlwaysFalse));
+			AddMenuItem(new ContextMenuItem("Move To", () => interactionEvents.RequestInteraction(_enemy, OnInteractionCallback)));
+			AddMenuItem(new ContextMenuItem("Heal 10%", () => IncreaseHealth(0.1f), isEnabledFunc: IsNotAtMaxHealth));
+			AddMenuItem(new ContextMenuItem("Hurt 10%", () => DecreaseHealth(0.1f), isEnabledFunc: IsNotAtMinHealth));
+			AddMenuItem(new ContextMenuItem("Heal 100%", () => IncreaseHealth(1), isEnabledFunc: IsNotAtMaxHealth));
+			AddMenuItem(new ContextMenuItem("Hurt 100%", () => DecreaseHealth(1), isEnabledFunc: IsNotAtMinHealth));
 		}
 
 		private void OnInteractionCallback(MonoBehaviour component)

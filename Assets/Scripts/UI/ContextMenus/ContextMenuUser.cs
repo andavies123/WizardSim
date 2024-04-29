@@ -4,32 +4,20 @@ using UnityEngine;
 
 namespace UI.ContextMenus
 {
-	public abstract class ContextMenuUser : MonoBehaviour
+	public class ContextMenuUser : MonoBehaviour
 	{
 		[SerializeField] protected ContextMenuEvents contextMenuEvents;
 
-		protected readonly List<ContextMenuItem> MenuItems = new();
+		private readonly List<ContextMenuItem> _menuItems = new();
         
 		public event Action MenuClosed;
 
-		public IReadOnlyList<ContextMenuItem> AllMenuItems => MenuItems;
+		public IReadOnlyList<ContextMenuItem> AllMenuItems => _menuItems;
 
-		public void OpenMenu()
-		{
-			contextMenuEvents.RequestMenuOpen(this);
-		}
-
-		public void CloseMenu()
-		{
-			MenuClosed?.Invoke();
-		}
-
-		public void UpdateMenuItems()
-		{
-			MenuItems.ForEach(item => item.RecalculateVisibility());
-		}
-
-		protected static bool AlwaysTrue() => true;
-		protected static bool AlwaysFalse() => false;
+		public void AddMenuItem(ContextMenuItem menuItem) => _menuItems.Add(menuItem);
+		public void UpdateMenuItems() => _menuItems.ForEach(item => item.RecalculateVisibility());
+		
+		public void OpenMenu() => contextMenuEvents.RequestMenuOpen(this);
+		public void CloseMenu() => MenuClosed?.Invoke();
 	}
 }
