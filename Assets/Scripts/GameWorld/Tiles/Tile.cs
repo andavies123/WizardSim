@@ -1,21 +1,16 @@
-﻿using Game;
-using GameWorld.Builders;
+﻿using Game.MessengerSystem;
+using GameWorld.Messages;
 using UI;
 using UI.ContextMenus;
 using UnityEngine;
-using Utilities;
 
 namespace GameWorld.Tiles
 {
 	[RequireComponent(typeof(Interactable), typeof(ContextMenuUser))]
 	public class Tile : MonoBehaviour
 	{
-		[SerializeField] private GameEventVector3 wizardSpawnRequest;
-		[SerializeField] private GameEventVector3 enemySpawnRequest;
-		
 		private Interactable _interactable;
 		private ContextMenuUser _contextMenuUser;
-		private WorldBuilder _worldBuilder;
 		
 		public World ParentWorld { get; private set; }
 		public Chunk ParentChunk { get; private set; }
@@ -39,7 +34,6 @@ namespace GameWorld.Tiles
 			Transform = transform;
 			_interactable = GetComponent<Interactable>();
 			_contextMenuUser = GetComponent<ContextMenuUser>();
-			_worldBuilder = Dependencies.GetDependency<WorldBuilder>();
 		}
 
 		private void InitializeInteractable()
@@ -52,7 +46,6 @@ namespace GameWorld.Tiles
 		{
 			_contextMenuUser.AddMenuItem(new ContextMenuItem("Spawn Wizard", SpawnWizard));
 			_contextMenuUser.AddMenuItem(new ContextMenuItem("Spawn Enemy", SpawnEnemy));
-			_contextMenuUser.AddMenuItem(new ContextMenuItem("Spawn Rock", SpawnRock));
 		}
 		
 		private void SpawnWizard()
@@ -60,7 +53,7 @@ namespace GameWorld.Tiles
 			Vector2 tileWorldPosition = ParentWorld.WorldPositionFromTile(this, centerOfTile: true);
 			Vector3 spawnPosition = new(tileWorldPosition.x, 1, tileWorldPosition.y);
 			
-			wizardSpawnRequest.RaiseEvent(this, spawnPosition);
+			GlobalMessenger.Publish(new WizardSpawnRequestMessage(spawnPosition));
 		}
 
 		private void SpawnEnemy()
@@ -68,12 +61,7 @@ namespace GameWorld.Tiles
 			Vector2 tileWorldPosition = ParentWorld.WorldPositionFromTile(this, centerOfTile: true);
 			Vector3 spawnPosition = new(tileWorldPosition.x, 1, tileWorldPosition.y);
 			
-			enemySpawnRequest.RaiseEvent(this, spawnPosition);
-		}
-
-		private void SpawnRock()
-		{
-			_worldBuilder.RockWorldBuilder.TrySpawnSingle(ParentChunk, TilePosition);
+			GlobalMessenger.Publish(new EnemySpawnRequestMessage(spawnPosition));
 		}
 	}
 }

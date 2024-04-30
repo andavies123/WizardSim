@@ -44,6 +44,7 @@ kanban-plugin: basic
 
 - [ ] <font color="cyan">**Save System**</font><br>- [ ] Add save pause menu button<br>- [ ] Game world should be saved<br>- [ ] Wizard stats should be saved<br>- [ ] Add load main menu button
 - [ ] <font color="cyan">**Settings Menu**</font><br>- [ ] Wire up buttons for settings menu<br>- [ ] Wire up pause menu settings button
+- [ ] <font color="cyan">**Wizard Task System**</font><br><br>- [ ] Set up the architecture for wizards to have a task system<br>- [ ] Wizards should be assigned a single task to work on<br>- [ ] Tasks should have a priority<br>- [ ] Wizards should have ability to have multiple tasks<br>- [ ] If wizards don't have a task, they should idle<br>- [ ] User should be able to see current task of a wizard<br>- [ ] User should be able to see task list<br>- [ ] User should be able to remove a task from a wizards list<br>- [ ] User should be able to rearrange a task in the wizard list
 
 
 ## In Progress

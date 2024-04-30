@@ -173,7 +173,6 @@ MonoBehaviour:
   initialSpawns: 3
   spawnCenter: {x: 0, y: 0, z: 0}
   spawnRadius: 10
-  spawnRequestEvent: {fileID: 11400000, guid: 167c011ee629cfb4fbc772892500f9aa, type: 2}
 --- !u!114 &262803725
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -960,7 +959,6 @@ MonoBehaviour:
   pauseButton: {fileID: 1695901135}
   infoWindow: {fileID: 1685961581}
   contextMenu: {fileID: 1017350128}
-  contextMenuEvents: {fileID: 11400000, guid: 35ab239d931d85347be959101007800e, type: 2}
 --- !u!1 &709951699
 GameObject:
   m_ObjectHideFlags: 0
@@ -1758,6 +1756,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   world: {fileID: 2007172221}
   worldObjectParent: {fileID: 1790581159}
+  wizardSpawner: {fileID: 1202947227}
+  enemySpawner: {fileID: 262803724}
   initialGenerationRadius: 2
   rockPrefab: {fileID: 9090978207146980024, guid: 70ca3cc2895272241a88451b6498dfe8, type: 3}
   rocksPerChunk: 2
@@ -1997,7 +1997,6 @@ MonoBehaviour:
   initialSpawns: 5
   spawnCenter: {x: 0, y: 0, z: 0}
   spawnRadius: 10
-  spawnRequestEvent: {fileID: 11400000, guid: c0b1021543f2ead4aa6a05a612bc47fe, type: 2}
 --- !u!114 &1202947228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3088,6 +3087,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   worldDetails: {fileID: 11400000, guid: e582ff65a9a14e9418ca71ac487ff365, type: 2}
+  worldObjectContainer: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

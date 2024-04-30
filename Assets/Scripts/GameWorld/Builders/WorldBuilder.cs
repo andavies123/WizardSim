@@ -1,5 +1,7 @@
 ﻿using System;
-using Game;
+using Game.MessengerSystem;
+using GameWorld.Messages;
+using GameWorld.Spawners;
 using GameWorld.Tiles;
 using UnityEngine;
 using Utilities;
@@ -10,6 +12,10 @@ namespace GameWorld.Builders
 	{
 		[SerializeField] private World world;
 		[SerializeField] private Transform worldObjectParent;
+		
+		[Header("Spawners")]
+		[SerializeField] private EntitySpawner wizardSpawner;
+		[SerializeField] private EntitySpawner enemySpawner;
 
 		[Header("Settings")]
 		[SerializeField] private int initialGenerationRadius = 5;
@@ -22,10 +28,17 @@ namespace GameWorld.Builders
 
 		private void Awake()
 		{
-			Dependencies.RegisterDependency(this);
-
 			RockWorldBuilder = new RockWorldBuilder(world, rockPrefab);
 			GenerateWorld();
+			
+			GlobalMessenger.Subscribe<WizardSpawnRequestMessage>(OnWizardSpawnRequested);
+			GlobalMessenger.Subscribe<EnemySpawnRequestMessage>(OnEnemySpawnRequested);
+		}
+
+		private void OnDestroy()
+		{
+			GlobalMessenger.Unsubscribe<WizardSpawnRequestMessage>(OnWizardSpawnRequested);
+			GlobalMessenger.Unsubscribe<EnemySpawnRequestMessage>(OnEnemySpawnRequested);
 		}
 
 		private void GenerateWorld()
@@ -95,5 +108,9 @@ namespace GameWorld.Builders
 					addedRocks++;
 			}
 		}
+
+		private void OnWizardSpawnRequested(WizardSpawnRequestMessage message) => wizardSpawner.SpawnEntity(message.SpawnPosition);
+
+		private void OnEnemySpawnRequested(EnemySpawnRequestMessage message) => enemySpawner.SpawnEntity(message.SpawnPosition);
 	}
 }

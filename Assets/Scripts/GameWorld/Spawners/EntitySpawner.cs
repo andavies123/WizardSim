@@ -15,9 +15,6 @@ namespace GameWorld.Spawners
 		[SerializeField] private Vector3Int spawnCenter = Vector3Int.zero;
 		[SerializeField] private int spawnRadius = 10;
 
-		[Header("Game Events")]
-		[SerializeField] private GameEventVector3 spawnRequestEvent;
-
 		public void SpawnEntity(Vector3 spawnPosition)
 		{
 			GameObject entityGameObject = Instantiate(entityPrefab, entityManager.transform);
@@ -25,20 +22,10 @@ namespace GameWorld.Spawners
 			Entity entity = entityGameObject.GetComponent<Entity>();
 			entityManager.Add(entity);
 		}
-
-		private void Awake()
-		{
-			spawnRequestEvent.Raised += OnEntitySpawnRequestEvent;
-		}
-
+		
 		private void Start()
 		{
 			LoopUtilities.Loop(initialSpawns, SpawnRandomEntity);
-		}
-
-		private void OnDestroy()
-		{
-			spawnRequestEvent.Raised += OnEntitySpawnRequestEvent;
 		}
 
 		private void SpawnRandomEntity()
@@ -50,7 +37,5 @@ namespace GameWorld.Spawners
 				1,
 				(int)randomSpawn.y + spawnCenter.z + 0.5f));
 		}
-
-		private void OnEntitySpawnRequestEvent(object sender, Vector3 position) => SpawnEntity(position);
 	}
 }
