@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace GameWorld.Messages
 {
-	public class WizardSpawnRequestMessage : IMessage
+	public class EnemySpawnRequestMessage : IMessage
 	{
-		public WizardSpawnRequestMessage(Vector3 spawnPosition)
+		public EnemySpawnRequestMessage(Vector3 spawnPosition)
 		{
 			SpawnPosition = spawnPosition;
 		}
