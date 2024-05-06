@@ -13,11 +13,13 @@ namespace Game
 {
 	public class GameplayGameState : IGameState
 	{
-		private readonly InputStateMachine _inputStateMachine = new();
+		private readonly InputStateMachine _mainInputStateMachine = new();
+		private readonly InputStateMachine _subInputStateMachine = new();
 		
 		private readonly GameplayUIState _gameplayUIState;
 		
 		private readonly GameplayInput _gameplayInput;
+		private readonly SecondaryGameplayInput _secondaryGameplayInput;
 		private readonly InteractionInput _interactionInput;
 		private readonly PlacementModeInput _placementModeInput;
 
@@ -39,6 +41,7 @@ namespace Game
 			_interactionEvents = interactionEvents;
 			
 			_gameplayInput = new GameplayInput();
+			_secondaryGameplayInput = new SecondaryGameplayInput();
 			_interactionInput = new InteractionInput();
 			_placementModeInput = new PlacementModeInput(_interactableRaycaster);
 			
@@ -52,7 +55,7 @@ namespace Game
 			_gameplayUIState.PauseButtonPressed += OnUIPauseButtonPressed;
 			_gameplayUIState.Enable();
 			
-			_gameplayInput.PauseActionPerformed += OnGameplayInputPauseActionPerformed;
+			_secondaryGameplayInput.PauseActionPerformed += OnGameplayInputPauseActionPerformed;
 			_interactionInput.CancelInteractionActionPerformed += OnInteractionInputCancelActionPerformed;
 			
 			_placementModeInput.EndPlacementModeActionPerformed += OnPlacementModeInputEndActionPerformed;
@@ -69,7 +72,8 @@ namespace Game
 			GlobalMessenger.Subscribe<BeginPlacementModeRequest>(OnBeginPlacementModeRequestReceived);
 			GlobalMessenger.Subscribe<EndPlacementModeRequest>(OnEndPlacementModeRequestReceived);
 			
-			_inputStateMachine.SetCurrentState(_gameplayInput);
+			_mainInputStateMachine.SetCurrentState(_gameplayInput);
+			_subInputStateMachine.SetCurrentState(_secondaryGameplayInput);
 		}
 
 		public void Disable()
@@ -77,7 +81,7 @@ namespace Game
 			_gameplayUIState.Disable();
 			_gameplayUIState.PauseButtonPressed -= OnUIPauseButtonPressed;
 
-			_gameplayInput.PauseActionPerformed -= OnGameplayInputPauseActionPerformed;
+			_secondaryGameplayInput.PauseActionPerformed -= OnGameplayInputPauseActionPerformed;
 			_interactionInput.CancelInteractionActionPerformed -= OnInteractionInputCancelActionPerformed;
 			
 			_placementModeInput.EndPlacementModeActionPerformed -= OnPlacementModeInputEndActionPerformed;
@@ -94,30 +98,30 @@ namespace Game
 			GlobalMessenger.Unsubscribe<BeginPlacementModeRequest>(OnBeginPlacementModeRequestReceived);
 			GlobalMessenger.Unsubscribe<EndPlacementModeRequest>(OnEndPlacementModeRequestReceived);
 			
-			_inputStateMachine.SetCurrentState(null);
+			_mainInputStateMachine.SetCurrentState(null);
 		}
 
 		private void StartInteraction(Action<MonoBehaviour> interactionCallback)
 		{
 			_interactionCallback = interactionCallback;
-			_inputStateMachine.SetCurrentState(_interactionInput);
+			_subInputStateMachine.SetCurrentState(_interactionInput);
 		}
 
 		private void EndInteraction()
 		{
 			_interactionCallback = null;
-			_inputStateMachine.SetCurrentState(_gameplayInput);
+			_subInputStateMachine.SetCurrentState(_secondaryGameplayInput);
 		}
 
 		private void StartPlacementMode(GameObject placementPrefab)
 		{
 			_placementPrefab = placementPrefab;
-			_inputStateMachine.SetCurrentState(_placementModeInput);
+			_subInputStateMachine.SetCurrentState(_placementModeInput);
 		}
 
 		private void EndPlacementMode()
 		{
-			_inputStateMachine.SetCurrentState(_gameplayInput);
+			_subInputStateMachine.SetCurrentState(_secondaryGameplayInput);
 			_placementPrefab = null;
 			GlobalMessenger.Publish(new PlacementModeEnded());
 		}

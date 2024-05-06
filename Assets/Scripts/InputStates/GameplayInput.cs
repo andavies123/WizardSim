@@ -14,7 +14,6 @@ namespace InputStates
 		private InputAction.CallbackContext _latestLookContext;
 		private InputAction.CallbackContext _latestVerticalMoveContext;
         
-		public event EventHandler PauseActionPerformed;
 		public event EventHandler MoveActionStarted;
 		public event EventHandler MoveActionEnded;
 		public event EventHandler LookActionStarted;
@@ -47,8 +46,6 @@ namespace InputStates
 		{
 			_playerInputActions ??= new PlayerInputActions();
 			
-			_playerInputActions.Gameplay.PauseGame.performed += OnPauseActionPerformed;
-			
 			_playerInputActions.Gameplay.Move.started += OnMoveActionStarted;
 			_playerInputActions.Gameplay.Move.canceled += OnMoveActionCanceled;
 			_playerInputActions.Gameplay.Move.performed += OnMoveActionPerformed;
@@ -72,7 +69,6 @@ namespace InputStates
 		public void Disable()
 		{
 			_playerInputActions.Gameplay.Disable();
-			_playerInputActions.Gameplay.PauseGame.performed -= OnPauseActionPerformed;
 			
 			_playerInputActions.Gameplay.Move.started -= OnMoveActionStarted;
 			_playerInputActions.Gameplay.Move.canceled -= OnMoveActionCanceled;
@@ -91,8 +87,6 @@ namespace InputStates
 
 			_playerInputActions.Gameplay.CameraZoom.performed -= OnCameraZoomActionPerformed;
 		}
-
-		private void OnPauseActionPerformed(InputAction.CallbackContext callbackContext) => PauseActionPerformed?.Invoke(this, EventArgs.Empty);
 
 		private void OnMoveActionStarted(InputAction.CallbackContext callbackContext)
 		{

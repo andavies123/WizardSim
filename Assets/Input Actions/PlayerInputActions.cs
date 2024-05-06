@@ -66,15 +66,6 @@ namespace UnityEngine.InputSystem
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Pause Game"",
-                    ""type"": ""Button"",
-                    ""id"": ""4c5661a3-08f4-4341-936b-ef9773692c75"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Vertical Move"",
                     ""type"": ""Value"",
                     ""id"": ""3d741956-bef1-4c09-b90b-00fb62d715ef"",
@@ -247,17 +238,6 @@ namespace UnityEngine.InputSystem
                     ""processors"": """",
                     ""groups"": ""Joystick"",
                     ""action"": ""Camera Look"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""69bd5cb8-274e-4bc2-8d76-613602bce5b3"",
-                    ""path"": ""<Keyboard>/escape"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Pause Game"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -939,6 +919,34 @@ namespace UnityEngine.InputSystem
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""SecondaryGameplay"",
+            ""id"": ""943a80f5-f591-4dd8-bca0-b2d0eecf9011"",
+            ""actions"": [
+                {
+                    ""name"": ""Pause Game"",
+                    ""type"": ""Button"",
+                    ""id"": ""b01a66f5-843b-4a50-b973-c78f5d7cbdf0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""9f1e576e-ed2b-49af-acea-ddd7c2241d5d"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause Game"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -1010,7 +1018,6 @@ namespace UnityEngine.InputSystem
             m_Gameplay_CameraLookActivate = m_Gameplay.FindAction("Camera Look Activate", throwIfNotFound: true);
             m_Gameplay_CameraLook = m_Gameplay.FindAction("Camera Look", throwIfNotFound: true);
             m_Gameplay_CameraZoom = m_Gameplay.FindAction("Camera Zoom", throwIfNotFound: true);
-            m_Gameplay_PauseGame = m_Gameplay.FindAction("Pause Game", throwIfNotFound: true);
             m_Gameplay_VerticalMove = m_Gameplay.FindAction("Vertical Move", throwIfNotFound: true);
             // Pause Menu
             m_PauseMenu = asset.FindActionMap("Pause Menu", throwIfNotFound: true);
@@ -1033,6 +1040,9 @@ namespace UnityEngine.InputSystem
             // Placement Mode
             m_PlacementMode = asset.FindActionMap("Placement Mode", throwIfNotFound: true);
             m_PlacementMode_EndPlacementMode = m_PlacementMode.FindAction("End Placement Mode", throwIfNotFound: true);
+            // SecondaryGameplay
+            m_SecondaryGameplay = asset.FindActionMap("SecondaryGameplay", throwIfNotFound: true);
+            m_SecondaryGameplay_PauseGame = m_SecondaryGameplay.FindAction("Pause Game", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -1098,7 +1108,6 @@ namespace UnityEngine.InputSystem
         private readonly InputAction m_Gameplay_CameraLookActivate;
         private readonly InputAction m_Gameplay_CameraLook;
         private readonly InputAction m_Gameplay_CameraZoom;
-        private readonly InputAction m_Gameplay_PauseGame;
         private readonly InputAction m_Gameplay_VerticalMove;
         public struct GameplayActions
         {
@@ -1108,7 +1117,6 @@ namespace UnityEngine.InputSystem
             public InputAction @CameraLookActivate => m_Wrapper.m_Gameplay_CameraLookActivate;
             public InputAction @CameraLook => m_Wrapper.m_Gameplay_CameraLook;
             public InputAction @CameraZoom => m_Wrapper.m_Gameplay_CameraZoom;
-            public InputAction @PauseGame => m_Wrapper.m_Gameplay_PauseGame;
             public InputAction @VerticalMove => m_Wrapper.m_Gameplay_VerticalMove;
             public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
             public void Enable() { Get().Enable(); }
@@ -1131,9 +1139,6 @@ namespace UnityEngine.InputSystem
                 @CameraZoom.started += instance.OnCameraZoom;
                 @CameraZoom.performed += instance.OnCameraZoom;
                 @CameraZoom.canceled += instance.OnCameraZoom;
-                @PauseGame.started += instance.OnPauseGame;
-                @PauseGame.performed += instance.OnPauseGame;
-                @PauseGame.canceled += instance.OnPauseGame;
                 @VerticalMove.started += instance.OnVerticalMove;
                 @VerticalMove.performed += instance.OnVerticalMove;
                 @VerticalMove.canceled += instance.OnVerticalMove;
@@ -1153,9 +1158,6 @@ namespace UnityEngine.InputSystem
                 @CameraZoom.started -= instance.OnCameraZoom;
                 @CameraZoom.performed -= instance.OnCameraZoom;
                 @CameraZoom.canceled -= instance.OnCameraZoom;
-                @PauseGame.started -= instance.OnPauseGame;
-                @PauseGame.performed -= instance.OnPauseGame;
-                @PauseGame.canceled -= instance.OnPauseGame;
                 @VerticalMove.started -= instance.OnVerticalMove;
                 @VerticalMove.performed -= instance.OnVerticalMove;
                 @VerticalMove.canceled -= instance.OnVerticalMove;
@@ -1432,6 +1434,52 @@ namespace UnityEngine.InputSystem
             }
         }
         public PlacementModeActions @PlacementMode => new PlacementModeActions(this);
+
+        // SecondaryGameplay
+        private readonly InputActionMap m_SecondaryGameplay;
+        private List<ISecondaryGameplayActions> m_SecondaryGameplayActionsCallbackInterfaces = new List<ISecondaryGameplayActions>();
+        private readonly InputAction m_SecondaryGameplay_PauseGame;
+        public struct SecondaryGameplayActions
+        {
+            private @PlayerInputActions m_Wrapper;
+            public SecondaryGameplayActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+            public InputAction @PauseGame => m_Wrapper.m_SecondaryGameplay_PauseGame;
+            public InputActionMap Get() { return m_Wrapper.m_SecondaryGameplay; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(SecondaryGameplayActions set) { return set.Get(); }
+            public void AddCallbacks(ISecondaryGameplayActions instance)
+            {
+                if (instance == null || m_Wrapper.m_SecondaryGameplayActionsCallbackInterfaces.Contains(instance)) return;
+                m_Wrapper.m_SecondaryGameplayActionsCallbackInterfaces.Add(instance);
+                @PauseGame.started += instance.OnPauseGame;
+                @PauseGame.performed += instance.OnPauseGame;
+                @PauseGame.canceled += instance.OnPauseGame;
+            }
+
+            private void UnregisterCallbacks(ISecondaryGameplayActions instance)
+            {
+                @PauseGame.started -= instance.OnPauseGame;
+                @PauseGame.performed -= instance.OnPauseGame;
+                @PauseGame.canceled -= instance.OnPauseGame;
+            }
+
+            public void RemoveCallbacks(ISecondaryGameplayActions instance)
+            {
+                if (m_Wrapper.m_SecondaryGameplayActionsCallbackInterfaces.Remove(instance))
+                    UnregisterCallbacks(instance);
+            }
+
+            public void SetCallbacks(ISecondaryGameplayActions instance)
+            {
+                foreach (var item in m_Wrapper.m_SecondaryGameplayActionsCallbackInterfaces)
+                    UnregisterCallbacks(item);
+                m_Wrapper.m_SecondaryGameplayActionsCallbackInterfaces.Clear();
+                AddCallbacks(instance);
+            }
+        }
+        public SecondaryGameplayActions @SecondaryGameplay => new SecondaryGameplayActions(this);
         private int m_KeyboardMouseSchemeIndex = -1;
         public InputControlScheme KeyboardMouseScheme
         {
@@ -1483,7 +1531,6 @@ namespace UnityEngine.InputSystem
             void OnCameraLookActivate(InputAction.CallbackContext context);
             void OnCameraLook(InputAction.CallbackContext context);
             void OnCameraZoom(InputAction.CallbackContext context);
-            void OnPauseGame(InputAction.CallbackContext context);
             void OnVerticalMove(InputAction.CallbackContext context);
         }
         public interface IPauseMenuActions
@@ -1510,6 +1557,10 @@ namespace UnityEngine.InputSystem
         public interface IPlacementModeActions
         {
             void OnEndPlacementMode(InputAction.CallbackContext context);
+        }
+        public interface ISecondaryGameplayActions
+        {
+            void OnPauseGame(InputAction.CallbackContext context);
         }
     }
 }

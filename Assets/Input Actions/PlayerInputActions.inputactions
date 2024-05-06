@@ -42,15 +42,6 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Pause Game",
-                    "type": "Button",
-                    "id": "4c5661a3-08f4-4341-936b-ef9773692c75",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Vertical Move",
                     "type": "Value",
                     "id": "3d741956-bef1-4c09-b90b-00fb62d715ef",
@@ -223,17 +214,6 @@
                     "processors": "",
                     "groups": "Joystick",
                     "action": "Camera Look",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "69bd5cb8-274e-4bc2-8d76-613602bce5b3",
-                    "path": "<Keyboard>/escape",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Pause Game",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -911,6 +891,34 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "End Placement Mode",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "SecondaryGameplay",
+            "id": "943a80f5-f591-4dd8-bca0-b2d0eecf9011",
+            "actions": [
+                {
+                    "name": "Pause Game",
+                    "type": "Button",
+                    "id": "b01a66f5-843b-4a50-b973-c78f5d7cbdf0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "9f1e576e-ed2b-49af-acea-ddd7c2241d5d",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause Game",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
