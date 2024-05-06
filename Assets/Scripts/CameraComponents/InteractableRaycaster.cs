@@ -19,6 +19,7 @@ namespace CameraComponents
         public event EventHandler<InteractableRaycasterEventArgs> InteractableHoverEnd;
         public event EventHandler NonInteractableSelectedPrimary;
         public event EventHandler NonInteractableSelectedSecondary;
+        public event EventHandler NonInteractableHoverBegin;
 
         public bool IsInteractableCurrentlyHovered => _currentHover;
 
@@ -52,7 +53,10 @@ namespace CameraComponents
 
 		private void HandleNoInteractableFound()
 		{
-			EndCurrentHover();
+			if (_currentHover)
+				EndCurrentHover();
+			else
+				NonInteractableHoverBegin?.Invoke(this, EventArgs.Empty);
 			
 			if (Input.GetMouseButtonDown(InputUtilities.LeftMouseButton))
 				NonInteractableSelectedPrimary?.Invoke(this, EventArgs.Empty);
@@ -80,7 +84,7 @@ namespace CameraComponents
 		{
 			if (!newHover)
 				return;
-			
+
 			if (_currentHover && _currentHover == newHover)
 				return;
 			

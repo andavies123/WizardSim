@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace UIManagers
+namespace UIStates
 {
 	public class MainMenuUIState : UIState
 	{

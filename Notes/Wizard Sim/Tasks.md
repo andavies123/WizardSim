@@ -49,13 +49,13 @@ kanban-plugin: basic
 
 ## In Progress
 
-- [ ] <font color="orange">**Hot Bar UI**</font><br>- [ ] UI should contain a horizontal layout to hold different buttons for placing objects on the ground<br>- [ ] UI should contain clickable buttons<br>- [ ] UI should be set up to easily add new items
-- [ ] <font color="cyan">**Hot Bar**</font><br>- [ ] When a button is pressed the user should be able to place an item on the map<br>- [ ] A preview should be shown when placing<br>- [ ] The object should be added to the the world collection
 
 
 ## Completed
 
 **Complete**
+- [x] <font color="cyan">**Hot Bar**</font><br>- [x] When a button is pressed the user should be able to place an item on the map<br>- [x] A preview should be shown when placing<br>- [x] The object should be added to the the world collection
+- [x] <font color="orange">**Hot Bar UI**</font><br>- [x] UI should contain a horizontal layout to hold different buttons for placing objects on the ground<br>- [x] UI should contain clickable buttons<br>- [x] UI should be set up to easily add new items
 - [x] <font color="cyan">**Context Menu Item Validation**</font><br>- [x] Context menu items should have a validation on whether or not they should show up in the menu<br>- [x] Items that are invalid don't show up in the menu on open<br>- [x] Items that are valid should show up in the menu on open
 - [x] <font color="cyan">**Context Menu User**</font><br>- [x] Update the way context menu user scripts work<br>- [x] Should be more generic if possible
 - [x] <font color="cyan">**World Generators**</font><br>- [x] World generators should have their own classes<br>- [x] These classes could be private and held inside of the WorldBuilder to save space

@@ -6,25 +6,29 @@ namespace InputStates
 	public class InteractionInput : IInput
 	{
 		private readonly PlayerInputActions _playerInputActions = new();
+		private PlayerInputActions.InteractionActions interaction;
 		
 		public event EventHandler CancelInteractionActionPerformed;
+
+		public InteractionInput() => interaction = _playerInputActions.Interaction;
 		
 		public bool ShowInteractions => true;
 
 		public void Enable()
 		{
-			_playerInputActions.Interaction.CancelInteraction.performed += OnCancelInteractionActionPerformed;
+			interaction.CancelInteraction.performed += OnCancelInteractionActionPerformed;
 			
-			_playerInputActions.Interaction.Enable();
+			interaction.Enable();
 		}
 
 		public void Disable()
 		{
-			_playerInputActions.Interaction.Disable();
+			interaction.Disable();
 
-			_playerInputActions.Interaction.CancelInteraction.performed -= OnCancelInteractionActionPerformed;
+			interaction.CancelInteraction.performed -= OnCancelInteractionActionPerformed;
 		}
 
-		private void OnCancelInteractionActionPerformed(InputAction.CallbackContext context) => CancelInteractionActionPerformed?.Invoke(this, EventArgs.Empty);
+		private void OnCancelInteractionActionPerformed(InputAction.CallbackContext context) => 
+			CancelInteractionActionPerformed?.Invoke(this, EventArgs.Empty);
 	}
 }

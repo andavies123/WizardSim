@@ -156,8 +156,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d20e7dc40e94f94b2c2a3fc1f1828ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wizardSpawnRequest: {fileID: 11400000, guid: c0b1021543f2ead4aa6a05a612bc47fe, type: 2}
-  enemySpawnRequest: {fileID: 11400000, guid: 167c011ee629cfb4fbc772892500f9aa, type: 2}
 --- !u!114 &1938675790559664110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -209,7 +207,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseTexture: {fileID: 2800000, guid: 67dc852ebf71340439ae1fe97d5a89fa, type: 3}
-  baseColor: {r: 0.019607844, g: 0.4156863, b: 0, a: 0}
+  baseColor: {r: 0.019607844, g: 0.4156863, b: 0, a: 1}
   meshRenderer: {fileID: 2235466628899657055}
   interactable: {fileID: 5228919932028046421}
   contextMenuInteractions: {fileID: 5786707372662330356}

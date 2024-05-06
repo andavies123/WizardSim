@@ -887,6 +887,34 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Placement Mode",
+            "id": "af7063e9-9764-487b-ab0a-dd9e51084e98",
+            "actions": [
+                {
+                    "name": "End Placement Mode",
+                    "type": "Button",
+                    "id": "ce9d28a2-b73d-4db5-92a6-2061aeaed465",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "5225e630-0cc3-4871-9359-0ef00dd3f7d6",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "End Placement Mode",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

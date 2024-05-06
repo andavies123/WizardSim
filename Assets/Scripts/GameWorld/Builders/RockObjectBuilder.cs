@@ -1,15 +1,20 @@
-﻿using Extensions;
+﻿using System.Linq;
+using Extensions;
 using GameWorld.WorldObjects;
+using GeneralBehaviours.ShaderManagers;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace GameWorld.Builders
 {
-	public class RockWorldBuilder : IWorldBuilder
+	public class RockObjectBuilder : IWorldObjectBuilder
 	{
+		private static readonly int BaseColor = Shader.PropertyToID("_BaseColor");
+		
 		private readonly World _world;
 		private readonly GameObject _rockPrefab;
 		
-		public RockWorldBuilder(World world, GameObject rockPrefab)
+		public RockObjectBuilder(World world, GameObject rockPrefab)
 		{
 			_world = world;
 			_rockPrefab = rockPrefab;
@@ -38,6 +43,22 @@ namespace GameWorld.Builders
 			}
 
 			return true;
+		}
+
+		public WorldObject SpawnPreview()
+		{
+			WorldObject rock = Object.Instantiate(_rockPrefab, _world.WorldObjectContainer).GetComponent<WorldObject>();
+			
+			rock.GetComponent<InteractionShaderManager>().enabled = false;
+			rock.GetComponentsInChildren<Collider>(true).ToList().ForEach(x => x.enabled = false);
+			rock.GetComponentsInChildren<MeshRenderer>(true).ToList().ForEach(renderer =>
+			{
+				Color color = renderer.material.GetColor(BaseColor);
+				color.a = 0.25f;
+				renderer.material.SetColor(BaseColor, color);
+			});
+
+			return rock;
 		}
 	}
 }

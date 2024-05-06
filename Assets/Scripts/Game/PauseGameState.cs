@@ -1,6 +1,6 @@
 ﻿using System;
 using InputStates;
-using UIManagers;
+using UIStates;
 
 namespace Game
 {
@@ -15,7 +15,9 @@ namespace Game
 		public PauseGameState(PauseMenuUIState pauseMenuUIState)
 		{
 			_pauseMenuUIState = pauseMenuUIState;
-			_pauseMenuInput = Dependencies.GetDependency<PauseMenuInput>();
+			_pauseMenuInput = new PauseMenuInput();
+			
+			Dependencies.RegisterDependency(_pauseMenuInput);
 		}
 
 		public void Enable()

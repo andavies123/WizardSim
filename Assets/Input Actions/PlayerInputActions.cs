@@ -911,6 +911,34 @@ namespace UnityEngine.InputSystem
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Placement Mode"",
+            ""id"": ""af7063e9-9764-487b-ab0a-dd9e51084e98"",
+            ""actions"": [
+                {
+                    ""name"": ""End Placement Mode"",
+                    ""type"": ""Button"",
+                    ""id"": ""ce9d28a2-b73d-4db5-92a6-2061aeaed465"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""5225e630-0cc3-4871-9359-0ef00dd3f7d6"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""End Placement Mode"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -1002,6 +1030,9 @@ namespace UnityEngine.InputSystem
             // Interaction
             m_Interaction = asset.FindActionMap("Interaction", throwIfNotFound: true);
             m_Interaction_CancelInteraction = m_Interaction.FindAction("Cancel Interaction", throwIfNotFound: true);
+            // Placement Mode
+            m_PlacementMode = asset.FindActionMap("Placement Mode", throwIfNotFound: true);
+            m_PlacementMode_EndPlacementMode = m_PlacementMode.FindAction("End Placement Mode", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -1355,6 +1386,52 @@ namespace UnityEngine.InputSystem
             }
         }
         public InteractionActions @Interaction => new InteractionActions(this);
+
+        // Placement Mode
+        private readonly InputActionMap m_PlacementMode;
+        private List<IPlacementModeActions> m_PlacementModeActionsCallbackInterfaces = new List<IPlacementModeActions>();
+        private readonly InputAction m_PlacementMode_EndPlacementMode;
+        public struct PlacementModeActions
+        {
+            private @PlayerInputActions m_Wrapper;
+            public PlacementModeActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+            public InputAction @EndPlacementMode => m_Wrapper.m_PlacementMode_EndPlacementMode;
+            public InputActionMap Get() { return m_Wrapper.m_PlacementMode; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(PlacementModeActions set) { return set.Get(); }
+            public void AddCallbacks(IPlacementModeActions instance)
+            {
+                if (instance == null || m_Wrapper.m_PlacementModeActionsCallbackInterfaces.Contains(instance)) return;
+                m_Wrapper.m_PlacementModeActionsCallbackInterfaces.Add(instance);
+                @EndPlacementMode.started += instance.OnEndPlacementMode;
+                @EndPlacementMode.performed += instance.OnEndPlacementMode;
+                @EndPlacementMode.canceled += instance.OnEndPlacementMode;
+            }
+
+            private void UnregisterCallbacks(IPlacementModeActions instance)
+            {
+                @EndPlacementMode.started -= instance.OnEndPlacementMode;
+                @EndPlacementMode.performed -= instance.OnEndPlacementMode;
+                @EndPlacementMode.canceled -= instance.OnEndPlacementMode;
+            }
+
+            public void RemoveCallbacks(IPlacementModeActions instance)
+            {
+                if (m_Wrapper.m_PlacementModeActionsCallbackInterfaces.Remove(instance))
+                    UnregisterCallbacks(instance);
+            }
+
+            public void SetCallbacks(IPlacementModeActions instance)
+            {
+                foreach (var item in m_Wrapper.m_PlacementModeActionsCallbackInterfaces)
+                    UnregisterCallbacks(item);
+                m_Wrapper.m_PlacementModeActionsCallbackInterfaces.Clear();
+                AddCallbacks(instance);
+            }
+        }
+        public PlacementModeActions @PlacementMode => new PlacementModeActions(this);
         private int m_KeyboardMouseSchemeIndex = -1;
         public InputControlScheme KeyboardMouseScheme
         {
@@ -1429,6 +1506,10 @@ namespace UnityEngine.InputSystem
         public interface IInteractionActions
         {
             void OnCancelInteraction(InputAction.CallbackContext context);
+        }
+        public interface IPlacementModeActions
+        {
+            void OnEndPlacementMode(InputAction.CallbackContext context);
         }
     }
 }

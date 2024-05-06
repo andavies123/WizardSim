@@ -207,7 +207,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77f396fb3a734918ba467592d0b07b8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  contextMenuEvents: {fileID: 11400000, guid: 35ab239d931d85347be959101007800e, type: 2}
 --- !u!114 &-7084425321684881284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -221,7 +220,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseTexture: {fileID: 0}
-  baseColor: {r: 0.3773585, g: 0.3773585, b: 0.3773585, a: 0}
+  baseColor: {r: 0.3773585, g: 0.3773585, b: 0.3773585, a: 1}
   meshRenderer: {fileID: 8988517148617743278}
   interactable: {fileID: -2688453110167885317}
   contextMenuInteractions: {fileID: 4550045356574457020}

@@ -1,8 +1,11 @@
 ﻿using System;
+using Extensions;
+using Game.Messages;
 using Game.MessengerSystem;
 using GameWorld.Messages;
 using GameWorld.Spawners;
 using GameWorld.Tiles;
+using GameWorld.WorldObjects;
 using UnityEngine;
 using Utilities;
 
@@ -24,21 +27,31 @@ namespace GameWorld.Builders
 		[SerializeField] private GameObject rockPrefab;
 		[SerializeField] private int rocksPerChunk;
 
-		public RockWorldBuilder RockWorldBuilder { get; private set; }
+		private WorldObject _previewWorldObject;
+
+		public RockObjectBuilder RockObjectBuilder { get; private set; }
 
 		private void Awake()
 		{
-			RockWorldBuilder = new RockWorldBuilder(world, rockPrefab);
+			RockObjectBuilder = new RockObjectBuilder(world, rockPrefab);
 			GenerateWorld();
 			
 			GlobalMessenger.Subscribe<WizardSpawnRequestMessage>(OnWizardSpawnRequested);
 			GlobalMessenger.Subscribe<EnemySpawnRequestMessage>(OnEnemySpawnRequested);
+			GlobalMessenger.Subscribe<WorldObjectPreviewRequest>(OnWorldObjectPreviewRequested);
+			GlobalMessenger.Subscribe<WorldObjectPlacementRequest>(OnWorldObjectPlacementRequested);
+			GlobalMessenger.Subscribe<WorldObjectHidePreviewRequest>(OnWorldObjectHidePreviewRequested);
+			GlobalMessenger.Subscribe<PlacementModeEnded>(OnPlacementModeEnded);
 		}
 
 		private void OnDestroy()
 		{
 			GlobalMessenger.Unsubscribe<WizardSpawnRequestMessage>(OnWizardSpawnRequested);
 			GlobalMessenger.Unsubscribe<EnemySpawnRequestMessage>(OnEnemySpawnRequested);
+			GlobalMessenger.Unsubscribe<WorldObjectPreviewRequest>(OnWorldObjectPreviewRequested);
+			GlobalMessenger.Unsubscribe<WorldObjectPlacementRequest>(OnWorldObjectPlacementRequested);
+			GlobalMessenger.Unsubscribe<WorldObjectHidePreviewRequest>(OnWorldObjectHidePreviewRequested);
+			GlobalMessenger.Unsubscribe<PlacementModeEnded>(OnPlacementModeEnded);
 		}
 
 		private void GenerateWorld()
@@ -104,13 +117,45 @@ namespace GameWorld.Builders
 					0, world.WorldDetails.ChunkTiles.x,
 					0, world.WorldDetails.ChunkTiles.y);
 
-				if (RockWorldBuilder.TrySpawnSingle(chunk, localChunkPosition))
+				if (RockObjectBuilder.TrySpawnSingle(chunk, localChunkPosition))
 					addedRocks++;
 			}
 		}
 
 		private void OnWizardSpawnRequested(WizardSpawnRequestMessage message) => wizardSpawner.SpawnEntity(message.SpawnPosition);
-
 		private void OnEnemySpawnRequested(EnemySpawnRequestMessage message) => enemySpawner.SpawnEntity(message.SpawnPosition);
+		
+		private void OnWorldObjectPreviewRequested(WorldObjectPreviewRequest message)
+		{
+			if (message.WorldObjectPrefab == rockPrefab)
+			{
+				if (_previewWorldObject == null)
+					_previewWorldObject = RockObjectBuilder.SpawnPreview();
+				
+				Vector3 worldPosition = world.WorldPositionFromTilePosition(message.TilePosition, message.ChunkPosition).ToVector3(VectorSub.XSubY);
+				_previewWorldObject.transform.SetPositionAndRotation(worldPosition, Quaternion.identity);
+			}
+
+			// Make sure the game object is active as it might have been disabled due to the hide request
+			_previewWorldObject.gameObject.SetActive(true);
+		}
+        
+		private void OnWorldObjectPlacementRequested(WorldObjectPlacementRequest message)
+		{
+			if (!world.Chunks.TryGetValue(message.ChunkPosition, out Chunk chunk))
+				return;
+			
+			if (message.WorldObjectPrefab == rockPrefab)
+				RockObjectBuilder.TrySpawnSingle(chunk, message.TilePosition);
+		}
+
+		private void OnWorldObjectHidePreviewRequested(WorldObjectHidePreviewRequest message)
+		{
+			if (_previewWorldObject)
+				_previewWorldObject.gameObject.SetActive(false);
+		}
+
+		private void OnPlacementModeEnded(PlacementModeEnded message) =>
+			_previewWorldObject.gameObject.Destroy();
 	}
 }

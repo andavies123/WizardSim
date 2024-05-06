@@ -1,7 +1,7 @@
 ﻿using System;
 using CameraComponents;
 using UI;
-using UIManagers;
+using UIStates;
 using UnityEngine;
 
 namespace Game

@@ -1,23 +1,21 @@
 using System;
 using UI;
 using UI.ContextMenus;
+using UI.HotBarUI;
 using UI.InfoWindows;
 using UnityEngine;
 using UnityEngine.UI;
 using ContextMenu = UI.ContextMenus.ContextMenu;
 
-namespace UIManagers
+namespace UIStates
 {
 	public class GameplayUIState : UIState
 	{
 		[Header("UI Elements")]
 		[SerializeField] private Button pauseButton;
-		
-		[Header("Info Window")]
 		[SerializeField] private InfoWindow infoWindow;
-		
-		[Header("Context Menu")]
 		[SerializeField] private ContextMenu contextMenu;
+		[SerializeField] private HotBar hotBar;
 		
 		public event EventHandler PauseButtonPressed;
 
@@ -36,6 +34,9 @@ namespace UIManagers
 
 			if (contextMenu)
 				contextMenu.MenuClosed += OnContextMenuClosed;
+
+			if (hotBar)
+				hotBar.enabled = true;
 		}
 
 		protected override void OnStateDisabled()
@@ -47,6 +48,9 @@ namespace UIManagers
 
 			if (contextMenu)
 				contextMenu.MenuClosed -= OnContextMenuClosed;
+
+			if (hotBar)
+				hotBar.enabled = false;
 		}
 
 		private void OnPauseButtonPressed() => PauseButtonPressed?.Invoke(this, EventArgs.Empty);
@@ -55,7 +59,7 @@ namespace UIManagers
 		private void OnContextMenuOpenRequested(object sender, ContextMenuUserEventArgs args)
 		{
 			OpenContextMenu(args.ContextMenuUser);
-			OpenInfoWindow(args.ContextMenuUser.GetComponent<Interactable>());
+			OpenInfoWindow(args.ContextMenuUser.Interactable);
 		}
 
 	}

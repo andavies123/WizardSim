@@ -28,7 +28,7 @@ namespace Game.MessengerSystem
 				return; // Subscription doesn't exist
 
 			// Remove the callback from the internal collection
-			callbacks.Remove(new CallbackWrapper(callback));
+			callbacks.RemoveWhere(x => x.Callback.Target == callback.Target);
 			
 			// Handle some cleanup
 			if (callbacks.Count == 0)

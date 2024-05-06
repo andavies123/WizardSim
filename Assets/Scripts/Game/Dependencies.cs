@@ -11,13 +11,6 @@ namespace Game
 		private static readonly ConcurrentDictionary<Type, object> DependencyStore = new();
 		private static readonly ConcurrentDictionary<Type, Dictionary<string, object>> KeyedDependencyStore = new();
 		
-		static Dependencies()
-		{
-			RegisterDependency(new GameplayInput());
-			RegisterDependency(new InteractionInput());
-			RegisterDependency(new PauseMenuInput());
-		}
-		
 		public static void RegisterDependency<T>(T dependency)
 		{
 			if (!DependencyStore.TryAdd(dependency.GetType(), dependency))
