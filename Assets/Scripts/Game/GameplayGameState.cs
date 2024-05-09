@@ -5,7 +5,7 @@ using Game.MessengerSystem;
 using GameWorld.EventArgs;
 using GameWorld.Messages;
 using InputStates;
-using UI;
+using UI.Messages;
 using UIStates;
 using UnityEngine;
 
@@ -23,29 +23,21 @@ namespace Game
 		private readonly InteractionInput _interactionInput;
 		private readonly PlacementModeInput _placementModeInput;
 
-		private readonly InteractableRaycaster _interactableRaycaster;
-		private readonly InteractionEvents _interactionEvents;
-
-		private Action<MonoBehaviour> _interactionCallback;
 		private GameObject _placementPrefab;
 		
 		public event EventHandler PauseGameRequested;
 		
-		public GameplayGameState(
-			GameplayUIState gameplayUIState,
-			InteractableRaycaster interactableRaycaster,
-			InteractionEvents interactionEvents)
+		public GameplayGameState(GameplayUIState gameplayUIState, InteractableRaycaster interactableRaycaster)
 		{
 			_gameplayUIState = gameplayUIState;
-			_interactableRaycaster = interactableRaycaster;
-			_interactionEvents = interactionEvents;
 			
 			_gameplayInput = new GameplayInput();
-			_secondaryGameplayInput = new SecondaryGameplayInput();
-			_interactionInput = new InteractionInput();
-			_placementModeInput = new PlacementModeInput(_interactableRaycaster);
+			_secondaryGameplayInput = new SecondaryGameplayInput(interactableRaycaster, _gameplayUIState);
+			_interactionInput = new InteractionInput(interactableRaycaster);
+			_placementModeInput = new PlacementModeInput(interactableRaycaster);
 			
 			Dependencies.RegisterDependency(_gameplayInput);
+			Dependencies.RegisterDependency(_secondaryGameplayInput);
 			Dependencies.RegisterDependency(_interactionInput);
 			Dependencies.RegisterDependency(_placementModeInput);
 		}
@@ -56,21 +48,21 @@ namespace Game
 			_gameplayUIState.Enable();
 			
 			_secondaryGameplayInput.PauseActionPerformed += OnGameplayInputPauseActionPerformed;
+			_secondaryGameplayInput.OpenInfoWindowRequested += OnGameplayOpenInfoWindowRequested;
+			_secondaryGameplayInput.CloseInfoWindowRequested += OnGameplayCloseInfoWindowRequested;
+			_secondaryGameplayInput.CloseContextMenuRequested += OnGameplayCloseContextMenuRequested;
+			
 			_interactionInput.CancelInteractionActionPerformed += OnInteractionInputCancelActionPerformed;
 			
 			_placementModeInput.EndPlacementModeActionPerformed += OnPlacementModeInputEndActionPerformed;
 			_placementModeInput.PreviewPositionUpdated += OnPlacementModeInputPreviewUpdated;
 			_placementModeInput.PlacementRequested += OnPlacementModeInputPlacementRequested;
 			_placementModeInput.HidePlacementPreviewRequested += OnHidePlacementPreviewRequested;
-
-			_interactableRaycaster.InteractableSelectedPrimary += OnInteractablePrimaryActionSelected;
-			_interactableRaycaster.NonInteractableSelectedPrimary += OnNonInteractablePrimaryActionSelected;
-
-			_interactionEvents.InteractionRequested += OnInteractionRequested;
-			_interactionEvents.InteractionEnded += OnInteractionEnded;
 			
 			GlobalMessenger.Subscribe<BeginPlacementModeRequest>(OnBeginPlacementModeRequestReceived);
 			GlobalMessenger.Subscribe<EndPlacementModeRequest>(OnEndPlacementModeRequestReceived);
+			GlobalMessenger.Subscribe<StartInteractionRequest>(OnStartInteractionRequestReceived);
+			GlobalMessenger.Subscribe<EndInteractionRequest>(OnEndInteractionRequestReceived);
 			
 			_mainInputStateMachine.SetCurrentState(_gameplayInput);
 			_subInputStateMachine.SetCurrentState(_secondaryGameplayInput);
@@ -82,34 +74,34 @@ namespace Game
 			_gameplayUIState.PauseButtonPressed -= OnUIPauseButtonPressed;
 
 			_secondaryGameplayInput.PauseActionPerformed -= OnGameplayInputPauseActionPerformed;
+			_secondaryGameplayInput.OpenInfoWindowRequested -= OnGameplayOpenInfoWindowRequested;
+			_secondaryGameplayInput.CloseInfoWindowRequested -= OnGameplayCloseInfoWindowRequested;
+			_secondaryGameplayInput.CloseContextMenuRequested -= OnGameplayCloseContextMenuRequested;
+			
 			_interactionInput.CancelInteractionActionPerformed -= OnInteractionInputCancelActionPerformed;
 			
 			_placementModeInput.EndPlacementModeActionPerformed -= OnPlacementModeInputEndActionPerformed;
 			_placementModeInput.PreviewPositionUpdated -= OnPlacementModeInputPreviewUpdated;
 			_placementModeInput.PlacementRequested -= OnPlacementModeInputPlacementRequested;
 			_placementModeInput.HidePlacementPreviewRequested -= OnHidePlacementPreviewRequested;
-
-			_interactableRaycaster.InteractableSelectedPrimary -= OnInteractablePrimaryActionSelected;
-			_interactableRaycaster.NonInteractableSelectedPrimary -= OnNonInteractablePrimaryActionSelected;
-
-			_interactionEvents.InteractionRequested -= OnInteractionRequested;
-			_interactionEvents.InteractionEnded -= OnInteractionEnded;
 			
 			GlobalMessenger.Unsubscribe<BeginPlacementModeRequest>(OnBeginPlacementModeRequestReceived);
 			GlobalMessenger.Unsubscribe<EndPlacementModeRequest>(OnEndPlacementModeRequestReceived);
+			GlobalMessenger.Unsubscribe<StartInteractionRequest>(OnStartInteractionRequestReceived);
+			GlobalMessenger.Unsubscribe<EndInteractionRequest>(OnEndInteractionRequestReceived);
 			
 			_mainInputStateMachine.SetCurrentState(null);
 		}
 
 		private void StartInteraction(Action<MonoBehaviour> interactionCallback)
 		{
-			_interactionCallback = interactionCallback;
+			_interactionInput.InteractionCallback = interactionCallback;
 			_subInputStateMachine.SetCurrentState(_interactionInput);
 		}
 
 		private void EndInteraction()
 		{
-			_interactionCallback = null;
+			_interactionInput.InteractionCallback = null;
 			_subInputStateMachine.SetCurrentState(_secondaryGameplayInput);
 		}
 
@@ -125,37 +117,28 @@ namespace Game
 			_placementPrefab = null;
 			GlobalMessenger.Publish(new PlacementModeEnded());
 		}
-
-		private void OnBeginPlacementModeRequestReceived(BeginPlacementModeRequest request) => StartPlacementMode(request.PlacementPrefab);
-		private void OnEndPlacementModeRequestReceived(EndPlacementModeRequest request) => EndPlacementMode();
-
+		
+		private void RaisePauseGameRequested(object sender) => PauseGameRequested?.Invoke(sender, EventArgs.Empty);
 		private void OnUIPauseButtonPressed(object sender, EventArgs args) => RaisePauseGameRequested(sender);
+
+		#region Secondary Gameplay Input Callbacks
+
 		private void OnGameplayInputPauseActionPerformed(object sender, EventArgs args) => RaisePauseGameRequested(sender);
-		private void OnPlacementModeInputEndActionPerformed(object sender, EventArgs args) => EndPlacementMode();
+		private void OnGameplayOpenInfoWindowRequested(object sender, InteractableRaycasterEventArgs args) => _gameplayUIState.OpenInfoWindow(args.Interactable);
+		private void OnGameplayCloseInfoWindowRequested(object sender, EventArgs args) => _gameplayUIState.CloseInfoWindow();
+		private void OnGameplayCloseContextMenuRequested(object sender, EventArgs args) => _gameplayUIState.CloseContextMenu();
+
+		#endregion
+
+		#region Interactable Input Callbacks
+		
 		private void OnInteractionInputCancelActionPerformed(object sender, EventArgs args) => EndInteraction();
+		
+		#endregion
 
-		private void OnInteractablePrimaryActionSelected(object sender, InteractableRaycasterEventArgs args)
-		{
-			if (_interactionCallback != null)
-			{
-				_interactionCallback.Invoke(args.Interactable);
-				args.Interactable.IsSelected = false; // Gets marked as selected
-			}
-			else
-			{
-				_gameplayUIState.CloseContextMenu();
-				_gameplayUIState.OpenInfoWindow(args.Interactable);
-			}
-		}
+		#region Placement Mode Input Callbacks
 
-		private void OnNonInteractablePrimaryActionSelected(object sender, EventArgs args)
-		{
-			if (!_gameplayUIState.IsMouseOverGameObject)
-			{
-				_gameplayUIState.CloseInfoWindow();
-				_gameplayUIState.CloseContextMenu();	
-			}
-		}
+		private void OnPlacementModeInputEndActionPerformed(object sender, EventArgs args) => EndPlacementMode();
 
 		private void OnPlacementModeInputPreviewUpdated(object sender, WorldPositionEventArgs args) =>
 			GlobalMessenger.Publish(new WorldObjectPreviewRequest(args.ChunkPosition, args.TilePosition, _placementPrefab));
@@ -166,9 +149,15 @@ namespace Game
 		private static void OnHidePlacementPreviewRequested(object sender, EventArgs args) =>
 			GlobalMessenger.Publish(new WorldObjectHidePreviewRequest());
 
-		private void OnInteractionRequested(object sender, InteractionRequestEventArgs args) => StartInteraction(args.OnInteractionCallback);
-		private void OnInteractionEnded(object sender, EventArgs args) => EndInteraction();
-        
-		private void RaisePauseGameRequested(object sender) => PauseGameRequested?.Invoke(sender, EventArgs.Empty);
+		#endregion
+
+		#region Global Messenger Callbacks
+
+		private void OnBeginPlacementModeRequestReceived(BeginPlacementModeRequest request) => StartPlacementMode(request.PlacementPrefab);
+		private void OnEndPlacementModeRequestReceived(EndPlacementModeRequest request) => EndPlacementMode();
+		private void OnStartInteractionRequestReceived(StartInteractionRequest request) => StartInteraction(request.InteractionCallback);
+		private void OnEndInteractionRequestReceived(EndInteractionRequest request) => EndInteraction();
+
+		#endregion
 	}
 }

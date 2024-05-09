@@ -1,6 +1,5 @@
 ﻿using System;
 using CameraComponents;
-using UI;
 using UIStates;
 using UnityEngine;
 
@@ -14,7 +13,6 @@ namespace Game
 
 		[Header("Components")]
 		[SerializeField] private InteractableRaycaster interactableRaycaster;
-		[SerializeField] private InteractionEvents interactionEvents;
 
 		private IGameState _currentGameState;
 		
@@ -30,7 +28,7 @@ namespace Game
 
 		private void Awake()
 		{
-			GameplayGameState = new GameplayGameState(gameplayUIState, interactableRaycaster, interactionEvents);
+			GameplayGameState = new GameplayGameState(gameplayUIState, interactableRaycaster);
 			PauseGameState = new PauseGameState(pauseMenuUIState);
 		}
 
