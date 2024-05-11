@@ -23,9 +23,10 @@ namespace UI.ContextMenus
 		public void OpenMenu(ContextMenuUser user)
 		{
 			if (_contextMenuUser)
-				_contextMenuUser.CloseMenu();
+				_contextMenuUser.IsContextMenuOpen = false;
 
 			_contextMenuUser = user;
+			_contextMenuUser.IsContextMenuOpen = true;
 			BuildContextMenu();
 			gameObject.SetActive(true);
 			IsOpen = true;
@@ -38,7 +39,7 @@ namespace UI.ContextMenus
 			
 			if (_contextMenuUser)
 			{
-				_contextMenuUser.CloseMenu();
+				_contextMenuUser.IsContextMenuOpen = false;
 				_contextMenuUser = null;
 			}
 			

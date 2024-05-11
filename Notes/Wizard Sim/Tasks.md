@@ -16,6 +16,7 @@ kanban-plugin: basic
 ## <font color="red">**Bugs**</font>
 
 - [ ] <font color="red">**Floating Health Bar Bug**</font><br><br>The floating healthbar for wizards/enemies do not always face the camera
+- [ ] <font color="red">**Interactable Hover Bug**</font><br><br>When in the pause menu, interactables are still highlighted even though they shouldn't be
 
 
 ## Documentation
@@ -31,6 +32,7 @@ kanban-plugin: basic
 - [ ] <font color="orange">**Tree 3D Model**</font>
 - [ ] <font color="orange">**Rock 3D Model**</font>
 - [ ] <font color="orange">**Town Hall 3D Model**</font>
+- [ ] <font color="orange">**Placement Mode Visual**</font>
 - [ ] <font color="orange">**Settings Menu**</font><br><br>- [ ] Add UI for pause menu settings menu<br>- [ ] Add button on pause menu to go to the settings menu<br>- [ ] Add back button to go back to main pause menu<br>- [ ] Add tabbed area for different types of settings
 
 
@@ -49,6 +51,7 @@ kanban-plugin: basic
 
 ## In Progress
 
+- [ ] <font color="cyan">**Pathing**</font><br><br>- [ ] Implement pathing for the movement component<br>- [ ] When using Move To context menu item, it should be able to path to the position<br>- [ ] Implement NavMesh<br>- [ ] WorldObjects should be blockers
 
 
 ## Completed

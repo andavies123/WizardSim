@@ -10,14 +10,13 @@ GameObject:
   m_Component:
   - component: {fileID: 8184662739635213138}
   - component: {fileID: 5741234536930111}
-  - component: {fileID: -5138710094409622619}
-  - component: {fileID: 8962483651604178840}
   - component: {fileID: 2806402656234556708}
   - component: {fileID: -3329930143130891345}
   - component: {fileID: 6896444120881679524}
   - component: {fileID: 323713175569000968}
   - component: {fileID: 3362692198579881813}
   - component: {fileID: 6069462510127050324}
+  - component: {fileID: 3264566444634898711}
   m_Layer: 0
   m_Name: Wizard
   m_TagString: Untagged
@@ -54,33 +53,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 11400000, guid: 8e35209aae653c245a16ed52558038d6, type: 2}
---- !u!114 &-5138710094409622619
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2414322042265852574}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 462d26990f0f470e830cac83bea73b31, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactionEvents: {fileID: 11400000, guid: 89a1d675a54ad9c4aa8a9f2d62d3ea13, type: 2}
---- !u!114 &8962483651604178840
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2414322042265852574}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e998094e9364dfba96718fc9a010386, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  interactable: {fileID: 323713175569000968}
-  contextMenuUser: {fileID: -5138710094409622619}
 --- !u!114 &2806402656234556708
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -174,7 +146,19 @@ MonoBehaviour:
   baseColor: {r: 0, g: 0.26666668, b: 0.8588236, a: 1}
   meshRenderer: {fileID: 1173640702274741866}
   interactable: {fileID: 323713175569000968}
-  contextMenuInteractions: {fileID: 8962483651604178840}
+  contextMenuUser: {fileID: 0}
+--- !u!114 &3264566444634898711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2414322042265852574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77f396fb3a734918ba467592d0b07b8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3636136914844696014
 GameObject:
   m_ObjectHideFlags: 0

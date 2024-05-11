@@ -27,30 +27,24 @@ namespace UIStates
 
 		protected override void OnStateEnabled()
 		{
-			if (pauseButton)
-				pauseButton.onClick.AddListener(OnPauseButtonPressed);
+			pauseButton.onClick.AddListener(OnPauseButtonPressed);
 
-			ContextMenuUser.RequestMenuOpen += OnContextMenuOpenRequested;
+			//ContextMenuUser.RequestMenuOpen += OnContextMenuOpenRequested;
 
-			if (contextMenu)
-				contextMenu.MenuClosed += OnContextMenuClosed;
+			contextMenu.MenuClosed += OnContextMenuClosed;
 
-			if (hotBar)
-				hotBar.enabled = true;
+			hotBar.enabled = true;
 		}
 
 		protected override void OnStateDisabled()
 		{
-			if (pauseButton)
-				pauseButton.onClick.RemoveListener(OnPauseButtonPressed);
+			pauseButton.onClick.RemoveListener(OnPauseButtonPressed);
 
-			ContextMenuUser.RequestMenuOpen -= OnContextMenuOpenRequested;
+			//ContextMenuUser.RequestMenuOpen -= OnContextMenuOpenRequested;
 
-			if (contextMenu)
-				contextMenu.MenuClosed -= OnContextMenuClosed;
+			contextMenu.MenuClosed -= OnContextMenuClosed;
 
-			if (hotBar)
-				hotBar.enabled = false;
+			hotBar.enabled = false;
 		}
 
 		private void OnPauseButtonPressed() => PauseButtonPressed?.Invoke(this, EventArgs.Empty);

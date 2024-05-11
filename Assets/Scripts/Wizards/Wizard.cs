@@ -1,20 +1,27 @@
 ﻿using Extensions;
+using Game.MessengerSystem;
 using GameWorld;
+using GameWorld.Tiles;
 using GeneralBehaviours;
 using GeneralBehaviours.Health;
 using Stats;
 using UI;
+using UI.ContextMenus;
+using UI.Messages;
 using UnityEngine;
 using Utilities;
 using Wizards.States;
 
 namespace Wizards
 {
+	[RequireComponent(typeof(Interactable))]
+	[RequireComponent(typeof(ContextMenuUser))]
 	public class Wizard : Entity
 	{
 		[SerializeField] private WizardStats stats;
 
 		private Interactable _interactable;
+		private ContextMenuUser _contextMenuUser;
 		
 		public string Name { get; set; }
 		
@@ -36,6 +43,7 @@ namespace Wizards
 			Movement = GetComponent<Movement>();
 			Health = GetComponent<Health>();
 			_interactable = GetComponent<Interactable>();
+			_contextMenuUser = GetComponent<ContextMenuUser>();
 			
 			Name = NameGenerator.GetNewName();
 
@@ -46,11 +54,8 @@ namespace Wizards
 
 		private void Start()
 		{
-			if (_interactable)
-			{
-				_interactable.TitleText = Name;
-				UpdateInteractableInfoText();
-			}
+			UpdateInteractableInfoText();
+			InitializeContextMenu();
 		}
 
 		private void OnDestroy()
@@ -60,9 +65,36 @@ namespace Wizards
 
 		private void UpdateInteractableInfoText()
 		{
-			if (_interactable)
-				_interactable.InfoText = $"Wizard - {Health.CurrentHealth:0}/{Health.MaxHealth:0} ({Health.CurrentHealth.PercentageOf(Health.MaxHealth):0}%)";
+			_interactable.TitleText = Name;
+			_interactable.InfoText = $"Wizard - {Health.CurrentHealth:0}/{Health.MaxHealth:0} ({Health.CurrentHealth.PercentageOf(Health.MaxHealth):0}%)";
 		}
+
+		private void InitializeContextMenu()
+		{
+			_contextMenuUser.AddMenuItem(new ContextMenuItem("Idle", () => StateMachine.Idle(), isEnabledFunc: () => !IsIdling));
+			_contextMenuUser.AddMenuItem(new ContextMenuItem("Move To", () => GlobalMessenger.Publish(new StartInteractionRequest(OnInteractionCallback))));
+			_contextMenuUser.AddMenuItem(new ContextMenuItem("Heal 10%", () => IncreaseHealth(0.1f), isEnabledFunc: IsNotAtMaxHealth));
+			_contextMenuUser.AddMenuItem(new ContextMenuItem("Hurt 10%", () => DecreaseHealth(0.1f), isEnabledFunc: IsNotAtMinHealth));
+			_contextMenuUser.AddMenuItem(new ContextMenuItem("Heal 100%", () => IncreaseHealth(1), isEnabledFunc: IsNotAtMaxHealth));
+			_contextMenuUser.AddMenuItem(new ContextMenuItem("Hurt 100%", () => DecreaseHealth(1), isEnabledFunc: IsNotAtMinHealth));
+		}
+		
+		private void OnInteractionCallback(MonoBehaviour component)
+		{
+			if (!component.TryGetComponent(out Tile tile))
+				return;
+
+			Vector3 tilePosition = tile.Transform.position;
+			Vector3 moveToPosition = new(tilePosition.x, Transform.position.y, tilePosition.z);
+			StateMachine.MoveTo(moveToPosition);
+			GlobalMessenger.Publish(new EndInteractionRequest());
+		}
+
+		private void IncreaseHealth(float percent01) => Health.IncreaseHealth(Health.MaxHealth * percent01);
+		private void DecreaseHealth(float percent01) => Health.DecreaseHealth(Health.MaxHealth * percent01);
+
+		private bool IsNotAtMaxHealth() => !Health.IsAtMaxHealth;
+		private bool IsNotAtMinHealth() => !Health.IsAtMinHealth;
 
 		private void OnCurrentHealthChanged(object sender, HealthChangedEventArgs args) => UpdateInteractableInfoText();
 	}

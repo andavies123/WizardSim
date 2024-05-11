@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using UI;
 using UI.ContextMenus;
 using UnityEngine;
@@ -21,7 +22,7 @@ namespace GeneralBehaviours.ShaderManagers
 		[Header("Components")]
 		[SerializeField] private MeshRenderer meshRenderer;
 		[SerializeField] private Interactable interactable;
-		[SerializeField] private ContextMenuInteractions contextMenuInteractions;
+		[SerializeField] private ContextMenuUser contextMenuUser;
 
 		private void Awake()
 		{
@@ -38,13 +39,13 @@ namespace GeneralBehaviours.ShaderManagers
 			meshRenderer.material.SetTexture(BaseTexture, baseTexture);
 			meshRenderer.material.SetColor(BaseColor, baseColor);
 			SetIsHoveredShaderValue(interactable && interactable.IsHovered);
-			SetIsContextMenuOpenShaderValue(contextMenuInteractions && contextMenuInteractions.IsContextMenuOpen);
+			SetIsContextMenuOpenShaderValue(contextMenuUser && contextMenuUser.IsContextMenuOpen);
 
 			if (interactable)
 				interactable.PropertyChanged += OnInteractablePropertyChanged;
 
-			if (contextMenuInteractions)
-				contextMenuInteractions.IsContextMenuOpenValueChanged += OnIsContextMenuOpenValueChanged;
+			if (contextMenuUser)
+				contextMenuUser.IsContextMenuOpenValueChanged += OnIsContextMenuOpenValueChanged;
 		}
 
 		private void OnDisable()
@@ -52,11 +53,13 @@ namespace GeneralBehaviours.ShaderManagers
 			if (interactable)
 				interactable.PropertyChanged -= OnInteractablePropertyChanged;
 			
-			if (contextMenuInteractions)
-				contextMenuInteractions.IsContextMenuOpenValueChanged -= OnIsContextMenuOpenValueChanged;
+			if (contextMenuUser)
+				contextMenuUser.IsContextMenuOpenValueChanged -= OnIsContextMenuOpenValueChanged;
 		}
 
-		private void OnIsContextMenuOpenValueChanged(bool value) => SetIsContextMenuOpenShaderValue(value);
+		private void OnIsContextMenuOpenValueChanged(object sender, EventArgs args) => 
+			SetIsContextMenuOpenShaderValue(contextMenuUser.IsContextMenuOpen);
+		
 		private void OnInteractablePropertyChanged(object sender, PropertyChangedEventArgs args)
 		{
 			if (args.PropertyName == nameof(Interactable.IsHovered))

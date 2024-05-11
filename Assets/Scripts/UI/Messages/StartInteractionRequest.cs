@@ -11,6 +11,6 @@ namespace UI.Messages
 			InteractionCallback = interactionCallback;
 		}
 		
-		public Action<MonoBehaviour> InteractionCallback { get; set; }
+		public Action<MonoBehaviour> InteractionCallback { get; }
 	}
 }

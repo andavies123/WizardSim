@@ -5,6 +5,7 @@ using Game.MessengerSystem;
 using GameWorld.EventArgs;
 using GameWorld.Messages;
 using InputStates;
+using InputStates.InputEventArgs;
 using UI.Messages;
 using UIStates;
 using UnityEngine;
@@ -49,6 +50,7 @@ namespace Game
 			
 			_secondaryGameplayInput.PauseActionPerformed += OnGameplayInputPauseActionPerformed;
 			_secondaryGameplayInput.OpenInfoWindowRequested += OnGameplayOpenInfoWindowRequested;
+			_secondaryGameplayInput.OpenContextMenuRequested += OnGameplayOpenContextMenuRequested;
 			_secondaryGameplayInput.CloseInfoWindowRequested += OnGameplayCloseInfoWindowRequested;
 			_secondaryGameplayInput.CloseContextMenuRequested += OnGameplayCloseContextMenuRequested;
 			
@@ -75,6 +77,7 @@ namespace Game
 
 			_secondaryGameplayInput.PauseActionPerformed -= OnGameplayInputPauseActionPerformed;
 			_secondaryGameplayInput.OpenInfoWindowRequested -= OnGameplayOpenInfoWindowRequested;
+			_secondaryGameplayInput.OpenContextMenuRequested -= OnGameplayOpenContextMenuRequested;
 			_secondaryGameplayInput.CloseInfoWindowRequested -= OnGameplayCloseInfoWindowRequested;
 			_secondaryGameplayInput.CloseContextMenuRequested -= OnGameplayCloseContextMenuRequested;
 			
@@ -124,7 +127,8 @@ namespace Game
 		#region Secondary Gameplay Input Callbacks
 
 		private void OnGameplayInputPauseActionPerformed(object sender, EventArgs args) => RaisePauseGameRequested(sender);
-		private void OnGameplayOpenInfoWindowRequested(object sender, InteractableRaycasterEventArgs args) => _gameplayUIState.OpenInfoWindow(args.Interactable);
+		private void OnGameplayOpenInfoWindowRequested(object sender, OpenInfoWindowEventArgs args) => _gameplayUIState.OpenInfoWindow(args.Interactable);
+		private void OnGameplayOpenContextMenuRequested(object sender, OpenContextMenuEventArgs args) => _gameplayUIState.OpenContextMenu(args.ContextMenuUser);
 		private void OnGameplayCloseInfoWindowRequested(object sender, EventArgs args) => _gameplayUIState.CloseInfoWindow();
 		private void OnGameplayCloseContextMenuRequested(object sender, EventArgs args) => _gameplayUIState.CloseContextMenu();
 
@@ -153,10 +157,10 @@ namespace Game
 
 		#region Global Messenger Callbacks
 
-		private void OnBeginPlacementModeRequestReceived(BeginPlacementModeRequest request) => StartPlacementMode(request.PlacementPrefab);
-		private void OnEndPlacementModeRequestReceived(EndPlacementModeRequest request) => EndPlacementMode();
-		private void OnStartInteractionRequestReceived(StartInteractionRequest request) => StartInteraction(request.InteractionCallback);
-		private void OnEndInteractionRequestReceived(EndInteractionRequest request) => EndInteraction();
+		private void OnBeginPlacementModeRequestReceived(BeginPlacementModeRequest message) => StartPlacementMode(message.PlacementPrefab);
+		private void OnEndPlacementModeRequestReceived(EndPlacementModeRequest message) => EndPlacementMode();
+		private void OnStartInteractionRequestReceived(StartInteractionRequest message) => StartInteraction(message.InteractionCallback);
+		private void OnEndInteractionRequestReceived(EndInteractionRequest message) => EndInteraction();
 
 		#endregion
 	}
