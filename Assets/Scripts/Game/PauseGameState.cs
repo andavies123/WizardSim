@@ -6,6 +6,7 @@ namespace Game
 {
 	public class PauseGameState : IGameState
 	{
+		private readonly InputStateMachine _inputStateMachine;
 		private readonly PauseMenuInput _pauseMenuInput;
 		private readonly PauseMenuUIState _pauseMenuUIState;
 		

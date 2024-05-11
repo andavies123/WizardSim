@@ -16,7 +16,6 @@ kanban-plugin: basic
 ## <font color="red">**Bugs**</font>
 
 - [ ] <font color="red">**Floating Health Bar Bug**</font><br><br>The floating healthbar for wizards/enemies do not always face the camera
-- [ ] <font color="red">**Interactable Hover Bug**</font><br><br>When in the pause menu, interactables are still highlighted even though they shouldn't be
 
 
 ## Documentation
@@ -57,6 +56,7 @@ kanban-plugin: basic
 ## Completed
 
 **Complete**
+- [x] <font color="red">**Interactable Hover Bug**</font><br><br>When in the pause menu, interactables are still highlighted even though they shouldn't be
 - [x] <font color="cyan">**Hot Bar**</font><br>- [x] When a button is pressed the user should be able to place an item on the map<br>- [x] A preview should be shown when placing<br>- [x] The object should be added to the the world collection
 - [x] <font color="orange">**Hot Bar UI**</font><br>- [x] UI should contain a horizontal layout to hold different buttons for placing objects on the ground<br>- [x] UI should contain clickable buttons<br>- [x] UI should be set up to easily add new items
 - [x] <font color="cyan">**Context Menu Item Validation**</font><br>- [x] Context menu items should have a validation on whether or not they should show up in the menu<br>- [x] Items that are invalid don't show up in the menu on open<br>- [x] Items that are valid should show up in the menu on open

@@ -18,6 +18,7 @@ namespace Game
 		private readonly InputStateMachine _subInputStateMachine = new();
 		
 		private readonly GameplayUIState _gameplayUIState;
+		private readonly InteractableRaycaster _interactableRaycaster;
 		
 		private readonly GameplayInput _gameplayInput;
 		private readonly SecondaryGameplayInput _secondaryGameplayInput;
@@ -31,11 +32,12 @@ namespace Game
 		public GameplayGameState(GameplayUIState gameplayUIState, InteractableRaycaster interactableRaycaster)
 		{
 			_gameplayUIState = gameplayUIState;
+			_interactableRaycaster = interactableRaycaster;
 			
 			_gameplayInput = new GameplayInput();
-			_secondaryGameplayInput = new SecondaryGameplayInput(interactableRaycaster, _gameplayUIState);
-			_interactionInput = new InteractionInput(interactableRaycaster);
-			_placementModeInput = new PlacementModeInput(interactableRaycaster);
+			_secondaryGameplayInput = new SecondaryGameplayInput(_interactableRaycaster, _gameplayUIState);
+			_interactionInput = new InteractionInput(_interactableRaycaster);
+			_placementModeInput = new PlacementModeInput(_interactableRaycaster);
 			
 			Dependencies.RegisterDependency(_gameplayInput);
 			Dependencies.RegisterDependency(_secondaryGameplayInput);
@@ -68,6 +70,7 @@ namespace Game
 			
 			_mainInputStateMachine.SetCurrentState(_gameplayInput);
 			_subInputStateMachine.SetCurrentState(_secondaryGameplayInput);
+			_interactableRaycaster.enabled = true;
 		}
 
 		public void Disable()
@@ -94,6 +97,7 @@ namespace Game
 			GlobalMessenger.Unsubscribe<EndInteractionRequest>(OnEndInteractionRequestReceived);
 			
 			_mainInputStateMachine.SetCurrentState(null);
+			_interactableRaycaster.enabled = false;
 		}
 
 		private void StartInteraction(Action<MonoBehaviour> interactionCallback)
