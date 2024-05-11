@@ -31,6 +31,7 @@ namespace CameraComponents
 
 		private void Awake()
 		{
+			Dependencies.RegisterDependency(playerCamera);
 			_gameplayInput = Dependencies.GetDependency<GameplayInput>();
 			_cameraTransform = playerCamera.GetComponent<Transform>();
 		}

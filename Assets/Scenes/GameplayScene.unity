@@ -1644,6 +1644,7 @@ GameObject:
   - component: {fileID: 846429022}
   - component: {fileID: 846429021}
   - component: {fileID: 846429024}
+  - component: {fileID: 846429025}
   m_Layer: 0
   m_Name: World Health Bar
   m_TagString: Untagged
@@ -1778,6 +1779,18 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 4
     m_NumAlphaKeys: 2
+--- !u!114 &846429025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 846429019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36c41fa9fbb645e09061e95474c2d605, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &880494734
 GameObject:
   m_ObjectHideFlags: 0

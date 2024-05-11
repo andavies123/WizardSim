@@ -15,7 +15,6 @@ kanban-plugin: basic
 
 ## <font color="red">**Bugs**</font>
 
-- [ ] <font color="red">**Floating Health Bar Bug**</font><br><br>The floating healthbar for wizards/enemies do not always face the camera
 
 
 ## Documentation
@@ -50,6 +49,7 @@ kanban-plugin: basic
 
 ## In Progress
 
+- [ ] <font color="red">**Floating Health Bar Bug**</font><br><br>The floating healthbar for wizards/enemies do not always face the camera
 - [ ] <font color="cyan">**Pathing**</font><br><br>- [ ] Implement pathing for the movement component<br>- [ ] When using Move To context menu item, it should be able to path to the position<br>- [ ] Implement NavMesh<br>- [ ] WorldObjects should be blockers
 
 
