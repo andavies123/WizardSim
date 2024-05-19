@@ -1,29 +1,33 @@
-﻿using Extensions;
+﻿using System;
+using Extensions;
 using Game.MessengerSystem;
 using GameWorld;
 using GameWorld.Tiles;
 using GeneralBehaviours;
 using GeneralBehaviours.Health;
 using Stats;
+using TaskSystem.Interfaces;
 using UI;
 using UI.ContextMenus;
 using UI.Messages;
 using UnityEngine;
-using Utilities;
 using Wizards.States;
+using Wizards.Tasks;
 
 namespace Wizards
 {
 	[RequireComponent(typeof(Interactable))]
 	[RequireComponent(typeof(ContextMenuUser))]
-	public class Wizard : Entity
+	public class Wizard : Entity, ITaskUser<IWizardTask>
 	{
 		[SerializeField] private WizardStats stats;
 
 		private Interactable _interactable;
 		private ContextMenuUser _contextMenuUser;
+		private IWizardTask _currentTask;
 		
 		public string Name { get; set; }
+		public WizardType WizardType { get; set; } = WizardType.Earth;
 		
 		public Transform Transform { get; private set; }
 		public WizardStateMachine StateMachine { get; private set; }
@@ -35,6 +39,29 @@ namespace Wizards
 		public WizardStats Stats => stats;
 
 		public bool IsIdling => StateMachine.CurrentState is WizardIdleState;
+
+		#region ITaskUser Implementation
+
+		public bool IsAssignedTask { get; private set; }
+		public bool CanBeAssignedTask { get; private set; } = true;
+
+		public void AssignTask(IWizardTask task)
+		{
+			IsAssignedTask = true;
+			task.WizardTaskState.SetWizard(this);
+			task.Completed += OnCurrentTaskCompleted;
+			StateMachine.OverrideCurrentState(task.WizardTaskState);
+		}
+
+		#endregion
+		
+		public void InitializeWizard(string wizardName, WizardType wizardType)
+		{
+			Name = wizardName;
+			WizardType = wizardType;
+			
+			gameObject.name = $"Wizard - {Name} - {wizardType.ToString()}";
+		}
 		
 		private void Awake()
 		{
@@ -44,12 +71,8 @@ namespace Wizards
 			Health = GetComponent<Health>();
 			_interactable = GetComponent<Interactable>();
 			_contextMenuUser = GetComponent<ContextMenuUser>();
-			
-			Name = NameGenerator.GetNewName();
 
 			Health.CurrentHealthChanged += OnCurrentHealthChanged;
-			
-			gameObject.name = $"Wizard - {Name}";
 		}
 
 		private void Start()
@@ -88,6 +111,18 @@ namespace Wizards
 			Vector3 moveToPosition = new(tilePosition.x, Transform.position.y, tilePosition.z);
 			StateMachine.MoveTo(moveToPosition);
 			GlobalMessenger.Publish(new EndInteractionRequest());
+		}
+
+		private void OnCurrentTaskCompleted(object sender, EventArgs args)
+		{
+			if (sender is not IWizardTask wizardTask)
+				return;
+
+			IsAssignedTask = false;
+			wizardTask.Completed -= OnCurrentTaskCompleted;
+			
+			// Go back to idling
+			StateMachine.Idle();
 		}
 
 		private void IncreaseHealth(float percent01) => Health.IncreaseHealth(Health.MaxHealth * percent01);

@@ -1,22 +1,23 @@
-﻿using Extensions;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Game.MessengerSystem;
 using UI;
 using UI.ContextMenus;
 using UnityEngine;
+using Wizards.Messages;
+using Wizards.Tasks;
 
 namespace GameWorld.WorldObjects.Rocks
 {
 	[RequireComponent(typeof(Interactable))]
-	[RequireComponent(typeof(WorldObject))]
 	[RequireComponent(typeof(ContextMenuUser))]
-	public class Rock : MonoBehaviour
+	public class Rock : WorldObject
 	{
-		private WorldObject _worldObject;
 		private Interactable _interactable;
 		private ContextMenuUser _contextMenuUser;
 		
 		private void Awake()
 		{
-			_worldObject = GetComponent<WorldObject>();
 			_interactable = GetComponent<Interactable>();
 			_contextMenuUser = GetComponent<ContextMenuUser>();
 		}
@@ -35,7 +36,22 @@ namespace GameWorld.WorldObjects.Rocks
 
 		private void InitializeContextMenu()
 		{
-			_contextMenuUser.AddMenuItem(new ContextMenuItem("Destroy", () => gameObject.Destroy()));
+			_contextMenuUser.AddMenuItem(new ContextMenuItem("Destroy", 
+				() => GlobalMessenger.Publish(new AddWizardTaskRequest(new DestroyRocksTask(new List<Rock> {this})))));
+			
+			_contextMenuUser.AddMenuItem(new ContextMenuItem("Destroy Surrounding",
+				() => GlobalMessenger.Publish(new AddWizardTaskRequest(new DestroyRocksTask(GetSurroundingRocks())))));
+		}
+
+		private List<Rock> GetSurroundingRocks()
+		{
+			Collider[] hits = Physics.OverlapSphere(transform.position, 10);
+
+			List<Rock> rocks = hits.Select(hit => hit.GetComponentInParent<Rock>())
+								   .Where(rock => rock)
+								   .ToList();
+
+			return rocks;
 		}
 	}
 }

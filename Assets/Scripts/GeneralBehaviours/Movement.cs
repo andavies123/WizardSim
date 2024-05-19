@@ -12,12 +12,14 @@ namespace GeneralBehaviours
 		private Rigidbody _rigidbody;
 
 		private Vector3? _targetPosition;
+		private float? _maxDistanceForArrival;
 
 		public bool IsMoving { get; private set; }
 
-		public void SetMoveToPosition(Vector3 position)
+		public void SetMoveToPosition(Vector3 position, float maxDistanceForArrival)
 		{
 			_targetPosition = position;
+			_maxDistanceForArrival = maxDistanceForArrival;
 			IsMoving = true;
 		}
 
@@ -44,7 +46,7 @@ namespace GeneralBehaviours
 			Vector3 newPosition = currentPosition + direction * (_entity.MovementStats.Speed * Time.fixedDeltaTime);
 			_rigidbody.MovePosition(newPosition);
 
-			if (Vector3.Distance(_transform.position, _targetPosition.Value) <= 0.1f)
+			if (Vector3.Distance(_transform.position, _targetPosition.Value) <= (_maxDistanceForArrival ?? 0.1f))
 			{
 				_rigidbody.MovePosition(_targetPosition.Value);
 				_targetPosition = null;

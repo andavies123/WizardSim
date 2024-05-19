@@ -44,18 +44,19 @@ kanban-plugin: basic
 
 - [ ] <font color="cyan">**Save System**</font><br>- [ ] Add save pause menu button<br>- [ ] Game world should be saved<br>- [ ] Wizard stats should be saved<br>- [ ] Add load main menu button
 - [ ] <font color="cyan">**Settings Menu**</font><br>- [ ] Wire up buttons for settings menu<br>- [ ] Wire up pause menu settings button
-- [ ] <font color="cyan">**Wizard Task System**</font><br><br>- [ ] Set up the architecture for wizards to have a task system<br>- [ ] Wizards should be assigned a single task to work on<br>- [ ] Tasks should have a priority<br>- [ ] Wizards should have ability to have multiple tasks<br>- [ ] If wizards don't have a task, they should idle<br>- [ ] User should be able to see current task of a wizard<br>- [ ] User should be able to see task list<br>- [ ] User should be able to remove a task from a wizards list<br>- [ ] User should be able to rearrange a task in the wizard list
+- [ ] <font color="cyan">**Wizard Color by Type**</font><br><br>- [ ] The player should be able to tell a wizard by their type
 
 
 ## In Progress
 
-- [ ] <font color="red">**Floating Health Bar Bug**</font><br><br>The floating healthbar for wizards/enemies do not always face the camera
 - [ ] <font color="cyan">**Pathing**</font><br><br>- [ ] Implement pathing for the movement component<br>- [ ] When using Move To context menu item, it should be able to path to the position<br>- [ ] Implement NavMesh<br>- [ ] WorldObjects should be blockers
+- [ ] <font color="cyan">**Wizard Task System**</font><br><br>- [x] Set up the architecture for wizards to have a task system<br>- [x] Wizards should be assigned a single task to work on<br>- [x] Tasks should have a priority<br>- [ ] Wizards should have ability to have multiple tasks<br>- [x] If wizards don't have a task, they should idle<br>- [ ] User should be able to see current task of a wizard<br>- [ ] User should be able to see task list<br>- [ ] User should be able to remove a task from a wizards list<br>- [ ] User should be able to rearrange a task in the wizard list<br>- [x] Right clicking on a rock and hitting destroy should count as a task and a wizard should be summoned
 
 
 ## Completed
 
 **Complete**
+- [x] <font color="red">**Floating Health Bar Bug**</font><br><br>The floating healthbar for wizards/enemies do not always face the camera
 - [x] <font color="red">**Interactable Hover Bug**</font><br><br>When in the pause menu, interactables are still highlighted even though they shouldn't be
 - [x] <font color="cyan">**Hot Bar**</font><br>- [x] When a button is pressed the user should be able to place an item on the map<br>- [x] A preview should be shown when placing<br>- [x] The object should be added to the the world collection
 - [x] <font color="orange">**Hot Bar UI**</font><br>- [x] UI should contain a horizontal layout to hold different buttons for placing objects on the ground<br>- [x] UI should contain clickable buttons<br>- [x] UI should be set up to easily add new items

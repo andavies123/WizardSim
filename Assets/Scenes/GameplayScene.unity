@@ -2058,7 +2058,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   world: {fileID: 2007172221}
   worldObjectParent: {fileID: 1790581159}
-  wizardSpawner: {fileID: 1202947227}
+  wizardSpawner: {fileID: 1202947230}
   enemySpawner: {fileID: 262803724}
   initialGenerationRadius: 2
   rockPrefab: {fileID: 9090978207146980024, guid: 70ca3cc2895272241a88451b6498dfe8, type: 3}
@@ -2258,8 +2258,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1202947226}
-  - component: {fileID: 1202947228}
-  - component: {fileID: 1202947227}
+  - component: {fileID: 1202947231}
+  - component: {fileID: 1202947230}
+  - component: {fileID: 1202947229}
   m_Layer: 0
   m_Name: Wizard Manager
   m_TagString: Untagged
@@ -2282,7 +2283,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2007172220}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1202947227
+--- !u!114 &1202947229
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2291,15 +2292,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 1202947225}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a20886ead1f549a3a1374fbf6f086792, type: 3}
+  m_Script: {fileID: 11500000, guid: 9d2ccfbbbb5747aa9ca324dd9f6eda96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  entityManager: {fileID: 1202947228}
-  entityPrefab: {fileID: 2414322042265852574, guid: 4bfb0bac7ec87bb4ca8c5e6e14993c85, type: 3}
+  wizardManager: {fileID: 1202947231}
+--- !u!114 &1202947230
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1202947225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 608a50db2fc94295b12bf0dbc68eea29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  entityManager: {fileID: 1202947231}
+  entityPrefab: {fileID: 5741234536930111, guid: 4bfb0bac7ec87bb4ca8c5e6e14993c85, type: 3}
   initialSpawns: 5
   spawnCenter: {x: 0, y: 0, z: 0}
   spawnRadius: 10
---- !u!114 &1202947228
+--- !u!114 &1202947231
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2308,7 +2322,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1202947225}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90338ee4b9de428598208cfe48a029cf, type: 3}
+  m_Script: {fileID: 11500000, guid: a7b733741396445293a994c4b5350fd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1234145056

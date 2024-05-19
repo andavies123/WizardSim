@@ -8,6 +8,7 @@ using GameWorld.Tiles;
 using GameWorld.WorldObjects;
 using UnityEngine;
 using Utilities;
+using Wizards;
 
 namespace GameWorld.Builders
 {
@@ -17,7 +18,7 @@ namespace GameWorld.Builders
 		[SerializeField] private Transform worldObjectParent;
 		
 		[Header("Spawners")]
-		[SerializeField] private EntitySpawner wizardSpawner;
+		[SerializeField] private WizardSpawner wizardSpawner;
 		[SerializeField] private EntitySpawner enemySpawner;
 
 		[Header("Settings")]

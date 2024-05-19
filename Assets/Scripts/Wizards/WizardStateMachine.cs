@@ -12,7 +12,12 @@ namespace Wizards
 		
 		private Wizard _wizard;
 		private WizardIdleState _idleState;
-		private WizardMoveToState _moveToToState;
+		private WizardMoveToState _moveToState;
+
+		public void OverrideCurrentState(WizardState state)
+		{
+			StateMachine.SetCurrentState(state);
+		}
 		
 		public void Idle()
 		{
@@ -20,10 +25,10 @@ namespace Wizards
 			StateMachine.SetCurrentState(_idleState);
 		}
 
-		public void MoveTo(Vector3 position)
+		public void MoveTo(Vector3 moveToPosition)
 		{
-			_moveToToState.MoveToPosition = position;
-			StateMachine.SetCurrentState(_moveToToState);
+			_moveToState.Initialize(moveToPosition, 0.5f);
+			StateMachine.SetCurrentState(_moveToState);
 		}
 
 		private void Awake()
@@ -31,7 +36,7 @@ namespace Wizards
 			_wizard = GetComponent<Wizard>();
 
 			_idleState = new WizardIdleState(_wizard);
-			_moveToToState = new WizardMoveToState(_wizard);
+			_moveToState = new WizardMoveToState(_wizard);
 		}
 
 		private void Start()

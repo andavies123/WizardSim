@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Utilities
 {
@@ -49,5 +51,11 @@ namespace Utilities
 		public static Vector2Int RangeVector2Int(int minInclusive, int maxExclusive) => RangeVector2Int(
 			minInclusive, maxExclusive,
 			minInclusive, maxExclusive);
+
+		public static T RandomEnumValue<T>() where T : Enum
+		{
+			Array values = Enum.GetValues(typeof(T));
+			return (T)values.GetValue(Random.Range(0, values.Length));
+		}
 	}
 }

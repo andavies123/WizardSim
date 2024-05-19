@@ -1,5 +1,7 @@
-﻿using StateMachines;
+﻿using System;
+using StateMachines;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Wizards.States
 {
@@ -39,7 +41,7 @@ namespace Wizards.States
 		public override void End() { }
 
 		private void OnIdleWaitFinished() => ChangeToMoveState();
-		private void OnMoveToArrivedAtPosition() => ChangeToWaitState();
+		private void OnMoveToArrivedAtPosition(object sender, EventArgs args) => ChangeToWaitState();
 
 		private Vector3 GetNextMoveToPosition()
 		{
@@ -57,7 +59,7 @@ namespace Wizards.States
 
 		private void ChangeToMoveState()
 		{
-			_moveToState.MoveToPosition = GetNextMoveToPosition();
+			_moveToState.Initialize(GetNextMoveToPosition(), .5f);
 			_stateMachine.SetCurrentState(_moveToState);
 		}
 	}

@@ -7,21 +7,28 @@ namespace Wizards.States
 	{
 		private Vector3 _startMovePosition;
 		private float _startDistance;
-		
-		public WizardMoveToState(Wizard wizard) : base(wizard) { }
 
-		public event Action ArrivedAtPosition;
+		private Vector3 _moveToPosition;
+		private float _maxDistanceForArrival;
+		
+		public WizardMoveToState(Wizard wizard) => SetWizard(wizard);
+
+		public event EventHandler ArrivedAtPosition;
 
 		public override string DisplayName => "Moving";
 		public override string DisplayStatus { get; protected set; }
 
-		public Vector3 MoveToPosition { get; set; }
+		public void Initialize(Vector3 moveToPosition, float maxDistanceForArrival)
+		{
+			_moveToPosition = moveToPosition;
+			_maxDistanceForArrival = maxDistanceForArrival;
+		}
 
 		public override void Begin()
 		{
 			_startMovePosition = Wizard.Transform.position;
-			_startDistance = Vector3.Distance(_startMovePosition, MoveToPosition);
-			Wizard.Movement.SetMoveToPosition(MoveToPosition);
+			_startDistance = Vector3.Distance(_startMovePosition, _moveToPosition);
+			Wizard.Movement.SetMoveToPosition(_moveToPosition, _maxDistanceForArrival);
 		}
 
 		public override void Update()
@@ -29,11 +36,11 @@ namespace Wizards.States
 			if (!Wizard.Movement.IsMoving)
 			{
 				DisplayStatus = "Arrived";
-				ArrivedAtPosition?.Invoke();
+				ArrivedAtPosition?.Invoke(this, EventArgs.Empty);
 			}
 			else
 			{
-				float currentDistance = Vector3.Distance(Wizard.transform.position, MoveToPosition);
+				float currentDistance = Vector3.Distance(Wizard.transform.position, _moveToPosition);
 				DisplayStatus = $"{(_startDistance - currentDistance) / _startDistance * 100:0.0}%";
 			}
 		}
