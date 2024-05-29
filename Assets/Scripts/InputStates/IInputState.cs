@@ -1,6 +1,6 @@
 ﻿namespace InputStates
 {
-	public interface IInput
+	public interface IInputState
 	{
 		public bool ShowInteractions { get; }
 

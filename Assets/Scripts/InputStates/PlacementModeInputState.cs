@@ -6,13 +6,13 @@ using UnityEngine.InputSystem;
 
 namespace InputStates
 {
-	public class PlacementModeInput : IInput
+	public class PlacementModeInputState : IInputState
 	{
 		private readonly PlayerInputActions _playerInputActions = new();
 		private readonly InteractableRaycaster _interactableRaycaster;
 		private PlayerInputActions.PlacementModeActions placementMode;
 		
-		public PlacementModeInput(InteractableRaycaster interactableRaycaster)
+		public PlacementModeInputState(InteractableRaycaster interactableRaycaster)
 		{
 			_interactableRaycaster = interactableRaycaster;
 			placementMode = _playerInputActions.PlacementMode;

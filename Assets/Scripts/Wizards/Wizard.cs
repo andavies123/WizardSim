@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Extensions;
 using Game.MessengerSystem;
 using GameWorld;
@@ -11,6 +13,7 @@ using UI;
 using UI.ContextMenus;
 using UI.Messages;
 using UnityEngine;
+using Utilities;
 using Wizards.States;
 using Wizards.Tasks;
 
@@ -24,7 +27,6 @@ namespace Wizards
 
 		private Interactable _interactable;
 		private ContextMenuUser _contextMenuUser;
-		private IWizardTask _currentTask;
 		
 		public string Name { get; set; }
 		public WizardType WizardType { get; set; } = WizardType.Earth;
@@ -33,6 +35,7 @@ namespace Wizards
 		public WizardStateMachine StateMachine { get; private set; }
 		public Movement Movement { get; private set; }
 		public Health Health { get; private set; }
+		
 
 		public override string DisplayName => Name;
 		public override MovementStats MovementStats => Stats.MovementStats;
@@ -42,15 +45,54 @@ namespace Wizards
 
 		#region ITaskUser Implementation
 
-		public bool IsAssignedTask { get; private set; }
-		public bool CanBeAssignedTask { get; private set; } = true;
+		private readonly List<IWizardTask> _assignedTasks = new();
+
+		public bool IsAssignedTask => CurrentTask != null;
+		public bool CanBeAssignedTask => !IsAssignedTask;
+		public IWizardTask CurrentTask { get; private set; }
+		public IReadOnlyList<IWizardTask> AssignedTasks => _assignedTasks;
 
 		public void AssignTask(IWizardTask task)
 		{
-			IsAssignedTask = true;
+			if (task == null)
+				return;
+			
+			task.AssignedWizard = this;
+			_assignedTasks.Add(task);
 			task.WizardTaskState.SetWizard(this);
-			task.Completed += OnCurrentTaskCompleted;
-			StateMachine.OverrideCurrentState(task.WizardTaskState);
+			
+			AssignNewCurrentTask();
+		}
+
+		public void UnassignTask(IWizardTask task)
+		{
+			if (CurrentTask == null && _assignedTasks.IsEmpty())
+				return; // No task to unassign
+			
+			if (task == CurrentTask)
+			{
+				CurrentTask = null;
+				AssignNewCurrentTask();
+				if (!IsAssignedTask)
+				{
+					StateMachine.Idle();
+				}
+			}
+			else
+			{
+				_assignedTasks.Remove(task);
+			}
+		}
+
+		private void AssignNewCurrentTask()
+		{
+			if (CurrentTask != null || _assignedTasks.IsEmpty())
+				return; // Current task already exists or there are no tasks to be assigned
+
+			IWizardTask newCurrentTask = _assignedTasks[0];
+			_assignedTasks.RemoveAt(0);
+			CurrentTask = newCurrentTask;
+			StateMachine.OverrideCurrentState(CurrentTask.WizardTaskState);
 		}
 
 		#endregion
@@ -111,18 +153,6 @@ namespace Wizards
 			Vector3 moveToPosition = new(tilePosition.x, Transform.position.y, tilePosition.z);
 			StateMachine.MoveTo(moveToPosition);
 			GlobalMessenger.Publish(new EndInteractionRequest());
-		}
-
-		private void OnCurrentTaskCompleted(object sender, EventArgs args)
-		{
-			if (sender is not IWizardTask wizardTask)
-				return;
-
-			IsAssignedTask = false;
-			wizardTask.Completed -= OnCurrentTaskCompleted;
-			
-			// Go back to idling
-			StateMachine.Idle();
 		}
 
 		private void IncreaseHealth(float percent01) => Health.IncreaseHealth(Health.MaxHealth * percent01);

@@ -7,7 +7,7 @@ namespace Game
 	public class PauseGameState : IGameState
 	{
 		private readonly InputStateMachine _inputStateMachine;
-		private readonly PauseMenuInput _pauseMenuInput;
+		private readonly PauseMenuInputState pauseMenuInputState;
 		private readonly PauseMenuUIState _pauseMenuUIState;
 		
 		public event EventHandler ResumeGameRequested;
@@ -16,17 +16,17 @@ namespace Game
 		public PauseGameState(PauseMenuUIState pauseMenuUIState)
 		{
 			_pauseMenuUIState = pauseMenuUIState;
-			_pauseMenuInput = new PauseMenuInput();
+			pauseMenuInputState = new PauseMenuInputState();
 			
-			Dependencies.RegisterDependency(_pauseMenuInput);
+			Dependencies.RegisterDependency(pauseMenuInputState);
 		}
 
 		public void Enable()
 		{
-			if (_pauseMenuInput != null)
+			if (pauseMenuInputState != null)
 			{
-				_pauseMenuInput.ResumeActionPerformed += OnPauseMenuInputResumeActionPerformed;
-				_pauseMenuInput?.Enable();
+				pauseMenuInputState.ResumeActionPerformed += OnPauseMenuInputStateResumeActionPerformed;
+				pauseMenuInputState?.Enable();
 			}
 
 			if (_pauseMenuUIState)
@@ -39,10 +39,10 @@ namespace Game
 
 		public void Disable()
 		{
-			if (_pauseMenuInput != null)
+			if (pauseMenuInputState != null)
 			{
-				_pauseMenuInput.Disable();
-				_pauseMenuInput.ResumeActionPerformed -= OnPauseMenuInputResumeActionPerformed;
+				pauseMenuInputState.Disable();
+				pauseMenuInputState.ResumeActionPerformed -= OnPauseMenuInputStateResumeActionPerformed;
 			}
 
 			if (_pauseMenuUIState)
@@ -53,7 +53,7 @@ namespace Game
 			}
 		}
 
-		private void OnPauseMenuInputResumeActionPerformed(object sender, EventArgs args) => RaiseResumeGameRequested(sender);
+		private void OnPauseMenuInputStateResumeActionPerformed(object sender, EventArgs args) => RaiseResumeGameRequested(sender);
 		private void OnPauseMenuUIResumeButtonPressed(object sender, EventArgs args) => RaiseResumeGameRequested(sender);
 		private void OnPauseMenuUIQuitButtonPressed(object sender, EventArgs args) => RaiseQuitGameRequested(sender);
 		

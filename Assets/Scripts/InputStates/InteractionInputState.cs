@@ -5,19 +5,19 @@ using UnityEngine.InputSystem;
 
 namespace InputStates
 {
-	public class InteractionInput : IInput
+	public class InteractionInputState : IInputState
 	{
 		private readonly PlayerInputActions _playerInputActions = new();
 		private readonly InteractableRaycaster _interactableRaycaster;
 		
-		private PlayerInputActions.InteractionActions interaction;
+		private PlayerInputActions.InteractionActions _interaction;
 		
 		public event EventHandler CancelInteractionActionPerformed;
 		
-		public InteractionInput(InteractableRaycaster interactableRaycaster)
+		public InteractionInputState(InteractableRaycaster interactableRaycaster)
 		{
 			_interactableRaycaster = interactableRaycaster;
-			interaction = _playerInputActions.Interaction;
+			_interaction = _playerInputActions.Interaction;
 		}
 
 		public Action<MonoBehaviour> InteractionCallback { get; set; }
@@ -25,18 +25,18 @@ namespace InputStates
 
 		public void Enable()
 		{
-			interaction.CancelInteraction.performed += OnCancelInteractionActionPerformed;
+			_interaction.CancelInteraction.performed += OnCancelInteractionActionPerformed;
 
 			_interactableRaycaster.InteractableSelectedPrimary += OnInteractableSelectedPrimary;
 			
-			interaction.Enable();
+			_interaction.Enable();
 		}
 
 		public void Disable()
 		{
-			interaction.Disable();
+			_interaction.Disable();
 
-			interaction.CancelInteraction.performed -= OnCancelInteractionActionPerformed;
+			_interaction.CancelInteraction.performed -= OnCancelInteractionActionPerformed;
 
 			_interactableRaycaster.InteractableSelectedPrimary -= OnInteractableSelectedPrimary;
 		}

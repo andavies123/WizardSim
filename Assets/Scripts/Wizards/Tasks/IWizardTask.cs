@@ -15,5 +15,11 @@ namespace Wizards.Tasks
 		/// The wizard state that is attached to this task
 		/// </summary>
 		public WizardTaskState WizardTaskState { get; }
+		
+		/// <summary>
+		/// The wizard that has been assigned to this task.
+		/// Null if no wizards have been assigned
+		/// </summary>
+		public Wizard AssignedWizard { get; set; }
 	}
 }

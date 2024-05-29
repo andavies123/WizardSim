@@ -48,7 +48,6 @@ namespace GeneralBehaviours
 
 			if (Vector3.Distance(_transform.position, _targetPosition.Value) <= (_maxDistanceForArrival ?? 0.1f))
 			{
-				_rigidbody.MovePosition(_targetPosition.Value);
 				_targetPosition = null;
 				IsMoving = false;
 			}

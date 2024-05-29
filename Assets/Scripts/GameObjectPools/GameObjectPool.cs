@@ -3,7 +3,7 @@ using UnityEngine.Pool;
 
 namespace GameObjectPools
 {
-	public class GameObjectPool
+	public class GameObjectPool : IGameObjectPool
 	{
 		private readonly IObjectPool<GameObject> _objectPool;
 		private readonly GameObject _prefab;

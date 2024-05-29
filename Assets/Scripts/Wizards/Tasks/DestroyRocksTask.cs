@@ -14,5 +14,6 @@ namespace Wizards.Tasks
 		}
 
 		public override TaskWizardType[] AllowedWizardTypes { get; } = { TaskWizardType.Earth };
+		public override string DisplayName => "Destroy Rocks";
 	}
 }

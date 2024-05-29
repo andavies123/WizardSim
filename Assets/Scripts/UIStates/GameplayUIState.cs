@@ -1,8 +1,10 @@
 using System;
+using Extensions;
 using UI;
 using UI.ContextMenus;
 using UI.HotBarUI;
 using UI.InfoWindows;
+using UI.TaskManagement;
 using UnityEngine;
 using UnityEngine.UI;
 using ContextMenu = UI.ContextMenus.ContextMenu;
@@ -16,6 +18,7 @@ namespace UIStates
 		[SerializeField] private InfoWindow infoWindow;
 		[SerializeField] private ContextMenu contextMenu;
 		[SerializeField] private HotBar hotBar;
+		[SerializeField] private TaskManagementUI taskManagementWindow;
 		
 		public event EventHandler PauseButtonPressed;
 
@@ -25,11 +28,22 @@ namespace UIStates
 		public void OpenContextMenu(ContextMenuUser contextMenuUser) => contextMenu.OpenMenu(contextMenuUser);
 		public void CloseContextMenu() => contextMenu.CloseMenu();
 
-		protected override void OnStateEnabled()
+		public void OpenTaskManagementWindow() => taskManagementWindow.Open();
+		public void CloseTaskManagementWindow() => taskManagementWindow.Close();
+
+		protected override void Awake()
+		{
+			base.Awake();
+			pauseButton.ThrowIfNull(nameof(pauseButton));
+			infoWindow.ThrowIfNull(nameof(infoWindow));
+			contextMenu.ThrowIfNull(nameof(contextMenu));
+			hotBar.ThrowIfNull(nameof(hotBar));
+			taskManagementWindow.ThrowIfNull(nameof(taskManagementWindow));
+		}
+		
+        protected override void OnStateEnabled()
 		{
 			pauseButton.onClick.AddListener(OnPauseButtonPressed);
-
-			//ContextMenuUser.RequestMenuOpen += OnContextMenuOpenRequested;
 
 			contextMenu.MenuClosed += OnContextMenuClosed;
 
@@ -40,8 +54,6 @@ namespace UIStates
 		{
 			pauseButton.onClick.RemoveListener(OnPauseButtonPressed);
 
-			//ContextMenuUser.RequestMenuOpen -= OnContextMenuOpenRequested;
-
 			contextMenu.MenuClosed -= OnContextMenuClosed;
 
 			hotBar.enabled = false;
@@ -49,12 +61,5 @@ namespace UIStates
 
 		private void OnPauseButtonPressed() => PauseButtonPressed?.Invoke(this, EventArgs.Empty);
 		private void OnContextMenuClosed(object sender, EventArgs args) => CloseInfoWindow();
-
-		private void OnContextMenuOpenRequested(object sender, ContextMenuUserEventArgs args)
-		{
-			OpenContextMenu(args.ContextMenuUser);
-			OpenInfoWindow(args.ContextMenuUser.Interactable);
-		}
-
 	}
 }

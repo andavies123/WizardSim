@@ -13,8 +13,8 @@ namespace Wizards.States
 
 		public event EventHandler RockDestroyed;
 
-		public override string DisplayName => "Destroying Rock";
-		public override string DisplayStatus { get; protected set; } = string.Empty;
+		public override string DisplayName => "Destroy Rock";
+		public override string DisplayStatus { get; protected set; } = "Breaking Rock";
 
 		public void Initialize(Rock rock)
 		{
@@ -52,15 +52,4 @@ namespace Wizards.States
 
 		private void OnRockDestroyed(object sender, EventArgs args) => RockDestroyed?.Invoke(this, EventArgs.Empty);
 	}
-	
-	/*
-	 * Initialize -> Rock is set
-	 *
-	 * Begin -> Checks to see if a rock exists
-	 *			Resets timer values
-	 *
-	 * Update -> Destroys rock after time has passed
-	 *
-	 * End -> N/A
-	 */
 }

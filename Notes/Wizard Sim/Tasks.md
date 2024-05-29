@@ -15,6 +15,8 @@ kanban-plugin: basic
 
 ## <font color="red">**Bugs**</font>
 
+- [ ] <font color="red">**Context Menu Click Throughs**</font><br><br>When clicking on a context menu item and an interactable is underneath, the interactable is selected instead of the context menu item
+- [ ] <font color="red">**Always Zooming**</font><br><br>Whenever the scroll wheel is used, the camera always zooms in no matter where the mouse is. When trying to scroll while on an other window, the camera still zooms in/out
 
 
 ## Documentation
@@ -44,18 +46,19 @@ kanban-plugin: basic
 
 - [ ] <font color="cyan">**Save System**</font><br>- [ ] Add save pause menu button<br>- [ ] Game world should be saved<br>- [ ] Wizard stats should be saved<br>- [ ] Add load main menu button
 - [ ] <font color="cyan">**Settings Menu**</font><br>- [ ] Wire up buttons for settings menu<br>- [ ] Wire up pause menu settings button
-- [ ] <font color="cyan">**Wizard Color by Type**</font><br><br>- [ ] The player should be able to tell a wizard by their type
+- [ ] <font color="cyan">**Redo Context Menu**</font><br><br>- [ ] When right clicking on an interactable to open the context menu the context menu should open next to the item that is being clicked on<br>- [ ] Context menu should have multiple levels that open up to the side of the selected context menu option<br>- [ ] If there are multiple levels, an arrow should show on the label<br>- [ ] If opening a context menu too close to one side of the screen, it should open up the other way
 
 
 ## In Progress
 
+- [ ] <font color="cyan">**Wizard Color by Type**</font><br><br>- [ ] The player should be able to tell a wizard by their type
 - [ ] <font color="cyan">**Pathing**</font><br><br>- [ ] Implement pathing for the movement component<br>- [ ] When using Move To context menu item, it should be able to path to the position<br>- [ ] Implement NavMesh<br>- [ ] WorldObjects should be blockers
-- [ ] <font color="cyan">**Wizard Task System**</font><br><br>- [x] Set up the architecture for wizards to have a task system<br>- [x] Wizards should be assigned a single task to work on<br>- [x] Tasks should have a priority<br>- [ ] Wizards should have ability to have multiple tasks<br>- [x] If wizards don't have a task, they should idle<br>- [ ] User should be able to see current task of a wizard<br>- [ ] User should be able to see task list<br>- [ ] User should be able to remove a task from a wizards list<br>- [ ] User should be able to rearrange a task in the wizard list<br>- [x] Right clicking on a rock and hitting destroy should count as a task and a wizard should be summoned
 
 
 ## Completed
 
 **Complete**
+- [x] <font color="cyan">**Wizard Task System**</font><br><br>- [x] Set up the architecture for wizards to have a task system<br>- [x] Wizards should be assigned a single task to work on<br>- [x] Tasks should have a priority<br>- [x] Wizards should have ability to have multiple tasks<br>- [x] If wizards don't have a task, they should idle<br>- [x] User should be able to see current task of a wizard<br>- [x] User should be able to see task list<br>- [x] User should be able to remove a task from a wizards list<br>- [x] User should be able to rearrange a task in the wizard list<br>- [x] Right clicking on a rock and hitting destroy should count as a task and a wizard should be summoned
 - [x] <font color="red">**Floating Health Bar Bug**</font><br><br>The floating healthbar for wizards/enemies do not always face the camera
 - [x] <font color="red">**Interactable Hover Bug**</font><br><br>When in the pause menu, interactables are still highlighted even though they shouldn't be
 - [x] <font color="cyan">**Hot Bar**</font><br>- [x] When a button is pressed the user should be able to place an item on the map<br>- [x] A preview should be shown when placing<br>- [x] The object should be added to the the world collection

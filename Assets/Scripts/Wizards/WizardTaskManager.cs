@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Game.MessengerSystem;
 using TaskSystem;
@@ -14,12 +15,42 @@ namespace Wizards
 		[SerializeField] private WizardManager wizardManager;
         
 		private readonly ITaskManager<IWizardTask> _taskManager = new TaskManager<IWizardTask>();
+		private readonly Dictionary<Guid, IWizardTask> _assignedTasks = new();
 
+		public event EventHandler<WizardTaskManagerEventArgs> TaskAdded;
+		public event EventHandler<WizardTaskManagerEventArgs> TaskRemoved;
+		public event EventHandler<WizardTaskManagerEventArgs> TaskAssigned;
+
+		public IReadOnlyList<IWizardTask> Tasks => _taskManager.Tasks;
+		public IReadOnlyDictionary<Guid, IWizardTask> AssignedTasks => _assignedTasks;
+		
 		public void AddTask(IWizardTask task)
 		{
 			_taskManager.AddTask(task);
+			task.Completed += OnTaskCompleted;
+			task.Deleted += OnTaskDeleted;
+			
+			TaskAdded?.Invoke(this, new WizardTaskManagerEventArgs(task));
 
 			wizardManager.Wizards.Values.ToList().ForEach(wizard => TryAssignTaskToWizard(wizard));
+		}
+
+		public void RemoveTask(IWizardTask task)
+		{
+			// Clear references
+			_taskManager.RemoveTask(task);
+			_assignedTasks.Remove(task.Id);
+			
+			// Remove event subscriptions
+			task.Completed -= OnTaskCompleted;
+			task.Deleted -= OnTaskDeleted;
+			
+			// Clean up on the wizard side
+			if (task.AssignedWizard)
+				task.AssignedWizard.UnassignTask(task);
+			
+			// Notify others
+			TaskRemoved?.Invoke(this, new WizardTaskManagerEventArgs(task));
 		}
 
 		public bool TryAssignTaskToWizard(Wizard wizard)
@@ -35,7 +66,6 @@ namespace Wizards
 				if (IsValidWizardType(wizard, task))
 				{
 					assignedTask = task;
-					wizard.AssignTask(task);
 					break;
 				}
 			}
@@ -43,20 +73,52 @@ namespace Wizards
 			// No tasks exist or there were no proper fits
 			if (assignedTask == null)
 				return false;
-
-			print($"Assigning {assignedTask.GetType()} to {wizard.Name}");
+			
+			wizard.AssignTask(assignedTask);
 			_taskManager.RemoveTask(assignedTask);
+			_assignedTasks.Add(assignedTask.Id, assignedTask);
+			TaskAssigned?.Invoke(this, new WizardTaskManagerEventArgs(assignedTask));
 			return true;
+		}
+
+		private void OnTaskCompleted(object sender, EventArgs args)
+		{
+			if (sender is not IWizardTask wizardTask)
+				return;
+			
+			RemoveTask(wizardTask);
+			TryAssignTaskToWizard(wizardTask.AssignedWizard);
+		}
+
+		private void OnTaskDeleted(object sender, EventArgs args)
+		{
+			if (sender is not IWizardTask wizardTask)
+				return;
+
+			RemoveTask(wizardTask);
+			TryAssignTaskToWizard(wizardTask.AssignedWizard);
 		}
 
 		private void Start()
 		{
 			GlobalMessenger.Subscribe<AddWizardTaskRequest>(AddWizardTaskRequestReceived);
+			wizardManager.WizardAdded += OnWizardAdded;
+		}
+
+		private void OnDestroy()
+		{
+			GlobalMessenger.Unsubscribe<AddWizardTaskRequest>(AddWizardTaskRequestReceived);
+			wizardManager.WizardAdded -= OnWizardAdded;
 		}
 
 		private void AddWizardTaskRequestReceived(AddWizardTaskRequest message)
 		{
 			AddTask(message.Task);
+		}
+
+		private void OnWizardAdded(object sender, WizardManagerEventArgs args)
+		{
+			TryAssignTaskToWizard(args.Wizard);
 		}
 
 		private static bool IsValidWizardType(Wizard wizard, IWizardTask task)

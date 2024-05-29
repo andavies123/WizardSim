@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 
 namespace InputStates
 {
-	public class SecondaryGameplayInput : IInput
+	public class SecondaryGameplayInputState : IInputState
 	{
 		private readonly PlayerInputActions _playerInputActions = new();
 		private readonly InteractableRaycaster _interactableRaycaster;
@@ -16,7 +16,7 @@ namespace InputStates
 		
 		private PlayerInputActions.SecondaryGameplayActions _secondaryGameplay;
 		
-		public SecondaryGameplayInput(InteractableRaycaster interactableRaycaster, GameplayUIState gameplayUIState)
+		public SecondaryGameplayInputState(InteractableRaycaster interactableRaycaster, GameplayUIState gameplayUIState)
 		{
 			_interactableRaycaster = interactableRaycaster;
 			_gameplayUIState = gameplayUIState;
@@ -28,12 +28,14 @@ namespace InputStates
 		public event EventHandler<OpenContextMenuEventArgs> OpenContextMenuRequested;
 		public event EventHandler CloseInfoWindowRequested;
 		public event EventHandler CloseContextMenuRequested;
+		public event EventHandler OpenTaskManagementRequested;
 		
 		public bool ShowInteractions => false;
 
 		public void Enable()
 		{
 			_secondaryGameplay.PauseGame.performed += OnPauseActionPerformed;
+			_secondaryGameplay.OpenTaskManagement.performed += OnOpenTaskManagementActionPerformed;
 
 			_interactableRaycaster.InteractableSelectedPrimary += OnInteractablePrimaryActionSelected;
 			_interactableRaycaster.NonInteractableSelectedPrimary += OnNonInteractablePrimaryActionSelected;
@@ -47,7 +49,8 @@ namespace InputStates
 		{
 			_secondaryGameplay.Disable();
 			
-			_secondaryGameplay.PauseGame.performed += OnPauseActionPerformed;
+			_secondaryGameplay.PauseGame.performed -= OnPauseActionPerformed;
+			_secondaryGameplay.OpenTaskManagement.performed -= OnOpenTaskManagementActionPerformed;
 
 			_interactableRaycaster.InteractableSelectedPrimary -= OnInteractablePrimaryActionSelected;
 			_interactableRaycaster.NonInteractableSelectedPrimary -= OnNonInteractablePrimaryActionSelected;
@@ -65,7 +68,7 @@ namespace InputStates
 
 		private void OnNonInteractablePrimaryActionSelected(object sender, EventArgs args)
 		{
-			if (!_gameplayUIState.IsMouseOverGameObject)
+			if (!UIState.IsMouseOverGameObject)
 			{
 				CloseInfoWindowRequested?.Invoke(this, EventArgs.Empty);
 				CloseContextMenuRequested?.Invoke(this, EventArgs.Empty);
@@ -77,6 +80,11 @@ namespace InputStates
 			// TODO: UPDATE THE CONTEXT MENU USERS TO BE UPDATED FROM HERE, THE CLICKS STILL SHOW UP EVEN WHEN CONTEXT MENU DOESN'T OPEN
 			OpenContextMenuRequested?.Invoke(this, new OpenContextMenuEventArgs(message.ContextMenuUser));
 			OpenInfoWindowRequested?.Invoke(this, new OpenInfoWindowEventArgs(message.ContextMenuUser.Interactable));
+		}
+
+		private void OnOpenTaskManagementActionPerformed(InputAction.CallbackContext callbackContext)
+		{
+			OpenTaskManagementRequested?.Invoke(this, EventArgs.Empty);
 		}
 	}
 }

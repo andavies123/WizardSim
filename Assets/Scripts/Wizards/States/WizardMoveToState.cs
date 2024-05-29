@@ -5,9 +5,6 @@ namespace Wizards.States
 {
 	public class WizardMoveToState : WizardState
 	{
-		private Vector3 _startMovePosition;
-		private float _startDistance;
-
 		private Vector3 _moveToPosition;
 		private float _maxDistanceForArrival;
 		
@@ -26,8 +23,6 @@ namespace Wizards.States
 
 		public override void Begin()
 		{
-			_startMovePosition = Wizard.Transform.position;
-			_startDistance = Vector3.Distance(_startMovePosition, _moveToPosition);
 			Wizard.Movement.SetMoveToPosition(_moveToPosition, _maxDistanceForArrival);
 		}
 
@@ -41,7 +36,7 @@ namespace Wizards.States
 			else
 			{
 				float currentDistance = Vector3.Distance(Wizard.transform.position, _moveToPosition);
-				DisplayStatus = $"{(_startDistance - currentDistance) / _startDistance * 100:0.0}%";
+				DisplayStatus = $"Moving: {currentDistance:F1} m away";
 			}
 		}
 		

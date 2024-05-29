@@ -932,6 +932,15 @@ namespace UnityEngine.InputSystem
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Open Task Management"",
+                    ""type"": ""Button"",
+                    ""id"": ""28d04ff8-0584-4240-aadd-833c1a7b685b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -943,6 +952,56 @@ namespace UnityEngine.InputSystem
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Pause Game"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9367d0b3-76b2-496f-97df-51c90a2baae0"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Open Task Management"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Task Management"",
+            ""id"": ""fe14e39d-fed0-4336-9cea-9564c304239f"",
+            ""actions"": [
+                {
+                    ""name"": ""Close Window"",
+                    ""type"": ""Button"",
+                    ""id"": ""27a59df7-2e0b-4346-ab34-1e224ad00e2c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""2b2c5d46-39ad-4237-b2ea-318c7f486402"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Close Window"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1907a162-2a11-427a-93f4-dba54eb9e5b7"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Close Window"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1043,6 +1102,10 @@ namespace UnityEngine.InputSystem
             // SecondaryGameplay
             m_SecondaryGameplay = asset.FindActionMap("SecondaryGameplay", throwIfNotFound: true);
             m_SecondaryGameplay_PauseGame = m_SecondaryGameplay.FindAction("Pause Game", throwIfNotFound: true);
+            m_SecondaryGameplay_OpenTaskManagement = m_SecondaryGameplay.FindAction("Open Task Management", throwIfNotFound: true);
+            // Task Management
+            m_TaskManagement = asset.FindActionMap("Task Management", throwIfNotFound: true);
+            m_TaskManagement_CloseWindow = m_TaskManagement.FindAction("Close Window", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -1439,11 +1502,13 @@ namespace UnityEngine.InputSystem
         private readonly InputActionMap m_SecondaryGameplay;
         private List<ISecondaryGameplayActions> m_SecondaryGameplayActionsCallbackInterfaces = new List<ISecondaryGameplayActions>();
         private readonly InputAction m_SecondaryGameplay_PauseGame;
+        private readonly InputAction m_SecondaryGameplay_OpenTaskManagement;
         public struct SecondaryGameplayActions
         {
             private @PlayerInputActions m_Wrapper;
             public SecondaryGameplayActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
             public InputAction @PauseGame => m_Wrapper.m_SecondaryGameplay_PauseGame;
+            public InputAction @OpenTaskManagement => m_Wrapper.m_SecondaryGameplay_OpenTaskManagement;
             public InputActionMap Get() { return m_Wrapper.m_SecondaryGameplay; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -1456,6 +1521,9 @@ namespace UnityEngine.InputSystem
                 @PauseGame.started += instance.OnPauseGame;
                 @PauseGame.performed += instance.OnPauseGame;
                 @PauseGame.canceled += instance.OnPauseGame;
+                @OpenTaskManagement.started += instance.OnOpenTaskManagement;
+                @OpenTaskManagement.performed += instance.OnOpenTaskManagement;
+                @OpenTaskManagement.canceled += instance.OnOpenTaskManagement;
             }
 
             private void UnregisterCallbacks(ISecondaryGameplayActions instance)
@@ -1463,6 +1531,9 @@ namespace UnityEngine.InputSystem
                 @PauseGame.started -= instance.OnPauseGame;
                 @PauseGame.performed -= instance.OnPauseGame;
                 @PauseGame.canceled -= instance.OnPauseGame;
+                @OpenTaskManagement.started -= instance.OnOpenTaskManagement;
+                @OpenTaskManagement.performed -= instance.OnOpenTaskManagement;
+                @OpenTaskManagement.canceled -= instance.OnOpenTaskManagement;
             }
 
             public void RemoveCallbacks(ISecondaryGameplayActions instance)
@@ -1480,6 +1551,52 @@ namespace UnityEngine.InputSystem
             }
         }
         public SecondaryGameplayActions @SecondaryGameplay => new SecondaryGameplayActions(this);
+
+        // Task Management
+        private readonly InputActionMap m_TaskManagement;
+        private List<ITaskManagementActions> m_TaskManagementActionsCallbackInterfaces = new List<ITaskManagementActions>();
+        private readonly InputAction m_TaskManagement_CloseWindow;
+        public struct TaskManagementActions
+        {
+            private @PlayerInputActions m_Wrapper;
+            public TaskManagementActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+            public InputAction @CloseWindow => m_Wrapper.m_TaskManagement_CloseWindow;
+            public InputActionMap Get() { return m_Wrapper.m_TaskManagement; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(TaskManagementActions set) { return set.Get(); }
+            public void AddCallbacks(ITaskManagementActions instance)
+            {
+                if (instance == null || m_Wrapper.m_TaskManagementActionsCallbackInterfaces.Contains(instance)) return;
+                m_Wrapper.m_TaskManagementActionsCallbackInterfaces.Add(instance);
+                @CloseWindow.started += instance.OnCloseWindow;
+                @CloseWindow.performed += instance.OnCloseWindow;
+                @CloseWindow.canceled += instance.OnCloseWindow;
+            }
+
+            private void UnregisterCallbacks(ITaskManagementActions instance)
+            {
+                @CloseWindow.started -= instance.OnCloseWindow;
+                @CloseWindow.performed -= instance.OnCloseWindow;
+                @CloseWindow.canceled -= instance.OnCloseWindow;
+            }
+
+            public void RemoveCallbacks(ITaskManagementActions instance)
+            {
+                if (m_Wrapper.m_TaskManagementActionsCallbackInterfaces.Remove(instance))
+                    UnregisterCallbacks(instance);
+            }
+
+            public void SetCallbacks(ITaskManagementActions instance)
+            {
+                foreach (var item in m_Wrapper.m_TaskManagementActionsCallbackInterfaces)
+                    UnregisterCallbacks(item);
+                m_Wrapper.m_TaskManagementActionsCallbackInterfaces.Clear();
+                AddCallbacks(instance);
+            }
+        }
+        public TaskManagementActions @TaskManagement => new TaskManagementActions(this);
         private int m_KeyboardMouseSchemeIndex = -1;
         public InputControlScheme KeyboardMouseScheme
         {
@@ -1561,6 +1678,11 @@ namespace UnityEngine.InputSystem
         public interface ISecondaryGameplayActions
         {
             void OnPauseGame(InputAction.CallbackContext context);
+            void OnOpenTaskManagement(InputAction.CallbackContext context);
+        }
+        public interface ITaskManagementActions
+        {
+            void OnCloseWindow(InputAction.CallbackContext context);
         }
     }
 }

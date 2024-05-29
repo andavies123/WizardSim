@@ -24,7 +24,7 @@ namespace CameraComponents
 		[SerializeField] private float minZoom = 30f;
 		[SerializeField] private float maxZoom = 70f;
 
-		private GameplayInput _gameplayInput;
+		private GameplayInputState gameplayInputState;
 		private Transform _cameraTransform;
 		private float _currentVerticalRotation;
 		private float _currentHorizontalRotation;
@@ -32,13 +32,13 @@ namespace CameraComponents
 		private void Awake()
 		{
 			Dependencies.RegisterDependency(playerCamera);
-			_gameplayInput = Dependencies.GetDependency<GameplayInput>();
+			gameplayInputState = Dependencies.GetDependency<GameplayInputState>();
 			_cameraTransform = playerCamera.GetComponent<Transform>();
 		}
 
 		private void Start()
 		{
-			_gameplayInput.CameraZoomInputPerformed += OnCameraZoomInputPerformed;
+			gameplayInputState.CameraZoomInputPerformed += OnCameraZoomInputStatePerformed;
 			
 			ClampCameraPosition();
 			ClampCameraRotation();
@@ -47,18 +47,18 @@ namespace CameraComponents
 
 		private void Update()
 		{
-			if (_gameplayInput.IsMoveActive || _gameplayInput.IsVerticalMoveActive)
-				ControlPosition(_gameplayInput.CurrentMoveValue);
-			if (_gameplayInput.IsCameraLookActivated && _gameplayInput.IsLookActive)
-				ControlRotation(_gameplayInput.CurrentLookValue);
+			if (gameplayInputState.IsMoveActive || gameplayInputState.IsVerticalMoveActive)
+				ControlPosition(gameplayInputState.CurrentMoveValue);
+			if (gameplayInputState.IsCameraLookActivated && gameplayInputState.IsLookActive)
+				ControlRotation(gameplayInputState.CurrentLookValue);
 		}
 
 		private void OnDestroy()
 		{
-			_gameplayInput.CameraZoomInputPerformed -= OnCameraZoomInputPerformed;
+			gameplayInputState.CameraZoomInputPerformed -= OnCameraZoomInputStatePerformed;
 		}
 
-		private void OnCameraZoomInputPerformed(object sender, CameraZoomInputEventArgs args) => ControlZoom(ZoomTypeToValue(args.Zoom));
+		private void OnCameraZoomInputStatePerformed(object sender, CameraZoomInputEventArgs args) => ControlZoom(ZoomTypeToValue(args.Zoom));
 
 		private void ControlPosition(Vector3 moveVector)
 		{

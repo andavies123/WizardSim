@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 namespace InputStates
 {
-	public class GameplayInput : IInput
+	public class GameplayInputState : IInputState
 	{
 		private PlayerInputActions _playerInputActions = new();
 		

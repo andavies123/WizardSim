@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 namespace InputStates
 {
-	public class PauseMenuInput : IInput
+	public class PauseMenuInputState : IInputState
 	{
 		private readonly PlayerInputActions _playerInputActions = new();
 
