@@ -143,7 +143,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseTexture: {fileID: 0}
-  baseColor: {r: 0.3679245, g: 0, b: 0, a: 1}
+  baseColor: {r: 0, g: 0, b: 0, a: 1}
   meshRenderer: {fileID: 1173640702274741866}
   interactable: {fileID: 323713175569000968}
   contextMenuUser: {fileID: 0}
