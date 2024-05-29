@@ -1,6 +1,7 @@
 ﻿using System;
 using UI;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using Utilities;
 
 namespace CameraComponents
@@ -25,6 +26,9 @@ namespace CameraComponents
 
 		private void Update()
 		{
+			if (EventSystem.current.IsPointerOverGameObject())
+				return; // We don't want handle interactable raycasting if UI is being hovered
+			
 			Ray ray = camera.ScreenPointToRay(Input.mousePosition);
 			Interactable interactable = null;
 
