@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using GeneralBehaviours.ShaderManagers;
+using UnityEngine;
 using Utilities;
 using Random = UnityEngine.Random;
 
@@ -17,12 +19,20 @@ namespace Wizards
 		[SerializeField] private Vector3Int spawnCenter = Vector3Int.zero;
 		[SerializeField] private int spawnRadius = 10;
 
+		[Header("Wizard Colors")] 
+		[SerializeField] private Color fireWizardColor;
+		[SerializeField] private Color earthWizardColor;
+		[SerializeField] private Color waterWizardColor;
+		[SerializeField] private Color lightningWizardColor;
+
 		public void SpawnEntity(Vector3 spawnPosition)
 		{
 			Wizard wizard = Instantiate(entityPrefab, entityManager.transform);
 			wizard.Transform.position = spawnPosition;
-			
-			wizard.InitializeWizard(NameGenerator.GetNewName(), GetRandomWizardType());
+
+			WizardType wizardType = GetRandomWizardType();
+			wizard.InitializeWizard(NameGenerator.GetNewName(), wizardType);
+			wizard.GetComponent<InteractionShaderManager>().OverrideBaseColor(GetColorFromWizardType(wizardType));
 			
 			entityManager.Add(wizard);
 		}
@@ -42,6 +52,21 @@ namespace Wizards
 				(int)randomSpawn.y + spawnCenter.z + 0.5f));
 		}
 
-		private static WizardType GetRandomWizardType() => RandomExt.RandomEnumValue<WizardType>();
+		private static WizardType GetRandomWizardType()
+		{
+			return RandomExt.RandomEnumValue<WizardType>();
+		}
+
+		private Color GetColorFromWizardType(WizardType wizardType)
+		{
+			return wizardType switch
+			{
+				WizardType.Earth => earthWizardColor,
+				WizardType.Water => waterWizardColor,
+				WizardType.Fire => fireWizardColor,
+				WizardType.Lightning => lightningWizardColor,
+				_ => throw new ArgumentOutOfRangeException(nameof(wizardType), wizardType, null)
+			};
+		}
 	}
 }

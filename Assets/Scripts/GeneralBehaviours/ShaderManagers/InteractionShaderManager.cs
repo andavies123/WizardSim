@@ -24,6 +24,12 @@ namespace GeneralBehaviours.ShaderManagers
 		[SerializeField] private Interactable interactable;
 		[SerializeField] private ContextMenuUser contextMenuUser;
 
+		public void OverrideBaseColor(Color color)
+		{
+			baseColor = color;
+			meshRenderer.material.SetColor(BaseColor, baseColor);
+		}
+
 		private void Awake()
 		{
 			if (meshRenderer == null)
