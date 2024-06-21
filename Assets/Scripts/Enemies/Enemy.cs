@@ -3,7 +3,9 @@ using Game.MessengerSystem;
 using GameWorld;
 using GameWorld.Tiles;
 using GeneralBehaviours;
-using GeneralBehaviours.Health;
+using GeneralClasses.Health;
+using GeneralClasses.Health.HealthEventArgs;
+using GeneralClasses.Health.Interfaces;
 using Stats;
 using UI;
 using UI.ContextMenus;
@@ -21,10 +23,13 @@ namespace Enemies
 		private Interactable _interactable;
 		private ContextMenuUser _contextMenuUser;
 		
+		// Components
 		public Transform Transform { get; private set; }
 		public EnemyStateMachine StateMachine { get; private set; }
 		public Movement Movement { get; private set; }
-		public Health Health { get; private set; }
+		
+		// Systems
+		public IHealth Health { get; private set; }
 		
 		public override string DisplayName => "Enemy";
 		public override MovementStats MovementStats => Stats.MovementStats;
@@ -35,9 +40,9 @@ namespace Enemies
 			Transform = transform;
 			StateMachine = GetComponent<EnemyStateMachine>();
 			Movement = GetComponent<Movement>();
-			Health = GetComponent<Health>();
 			_interactable = GetComponent<Interactable>();
 			_contextMenuUser = GetComponent<ContextMenuUser>();
+			Health = new Health(50);
 
 			Health.CurrentHealthChanged += OnCurrentHealthChanged;
 		}
@@ -69,10 +74,10 @@ namespace Enemies
 			_interactable.InfoText = $"Enemy - {Health.CurrentHealth:0}/{Health.MaxHealth:0} ({Health.CurrentHealth.PercentageOf(Health.MaxHealth):0}%)";
 		}
 
-		private void OnCurrentHealthChanged(object sender, HealthChangedEventArgs args) => UpdateInteractableInfoText();
+		private void OnCurrentHealthChanged(object sender, CurrentHealthChangedEventArgs args) => UpdateInteractableInfoText();
 		
-		private void IncreaseHealth(float percent01) => Health.IncreaseHealth(Health.MaxHealth * percent01);
-		private void DecreaseHealth(float percent01) => Health.DecreaseHealth(Health.MaxHealth * percent01);
+		private void IncreaseHealth(float percent01) => Health.CurrentHealth += Health.MaxHealth * percent01;
+		private void DecreaseHealth(float percent01) => Health.CurrentHealth -= Health.MaxHealth * percent01;
 
 		private bool IsNotAtMaxHealth() => !Health.IsAtMaxHealth;
 		private bool IsNotAtMinHealth() => !Health.IsAtMinHealth;

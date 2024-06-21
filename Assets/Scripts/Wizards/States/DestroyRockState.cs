@@ -27,29 +27,44 @@ namespace Wizards.States
 			if (!_rock)
 				ForceExit(StateExitEventArgs.NotInitialized);
 
-			_destroyTimer = 0.0f;
+			_attackTimer = 0.0f;
+			UpdateDisplayStatus();
 		}
 
-		private const float TimeToDestroy = 5f;
-		private float _destroyTimer = 0.0f;
+		private const float TimeBetweenAttacks = 0.1f;
+		private float _attackTimer = 0.0f;
 
 		public override void Update()
 		{
-			if (_destroyTimer < TimeToDestroy)
+			if (_attackTimer < TimeBetweenAttacks)
 			{
-				_destroyTimer += Time.deltaTime;
+				_attackTimer += Time.deltaTime;
 				return;
 			}
 
-			// Todo: Update the way a rock takes damage / is destroyed
 			if (_rock)
 			{
-				_rock.gameObject.Destroy();
+				_attackTimer = 0;
+				_rock.Health.CurrentHealth -= 0.5f;
+				
+				// Todo: Update the way a rock gets destroyed
+				if (_rock.Health.CurrentHealth <= 0)
+					_rock.gameObject.Destroy();
+
+				UpdateDisplayStatus();
 			}
 		}
 
 		public override void End() { }
 
-		private void OnRockDestroyed(object sender, EventArgs args) => RockDestroyed?.Invoke(this, EventArgs.Empty);
+		private void UpdateDisplayStatus()
+		{
+			DisplayStatus = $"Breaking Rock - Health: {_rock.Health.CurrentHealth:0.0} / {_rock.Health.MaxHealth:0.0}";
+		}
+
+		private void OnRockDestroyed(object sender, EventArgs args)
+		{
+			RockDestroyed?.Invoke(this, EventArgs.Empty);
+		}
 	}
 }

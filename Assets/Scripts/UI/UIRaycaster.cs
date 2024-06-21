@@ -1,4 +1,4 @@
-﻿using GeneralBehaviours.Health;
+﻿using GeneralClasses.Health.Interfaces;
 using UI.HealthBars;
 using UnityEngine;
 
@@ -41,15 +41,17 @@ namespace UI
 			// Check to make sure the necessary HealthBar Script exists
 			if (!worldHealthBar)
 				return;
-
-			Health health = null;
-
-			// Check to see if the Health component exists
-			if (raycastHit.transform)
-				raycastHit.transform.TryGetComponent(out health);
 			
-			// Update the health bar
-			worldHealthBar.SetHealth(health);
+			// Check to see if the Health component exists
+			if (raycastHit.transform && raycastHit.transform.TryGetComponent(typeof(IHealthUser), out Component component) && component is IHealthUser healthUser)
+			{
+				// Update the health bar
+				worldHealthBar.SetHealth(healthUser.Health, raycastHit.transform);
+			}
+			else
+			{
+				worldHealthBar.HideHealthBar();
+			}
 		}
 	}
 }

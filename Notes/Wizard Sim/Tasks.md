@@ -52,11 +52,13 @@ kanban-plugin: basic
 ## In Progress
 
 - [ ] <font color="cyan">**Redo Context Menu**</font><br><br>- [ ] When right clicking on an interactable to open the context menu the context menu should open next to the item that is being clicked on<br>- [ ] Context menu should have multiple levels that open up to the side of the selected context menu option<br>- [ ] If there are multiple levels, an arrow should show on the label<br>- [ ] If opening a context menu too close to one side of the screen, it should open up the other way
+- [ ] <font color="cyan">**Moving**</font><br><br>- [ ] Moving to a new spot should place them in the center of a tile
 
 
 ## Completed
 
 **Complete**
+- [x] <font color="cyan">**Map Item Destruction**</font><br><br>- [x] Should contain health<br>- [x] When damaging, it should damage the health<br>- [x] If the item hasn't been touched in a while, the health should slowly heal to full health to avoid having half broken rocks/trees everywhere
 - [x] <font color="red">**Context Menu Click Throughs**</font><br><br>When clicking on a context menu item and an interactable is underneath, the interactable is selected instead of the context menu item
 - [x] <font color="cyan">**Wizard Color by Type**</font><br><br>- [x] The player should be able to tell a wizard by their type
 - [x] <font color="cyan">**Wizard Task System**</font><br><br>- [x] Set up the architecture for wizards to have a task system<br>- [x] Wizards should be assigned a single task to work on<br>- [x] Tasks should have a priority<br>- [x] Wizards should have ability to have multiple tasks<br>- [x] If wizards don't have a task, they should idle<br>- [x] User should be able to see current task of a wizard<br>- [x] User should be able to see task list<br>- [x] User should be able to remove a task from a wizards list<br>- [x] User should be able to rearrange a task in the wizard list<br>- [x] Right clicking on a rock and hitting destroy should count as a task and a wizard should be summoned

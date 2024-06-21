@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using GameWorld.WorldObjects;
 using UnityEngine;
 
 namespace UI
@@ -42,6 +43,12 @@ namespace UI
 
 		public void SelectPrimaryAction() => PrimaryActionSelected?.Invoke(this, EventArgs.Empty);
 		public void SelectSecondaryAction() => SecondaryActionSelected?.Invoke(this, EventArgs.Empty);
+
+		public void InitializeWithProperties(InteractableProperties properties)
+		{
+			TitleText = properties.Title;
+			InfoText = properties.Description;
+		}
 
 		#region INotifyPropertyChanged Implementation
 

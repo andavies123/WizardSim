@@ -1,0 +1,23 @@
+﻿{
+  "ItemName": "Rock",
+  "PrefabName": "Rock",
+  "HealthProperties": {
+    "MaxHealth": 20,
+    "CanRechargeHealth": true,
+    "HealthGainedPerSecond": 1,
+    "RechargeIntervalMSec": 1000,
+    "TimeUntilRechargeStartsMSec": 5000
+  },
+  "InteractableProperties": {
+    "Title": "Rock",
+    "Description": "Test rock description"
+  },
+  "DestroyedProperties": {
+    "MinDrops": 1,
+    "MaxDrops": 3,
+    "OnZeroHealthActions":
+    [
+      "Destroy"
+    ]
+  }
+}

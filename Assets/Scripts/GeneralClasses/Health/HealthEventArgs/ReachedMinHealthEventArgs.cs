@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GeneralBehaviours.Health
+namespace GeneralClasses.Health.HealthEventArgs
 {
 	public class ReachedMinHealthEventArgs : EventArgs
 	{

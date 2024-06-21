@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Game.MessengerSystem;
-using UI;
 using UI.ContextMenus;
 using UnityEngine;
 using Wizards.Messages;
@@ -9,29 +8,25 @@ using Wizards.Tasks;
 
 namespace GameWorld.WorldObjects.Rocks
 {
-	[RequireComponent(typeof(Interactable))]
 	[RequireComponent(typeof(ContextMenuUser))]
 	public class Rock : WorldObject
 	{
-		private Interactable _interactable;
 		private ContextMenuUser _contextMenuUser;
+
+		protected override string ItemName => "Rock";
 		
-		private void Awake()
+		protected override void Awake()
 		{
-			_interactable = GetComponent<Interactable>();
+			base.Awake();
+			
 			_contextMenuUser = GetComponent<ContextMenuUser>();
 		}
 
-		private void Start()
+		protected override void Start()
 		{
-			InitializeInteractable();
+			base.Start();
+            
 			InitializeContextMenu();
-		}
-
-		private void InitializeInteractable()
-		{
-			_interactable.TitleText = "Rock";
-			_interactable.InfoText = "Just a Rock";
 		}
 
 		private void InitializeContextMenu()

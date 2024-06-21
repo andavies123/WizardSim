@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Extensions;
 using Game.MessengerSystem;
 using GameWorld;
 using GameWorld.Tiles;
 using GeneralBehaviours;
-using GeneralBehaviours.Health;
+using GeneralClasses.Health;
+using GeneralClasses.Health.HealthEventArgs;
+using GeneralClasses.Health.Interfaces;
 using Stats;
 using TaskSystem.Interfaces;
 using UI;
@@ -21,7 +21,7 @@ namespace Wizards
 {
 	[RequireComponent(typeof(Interactable))]
 	[RequireComponent(typeof(ContextMenuUser))]
-	public class Wizard : Entity, ITaskUser<IWizardTask>
+	public class Wizard : Entity, ITaskUser<IWizardTask>, IHealthUser
 	{
 		[SerializeField] private WizardStats stats;
 
@@ -31,11 +31,13 @@ namespace Wizards
 		public string Name { get; set; }
 		public WizardType WizardType { get; set; } = WizardType.Earth;
 		
+		// Components
 		public Transform Transform { get; private set; }
 		public WizardStateMachine StateMachine { get; private set; }
 		public Movement Movement { get; private set; }
-		public Health Health { get; private set; }
 		
+		// Systems
+		public IHealth Health { get; private set; }
 
 		public override string DisplayName => Name;
 		public override MovementStats MovementStats => Stats.MovementStats;
@@ -110,9 +112,10 @@ namespace Wizards
 			Transform = transform;
 			StateMachine = GetComponent<WizardStateMachine>();
 			Movement = GetComponent<Movement>();
-			Health = GetComponent<Health>();
 			_interactable = GetComponent<Interactable>();
 			_contextMenuUser = GetComponent<ContextMenuUser>();
+			
+			Health = new Health(50);
 
 			Health.CurrentHealthChanged += OnCurrentHealthChanged;
 		}
@@ -155,12 +158,12 @@ namespace Wizards
 			GlobalMessenger.Publish(new EndInteractionRequest());
 		}
 
-		private void IncreaseHealth(float percent01) => Health.IncreaseHealth(Health.MaxHealth * percent01);
-		private void DecreaseHealth(float percent01) => Health.DecreaseHealth(Health.MaxHealth * percent01);
+		private void IncreaseHealth(float percent01) => Health.CurrentHealth += Health.MaxHealth * percent01;
+		private void DecreaseHealth(float percent01) => Health.CurrentHealth -= Health.MaxHealth * percent01;
 
 		private bool IsNotAtMaxHealth() => !Health.IsAtMaxHealth;
 		private bool IsNotAtMinHealth() => !Health.IsAtMinHealth;
 
-		private void OnCurrentHealthChanged(object sender, HealthChangedEventArgs args) => UpdateInteractableInfoText();
+		private void OnCurrentHealthChanged(object sender, CurrentHealthChangedEventArgs args) => UpdateInteractableInfoText();
 	}
 }
