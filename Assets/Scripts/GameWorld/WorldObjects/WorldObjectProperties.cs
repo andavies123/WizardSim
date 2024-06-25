@@ -5,20 +5,11 @@ using GeneralClasses.Health;
 namespace GameWorld.WorldObjects
 {
 	[Serializable]
-	public class WorldObjectProperties
-	{
-		public string ItemName { get; set; }
-		
+	public class WorldObjectProperties : Properties
+	{		
 		public InteractableProperties InteractableProperties { get; set; }
 		public HealthProperties HealthProperties { get; set; }
 		public DestroyedProperties DestroyedProperties { get; set; }
-	}
-	
-	[Serializable]
-	public class InteractableProperties
-	{
-		public string Title { get; set; }
-		public string Description { get; set; }
 	}
 
 	[Serializable]

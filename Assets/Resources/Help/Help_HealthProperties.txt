@@ -1,0 +1,18 @@
+﻿int MaxHealth:
+    The max amount of health the object can have. The health value will not go over this value
+    
+bool CanRechargeHealth:
+    When this value is true, the object will recharge health a certain amount of time after taking damage.
+    If this value is false, then the following properties don't have to be set: HealthGainedPerInterval, RechargeIntervalMSec, TimeUntilRechargeStartsMSec.
+    Value is defaulted to false if not added.
+    
+int RechargeIntervalMSec:
+    While recharging health, this is how often in milliseconds the object will "recharge" some health.
+    This value could be used to slow down the recharge to make it longer to get back to full health.
+    
+float HealthGainedPerInterval:
+    This value describes how much health will be gained during each recharge interval.
+    Currently, there is no check to make sure this number is > 0 
+    
+int TimeUntilRechargeStartsMSec:
+    This value describes how long it takes in milliseconds to start recharging health after the object takes damage

@@ -88,7 +88,10 @@ namespace UI.HealthBars
 			// This is used instead of updating when the value changes is due to the
 			// fact that UI can't be updated on a backup thread such as an elapsed timer.
 			if (_requiresUpdate)
+			{
 				UpdateImageFill(_health.CurrentHealth, _health.MaxHealth);
+				_requiresUpdate = false;
+			}
 		}
 	}
 }

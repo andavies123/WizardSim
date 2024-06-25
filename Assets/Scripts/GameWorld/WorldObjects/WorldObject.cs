@@ -52,14 +52,14 @@ namespace GameWorld.WorldObjects
 
 		private void LoadProperties()
 		{
-			if (!WorldObjectPropertiesLoader.WorldObjectPropertiesMap.TryGetValue(ItemName, out _worldObjectProperties))
+			if (!PropertiesLoader.WorldObjectPropertiesMap.TryGetValue(ItemName, out _worldObjectProperties))
 			{
 				Debug.LogWarning($"World Object - {ItemName} - was not found. Deleting {gameObject.name}...", this);
 				gameObject.Destroy();
 				return;
 			}
 
-			gameObject.name = _worldObjectProperties.ItemName;
+			gameObject.name = _worldObjectProperties.Id;
 		}
 	}
 }

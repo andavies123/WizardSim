@@ -3,11 +3,11 @@ using UnityEngine;
 
 namespace GeneralBehaviours
 {
-	[RequireComponent(typeof(Entity))]
+	[RequireComponent(typeof(Character))]
 	[RequireComponent(typeof(Rigidbody))]
 	public class Movement : MonoBehaviour
 	{
-		private Entity _entity;
+		private Character character;
 		private Transform _transform;
 		private Rigidbody _rigidbody;
 
@@ -33,7 +33,7 @@ namespace GeneralBehaviours
 		{
 			_transform = transform;
 			_rigidbody = GetComponent<Rigidbody>();
-			_entity = GetComponent<Entity>();
+			character = GetComponent<Character>();
 		}
 
 		private void FixedUpdate()
@@ -43,7 +43,7 @@ namespace GeneralBehaviours
 
 			Vector3 currentPosition = _transform.position;
 			Vector3 direction = (_targetPosition.Value - currentPosition).normalized;
-			Vector3 newPosition = currentPosition + direction * (_entity.MovementStats.Speed * Time.fixedDeltaTime);
+			Vector3 newPosition = currentPosition + direction * (character.MovementStats.Speed * Time.fixedDeltaTime);
 			_rigidbody.MovePosition(newPosition);
 
 			if (Vector3.Distance(_transform.position, _targetPosition.Value) <= (_maxDistanceForArrival ?? 0.1f))

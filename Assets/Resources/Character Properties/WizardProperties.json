@@ -1,0 +1,18 @@
+﻿{
+  "Id": "Wizard",
+  "HealthProperties": {
+    "MaxHealth": 50
+  },
+  "InteractableProperties": {
+    "Title": "Wizard",
+    "Description": "Test wizard description"
+  },
+  "DestroyedProperties": {
+    "MinDrops": 1,
+    "MaxDrops": 3,
+    "OnZeroHealthActions":
+    [
+      "Destroy"
+    ]
+  }
+}

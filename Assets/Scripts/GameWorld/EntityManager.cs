@@ -6,11 +6,11 @@ namespace GameWorld
 {
 	public class EntityManager : MonoBehaviour
 	{
-		private readonly Dictionary<Guid, Entity> _entities = new();
+		private readonly Dictionary<Guid, Character> _entities = new();
 
-		public IReadOnlyDictionary<Guid, Entity> Entities => _entities;
+		public IReadOnlyDictionary<Guid, Character> Entities => _entities;
 
-		public void Add(Entity entity) => _entities.Add(entity.Id, entity);
-		public void Remove(Entity entity) => _entities.Remove(entity.Id);
+		public void Add(Character character) => _entities.Add(character.Id, character);
+		public void Remove(Character character) => _entities.Remove(character.Id);
 	}
 }

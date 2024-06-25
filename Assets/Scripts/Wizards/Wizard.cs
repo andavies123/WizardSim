@@ -4,12 +4,9 @@ using Game.MessengerSystem;
 using GameWorld;
 using GameWorld.Tiles;
 using GeneralBehaviours;
-using GeneralClasses.Health;
 using GeneralClasses.Health.HealthEventArgs;
-using GeneralClasses.Health.Interfaces;
 using Stats;
 using TaskSystem.Interfaces;
-using UI;
 using UI.ContextMenus;
 using UI.Messages;
 using UnityEngine;
@@ -19,31 +16,24 @@ using Wizards.Tasks;
 
 namespace Wizards
 {
-	[RequireComponent(typeof(Interactable))]
-	[RequireComponent(typeof(ContextMenuUser))]
-	public class Wizard : Entity, ITaskUser<IWizardTask>, IHealthUser
+	public class Wizard : Character, ITaskUser<IWizardTask>
 	{
 		[SerializeField] private WizardStats stats;
 
-		private Interactable _interactable;
-		private ContextMenuUser _contextMenuUser;
-		
 		public string Name { get; set; }
 		public WizardType WizardType { get; set; } = WizardType.Earth;
 		
 		// Components
-		public Transform Transform { get; private set; }
 		public WizardStateMachine StateMachine { get; private set; }
 		public Movement Movement { get; private set; }
-		
-		// Systems
-		public IHealth Health { get; private set; }
 
-		public override string DisplayName => Name;
-		public override MovementStats MovementStats => Stats.MovementStats;
 		public WizardStats Stats => stats;
 
 		public bool IsIdling => StateMachine.CurrentState is WizardIdleState;
+		
+		// Overrides
+		public override MovementStats MovementStats => Stats.MovementStats;
+		protected override string CharacterType => "Wizard";
 
 		#region ITaskUser Implementation
 
@@ -107,17 +97,14 @@ namespace Wizards
 			gameObject.name = $"Wizard - {Name} - {wizardType.ToString()}";
 		}
 		
-		private void Awake()
+		protected override void Awake()
 		{
-			Transform = transform;
+			base.Awake();
+			
 			StateMachine = GetComponent<WizardStateMachine>();
 			Movement = GetComponent<Movement>();
-			_interactable = GetComponent<Interactable>();
-			_contextMenuUser = GetComponent<ContextMenuUser>();
-			
-			Health = new Health(50);
 
-			Health.CurrentHealthChanged += OnCurrentHealthChanged;
+			Health.Health.CurrentHealthChanged += OnCurrentHealthChanged;
 		}
 
 		private void Start()
@@ -128,23 +115,21 @@ namespace Wizards
 
 		private void OnDestroy()
 		{
-			Health.CurrentHealthChanged -= OnCurrentHealthChanged;
+			Health.Health.CurrentHealthChanged -= OnCurrentHealthChanged;
 		}
 
 		private void UpdateInteractableInfoText()
 		{
-			_interactable.TitleText = Name;
-			_interactable.InfoText = $"Wizard - {Health.CurrentHealth:0}/{Health.MaxHealth:0} ({Health.CurrentHealth.PercentageOf(Health.MaxHealth):0}%)";
+			Interactable.TitleText = Name;
+			Interactable.InfoText = $"Wizard - {Health.Health.CurrentHealth:0}/{Health.Health.MaxHealth:0} ({Health.Health.CurrentHealth.PercentageOf(Health.Health.MaxHealth):0}%)";
 		}
 
-		private void InitializeContextMenu()
+		protected override void InitializeContextMenu()
 		{
-			_contextMenuUser.AddMenuItem(new ContextMenuItem("Idle", () => StateMachine.Idle(), isEnabledFunc: () => !IsIdling));
-			_contextMenuUser.AddMenuItem(new ContextMenuItem("Move To", () => GlobalMessenger.Publish(new StartInteractionRequest(OnInteractionCallback))));
-			_contextMenuUser.AddMenuItem(new ContextMenuItem("Heal 10%", () => IncreaseHealth(0.1f), isEnabledFunc: IsNotAtMaxHealth));
-			_contextMenuUser.AddMenuItem(new ContextMenuItem("Hurt 10%", () => DecreaseHealth(0.1f), isEnabledFunc: IsNotAtMinHealth));
-			_contextMenuUser.AddMenuItem(new ContextMenuItem("Heal 100%", () => IncreaseHealth(1), isEnabledFunc: IsNotAtMaxHealth));
-			_contextMenuUser.AddMenuItem(new ContextMenuItem("Hurt 100%", () => DecreaseHealth(1), isEnabledFunc: IsNotAtMinHealth));
+			ContextMenuUser.AddMenuItem(new ContextMenuItem("Idle", () => StateMachine.Idle(), isEnabledFunc: () => !IsIdling));
+			ContextMenuUser.AddMenuItem(new ContextMenuItem("Move To", () => GlobalMessenger.Publish(new StartInteractionRequest(OnInteractionCallback))));
+
+			base.InitializeContextMenu();
 		}
 		
 		private void OnInteractionCallback(MonoBehaviour component)
@@ -157,13 +142,7 @@ namespace Wizards
 			StateMachine.MoveTo(moveToPosition);
 			GlobalMessenger.Publish(new EndInteractionRequest());
 		}
-
-		private void IncreaseHealth(float percent01) => Health.CurrentHealth += Health.MaxHealth * percent01;
-		private void DecreaseHealth(float percent01) => Health.CurrentHealth -= Health.MaxHealth * percent01;
-
-		private bool IsNotAtMaxHealth() => !Health.IsAtMaxHealth;
-		private bool IsNotAtMinHealth() => !Health.IsAtMinHealth;
-
+		
 		private void OnCurrentHealthChanged(object sender, CurrentHealthChangedEventArgs args) => UpdateInteractableInfoText();
 	}
 }

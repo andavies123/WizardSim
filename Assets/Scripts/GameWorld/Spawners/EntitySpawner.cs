@@ -19,8 +19,8 @@ namespace GameWorld.Spawners
 		{
 			GameObject entityGameObject = Instantiate(entityPrefab, entityManager.transform);
 			entityGameObject.transform.position = spawnPosition;
-			Entity entity = entityGameObject.GetComponent<Entity>();
-			entityManager.Add(entity);
+			Character character = entityGameObject.GetComponent<Character>();
+			entityManager.Add(character);
 		}
 		
 		private void Start()

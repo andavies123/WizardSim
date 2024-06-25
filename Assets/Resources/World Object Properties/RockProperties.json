@@ -1,11 +1,10 @@
 ﻿{
-  "ItemName": "Rock",
-  "PrefabName": "Rock",
+  "Id": "Rock",
   "HealthProperties": {
     "MaxHealth": 20,
     "CanRechargeHealth": true,
-    "HealthGainedPerSecond": 1,
-    "RechargeIntervalMSec": 1000,
+    "HealthGainedPerInterval": 0.1,
+    "RechargeIntervalMSec": 100,
     "TimeUntilRechargeStartsMSec": 5000
   },
   "InteractableProperties": {

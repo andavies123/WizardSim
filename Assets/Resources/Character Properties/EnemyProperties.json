@@ -1,0 +1,18 @@
+﻿{
+  "Id": "Enemy",
+  "HealthProperties": {
+    "MaxHealth": 50
+  },
+  "InteractableProperties": {
+    "Title": "Enemy",
+    "Description": "Test enemy description"
+  },
+  "DestroyedProperties": {
+    "MinDrops": 1,
+    "MaxDrops": 3,
+    "OnZeroHealthActions":
+    [
+      "Destroy"
+    ]
+  }
+}
