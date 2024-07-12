@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Game.MessengerSystem;
 using UI.Messages;
 using UnityEngine;
@@ -10,31 +9,32 @@ namespace UI.ContextMenus
 	[RequireComponent(typeof(Interactable))]
 	public class ContextMenuUser : MonoBehaviour
 	{
-		private readonly List<ContextMenuItem> _menuItems = new();
-		private bool _isContextMenuOpen = false;
+		private bool _isOpen = false;
 		
 		public event EventHandler IsContextMenuOpenValueChanged;
-		
-		public Interactable Interactable { get; private set; }
-		public IReadOnlyList<ContextMenuItem> AllMenuItems => _menuItems;
 
-		public bool IsContextMenuOpen
+		public ContextMenuItemTree MenuItemTree { get; } = new();
+		public Interactable Interactable { get; private set; }
+
+		public bool IsOpen
 		{
-			get => _isContextMenuOpen;
+			get => _isOpen;
 			set
 			{
-				if (_isContextMenuOpen == value)
+				if (_isOpen == value)
 					return;
 
-				_isContextMenuOpen = value;
+				_isOpen = value;
 				IsContextMenuOpenValueChanged?.Invoke(this, EventArgs.Empty);
 			}
 		}
+        
+		public void AddMenuItem(string path, Action menuClickCallback, Func<bool> isEnabledFunc, Func<bool> isVisibleFunc)
+		{   
+			MenuItemTree.AddChildMenuItem(path, menuClickCallback, isEnabledFunc, isVisibleFunc);
+		}
 
-		public void AddMenuItem(ContextMenuItem menuItem) => _menuItems.Add(menuItem);
-		public void UpdateMenuItems() => _menuItems.ForEach(item => item.RecalculateVisibility());
-		
-		protected virtual void Awake()
+		private void Awake()
 		{
 			Interactable = GetComponent<Interactable>();
 		}
@@ -48,8 +48,10 @@ namespace UI.ContextMenus
 		{
 			Interactable.SecondaryActionSelected -= OnInteractableContextMenuOpened;
 		}
-
-		private void OnInteractableContextMenuOpened(object sender, EventArgs args) =>
-			GlobalMessenger.Publish(new OpenContextMenuRequest(this));
+		
+		private void OnInteractableContextMenuOpened(object sender, EventArgs args)
+		{
+			GlobalMessenger.Publish(new OpenContextMenuRequest(this, Input.mousePosition));
+		}
 	}
 }

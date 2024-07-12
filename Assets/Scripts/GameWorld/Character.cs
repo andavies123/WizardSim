@@ -39,7 +39,10 @@ namespace GameWorld
 
 		protected virtual void InitializeContextMenu()
 		{
-			ContextMenuUser.AddHealthComponentContextMenuItems(Health);
+			if (Health)
+			{
+				ContextMenuUser.AddHealthComponentContextMenuItems(Health);
+			}
 		}
 		
 		private void LoadProperties()

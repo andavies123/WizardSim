@@ -25,7 +25,7 @@ namespace UIStates
 		public void OpenInfoWindow(Interactable interactable) => infoWindow.OpenWindow(interactable);
 		public void CloseInfoWindow() => infoWindow.CloseWindow();
 		
-		public void OpenContextMenu(ContextMenuUser contextMenuUser) => contextMenu.OpenMenu(contextMenuUser);
+		public void OpenContextMenu(ContextMenuUser contextMenuUser, Vector3 screenPosition) => contextMenu.OpenMenu(contextMenuUser, screenPosition);
 		public void CloseContextMenu() => contextMenu.CloseMenu();
 
 		public void OpenTaskManagementWindow() => taskManagementWindow.Open();

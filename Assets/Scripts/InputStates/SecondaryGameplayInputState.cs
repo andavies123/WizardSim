@@ -77,8 +77,7 @@ namespace InputStates
 
 		private void OnOpenContextMenuRequestReceived(OpenContextMenuRequest message)
 		{
-			// TODO: UPDATE THE CONTEXT MENU USERS TO BE UPDATED FROM HERE, THE CLICKS STILL SHOW UP EVEN WHEN CONTEXT MENU DOESN'T OPEN
-			OpenContextMenuRequested?.Invoke(this, new OpenContextMenuEventArgs(message.ContextMenuUser));
+			OpenContextMenuRequested?.Invoke(this, new OpenContextMenuEventArgs(message.ContextMenuUser, message.ScreenPosition));
 			OpenInfoWindowRequested?.Invoke(this, new OpenInfoWindowEventArgs(message.ContextMenuUser.Interactable));
 		}
 

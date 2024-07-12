@@ -1,4 +1,6 @@
-﻿using GeneralBehaviours.HealthBehaviours;
+﻿using System.Text;
+using Extensions;
+using GeneralBehaviours.HealthBehaviours;
 using UI.ContextMenus;
 using UnityEngine;
 
@@ -10,6 +12,10 @@ namespace GeneralBehaviours.Utilities.ContextMenuBuilders
 	/// </summary>
 	public static class ContextMenuBuilder
 	{
+		private const string HealthPathItem = "Health";
+		private const string HealPathItem = "Heal";
+		private const string HurtPathItem = "Hurt";
+        
 		/// <summary>
 		/// Adds health related context menu items to the passed context menu user.
 		/// Using extension method to make it cleaner to type/read
@@ -23,26 +29,55 @@ namespace GeneralBehaviours.Utilities.ContextMenuBuilders
 				Debug.LogWarning($"Unable to add health context menu items. {nameof(contextMenuUser)} or {nameof(healthComponent)} is null");
 				return;
 			}
-            
-			contextMenuUser.AddMenuItem(new ContextMenuItem(
-				"Heal 25%", 
-				() => healthComponent.IncreaseHealthByPercent(0.25f), 
-				healthComponent.IsNotAtMaxHealth));
 			
-			contextMenuUser.AddMenuItem(new ContextMenuItem(
-				"Hurt 25%", 
-				() => healthComponent.DecreaseHealthByPercent(0.25f), 
-				healthComponent.IsNotAtMinHealth));
+			contextMenuUser.AddMenuItem(
+				BuildPath(HealthPathItem, HealPathItem, "25%"),
+				() => healthComponent.IncreaseHealthByPercent(0.25f),
+				healthComponent.IsNotAtMaxHealth,
+				() => true);
 			
-			contextMenuUser.AddMenuItem(new ContextMenuItem(
-				"Heal 100%", 
-				() => healthComponent.IncreaseHealthByPercent(1), 
-				healthComponent.IsNotAtMaxHealth));
+			contextMenuUser.AddMenuItem(
+				BuildPath(HealthPathItem, HurtPathItem, "25%"),
+				() => healthComponent.DecreaseHealthByPercent(0.25f),
+				healthComponent.IsNotAtMinHealth,
+				() => true);
 			
-			contextMenuUser.AddMenuItem(new ContextMenuItem(
-				"Hurt 100%", 
-				() => healthComponent.DecreaseHealthByPercent(1), 
-				healthComponent.IsNotAtMinHealth));
+			contextMenuUser.AddMenuItem(
+				BuildPath(HealthPathItem, HealPathItem, "100%"),
+				() => healthComponent.IncreaseHealthByPercent(1f),
+				healthComponent.IsNotAtMaxHealth,
+				() => true);
+			
+			contextMenuUser.AddMenuItem(
+				BuildPath(HealthPathItem, HurtPathItem, "100%"),
+				() => healthComponent.DecreaseHealthByPercent(1f),
+				healthComponent.IsNotAtMinHealth,
+				() => true);
+		}
+
+		/// <summary>
+		/// Builds a valid path string for a context menu item
+		/// </summary>
+		/// <param name="pathItems">The collection of path items that will be used to build the path. Order does matter</param>
+		/// <returns>A valid path string containing a separator character between each path item</returns>
+		public static string BuildPath(params string[] pathItems)
+		{
+			StringBuilder pathStringBuilder = new();
+
+			for (int pathIndex = 0; pathIndex < pathItems.Length; pathIndex++)
+			{
+				string pathItem = pathItems[pathIndex];
+				
+				if (pathItem.IsNullOrWhiteSpace())
+					continue;
+
+				pathStringBuilder.Append(pathItem);
+
+				if (pathIndex < pathItems.Length - 1)
+					pathStringBuilder.Append('|');
+			}
+			
+			return pathStringBuilder.ToString();
 		}
 	}
 }

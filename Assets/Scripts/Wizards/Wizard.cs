@@ -4,6 +4,7 @@ using Game.MessengerSystem;
 using GameWorld;
 using GameWorld.Tiles;
 using GeneralBehaviours;
+using GeneralBehaviours.Utilities.ContextMenuBuilders;
 using GeneralClasses.Health.HealthEventArgs;
 using Stats;
 using TaskSystem.Interfaces;
@@ -126,8 +127,17 @@ namespace Wizards
 
 		protected override void InitializeContextMenu()
 		{
-			ContextMenuUser.AddMenuItem(new ContextMenuItem("Idle", () => StateMachine.Idle(), isEnabledFunc: () => !IsIdling));
-			ContextMenuUser.AddMenuItem(new ContextMenuItem("Move To", () => GlobalMessenger.Publish(new StartInteractionRequest(OnInteractionCallback))));
+			ContextMenuUser.AddMenuItem(
+				ContextMenuBuilder.BuildPath("Action", "Idle"), 
+				() => StateMachine.Idle(), 
+				() => !IsIdling,
+				() => true);
+			
+			ContextMenuUser.AddMenuItem(
+				ContextMenuBuilder.BuildPath("Action", "Move To"),
+				() => GlobalMessenger.Publish(new StartInteractionRequest(OnInteractionCallback)),
+				() => true,
+				() => true);
 
 			base.InitializeContextMenu();
 		}

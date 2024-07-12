@@ -21,7 +21,7 @@ namespace Extensions
 
 			return obj;
 		}
-
+		
 		/// <summary>
 		/// Checks the extended object if it is null, then logs a warning message if it is
 		/// </summary>

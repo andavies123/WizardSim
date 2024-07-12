@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using GameWorld.WorldObjects;
-using Newtonsoft.Json;
+using Unity.Plastic.Newtonsoft.Json;
 using UnityEngine;
 
 namespace GameWorld

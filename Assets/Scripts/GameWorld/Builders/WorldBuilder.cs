@@ -123,7 +123,7 @@ namespace GameWorld.Builders
 			}
 		}
 
-		private void OnWizardSpawnRequested(WizardSpawnRequestMessage message) => wizardSpawner.SpawnEntity(message.SpawnPosition);
+		private void OnWizardSpawnRequested(WizardSpawnRequestMessage message) => wizardSpawner.SpawnWizard(message.SpawnPosition, message.WizardType);
 		private void OnEnemySpawnRequested(EnemySpawnRequestMessage message) => enemySpawner.SpawnEntity(message.SpawnPosition);
 		
 		private void OnWorldObjectPreviewRequested(WorldObjectPreviewRequest message)

@@ -157,7 +157,7 @@ namespace Game
 
 		private void OnGameplayInputStatePauseActionPerformed(object sender, EventArgs args) => RaisePauseGameRequested(sender);
 		private void OnGameplayOpenInfoWindowRequested(object sender, OpenInfoWindowEventArgs args) => _gameplayUIState.OpenInfoWindow(args.Interactable);
-		private void OnGameplayOpenContextMenuRequested(object sender, OpenContextMenuEventArgs args) => _gameplayUIState.OpenContextMenu(args.ContextMenuUser);
+		private void OnGameplayOpenContextMenuRequested(object sender, OpenContextMenuEventArgs args) => _gameplayUIState.OpenContextMenu(args.ContextMenuUser, args.ScreenPosition);
 		private void OnGameplayCloseInfoWindowRequested(object sender, EventArgs args) => _gameplayUIState.CloseInfoWindow();
 		private void OnGameplayCloseContextMenuRequested(object sender, EventArgs args) => _gameplayUIState.CloseContextMenu();
 		private void OnGameplayOpenTaskManagementRequested(object sender, EventArgs args) => EnableTaskManagementWindow();

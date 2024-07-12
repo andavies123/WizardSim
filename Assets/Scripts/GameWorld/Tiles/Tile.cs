@@ -1,8 +1,10 @@
 ﻿using Game.MessengerSystem;
 using GameWorld.Messages;
+using GeneralBehaviours.Utilities.ContextMenuBuilders;
 using UI;
 using UI.ContextMenus;
 using UnityEngine;
+using Wizards;
 
 namespace GameWorld.Tiles
 {
@@ -44,16 +46,43 @@ namespace GameWorld.Tiles
 		
 		private void InitializeContextMenu()
 		{
-			_contextMenuUser.AddMenuItem(new ContextMenuItem("Spawn Wizard", SpawnWizard));
-			_contextMenuUser.AddMenuItem(new ContextMenuItem("Spawn Enemy", SpawnEnemy));
+			_contextMenuUser.AddMenuItem(
+				ContextMenuBuilder.BuildPath("General", "Spawn", "Wizard", "Earth"),
+				() => SpawnWizard(WizardType.Earth),
+				() => true,
+				() => true);
+			
+			_contextMenuUser.AddMenuItem(
+				ContextMenuBuilder.BuildPath("General", "Spawn", "Wizard", "Fire"),
+				() => SpawnWizard(WizardType.Fire),
+				() => true,
+				() => true);
+			
+			_contextMenuUser.AddMenuItem(
+				ContextMenuBuilder.BuildPath("General", "Spawn", "Wizard", "Lightning"),
+				() => SpawnWizard(WizardType.Lightning),
+				() => true,
+				() => true);
+			
+			_contextMenuUser.AddMenuItem(
+				ContextMenuBuilder.BuildPath("General", "Spawn", "Wizard", "Water"),
+				() => SpawnWizard(WizardType.Water),
+				() => true,
+				() => true);
+			
+			_contextMenuUser.AddMenuItem(
+				ContextMenuBuilder.BuildPath("General", "Spawn", "Enemy"),
+				SpawnEnemy,
+				() => true,
+				() => true);
 		}
 		
-		private void SpawnWizard()
+		private void SpawnWizard(WizardType wizardType)
 		{
 			Vector2 tileWorldPosition = ParentWorld.WorldPositionFromTile(this, centerOfTile: true);
 			Vector3 spawnPosition = new(tileWorldPosition.x, 1, tileWorldPosition.y);
 			
-			GlobalMessenger.Publish(new WizardSpawnRequestMessage(spawnPosition));
+			GlobalMessenger.Publish(new WizardSpawnRequestMessage(spawnPosition, wizardType));
 		}
 
 		private void SpawnEnemy()

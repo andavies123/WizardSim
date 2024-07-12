@@ -2,6 +2,7 @@
 using Game.MessengerSystem;
 using GameWorld;
 using GeneralBehaviours;
+using GeneralBehaviours.Utilities.ContextMenuBuilders;
 using GeneralClasses.Health.HealthEventArgs;
 using Stats;
 using UI.ContextMenus;
@@ -47,8 +48,17 @@ namespace Enemies
 		
 		protected override void InitializeContextMenu()
 		{
-			ContextMenuUser.AddMenuItem(new ContextMenuItem("Idle", null, isEnabledFunc: ContextMenuItem.AlwaysFalse));
-			ContextMenuUser.AddMenuItem(new ContextMenuItem("Move To", () => GlobalMessenger.Publish(new StartInteractionRequest(OnInteractionCallback))));
+			ContextMenuUser.AddMenuItem(
+				ContextMenuBuilder.BuildPath("Action", "Idle"),
+				null,
+				() => false,
+				() => true);
+			
+			ContextMenuUser.AddMenuItem(
+				ContextMenuBuilder.BuildPath("Action", "Move To"),
+				() => GlobalMessenger.Publish(new StartInteractionRequest(OnInteractionCallback)),
+				() => true,
+				() => true);
 
 			base.InitializeContextMenu();
 		}

@@ -1,36 +1,34 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace UI.ContextMenus
 {
 	public class ContextMenuItem
 	{
-		private readonly Func<bool> _isEnabledFunc;
-		private readonly Func<bool> _isVisibleFunc;
-		
-		public ContextMenuItem(
-			string name, 
-			Action menuClickCallback, 
-            Func<bool> isEnabledFunc = null, 
-            Func<bool> isVisibleFunc = null)
+		public ContextMenuItem(string name)
 		{
 			Name = name;
-			MenuClickCallback = menuClickCallback;
-			_isEnabledFunc = isEnabledFunc ?? AlwaysTrue;
-			_isVisibleFunc = isVisibleFunc ?? AlwaysTrue;
 		}
 		
+		public List<ContextMenuItem> ChildMenuItems { get; } = new();
+		public bool IsBack { get; set; } = false;
 		public string Name { get; }
-		public Action MenuClickCallback { get; }
+		public bool IsLeaf => ChildMenuItems.Count == 0;
+		
+		public Action MenuClickCallback { get; set; }
+		public Func<bool> IsEnabledFunc { get; set; }
+		public Func<bool> IsVisibleFunc { get; set; }
+        
 		public bool IsEnabled { get; private set; }
 		public bool IsVisible { get; private set; }
 
 		public void RecalculateVisibility()
 		{
-			IsEnabled = _isEnabledFunc?.Invoke() ?? false;
-			IsVisible = _isVisibleFunc?.Invoke() ?? false;
+			IsEnabled = IsEnabledFunc?.Invoke() ?? true;
+			IsVisible = IsVisibleFunc?.Invoke() ?? true;
 		}
 
-		public static bool AlwaysTrue() => true;
-		public static bool AlwaysFalse() => false;
+		public static readonly Func<bool> AlwaysTrue = () => true;
+		public static readonly Func<bool> AlwaysFalse = () => false;
 	}
 }

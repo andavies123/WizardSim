@@ -25,12 +25,11 @@ namespace Wizards
 		[SerializeField] private Color waterWizardColor;
 		[SerializeField] private Color lightningWizardColor;
 
-		public void SpawnEntity(Vector3 spawnPosition)
+		public void SpawnWizard(Vector3 spawnPosition, WizardType wizardType)
 		{
 			Wizard wizard = Instantiate(entityPrefab, entityManager.transform);
 			wizard.Transform.position = spawnPosition;
 
-			WizardType wizardType = GetRandomWizardType();
 			wizard.InitializeWizard(NameGenerator.GetNewName(), wizardType);
 			wizard.GetComponent<InteractionShaderManager>().OverrideBaseColor(GetColorFromWizardType(wizardType));
 			
@@ -46,10 +45,9 @@ namespace Wizards
 		{
 			Vector2 randomSpawn = Random.insideUnitCircle * spawnRadius;
 			
-			SpawnEntity(new Vector3(
-				(int)randomSpawn.x + spawnCenter.x + 0.5f,
-				1,
-				(int)randomSpawn.y + spawnCenter.z + 0.5f));
+			SpawnWizard(
+				new Vector3((int)randomSpawn.x + spawnCenter.x + 0.5f, 1,(int)randomSpawn.y + spawnCenter.z + 0.5f),
+				GetRandomWizardType());
 		}
 
 		private static WizardType GetRandomWizardType()

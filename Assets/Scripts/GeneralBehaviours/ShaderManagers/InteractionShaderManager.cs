@@ -45,7 +45,7 @@ namespace GeneralBehaviours.ShaderManagers
 			meshRenderer.material.SetTexture(BaseTexture, baseTexture);
 			meshRenderer.material.SetColor(BaseColor, baseColor);
 			SetIsHoveredShaderValue(interactable && interactable.IsHovered);
-			SetIsContextMenuOpenShaderValue(contextMenuUser && contextMenuUser.IsContextMenuOpen);
+			SetIsContextMenuOpenShaderValue(contextMenuUser && contextMenuUser.IsOpen);
 
 			if (interactable)
 				interactable.PropertyChanged += OnInteractablePropertyChanged;
@@ -64,7 +64,7 @@ namespace GeneralBehaviours.ShaderManagers
 		}
 
 		private void OnIsContextMenuOpenValueChanged(object sender, EventArgs args) => 
-			SetIsContextMenuOpenShaderValue(contextMenuUser.IsContextMenuOpen);
+			SetIsContextMenuOpenShaderValue(contextMenuUser.IsOpen);
 		
 		private void OnInteractablePropertyChanged(object sender, PropertyChangedEventArgs args)
 		{

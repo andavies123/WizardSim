@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Game.MessengerSystem;
+using GeneralBehaviours.Utilities.ContextMenuBuilders;
 using UI.ContextMenus;
 using UnityEngine;
 using Wizards.Messages;
@@ -31,11 +32,17 @@ namespace GameWorld.WorldObjects.Rocks
 
 		private void InitializeContextMenu()
 		{
-			_contextMenuUser.AddMenuItem(new ContextMenuItem("Destroy", 
-				() => GlobalMessenger.Publish(new AddWizardTaskRequest(new DestroyRocksTask(new List<Rock> {this})))));
+			_contextMenuUser.AddMenuItem(
+				ContextMenuBuilder.BuildPath("General", "Destroy", "Single"),
+				() => GlobalMessenger.Publish(new AddWizardTaskRequest(new DestroyRocksTask(new List<Rock> {this}))),
+				() => true,
+				() => true);
 			
-			_contextMenuUser.AddMenuItem(new ContextMenuItem("Destroy Surrounding",
-				() => GlobalMessenger.Publish(new AddWizardTaskRequest(new DestroyRocksTask(GetSurroundingRocks())))));
+			_contextMenuUser.AddMenuItem(
+				ContextMenuBuilder.BuildPath("General", "Destroy", "Surrounding"),
+				() => GlobalMessenger.Publish(new AddWizardTaskRequest(new DestroyRocksTask(GetSurroundingRocks()))),
+				() => true,
+				() => true);
 		}
 
 		private List<Rock> GetSurroundingRocks()
