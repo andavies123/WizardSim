@@ -47,31 +47,31 @@ namespace GameWorld.Tiles
 		private void InitializeContextMenu()
 		{
 			_contextMenuUser.AddMenuItem(
-				ContextMenuBuilder.BuildPath("General", "Spawn", "Wizard", "Earth"),
+				ContextMenuBuilder.BuildPath("Spawn Wizard", "Earth"),
 				() => SpawnWizard(WizardType.Earth),
 				() => true,
 				() => true);
 			
 			_contextMenuUser.AddMenuItem(
-				ContextMenuBuilder.BuildPath("General", "Spawn", "Wizard", "Fire"),
+				ContextMenuBuilder.BuildPath("Spawn Wizard", "Fire"),
 				() => SpawnWizard(WizardType.Fire),
 				() => true,
 				() => true);
 			
 			_contextMenuUser.AddMenuItem(
-				ContextMenuBuilder.BuildPath("General", "Spawn", "Wizard", "Lightning"),
+				ContextMenuBuilder.BuildPath("Spawn Wizard", "Lightning"),
 				() => SpawnWizard(WizardType.Lightning),
 				() => true,
 				() => true);
 			
 			_contextMenuUser.AddMenuItem(
-				ContextMenuBuilder.BuildPath("General", "Spawn", "Wizard", "Water"),
+				ContextMenuBuilder.BuildPath("Spawn Wizard", "Water"),
 				() => SpawnWizard(WizardType.Water),
 				() => true,
 				() => true);
 			
 			_contextMenuUser.AddMenuItem(
-				ContextMenuBuilder.BuildPath("General", "Spawn", "Enemy"),
+				ContextMenuBuilder.BuildPath("Spawn Enemy"),
 				SpawnEnemy,
 				() => true,
 				() => true);

@@ -1006,6 +1006,129 @@ namespace UnityEngine.InputSystem
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Context Menu"",
+            ""id"": ""5579946f-d318-43f1-85a4-aacfee7f2f95"",
+            ""actions"": [
+                {
+                    ""name"": ""Select"",
+                    ""type"": ""Button"",
+                    ""id"": ""e1e5f25f-7341-4863-92de-f1a9fcb74108"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Close"",
+                    ""type"": ""Button"",
+                    ""id"": ""75872c1d-cc1b-46fa-b7c6-3022d1f10049"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Navigation"",
+                    ""type"": ""Button"",
+                    ""id"": ""72341135-ce9d-4577-aa99-b60d821df222"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""a45bea95-6a59-4be7-9fa7-cf7f4950eb18"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""963211d6-6f16-4d43-b253-5f184c5d2a1f"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Close"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Up/Down Arrows"",
+                    ""id"": ""ed9f5522-83eb-43be-b996-87f056620b33"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Navigation"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""18e5bae1-6473-448c-857a-fb62279e545c"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Navigation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""26fdb593-3e93-4899-bb37-dc69cd273fa9"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Navigation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""W/S Keys"",
+                    ""id"": ""11c832a3-f137-4ef3-8cda-853b355ba620"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Navigation"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""79b53cbd-1e77-422c-9295-8a065799b47d"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Navigation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""4654739b-6875-4983-842a-1a675d67a71d"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Navigation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -1106,6 +1229,11 @@ namespace UnityEngine.InputSystem
             // Task Management
             m_TaskManagement = asset.FindActionMap("Task Management", throwIfNotFound: true);
             m_TaskManagement_CloseWindow = m_TaskManagement.FindAction("Close Window", throwIfNotFound: true);
+            // Context Menu
+            m_ContextMenu = asset.FindActionMap("Context Menu", throwIfNotFound: true);
+            m_ContextMenu_Select = m_ContextMenu.FindAction("Select", throwIfNotFound: true);
+            m_ContextMenu_Close = m_ContextMenu.FindAction("Close", throwIfNotFound: true);
+            m_ContextMenu_Navigation = m_ContextMenu.FindAction("Navigation", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -1597,6 +1725,68 @@ namespace UnityEngine.InputSystem
             }
         }
         public TaskManagementActions @TaskManagement => new TaskManagementActions(this);
+
+        // Context Menu
+        private readonly InputActionMap m_ContextMenu;
+        private List<IContextMenuActions> m_ContextMenuActionsCallbackInterfaces = new List<IContextMenuActions>();
+        private readonly InputAction m_ContextMenu_Select;
+        private readonly InputAction m_ContextMenu_Close;
+        private readonly InputAction m_ContextMenu_Navigation;
+        public struct ContextMenuActions
+        {
+            private @PlayerInputActions m_Wrapper;
+            public ContextMenuActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Select => m_Wrapper.m_ContextMenu_Select;
+            public InputAction @Close => m_Wrapper.m_ContextMenu_Close;
+            public InputAction @Navigation => m_Wrapper.m_ContextMenu_Navigation;
+            public InputActionMap Get() { return m_Wrapper.m_ContextMenu; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(ContextMenuActions set) { return set.Get(); }
+            public void AddCallbacks(IContextMenuActions instance)
+            {
+                if (instance == null || m_Wrapper.m_ContextMenuActionsCallbackInterfaces.Contains(instance)) return;
+                m_Wrapper.m_ContextMenuActionsCallbackInterfaces.Add(instance);
+                @Select.started += instance.OnSelect;
+                @Select.performed += instance.OnSelect;
+                @Select.canceled += instance.OnSelect;
+                @Close.started += instance.OnClose;
+                @Close.performed += instance.OnClose;
+                @Close.canceled += instance.OnClose;
+                @Navigation.started += instance.OnNavigation;
+                @Navigation.performed += instance.OnNavigation;
+                @Navigation.canceled += instance.OnNavigation;
+            }
+
+            private void UnregisterCallbacks(IContextMenuActions instance)
+            {
+                @Select.started -= instance.OnSelect;
+                @Select.performed -= instance.OnSelect;
+                @Select.canceled -= instance.OnSelect;
+                @Close.started -= instance.OnClose;
+                @Close.performed -= instance.OnClose;
+                @Close.canceled -= instance.OnClose;
+                @Navigation.started -= instance.OnNavigation;
+                @Navigation.performed -= instance.OnNavigation;
+                @Navigation.canceled -= instance.OnNavigation;
+            }
+
+            public void RemoveCallbacks(IContextMenuActions instance)
+            {
+                if (m_Wrapper.m_ContextMenuActionsCallbackInterfaces.Remove(instance))
+                    UnregisterCallbacks(instance);
+            }
+
+            public void SetCallbacks(IContextMenuActions instance)
+            {
+                foreach (var item in m_Wrapper.m_ContextMenuActionsCallbackInterfaces)
+                    UnregisterCallbacks(item);
+                m_Wrapper.m_ContextMenuActionsCallbackInterfaces.Clear();
+                AddCallbacks(instance);
+            }
+        }
+        public ContextMenuActions @ContextMenu => new ContextMenuActions(this);
         private int m_KeyboardMouseSchemeIndex = -1;
         public InputControlScheme KeyboardMouseScheme
         {
@@ -1683,6 +1873,12 @@ namespace UnityEngine.InputSystem
         public interface ITaskManagementActions
         {
             void OnCloseWindow(InputAction.CallbackContext context);
+        }
+        public interface IContextMenuActions
+        {
+            void OnSelect(InputAction.CallbackContext context);
+            void OnClose(InputAction.CallbackContext context);
+            void OnNavigation(InputAction.CallbackContext context);
         }
     }
 }

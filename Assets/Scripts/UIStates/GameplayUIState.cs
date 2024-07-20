@@ -22,6 +22,8 @@ namespace UIStates
 		
 		public event EventHandler PauseButtonPressed;
 
+		public ContextMenu ContextMenu => contextMenu;
+        
 		public void OpenInfoWindow(Interactable interactable) => infoWindow.OpenWindow(interactable);
 		public void CloseInfoWindow() => infoWindow.CloseWindow();
 		

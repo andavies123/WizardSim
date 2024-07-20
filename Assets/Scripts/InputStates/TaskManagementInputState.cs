@@ -1,12 +1,14 @@
 ﻿using System;
 using UnityEngine.InputSystem;
+using static UnityEngine.InputSystem.InputAction;
+using static UnityEngine.InputSystem.PlayerInputActions;
 
 namespace InputStates
 {
 	public class TaskManagementInputState : IInputState
 	{
 		private readonly PlayerInputActions _playerInputActions = new();
-		private PlayerInputActions.TaskManagementActions _taskManagement;
+		private TaskManagementActions _taskManagement;
 
 		public TaskManagementInputState()
 		{
@@ -31,7 +33,7 @@ namespace InputStates
 			_taskManagement.CloseWindow.performed -= OnCloseWindowActionPerformed;
 		}
 
-		private void OnCloseWindowActionPerformed(InputAction.CallbackContext context)
+		private void OnCloseWindowActionPerformed(CallbackContext context)
 		{
 			CloseWindowRequested?.Invoke(this, EventArgs.Empty);
 		}

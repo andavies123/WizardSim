@@ -25,6 +25,7 @@ namespace Game
 		private readonly InteractionInputState interactionInputState;
 		private readonly PlacementModeInputState placementModeInputState;
 		private readonly TaskManagementInputState taskManagementInputState;
+		private readonly ContextMenuInputState contextMenuInputState;
 
 		private GameObject _placementPrefab;
 		
@@ -40,12 +41,14 @@ namespace Game
 			interactionInputState = new InteractionInputState(_interactableRaycaster);
 			placementModeInputState = new PlacementModeInputState(_interactableRaycaster);
 			taskManagementInputState = new TaskManagementInputState();
+			contextMenuInputState = new ContextMenuInputState();
 			
 			Dependencies.RegisterDependency(gameplayInputState);
 			Dependencies.RegisterDependency(secondaryGameplayInputState);
 			Dependencies.RegisterDependency(interactionInputState);
 			Dependencies.RegisterDependency(placementModeInputState);
 			Dependencies.RegisterDependency(taskManagementInputState);
+			Dependencies.RegisterDependency(contextMenuInputState);
 		}
 
 		public void Enable()
@@ -68,6 +71,13 @@ namespace Game
 			placementModeInputState.HidePlacementPreviewRequested += OnHidePlacementPreviewRequested;
 
 			taskManagementInputState.CloseWindowRequested += OnTaskManagementCloseWindowRequested;
+
+			contextMenuInputState.NavigationActionPerformed += OnContextMenuNavigationPerformed;
+			contextMenuInputState.SelectActionPerformed += OnContextMenuSelectPerformed;
+			contextMenuInputState.CloseActionPerformed += OnContextMenuClosePerformed;
+
+			_gameplayUIState.ContextMenu.MenuOpened += OnContextMenuOpened;
+			_gameplayUIState.ContextMenu.MenuClosed += OnContextMenuClosed;
 			
 			GlobalMessenger.Subscribe<BeginPlacementModeRequest>(OnBeginPlacementModeRequestReceived);
 			GlobalMessenger.Subscribe<EndPlacementModeRequest>(OnEndPlacementModeRequestReceived);
@@ -99,6 +109,13 @@ namespace Game
 			placementModeInputState.HidePlacementPreviewRequested -= OnHidePlacementPreviewRequested;
 			
 			taskManagementInputState.CloseWindowRequested -= OnTaskManagementCloseWindowRequested;
+			
+			contextMenuInputState.NavigationActionPerformed -= OnContextMenuNavigationPerformed;
+			contextMenuInputState.SelectActionPerformed -= OnContextMenuSelectPerformed;
+			contextMenuInputState.CloseActionPerformed -= OnContextMenuClosePerformed;
+			
+			_gameplayUIState.ContextMenu.MenuOpened -= OnContextMenuOpened;
+			_gameplayUIState.ContextMenu.MenuClosed -= OnContextMenuClosed;
 			
 			GlobalMessenger.Unsubscribe<BeginPlacementModeRequest>(OnBeginPlacementModeRequestReceived);
 			GlobalMessenger.Unsubscribe<EndPlacementModeRequest>(OnEndPlacementModeRequestReceived);
@@ -149,9 +166,28 @@ namespace Game
 			_subInputStateMachine.SetCurrentState(secondaryGameplayInputState);
 			_interactableRaycaster.enabled = true;
 		}
+
+		private void StartContextMenuMode()
+		{
+			_mainInputStateMachine.SetCurrentState(null);
+			_subInputStateMachine.SetCurrentState(contextMenuInputState);
+		}
+
+		private void EndContextMenuMode()
+		{
+			_mainInputStateMachine.SetCurrentState(gameplayInputState);
+			_subInputStateMachine.SetCurrentState(secondaryGameplayInputState);
+		}
 		
-		private void RaisePauseGameRequested(object sender) => PauseGameRequested?.Invoke(sender, EventArgs.Empty);
-		private void OnUIPauseButtonPressed(object sender, EventArgs args) => RaisePauseGameRequested(sender);
+		private void RaisePauseGameRequested(object sender)
+		{
+			PauseGameRequested?.Invoke(sender, EventArgs.Empty);
+		}
+
+		private void OnUIPauseButtonPressed(object sender, EventArgs args)
+		{
+			RaisePauseGameRequested(sender);
+		}
 
 		#region Secondary Gameplay Input Callbacks
 
@@ -159,7 +195,7 @@ namespace Game
 		private void OnGameplayOpenInfoWindowRequested(object sender, OpenInfoWindowEventArgs args) => _gameplayUIState.OpenInfoWindow(args.Interactable);
 		private void OnGameplayOpenContextMenuRequested(object sender, OpenContextMenuEventArgs args) => _gameplayUIState.OpenContextMenu(args.ContextMenuUser, args.ScreenPosition);
 		private void OnGameplayCloseInfoWindowRequested(object sender, EventArgs args) => _gameplayUIState.CloseInfoWindow();
-		private void OnGameplayCloseContextMenuRequested(object sender, EventArgs args) => _gameplayUIState.CloseContextMenu();
+		private void OnGameplayCloseContextMenuRequested(object sender, EventArgs args) => _gameplayUIState.ContextMenu.CloseMenu();
 		private void OnGameplayOpenTaskManagementRequested(object sender, EventArgs args) => EnableTaskManagementWindow();
 
 		#endregion
@@ -167,7 +203,7 @@ namespace Game
 		#region Interactable Input Callbacks
 		
 		private void OnInteractionInputStateCancelActionPerformed(object sender, EventArgs args) => EndInteraction();
-		
+
 		#endregion
 
 		#region Placement Mode Input Callbacks
@@ -189,6 +225,41 @@ namespace Game
 
 		private void OnTaskManagementCloseWindowRequested(object sender, EventArgs args) => DisableTaskManagementWindow();
 
+		#endregion
+		
+		#region Context Menu Input Callbacks
+
+		private void OnContextMenuNavigationPerformed(object sender, ContextMenuNavigationEventArgs args)
+		{
+			switch (args.NavigationOption)
+			{
+				case NavigationOption.Up:
+					_gameplayUIState.ContextMenu.NavigateUp();
+					break;
+				case NavigationOption.Down: 
+					_gameplayUIState.ContextMenu.NavigateDown();
+					break;
+				case NavigationOption.Left:
+                    _gameplayUIState.ContextMenu.NavigateBack();
+					break;
+				case NavigationOption.Right:
+					_gameplayUIState.ContextMenu.NavigateForward();
+					break;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(args.NavigationOption), args.NavigationOption, "Enum case does not exist");
+			}
+		}
+
+		private void OnContextMenuSelectPerformed(object sender, EventArgs args) => _gameplayUIState.ContextMenu.SelectCurrentItem();
+		private void OnContextMenuClosePerformed(object sender, EventArgs args) => _gameplayUIState.ContextMenu.CloseMenu();
+		
+		#endregion
+		
+		#region UI Callbacks
+
+		private void OnContextMenuOpened(object sender, EventArgs args) => StartContextMenuMode();
+		private void OnContextMenuClosed(object sender, EventArgs args) => EndContextMenuMode();
+        
 		#endregion
 
 		#region Global Messenger Callbacks

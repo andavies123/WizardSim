@@ -49,5 +49,16 @@ namespace Extensions
 			collection.RemoveAt(collection.Count - 1);
 			return true;
 		}
+
+		/// <summary>
+		/// Checks if a given index is valid for this collection
+		/// </summary>
+		/// <param name="list">The extended list</param>
+		/// <param name="index">The index to check to see if it is valid</param>
+		/// <returns>True if <see cref="index"/> is a valid index. False if not.</returns>
+		public static bool IsValidIndex(this IList list, int index)
+		{
+			return index >= 0 && index < list.Count;
+		}
 	}
 }

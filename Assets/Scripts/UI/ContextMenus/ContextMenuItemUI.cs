@@ -3,56 +3,47 @@ using Extensions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
+using Utilities;
 
 namespace UI.ContextMenus
 {
-	public class ContextMenuItemUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
+	public class ContextMenuItemUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler
 	{
-		[FormerlySerializedAs("itemName")]
+		
 		[Header("UI Elements")]
 		[SerializeField] private TMP_Text itemText;
 		[SerializeField] private TMP_Text nextGroupArrow;
 		[SerializeField] private TMP_Text previousGroupArrow;
 		[SerializeField] private Image backgroundImage;
 
-		[Header("Background Colors")]
-		[SerializeField] private Color defaultBackgroundColor;
-		[SerializeField] private Color hoverBackgroundColor;
-		[SerializeField] private Color disabledBackgroundColor;
+		private ContextMenuStyling _styling;
+		private bool _isFocused = false;
 		
-		[Header("Text Colors")]
-		[SerializeField] private Color defaultTextColor;
-		[SerializeField] private Color disabledTextColor;
-
-		private bool _isHovered = false;
-		
-		public event Action<ContextMenuItemUI> MenuItemSelected;
+		public event Action<ContextMenuItemUI> Selected;
+		public event Action<ContextMenuItemUI> FocusRequested;
 		
 		public ContextMenuItem ContextMenuItem { get; private set; }
-		public int TreeIndex { get; private set; }
+		public ContextMenuItemType ItemType { get; private set; }
 
-		private bool IsHovered
+		public bool IsFocused
 		{
-			get => _isHovered;
+			get => _isFocused;
 			set
 			{
-				if (value != _isHovered)
-				{
-					_isHovered = value;
-					UpdateBackgroundColor();
-				}
+				_isFocused = value;
+				UpdateBackgroundColor();
 			}
 		}
 		
-		public void Initialize(ContextMenuItem contextMenuItem, int treeIndex)
+		public void Initialize(ContextMenuItem contextMenuItem, ContextMenuStyling styling, ContextMenuItemType itemType)
 		{
 			ContextMenuItem = contextMenuItem;
-			TreeIndex = treeIndex;
+			_styling = styling;
+			ItemType = itemType;
 			
-			contextMenuItem.RecalculateVisibility();
 			BuildUI();
+			contextMenuItem.RecalculateVisibility();
 			UpdateBackgroundColor();
 			UpdateTextColor();
 		}
@@ -65,23 +56,21 @@ namespace UI.ContextMenus
 			if (!ContextMenuItem.IsEnabled)
 				return;
 			
-			MenuItemSelected?.Invoke(this);
+			Selected?.Invoke(this);
 		}
 
 		public void OnPointerEnter(PointerEventData eventData)
 		{
-			IsHovered = true;
-		}
-
-		public void OnPointerExit(PointerEventData eventData)
-		{
-			IsHovered = false;
+			FocusRequested?.Invoke(this);
 		}
 
 		private void BuildUI()
 		{
 			if (ContextMenuItem == null)
+			{
+				Debug.LogWarning($"Unable to build {nameof(ContextMenuItemUI)}. {nameof(ContextMenuItem)} is null...");
 				return;
+			}
 
 			itemText.SetText(ContextMenuItem.Name);
 
@@ -104,6 +93,7 @@ namespace UI.ContextMenus
 			nextGroupArrow.gameObject.SetActive(false);
 			previousGroupArrow.gameObject.SetActive(false);
 			itemText.alignment = TextAlignmentOptions.Left;
+			itemText.rectTransform.SetAnchor(AnchorOption.StretchLeft);
 		}
 
 		private void BuildAsGroup()
@@ -111,6 +101,7 @@ namespace UI.ContextMenus
 			nextGroupArrow.gameObject.SetActive(true);
 			previousGroupArrow.gameObject.SetActive(false);
 			itemText.alignment = TextAlignmentOptions.Left;
+			itemText.rectTransform.SetAnchor(AnchorOption.StretchLeft);
 		}
 
 		private void BuildAsBack()
@@ -118,40 +109,35 @@ namespace UI.ContextMenus
 			nextGroupArrow.gameObject.SetActive(false);
 			previousGroupArrow.gameObject.SetActive(true);
 			itemText.alignment = TextAlignmentOptions.Right;
+			itemText.rectTransform.SetAnchor(AnchorOption.StretchRight);
 		}
 
 		private void UpdateBackgroundColor()
 		{
-			if (!ContextMenuItem.IsEnabled)
+			if (IsFocused)
 			{
-				backgroundImage.color = disabledBackgroundColor;
+				backgroundImage.color = _styling.FocusedBackgroundColor;
 			}
-			else if (IsHovered)
+			else if (!ContextMenuItem.IsEnabled)
 			{
-				backgroundImage.color = hoverBackgroundColor;
+				backgroundImage.color = _styling.DisabledBackgroundColor;
 			}
 			else
 			{
-				backgroundImage.color = defaultBackgroundColor;
+				backgroundImage.color = _styling.DefaultBackgroundColor;
 			}
 		}
 
 		private void UpdateTextColor()
 		{
-			if (ContextMenuItem.IsEnabled)
-			{
-				itemText.color = defaultTextColor;
-			}
-			else
-			{
-				itemText.color = disabledTextColor;
-			}
+			itemText.color = ContextMenuItem.IsEnabled ? _styling.DefaultTextColor : _styling.DisabledTextColor;
 		}
 
 		private void Awake()
 		{
 			itemText.ThrowIfNull(nameof(itemText));
 			nextGroupArrow.ThrowIfNull(nameof(nextGroupArrow));
+			previousGroupArrow.ThrowIfNull(nameof(previousGroupArrow));
 			backgroundImage.ThrowIfNull(nameof(backgroundImage));
 		}
 	}

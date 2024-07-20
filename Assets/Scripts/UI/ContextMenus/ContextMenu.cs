@@ -16,6 +16,9 @@ namespace UI.ContextMenus
 		[Header("Prefabs")]
 		[SerializeField] private ContextMenuItemGroupUI contextMenuItemGroupPrefab;
 		[SerializeField] private ContextMenuItemUI contextMenuItemPrefab;
+
+		[Header("Styles")]
+		[SerializeField] private ContextMenuStyling contextMenuStyling;
 		
 		private readonly List<ContextMenuItem> _menuItems = new();
 		private ContextMenuItemGroupUI _currentMenuItemGroup;
@@ -25,6 +28,7 @@ namespace UI.ContextMenus
 		private float _groupWidth = 0;
 		private bool _isSubscribedToGroupEvents = false;
 
+		public event EventHandler MenuOpened;
 		public event EventHandler MenuClosed;
 
 		public bool IsOpen { get; private set; }
@@ -45,6 +49,7 @@ namespace UI.ContextMenus
 			BuildContextMenu();
 			gameObject.SetActive(true);
 			IsOpen = true;
+			MenuOpened?.Invoke(this, EventArgs.Empty);
 		}
 		
 		public void CloseMenu()
@@ -60,18 +65,25 @@ namespace UI.ContextMenus
 			
 			_menuItems.Clear();
 
-			if (_isSubscribedToGroupEvents)
+			if (_currentMenuItemGroup)
 			{
-				_currentMenuItemGroup.LeafItemSelected -= OnLeafMenuItemSelected;
-				_currentMenuItemGroup.GroupItemSelected -= OnGroupMenuItemSelected;
-				_currentMenuItemGroup.BackItemSelected -= OnBackMenuItemSelected;
-				_isSubscribedToGroupEvents = false;
+				if (_isSubscribedToGroupEvents)
+				{
+					_currentMenuItemGroup.ItemSelected -= OnItemSelected;
+					_isSubscribedToGroupEvents = false;
+				}
+				
+				_currentMenuItemGroup.CleanUp();
 			}
-			
-			_currentMenuItemGroup.CleanUp();
 			
 			MenuClosed?.Invoke(this, EventArgs.Empty);
 		}
+		
+		public void NavigateUp() => _currentMenuItemGroup.FocusedMenuItemIndex--;
+		public void NavigateDown() => _currentMenuItemGroup.FocusedMenuItemIndex++;
+		public void NavigateForward() => GoForwardOneMenu(_currentMenuItemGroup.FocusedMenuItemUI.ContextMenuItem);
+		public void NavigateBack() => GoBackOneMenu();
+		public void SelectCurrentItem() => SelectItem(_currentMenuItemGroup.FocusedMenuItemUI);
 
 		private void BuildContextMenu()
 		{
@@ -83,15 +95,14 @@ namespace UI.ContextMenus
 			if (!_currentMenuItemGroup)
 			{
 				_currentMenuItemGroup = Instantiate(contextMenuItemGroupPrefab, transform);
+				_currentMenuItemGroup.Initialize(contextMenuStyling);
 			}
 
 			_currentMenuItemGroup.GetComponent<RectTransform>().position = CalculateMenuPosition();
 			
 			if (!_isSubscribedToGroupEvents)
 			{
-				_currentMenuItemGroup.LeafItemSelected += OnLeafMenuItemSelected;
-				_currentMenuItemGroup.GroupItemSelected += OnGroupMenuItemSelected;
-				_currentMenuItemGroup.BackItemSelected += OnBackMenuItemSelected;
+				_currentMenuItemGroup.ItemSelected += OnItemSelected;
 				_isSubscribedToGroupEvents = true;
 			}
 			
@@ -128,7 +139,7 @@ namespace UI.ContextMenus
 				return;
 			}
 			
-			_currentMenuItemGroup.Initialize(currentMenuItem.ChildMenuItems, _menuItems.Count);
+			_currentMenuItemGroup.SetMenuItems(currentMenuItem.ChildMenuItems, _menuItems.Count);
 			UpdatePathText();
 		}
 
@@ -170,6 +181,25 @@ namespace UI.ContextMenus
 			return new Vector3(xPosition, yPosition, 0);
 		}
 
+		private void SelectItem(ContextMenuItemUI menuItemUI)
+		{
+			switch (menuItemUI.ItemType)
+			{
+				case ContextMenuItemType.Back:
+					GoBackOneMenu();
+					break;
+				case ContextMenuItemType.Leaf:
+					menuItemUI.ContextMenuItem.MenuClickCallback?.Invoke();
+					CloseMenu();
+					break;
+				case ContextMenuItemType.Group:
+					GoForwardOneMenu(menuItemUI.ContextMenuItem);
+					break;
+				default:
+					throw new ArgumentOutOfRangeException(menuItemUI.ItemType.ToString());
+			}
+		}
+
 		private Vector3 CalculatePathTextPosition()
 		{
 			bool buildRight = _mouseClickScreenPosition.x - _groupWidth <= 0;
@@ -180,25 +210,7 @@ namespace UI.ContextMenus
 			return new Vector3(xPosition, yPosition, 0);
 		}
 
-		private void OnLeafMenuItemSelected(ContextMenuItemUI menuItemUI)
-		{
-			menuItemUI.ContextMenuItem.MenuClickCallback?.Invoke();
-			CloseMenu();
-		}
-
-		private void OnGroupMenuItemSelected(ContextMenuItemUI menuItemUI)
-		{
-			while (_menuItems.Count > menuItemUI.TreeIndex + 1)
-			{
-				GoBackOneMenu();
-			}
-			GoForwardOneMenu(menuItemUI.ContextMenuItem);
-		}
-
-		private void OnBackMenuItemSelected()
-		{
-			GoBackOneMenu();
-		}
+		private void OnItemSelected(ContextMenuItemUI menuItemUI) => SelectItem(menuItemUI);
 
 		private void Awake()
 		{	
