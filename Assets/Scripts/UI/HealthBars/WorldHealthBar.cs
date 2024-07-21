@@ -80,6 +80,13 @@ namespace UI.HealthBars
 		{
 			if (_health == null)
 				return;
+
+			// This is a check to see if the follow object still exists or not
+			if (!_followTransform)
+			{
+				HideHealthBar();
+				return;
+			}
 			
 			// Update position to follow the health user
 			_transform.position = _followTransform.position + Vector3.up * 1.5f;
