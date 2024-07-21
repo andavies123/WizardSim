@@ -13,11 +13,15 @@ namespace GameWorld.Builders
 		
 		private readonly World _world;
 		private readonly GameObject _rockPrefab;
+		private readonly Transform _rockContainer;
 		
-		public RockObjectBuilder(World world, GameObject rockPrefab)
+		public RockObjectBuilder(World world, GameObject rockPrefab, Transform rockContainer)
 		{
 			_world = world;
 			_rockPrefab = rockPrefab;
+
+			_rockContainer = new GameObject("Rock Container").transform;
+			_rockContainer.SetParent(rockContainer);
 		}
 
 		public bool TrySpawnSingle(Chunk chunk, Vector2Int localChunkPosition)
@@ -31,7 +35,7 @@ namespace GameWorld.Builders
 			Vector3 worldPosition = _world.WorldPositionFromTilePosition(localChunkPosition, chunk.Position, centerOfTile: false).ToVector3(VectorSub.XSubY);
 			
 			// Instantiate and set position
-			WorldObject rock = Object.Instantiate(_rockPrefab, _world.WorldObjectContainer).GetComponent<WorldObject>();
+			WorldObject rock = Object.Instantiate(_rockPrefab, _rockContainer).GetComponent<WorldObject>();
 			rock.transform.SetPositionAndRotation(worldPosition, Quaternion.identity);
 			rock.Init(localChunkPosition);
 			
@@ -47,7 +51,7 @@ namespace GameWorld.Builders
 
 		public WorldObject SpawnPreview()
 		{
-			WorldObject rock = Object.Instantiate(_rockPrefab, _world.WorldObjectContainer).GetComponent<WorldObject>();
+			WorldObject rock = Object.Instantiate(_rockPrefab, _rockContainer).GetComponent<WorldObject>();
 			
 			rock.GetComponent<InteractionShaderManager>().enabled = false;
 			rock.GetComponentsInChildren<Collider>(true).ToList().ForEach(x => x.enabled = false);

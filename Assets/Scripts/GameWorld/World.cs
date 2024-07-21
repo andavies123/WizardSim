@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Extensions;
 using GameWorld.Tiles;
 using UnityEngine;
 
@@ -74,8 +75,10 @@ namespace GameWorld
 			return true;
 		}
 		
-		public bool TryGetChunkFromWorldPosition(Vector3 worldPosition, out Chunk chunk) => 
-			TryGetChunkFromWorldPosition(new Vector2(worldPosition.x, worldPosition.z), out chunk);
+		public bool TryGetChunkFromWorldPosition(Vector3 worldPosition, out Chunk chunk)
+		{
+			return TryGetChunkFromWorldPosition(new Vector2(worldPosition.x, worldPosition.z), out chunk);
+		}
 
 		/// <summary>
 		/// Calculates and returns the Tile object at the given world position
@@ -120,7 +123,15 @@ namespace GameWorld
 			return true;
 		}
 
-		public bool TryGetTileFromWorldPosition(Vector3 worldPosition, out Tile tile) => 
-			TryGetTileFromWorldPosition(new Vector2(worldPosition.x, worldPosition.z), out tile);
+		public bool TryGetTileFromWorldPosition(Vector3 worldPosition, out Tile tile)
+		{
+			return TryGetTileFromWorldPosition(new Vector2(worldPosition.x, worldPosition.z), out tile);
+		}
+
+		private void Awake()
+		{
+			worldDetails.ThrowIfNull(nameof(worldDetails));
+			worldObjectContainer.ThrowIfNull(nameof(worldObjectContainer));
+		}
 	}
 }

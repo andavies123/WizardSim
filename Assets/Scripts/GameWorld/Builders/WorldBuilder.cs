@@ -34,7 +34,7 @@ namespace GameWorld.Builders
 
 		private void Awake()
 		{
-			RockObjectBuilder = new RockObjectBuilder(world, rockPrefab);
+			RockObjectBuilder = new RockObjectBuilder(world, rockPrefab, worldObjectParent);
 			GenerateWorld();
 			
 			GlobalMessenger.Subscribe<WizardSpawnRequestMessage>(OnWizardSpawnRequested);
