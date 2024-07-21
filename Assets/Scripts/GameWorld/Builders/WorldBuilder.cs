@@ -133,7 +133,7 @@ namespace GameWorld.Builders
 				if (_previewWorldObject == null)
 					_previewWorldObject = RockObjectBuilder.SpawnPreview();
 				
-				Vector3 worldPosition = world.WorldPositionFromTilePosition(message.TilePosition, message.ChunkPosition).ToVector3(VectorSub.XSubY);
+				Vector3 worldPosition = world.WorldPositionFromTilePosition(message.TilePosition, message.ChunkPosition, centerOfTile: false).ToVector3(VectorSub.XSubY);
 				_previewWorldObject.transform.SetPositionAndRotation(worldPosition, Quaternion.identity);
 			}
 

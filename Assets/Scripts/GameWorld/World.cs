@@ -26,8 +26,10 @@ namespace GameWorld
 		/// <param name="tile">The tile object containing chunk and tile information</param>
 		/// <param name="centerOfTile">True if the position at the center of the tile will be returned. False if not</param>
 		/// <returns>The world position in unity units of the given tile</returns>
-		public Vector2 WorldPositionFromTile(Tile tile, bool centerOfTile = true) =>
-			WorldPositionFromTilePosition(tile.TilePosition, tile.ParentChunk.Position, centerOfTile);
+		public Vector2 WorldPositionFromTile(Tile tile, bool centerOfTile = true)
+		{
+			return WorldPositionFromTilePosition(tile.TilePosition, tile.ParentChunk.Position, centerOfTile);
+		}
 
 		/// <summary>
 		/// Calculates the world position based off a given tile and chunk position
@@ -42,9 +44,9 @@ namespace GameWorld
 			Vector2 chunkPositionInWorld = chunkPosition * worldDetails.ChunkSize;
 
 			Vector2 worldPosition = chunkPositionInWorld + tilePositionInChunk;
-
+			
 			if (centerOfTile)
-				worldPosition += worldDetails.TileSize / 2;
+				worldPosition += new Vector2(worldDetails.TileSize.x / 2f, worldDetails.TileSize.y / 2f);
 			
 			return worldPosition;
 		}

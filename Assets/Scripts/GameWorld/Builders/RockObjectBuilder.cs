@@ -28,7 +28,7 @@ namespace GameWorld.Builders
 				return false;
 			
 			// Convert to world position to be placed
-			Vector3 worldPosition = _world.WorldPositionFromTilePosition(localChunkPosition, chunk.Position).ToVector3(VectorSub.XSubY);
+			Vector3 worldPosition = _world.WorldPositionFromTilePosition(localChunkPosition, chunk.Position, centerOfTile: false).ToVector3(VectorSub.XSubY);
 			
 			// Instantiate and set position
 			WorldObject rock = Object.Instantiate(_rockPrefab, _world.WorldObjectContainer).GetComponent<WorldObject>();
