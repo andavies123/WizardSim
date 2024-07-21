@@ -53,12 +53,6 @@ namespace Enemies
 				null,
 				() => false,
 				() => true);
-			
-			ContextMenuUser.AddMenuItem(
-				ContextMenuBuilder.BuildPath("Action", "Move To"),
-				() => GlobalMessenger.Publish(new StartInteractionRequest(OnInteractionCallback)),
-				() => true,
-				() => true);
 
 			base.InitializeContextMenu();
 		}
@@ -70,19 +64,5 @@ namespace Enemies
 		}
 
 		private void OnCurrentHealthChanged(object sender, CurrentHealthChangedEventArgs args) => UpdateInteractableInfoText();
-		
-		private void OnInteractionCallback(MonoBehaviour component)
-		{
-			print("Moving is not setup for Enemies");
-			GlobalMessenger.Publish(new EndInteractionRequest());
-			return;
-			// if (!component.TryGetComponent(out Tile tile))
-			// 	return;
-			//
-			// Vector3 tilePosition = tile.Transform.position;
-			// Vector3 moveToPosition = new(tilePosition.x, Transform.position.y, tilePosition.z);
-			// //Enemy.StateMachine.MoveTo(moveToPosition);
-			// GlobalMessenger.Publish(new EndInteractionRequest());
-		}
 	}
 }

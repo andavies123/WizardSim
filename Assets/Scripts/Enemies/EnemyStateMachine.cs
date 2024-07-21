@@ -11,32 +11,24 @@ namespace Enemies
 		[SerializeField] private float idleRadius = 10;
 		
 		private Enemy _enemy;
-		//private EnemyIdleState _idleState;
-		//private EnemyMoveToState _moveToToState;
+		private EnemyIdleState _idleState;
 		
-		// public void Idle()
-		// {
-		// 	_idleState.IdleRadius = idleRadius;
-		// 	StateMachine.SetCurrentState(_idleState);
-		// }
-		//
-		// public void MoveTo(Vector3 position)
-		// {
-		// 	_moveToToState.MoveToPosition = position;
-		// 	StateMachine.SetCurrentState(_moveToToState);
-		// }
+		public void Idle()
+		{
+			_idleState.IdleRadius = idleRadius;
+			StateMachine.SetCurrentState(_idleState);
+		}
 
 		private void Awake()
 		{
 			_enemy = GetComponent<Enemy>();
 
-			//_idleState = new WizardIdleState(_enemy);
-			//_moveToToState = new WizardMoveToState(_enemy);
+			_idleState = new EnemyIdleState(_enemy);
 		}
 
 		private void Start()
 		{
-			//Idle();
+			Idle();
 		}
 
 		private void Update()
