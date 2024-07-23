@@ -1,12 +1,9 @@
 ﻿using Extensions;
-using Game.MessengerSystem;
 using GameWorld;
 using GeneralBehaviours;
 using GeneralBehaviours.Utilities.ContextMenuBuilders;
 using GeneralClasses.Health.HealthEventArgs;
 using Stats;
-using UI.ContextMenus;
-using UI.Messages;
 using UnityEngine;
 
 namespace Enemies
