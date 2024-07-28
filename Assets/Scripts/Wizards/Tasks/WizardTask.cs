@@ -1,4 +1,5 @@
 ﻿using System;
+using TaskSystem;
 using UnityEngine;
 using Wizards.States;
 
@@ -7,9 +8,10 @@ namespace Wizards.Tasks
 	public abstract class WizardTask : IWizardTask
 	{
 		private WizardTaskState _wizardTaskState;
+		private Wizard _assignedWizard;
 		
 		public event EventHandler Completed;
-		public event EventHandler Deleted;
+		public event EventHandler<TaskUpdatedEventArgs> Updated;
 		
 		public abstract TaskWizardType[] AllowedWizardTypes { get; }
 		public abstract string DisplayName { get; }
@@ -18,7 +20,20 @@ namespace Wizards.Tasks
 		public Guid Id { get; } = Guid.NewGuid();
 		public float CreationTime { get; } = Time.time;
 		public int Priority { get; set; }
-		public Wizard AssignedWizard { get; set; }
+		public bool IsAssigned => AssignedWizard;
+
+		public Wizard AssignedWizard
+		{
+			get => _assignedWizard;
+			set
+			{
+				if (_assignedWizard != value)
+				{
+					_assignedWizard = value;
+					Updated?.Invoke(this, new TaskUpdatedEventArgs(nameof(AssignedWizard)));
+				}
+			}
+		}
 
 		public WizardTaskState WizardTaskState
 		{
@@ -28,11 +43,6 @@ namespace Wizards.Tasks
 				_wizardTaskState = value;
 				_wizardTaskState.Completed += OnTaskCompleted;
 			}
-		}
-
-		public void Delete()
-		{
-			Deleted?.Invoke(this, EventArgs.Empty);
 		}
 
 		protected void OnTaskCompleted(object sender, EventArgs args)

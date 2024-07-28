@@ -39,11 +39,6 @@ namespace Wizards
 			_moveToState = new WizardMoveToState(_wizard);
 		}
 
-		private void Start()
-		{
-			Idle();
-		}
-
 		private void Update()
 		{
 			StateMachine.Update();

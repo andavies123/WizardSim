@@ -7,7 +7,7 @@ namespace Wizards
 	public class WizardManager : MonoBehaviour
 	{
 		private readonly Dictionary<Guid, Wizard> _wizards = new();
-
+		
 		public event EventHandler<WizardManagerEventArgs> WizardAdded;
 		public event EventHandler<WizardManagerEventArgs> WizardRemoved;
 		

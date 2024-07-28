@@ -1,12 +1,15 @@
-﻿using Extensions;
+﻿using System;
+using Extensions;
+using TaskSystem;
 using TMPro;
+using UI.TaskManagement.WizardEventArgs;
 using UnityEngine;
 using UnityEngine.UI;
 using Wizards.Tasks;
 
 namespace UI.TaskManagement
 {
-	public class TaskUI : MonoBehaviour
+	internal class WizardTaskUI : MonoBehaviour
 	{
 		[SerializeField] private TMP_Text nameText;
 		[SerializeField] private TMP_Text assignedWizardText;
@@ -15,6 +18,8 @@ namespace UI.TaskManagement
 		[SerializeField] private Button deleteButton;
 
 		public IWizardTask Task { get; private set; }
+
+		public event EventHandler<WizardTaskUIEventArgs> TaskDeleted;
         
 		public void SetTask(IWizardTask task)
 		{
@@ -26,10 +31,14 @@ namespace UI.TaskManagement
 			UpdateAssignedWizardText();
 			UpdateStatusText();
 			priorityDropdown.SetValueWithoutNotify(PriorityToDropdownIndex(task.Priority));
+
+			Task.Updated += OnTaskUpdated;
 		}
 
 		public void ClearTask()
 		{
+			Task.Updated -= OnTaskUpdated;
+			
 			Task = null;
 			nameText.SetText(string.Empty);
 			assignedWizardText.SetText(string.Empty);
@@ -51,8 +60,6 @@ namespace UI.TaskManagement
 		{
 			statusText.SetText(Task.CurrentStatus);
 		}
-
-		#region Unity Methods
 
 		private void Awake()
 		{
@@ -78,10 +85,6 @@ namespace UI.TaskManagement
 			deleteButton.onClick.RemoveListener(OnDeleteButtonClicked);
 		}
 
-		#endregion
-
-		#region UI Event Callbacks
-
 		private void OnPriorityDropdownValueChanged(int value)
 		{
 			Task.Priority = DropdownIndexToPriority(value);
@@ -89,10 +92,18 @@ namespace UI.TaskManagement
 
 		private void OnDeleteButtonClicked()
 		{
-			Task?.Delete();
+			TaskDeleted?.Invoke(this, new WizardTaskUIEventArgs(Task));
 		}
 
-		#endregion
+		private void OnTaskUpdated(object sender, TaskUpdatedEventArgs args)
+		{
+			switch (args.PropertyName)
+			{
+				case nameof(WizardTask.AssignedWizard):
+					UpdateAssignedWizardText();
+					break;
+			}
+		}
 
 		#region Static Helpers
 		

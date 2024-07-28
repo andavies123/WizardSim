@@ -2,18 +2,17 @@
 
 namespace TaskSystem.Interfaces
 {
-	// Todo: Should the task have its own delete method? Should it be in charge of deleting it self?
 	public interface ITask
 	{
 		/// <summary>
-		/// Invoked when the task has been completed
+		/// Raised when the task has been completed
 		/// </summary>
 		event EventHandler Completed;
 
 		/// <summary>
-		/// Invoked when the task is being deleted before completion
+		/// Raised when important properties of this task are updated
 		/// </summary>
-		event EventHandler Deleted;
+		event EventHandler<TaskUpdatedEventArgs> Updated;
 		
 		/// <summary>
 		/// Unique Id for this single instance
@@ -42,10 +41,11 @@ namespace TaskSystem.Interfaces
 		/// Can be used for sorting
 		/// </summary>
 		float CreationTime { get; }
-
+		
 		/// <summary>
-		/// Call this to delete this task and raise the <see cref="Deleted"/> event
+		/// True if this task is currently assigned
+		/// False if this task is not currently assigned
 		/// </summary>
-		void Delete();
+		public bool IsAssigned { get; }
 	}
 }

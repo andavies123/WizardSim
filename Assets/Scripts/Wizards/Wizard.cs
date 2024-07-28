@@ -8,10 +8,8 @@ using GeneralBehaviours.Utilities.ContextMenuBuilders;
 using GeneralClasses.Health.HealthEventArgs;
 using Stats;
 using TaskSystem.Interfaces;
-using UI.ContextMenus;
 using UI.Messages;
 using UnityEngine;
-using Utilities;
 using Wizards.States;
 using Wizards.Tasks;
 
@@ -112,6 +110,9 @@ namespace Wizards
 		{
 			UpdateInteractableInfoText();
 			InitializeContextMenu();
+			
+			if (!IsAssignedTask)
+				StateMachine.Idle();
 		}
 
 		private void OnDestroy()
@@ -136,6 +137,12 @@ namespace Wizards
 			ContextMenuUser.AddMenuItem(
 				ContextMenuBuilder.BuildPath("Action", "Move To"),
 				() => GlobalMessenger.Publish(new StartInteractionRequest(OnInteractionCallback)),
+				() => true,
+				() => true);
+			
+			ContextMenuUser.AddMenuItem(
+				ContextMenuBuilder.BuildPath("Kill"),
+				() => gameObject.Destroy(), // Todo: Not right way to kill. Doesn't remove references
 				() => true,
 				() => true);
 

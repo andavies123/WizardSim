@@ -18,7 +18,7 @@ namespace UIStates
 		[SerializeField] private InfoWindow infoWindow;
 		[SerializeField] private ContextMenu contextMenu;
 		[SerializeField] private HotBar hotBar;
-		[SerializeField] private TaskManagementUI taskManagementWindow;
+		[SerializeField] private WizardTaskManagementUI taskManagementWindow;
 		
 		public event EventHandler PauseButtonPressed;
 

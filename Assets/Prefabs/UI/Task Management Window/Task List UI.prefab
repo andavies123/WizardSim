@@ -88,7 +88,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 513780894936375394}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8906d7c1f2b4ed5a9c762b7a2239533, type: 3}
+  m_Script: {fileID: 11500000, guid: 39599d27f1eb4af47ad5ca96d58b10cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   taskUIPrefab: {fileID: 3237279002949378147, guid: 4f6d6ce13f7a5d6439e7cb3c6fb35d3d, type: 3}

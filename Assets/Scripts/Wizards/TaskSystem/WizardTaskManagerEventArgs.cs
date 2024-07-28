@@ -1,7 +1,7 @@
 ﻿using System;
 using Wizards.Tasks;
 
-namespace Wizards
+namespace Wizards.TaskSystem
 {
 	public class WizardTaskManagerEventArgs : EventArgs
 	{

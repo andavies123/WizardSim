@@ -33,13 +33,13 @@ namespace GameWorld.WorldObjects.Rocks
 		private void InitializeContextMenu()
 		{
 			_contextMenuUser.AddMenuItem(
-				ContextMenuBuilder.BuildPath("General", "Destroy", "Single"),
+				ContextMenuBuilder.BuildPath("Destroy", "Single"),
 				() => GlobalMessenger.Publish(new AddWizardTaskRequest(new DestroyRocksTask(new List<Rock> {this}))),
 				() => true,
 				() => true);
 			
 			_contextMenuUser.AddMenuItem(
-				ContextMenuBuilder.BuildPath("General", "Destroy", "Surrounding"),
+				ContextMenuBuilder.BuildPath("Destroy", "Surrounding"),
 				() => GlobalMessenger.Publish(new AddWizardTaskRequest(new DestroyRocksTask(GetSurroundingRocks()))),
 				() => true,
 				() => true);

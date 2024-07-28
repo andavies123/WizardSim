@@ -8,12 +8,12 @@ using UnityEngine;
 using Wizards.Messages;
 using Wizards.Tasks;
 
-namespace Wizards
+namespace Wizards.TaskSystem
 {
 	public class WizardTaskManager : MonoBehaviour
 	{
 		[SerializeField] private WizardManager wizardManager;
-        
+		
 		private readonly ITaskManager<IWizardTask> _taskManager = new TaskManager<IWizardTask>();
 		private readonly Dictionary<Guid, IWizardTask> _assignedTasks = new();
 
@@ -28,13 +28,12 @@ namespace Wizards
 		{
 			_taskManager.AddTask(task);
 			task.Completed += OnTaskCompleted;
-			task.Deleted += OnTaskDeleted;
 			
 			TaskAdded?.Invoke(this, new WizardTaskManagerEventArgs(task));
 
 			wizardManager.Wizards.Values.ToList().ForEach(wizard => TryAssignTaskToWizard(wizard));
 		}
-
+		
 		public void RemoveTask(IWizardTask task)
 		{
 			// Clear references
@@ -43,7 +42,6 @@ namespace Wizards
 			
 			// Remove event subscriptions
 			task.Completed -= OnTaskCompleted;
-			task.Deleted -= OnTaskDeleted;
 			
 			// Clean up on the wizard side
 			if (task.AssignedWizard)
@@ -86,15 +84,6 @@ namespace Wizards
 			if (sender is not IWizardTask wizardTask)
 				return;
 			
-			RemoveTask(wizardTask);
-			TryAssignTaskToWizard(wizardTask.AssignedWizard);
-		}
-
-		private void OnTaskDeleted(object sender, EventArgs args)
-		{
-			if (sender is not IWizardTask wizardTask)
-				return;
-
 			RemoveTask(wizardTask);
 			TryAssignTaskToWizard(wizardTask.AssignedWizard);
 		}
