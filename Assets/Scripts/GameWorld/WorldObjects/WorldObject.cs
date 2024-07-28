@@ -1,7 +1,6 @@
 ﻿using System;
 using Extensions;
-using Game;
-using GeneralClasses.Health.Interfaces;
+using GeneralBehaviours.HealthBehaviours;
 using UI;
 using UnityEngine;
 
@@ -9,16 +8,14 @@ namespace GameWorld.WorldObjects
 {
 	[DisallowMultipleComponent]
 	[RequireComponent(typeof(Interactable))]
-	public class WorldObject : MonoBehaviour, IHealthUser
+	public class WorldObject : MonoBehaviour
 	{
 		[SerializeField] private Vector2Int size;
 
 		private WorldObjectProperties _worldObjectProperties;
-        
-		// Systems
-		public IHealth Health { get; private set; }
 		
 		// Components
+		public HealthComponent Health { get; private set; }
 		public Interactable Interactable { get; private set; }
 
 		public event EventHandler Destroyed;
@@ -41,7 +38,7 @@ namespace GameWorld.WorldObjects
 		protected virtual void Start()
 		{
 			LoadProperties();
-			Health = GlobalFactories.HealthFactory.CreateHealth(_worldObjectProperties.HealthProperties);
+			
 			Interactable.InitializeWithProperties(_worldObjectProperties.InteractableProperties);
 		}
 
@@ -57,6 +54,12 @@ namespace GameWorld.WorldObjects
 				Debug.LogWarning($"World Object - {ItemName} - was not found. Deleting {gameObject.name}...", this);
 				gameObject.Destroy();
 				return;
+			}
+			
+			if (_worldObjectProperties.HealthProperties != null)
+			{
+				Health = gameObject.AddComponent<HealthComponent>();
+				Health.InitializeWithProperties(_worldObjectProperties.HealthProperties);
 			}
 
 			gameObject.name = _worldObjectProperties.Id;

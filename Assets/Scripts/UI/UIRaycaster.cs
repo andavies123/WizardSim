@@ -1,4 +1,4 @@
-﻿using GeneralClasses.Health.Interfaces;
+﻿using GeneralBehaviours.HealthBehaviours;
 using UI.HealthBars;
 using UnityEngine;
 
@@ -43,10 +43,10 @@ namespace UI
 				return;
 			
 			// Check to see if the Health component exists
-			if (raycastHit.transform && raycastHit.transform.TryGetComponent(typeof(IHealthUser), out Component component) && component is IHealthUser healthUser)
+			if (raycastHit.transform && raycastHit.transform.TryGetComponent(out HealthComponent component))
 			{
 				// Update the health bar
-				worldHealthBar.SetHealth(healthUser.Health, raycastHit.transform);
+				worldHealthBar.SetHealth(component.Health, raycastHit.transform);
 			}
 			else
 			{
