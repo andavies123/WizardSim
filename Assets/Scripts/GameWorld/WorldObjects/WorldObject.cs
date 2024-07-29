@@ -30,6 +30,8 @@ namespace GameWorld.WorldObjects
 			LocalChunkPosition = localChunkPosition;
 		}
 
+		protected virtual void UpdateInitialLocation() { }
+
 		protected virtual void Awake()
 		{
 			Interactable = gameObject.GetOrAddComponent<Interactable>();
@@ -37,6 +39,7 @@ namespace GameWorld.WorldObjects
 
 		protected virtual void Start()
 		{
+			UpdateInitialLocation();
 			LoadProperties();
 			
 			Interactable.InitializeWithProperties(_worldObjectProperties.InteractableProperties);

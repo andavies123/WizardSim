@@ -15,6 +15,11 @@ namespace GameWorld.WorldObjects.Rocks
 		private ContextMenuUser _contextMenuUser;
 
 		protected override string ItemName => "Rock";
+
+		protected override void UpdateInitialLocation()
+		{
+			transform.position += new Vector3(0.5f, 0.5f, 0.5f);
+		}
 		
 		protected override void Awake()
 		{
