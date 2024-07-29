@@ -38,7 +38,7 @@ namespace Enemies
 			InitializeContextMenu();
 		}
 
-		private void OnDestroy()
+		protected override void OnDestroy()
 		{
 			Health.Health.CurrentHealthChanged -= OnCurrentHealthChanged;
 		}

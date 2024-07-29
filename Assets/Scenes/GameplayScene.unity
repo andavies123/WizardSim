@@ -3527,6 +3527,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2007172220}
   - component: {fileID: 2007172221}
+  - component: {fileID: 2007172222}
   m_Layer: 0
   m_Name: World
   m_TagString: Untagged
@@ -3566,6 +3567,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldDetails: {fileID: 11400000, guid: e582ff65a9a14e9418ca71ac487ff365, type: 2}
   worldObjectContainer: {fileID: 1790581159}
+--- !u!114 &2007172222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2007172219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caaf2ae10bac411ba4d952c3708dc4fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  secondsPerWorldDay: 600
 --- !u!224 &2081699357
 RectTransform:
   m_ObjectHideFlags: 0

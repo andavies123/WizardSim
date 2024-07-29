@@ -27,8 +27,8 @@ namespace Wizards
 		public Movement Movement { get; private set; }
 		public WizardDeath Death { get; private set; }
 
+		public IAge Age { get; private set; } = new Age();
 		public WizardStats Stats => stats;
-
 		public bool IsIdling => StateMachine.CurrentState is WizardIdleState;
 		
 		// Overrides
@@ -116,6 +116,11 @@ namespace Wizards
 			
 			if (!IsAssignedTask)
 				StateMachine.Idle();
+		}
+
+		private void Update()
+		{
+			Age.IncreaseAge(WorldTime.DeltaTime);
 		}
 
 		protected override void OnDestroy()
