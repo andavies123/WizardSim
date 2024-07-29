@@ -2,7 +2,7 @@
 using CameraComponents;
 using Game.Messages;
 using Game.MessengerSystem;
-using GameWorld.EventArgs;
+using GameWorld.GameWorldEventArgs;
 using GameWorld.Messages;
 using InputStates;
 using InputStates.InputEventArgs;

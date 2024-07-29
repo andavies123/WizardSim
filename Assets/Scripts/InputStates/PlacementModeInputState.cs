@@ -1,6 +1,6 @@
 ﻿using System;
 using CameraComponents;
-using GameWorld.EventArgs;
+using GameWorld.GameWorldEventArgs;
 using GameWorld.Tiles;
 using UnityEngine.InputSystem;
 

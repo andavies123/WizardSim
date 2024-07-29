@@ -16,23 +16,20 @@ namespace Wizards
 		public void Add(Wizard wizard)
 		{
 			_wizards.Add(wizard.Id, wizard);
+			wizard.Death.Died += OnWizardDied;
 			WizardAdded?.Invoke(this, new WizardManagerEventArgs(wizard));
 		}
 
 		public void Remove(Wizard wizard)
 		{
 			_wizards.Remove(wizard.Id);
+			wizard.Death.Died -= OnWizardDied;
 			WizardRemoved?.Invoke(this, new WizardManagerEventArgs(wizard));
 		}
-	}
 
-	public class WizardManagerEventArgs
-	{
-		public WizardManagerEventArgs(Wizard wizard)
+		private void OnWizardDied(object sender, WizardDiedEventArgs args)
 		{
-			Wizard = wizard;
+			Remove(args.DeadWizard);
 		}
-		
-		public Wizard Wizard { get; }
 	}
 }

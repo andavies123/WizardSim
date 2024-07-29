@@ -1,7 +1,7 @@
 ﻿using GameWorld.Tiles;
 using UnityEngine;
 
-namespace GameWorld.EventArgs
+namespace GameWorld.GameWorldEventArgs
 {
 	public class WorldPositionEventArgs
 	{

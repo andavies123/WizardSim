@@ -2,8 +2,6 @@
 using Extensions;
 using GeneralBehaviours.HealthBehaviours;
 using GeneralBehaviours.Utilities.ContextMenuBuilders;
-using GeneralClasses.Health;
-using GeneralClasses.Health.Interfaces;
 using Stats;
 using UI;
 using UI.ContextMenus;
@@ -16,18 +14,17 @@ namespace GameWorld
 	[RequireComponent(typeof(Interactable))]
 	public abstract class Character : MonoBehaviour
 	{
+		private CharacterProperties _characterProperties;
+		
 		public abstract MovementStats MovementStats { get; }
-		protected abstract string CharacterType { get; } 
+		protected abstract string CharacterType { get; }
 		
 		public Guid Id { get; } = Guid.NewGuid();
 		public Transform Transform { get; private set; }
+		public HealthComponent Health { get; private set; }
 		
 		protected ContextMenuUser ContextMenuUser { get; private set; }
-		protected HealthComponent Health { get; private set; }
 		protected Interactable Interactable { get; private set; }
-
-		private HealthProperties _healthProperties;
-		private CharacterProperties _characterProperties;
 
 		protected virtual void Awake()
 		{
@@ -40,12 +37,12 @@ namespace GameWorld
 			Interactable.InitializeWithProperties(_characterProperties.InteractableProperties);
 		}
 
+		protected virtual void OnDestroy() { }
+
 		protected virtual void InitializeContextMenu()
 		{
 			if (Health)
-			{
 				ContextMenuUser.AddHealthComponentContextMenuItems(Health);
-			}
 		}
 		
 		private void LoadProperties()

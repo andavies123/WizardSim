@@ -25,6 +25,7 @@ namespace Wizards
 		// Components
 		public WizardStateMachine StateMachine { get; private set; }
 		public Movement Movement { get; private set; }
+		public WizardDeath Death { get; private set; }
 
 		public WizardStats Stats => stats;
 
@@ -99,7 +100,9 @@ namespace Wizards
 		protected override void Awake()
 		{
 			base.Awake();
-			
+
+			// Add/get components
+			Death = gameObject.AddComponent<WizardDeath>();
 			StateMachine = GetComponent<WizardStateMachine>();
 			Movement = GetComponent<Movement>();
 
@@ -115,8 +118,9 @@ namespace Wizards
 				StateMachine.Idle();
 		}
 
-		private void OnDestroy()
+		protected override void OnDestroy()
 		{
+			base.OnDestroy();
 			Health.Health.CurrentHealthChanged -= OnCurrentHealthChanged;
 		}
 
@@ -139,10 +143,10 @@ namespace Wizards
 				() => GlobalMessenger.Publish(new StartInteractionRequest(OnInteractionCallback)),
 				() => true,
 				() => true);
-			
+
 			ContextMenuUser.AddMenuItem(
 				ContextMenuBuilder.BuildPath("Kill"),
-				() => gameObject.Destroy(), // Todo: Not right way to kill. Doesn't remove references
+				() => Health.Health.CurrentHealth -= Health.Health.CurrentHealth,
 				() => true,
 				() => true);
 
