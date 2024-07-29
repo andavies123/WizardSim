@@ -94,7 +94,7 @@ namespace CameraComponents
 		private void ClampCameraRotation()
 		{
 			Vector3 currentRotation = _cameraTransform.eulerAngles;
-			_currentVerticalRotation = Mathf.Clamp(_currentVerticalRotation, minVerticalRotation, maxVerticalRotation);
+			_currentVerticalRotation = Mathf.Clamp(currentRotation.x, minVerticalRotation, maxVerticalRotation);
 			_cameraTransform.eulerAngles = new Vector3(_currentVerticalRotation, currentRotation.y, currentRotation.z);
 		}
 
