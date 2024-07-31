@@ -19,6 +19,8 @@ namespace Wizards
 	{
 		[SerializeField] private WizardStats stats;
 
+		private World _parentWorld;
+
 		public string Name { get; set; }
 		public WizardType WizardType { get; set; } = WizardType.Earth;
 		
@@ -27,7 +29,7 @@ namespace Wizards
 		public Movement Movement { get; private set; }
 		public WizardDeath Death { get; private set; }
 
-		public IAge Age { get; private set; } = new Age();
+		public IAge Age { get; } = new Age();
 		public WizardStats Stats => stats;
 		public bool IsIdling => StateMachine.CurrentState is WizardIdleState;
 		
@@ -89,8 +91,9 @@ namespace Wizards
 
 		#endregion
 		
-		public void InitializeWizard(string wizardName, WizardType wizardType)
+		public void InitializeWizard(World parentWorld, string wizardName, WizardType wizardType)
 		{
+			_parentWorld = parentWorld;
 			Name = wizardName;
 			WizardType = wizardType;
 			
@@ -120,7 +123,7 @@ namespace Wizards
 
 		private void Update()
 		{
-			Age.IncreaseAge(WorldTime.DeltaTime);
+			Age.IncreaseAge(_parentWorld.Time.WorldDeltaTime);
 		}
 
 		protected override void OnDestroy()

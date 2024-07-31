@@ -9,13 +9,55 @@ namespace GameWorld
 		[SerializeField] private float secondsPerWorldDay = 600f;
 		
 		private float _toWorldTimeConversionFactor;
+		private float _currentSeconds;
+		private int _currentMinutes;
+		private int _currentHours;
 		
-		/// <summary>
-		/// Delta Time converted into world time.
-		/// This value is calculated once per frame to avoid extra calculations
-		/// every time it is requested
-		/// </summary>
-		public static float DeltaTime { get; private set; }
+		public float WorldDeltaTime { get; private set; }
+
+		public float CurrentSeconds
+		{
+			get => _currentSeconds;
+			set
+			{
+				_currentSeconds = value;
+				if (_currentSeconds >= TimeConstants.SECONDS_PER_MINUTE)
+				{
+					CurrentMinutes += (int)(_currentSeconds / TimeConstants.SECONDS_PER_MINUTE);
+					_currentSeconds %= TimeConstants.SECONDS_PER_MINUTE;
+				}
+			}
+		}
+
+		public int CurrentMinutes
+		{
+			get => _currentMinutes;
+			set
+			{
+				_currentMinutes = value;
+				if (_currentMinutes >= TimeConstants.MINUTES_PER_HOUR)
+				{
+					CurrentHours += _currentMinutes / TimeConstants.MINUTES_PER_HOUR;
+					_currentMinutes %= TimeConstants.MINUTES_PER_HOUR;
+				}
+			}
+		}
+
+		public int CurrentHours
+		{
+			get => _currentHours;
+			set
+			{
+				_currentHours = value;
+				if (_currentHours >= TimeConstants.HOURS_PER_DAY)
+				{
+					CurrentDays += _currentHours / TimeConstants.HOURS_PER_DAY;
+					_currentHours %= TimeConstants.HOURS_PER_DAY;
+				}
+			}
+		}
+
+		public int CurrentDays { get; set; }
 
 		private void Awake()
 		{
@@ -24,7 +66,8 @@ namespace GameWorld
 
 		private void Update()
 		{
-			DeltaTime = ConvertToWorldTime(Time.deltaTime);
+			WorldDeltaTime = ConvertToWorldTime(Time.deltaTime);
+			CurrentSeconds += WorldDeltaTime;
 		}
 
 		private float ConvertToWorldTime(float realWorldSeconds)

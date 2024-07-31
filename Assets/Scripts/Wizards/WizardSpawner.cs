@@ -1,7 +1,7 @@
 ﻿using System;
+using GameWorld;
 using GeneralBehaviours.ShaderManagers;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Utilities;
 using Random = UnityEngine.Random;
 
@@ -9,9 +9,9 @@ namespace Wizards
 {
 	public class WizardSpawner : MonoBehaviour
 	{
-		[FormerlySerializedAs("entityManager")]
 		[Header("External Components")]
 		[SerializeField] private WizardManager wizardManager;
+		[SerializeField] private World world;
 
 		[Header("Prefabs")]
 		[SerializeField] private Wizard entityPrefab;
@@ -32,7 +32,7 @@ namespace Wizards
 			Wizard wizard = Instantiate(entityPrefab, wizardManager.transform);
 			wizard.Transform.position = spawnPosition;
 
-			wizard.InitializeWizard(NameGenerator.GetNewName(), wizardType);
+			wizard.InitializeWizard(world, NameGenerator.GetNewName(), wizardType);
 			wizard.GetComponent<InteractionShaderManager>().OverrideBaseColor(GetColorFromWizardType(wizardType));
 			
 			wizardManager.Add(wizard);
