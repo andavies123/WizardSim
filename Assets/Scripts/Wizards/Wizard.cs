@@ -18,8 +18,7 @@ namespace Wizards
 	public class Wizard : Character, ITaskUser<IWizardTask>
 	{
 		[SerializeField] private WizardStats stats;
-
-		private World _parentWorld;
+		[SerializeField] private WorldTime worldTime;
 
 		public string Name { get; set; }
 		public WizardType WizardType { get; set; } = WizardType.Earth;
@@ -91,9 +90,8 @@ namespace Wizards
 
 		#endregion
 		
-		public void InitializeWizard(World parentWorld, string wizardName, WizardType wizardType)
+		public void InitializeWizard(string wizardName, WizardType wizardType)
 		{
-			_parentWorld = parentWorld;
 			Name = wizardName;
 			WizardType = wizardType;
 			
@@ -123,7 +121,7 @@ namespace Wizards
 
 		private void Update()
 		{
-			Age.IncreaseAge(_parentWorld.Time.WorldDeltaTime);
+			Age.IncreaseAge(worldTime.WorldDeltaTime);
 		}
 
 		protected override void OnDestroy()

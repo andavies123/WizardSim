@@ -1,5 +1,4 @@
 ﻿using System;
-using GameWorld;
 using GeneralBehaviours.ShaderManagers;
 using UnityEngine;
 using Utilities;
@@ -11,7 +10,6 @@ namespace Wizards
 	{
 		[Header("External Components")]
 		[SerializeField] private WizardManager wizardManager;
-		[SerializeField] private World world;
 
 		[Header("Prefabs")]
 		[SerializeField] private Wizard entityPrefab;
@@ -32,7 +30,7 @@ namespace Wizards
 			Wizard wizard = Instantiate(entityPrefab, wizardManager.transform);
 			wizard.Transform.position = spawnPosition;
 
-			wizard.InitializeWizard(world, NameGenerator.GetNewName(), wizardType);
+			wizard.InitializeWizard(NameGenerator.GetNewName(), wizardType);
 			wizard.GetComponent<InteractionShaderManager>().OverrideBaseColor(GetColorFromWizardType(wizardType));
 			
 			wizardManager.Add(wizard);

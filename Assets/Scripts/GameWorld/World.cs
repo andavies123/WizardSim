@@ -5,15 +5,14 @@ using UnityEngine;
 
 namespace GameWorld
 {
-	[RequireComponent(typeof(Time))]
 	public class World : MonoBehaviour
 	{
 		[SerializeField] private WorldDetails worldDetails;
+		[SerializeField] private WorldTime worldTime;
 		[SerializeField] private Transform worldObjectContainer;
 		
 		private readonly Dictionary<Vector2Int, Chunk> _chunks = new();
 
-		public WorldTime Time { get; private set; }
 		public WorldDetails WorldDetails => worldDetails;
 		public IReadOnlyDictionary<Vector2Int, Chunk> Chunks => _chunks;
 		public Transform WorldObjectContainer => worldObjectContainer;
@@ -134,7 +133,12 @@ namespace GameWorld
 		{
 			worldDetails.ThrowIfNull(nameof(worldDetails));
 			worldObjectContainer.ThrowIfNull(nameof(worldObjectContainer));
-			Time = GetComponent<WorldTime>();
+			worldTime.ThrowIfNull(nameof(worldTime));
+		}
+
+		private void Update()
+		{
+			worldTime.UpdateCurrentTime(Time.deltaTime);
 		}
 	}
 }

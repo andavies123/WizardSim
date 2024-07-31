@@ -3,8 +3,8 @@ using Utilities;
 
 namespace GameWorld
 {
-	[DisallowMultipleComponent]
-	public class WorldTime : MonoBehaviour
+	[CreateAssetMenu(menuName = "World/Time", fileName = "WorldTime", order = 0)]
+	public class WorldTime : ScriptableObject
 	{
 		[SerializeField] private float secondsPerWorldDay = 600f;
 		
@@ -18,7 +18,7 @@ namespace GameWorld
 		public float CurrentSeconds
 		{
 			get => _currentSeconds;
-			set
+			private set
 			{
 				_currentSeconds = value;
 				if (_currentSeconds >= TimeConstants.SECONDS_PER_MINUTE)
@@ -32,7 +32,7 @@ namespace GameWorld
 		public int CurrentMinutes
 		{
 			get => _currentMinutes;
-			set
+			private set
 			{
 				_currentMinutes = value;
 				if (_currentMinutes >= TimeConstants.MINUTES_PER_HOUR)
@@ -46,7 +46,7 @@ namespace GameWorld
 		public int CurrentHours
 		{
 			get => _currentHours;
-			set
+			private set
 			{
 				_currentHours = value;
 				if (_currentHours >= TimeConstants.HOURS_PER_DAY)
@@ -57,17 +57,17 @@ namespace GameWorld
 			}
 		}
 
-		public int CurrentDays { get; set; }
+		public int CurrentDays { get; private set; }
+
+		public void UpdateCurrentTime(float elapsedSeconds)
+		{
+			WorldDeltaTime = ConvertToWorldTime(elapsedSeconds);
+			CurrentSeconds += WorldDeltaTime;
+		}
 
 		private void Awake()
 		{
 			_toWorldTimeConversionFactor = TimeConstants.SECONDS_PER_DAY / secondsPerWorldDay;
-		}
-
-		private void Update()
-		{
-			WorldDeltaTime = ConvertToWorldTime(Time.deltaTime);
-			CurrentSeconds += WorldDeltaTime;
 		}
 
 		private float ConvertToWorldTime(float realWorldSeconds)

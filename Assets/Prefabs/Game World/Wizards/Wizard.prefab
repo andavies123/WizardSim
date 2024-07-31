@@ -52,6 +52,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 11400000, guid: 8e35209aae653c245a16ed52558038d6, type: 2}
+  worldTime: {fileID: 11400000, guid: 57e03fa5362639442ba3a34557042ad1, type: 2}
 --- !u!114 &2806402656234556708
 MonoBehaviour:
   m_ObjectHideFlags: 0
