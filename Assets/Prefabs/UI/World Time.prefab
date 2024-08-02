@@ -186,7 +186,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldTime: {fileID: 11400000, guid: 57e03fa5362639442ba3a34557042ad1, type: 2}
   timeText: {fileID: 1746475804463873032}
-  updatesPerSecond: 2
+  updatesPerSecond: 5
 --- !u!1 &6512495775435332981
 GameObject:
   m_ObjectHideFlags: 0

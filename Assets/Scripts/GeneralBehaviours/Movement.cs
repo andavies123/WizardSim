@@ -1,4 +1,6 @@
-﻿using GameWorld;
+﻿using Extensions;
+using GameWorld;
+using PathLineRenderers;
 using UnityEngine;
 
 namespace GeneralBehaviours
@@ -7,12 +9,15 @@ namespace GeneralBehaviours
 	[RequireComponent(typeof(Rigidbody))]
 	public class Movement : MonoBehaviour
 	{
-		private Character character;
+		private Character _character;
 		private Transform _transform;
 		private Rigidbody _rigidbody;
 
 		private Vector3? _targetPosition;
 		private float? _maxDistanceForArrival;
+
+		private PathLineRendererObjectPool _pathLineObjectPool;
+		private PathLineRenderer _pathLine;
 
 		public bool IsMoving { get; private set; }
 
@@ -21,6 +26,7 @@ namespace GeneralBehaviours
 			_targetPosition = position;
 			_maxDistanceForArrival = maxDistanceForArrival;
 			IsMoving = true;
+			_pathLine = _pathLineObjectPool.GetPathLineRenderer();
 		}
 
 		public void CancelMoveTo()
@@ -32,8 +38,9 @@ namespace GeneralBehaviours
 		private void Awake()
 		{
 			_transform = transform;
-			_rigidbody = GetComponent<Rigidbody>();
-			character = GetComponent<Character>();
+			_rigidbody = GetComponent<Rigidbody>().ThrowIfNull(nameof(_rigidbody));
+			_character = GetComponent<Character>().ThrowIfNull(nameof(_character));
+			_pathLineObjectPool = PathLineRendererObjectPool.Instance.ThrowIfNull(nameof(_pathLineObjectPool));
 		}
 
 		private void FixedUpdate()
@@ -43,13 +50,21 @@ namespace GeneralBehaviours
 
 			Vector3 currentPosition = _transform.position;
 			Vector3 direction = (_targetPosition.Value - currentPosition).normalized;
-			Vector3 newPosition = currentPosition + direction * (character.MovementStats.Speed * Time.fixedDeltaTime);
+			Vector3 newPosition = currentPosition + direction * (_character.MovementStats.Speed * Time.fixedDeltaTime);
 			_rigidbody.MovePosition(newPosition);
+			
+			_pathLine.UpdateLine(new[]
+			{
+				_targetPosition.Value,
+				transform.position
+			});
 
 			if (Vector3.Distance(_transform.position, _targetPosition.Value) <= (_maxDistanceForArrival ?? 0.1f))
 			{
 				_targetPosition = null;
 				IsMoving = false;
+				_pathLineObjectPool.ReleasePathLineRenderer(_pathLine);
+				_pathLine = null;
 			}
 		}
 	}
