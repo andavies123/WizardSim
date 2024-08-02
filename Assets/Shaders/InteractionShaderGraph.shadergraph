@@ -2443,14 +2443,14 @@
         "m_Id": "3f930be51eca4e24a5942b66ccde2406"
     },
     "m_AllowMaterialOverride": false,
-    "m_SurfaceType": 1,
+    "m_SurfaceType": 0,
     "m_ZTestMode": 4,
     "m_ZWriteControl": 0,
     "m_AlphaMode": 0,
     "m_RenderFace": 2,
     "m_AlphaClip": true,
     "m_CastShadows": true,
-    "m_ReceiveShadows": true,
+    "m_ReceiveShadows": false,
     "m_SupportsLODCrossFade": false,
     "m_CustomEditorGUI": "",
     "m_SupportVFX": false
