@@ -2142,7 +2142,7 @@ MonoBehaviour:
   worldObjectParent: {fileID: 1790581159}
   wizardSpawner: {fileID: 1202947230}
   enemySpawner: {fileID: 262803724}
-  initialGenerationRadius: 2
+  initialGenerationRadius: 4
   rockPrefab: {fileID: 9090978207146980024, guid: 70ca3cc2895272241a88451b6498dfe8, type: 3}
   rocksPerChunk: 1
 --- !u!1 &1197091944
