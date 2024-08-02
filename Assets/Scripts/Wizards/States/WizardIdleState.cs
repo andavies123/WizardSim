@@ -7,7 +7,7 @@ namespace Wizards.States
 {
 	public class WizardIdleState : WizardState
 	{
-		private readonly StateMachine<WizardState> _stateMachine = new();
+		private readonly StateMachine _stateMachine = new();
 		
 		private readonly WizardWaitState _waitState;
 		private readonly WizardMoveToState _moveToState;

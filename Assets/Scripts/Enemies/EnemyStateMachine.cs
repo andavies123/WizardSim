@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Enemies
 {
 	[RequireComponent(typeof(Enemy))]
-	public class EnemyStateMachine : StateMachineComponent<EnemyState>
+	public class EnemyStateMachine : StateMachineComponent
 	{
 		[Header("Idle State Defaults")]
 		[SerializeField] private float idleRadius = 10;

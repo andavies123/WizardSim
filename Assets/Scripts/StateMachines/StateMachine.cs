@@ -1,12 +1,12 @@
 ﻿namespace StateMachines
 {
-	public class StateMachine<TStateBase> where TStateBase : IState
+	public class StateMachine
 	{
 		public string CurrentStateDisplayName => CurrentState?.DisplayName ?? "N/A";
 		public string CurrentStateDisplayStatus => CurrentState?.DisplayStatus ?? "N/A";
 		public IState CurrentState { get; private set; }
 
-		public void SetCurrentState(TStateBase newState)
+		public void SetCurrentState(IState newState)
 		{
 			CurrentState?.End();
 			CurrentState = newState;

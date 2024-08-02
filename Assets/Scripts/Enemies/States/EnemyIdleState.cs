@@ -7,7 +7,7 @@ namespace Enemies.States
 {
 	public class EnemyIdleState : EnemyState
 	{
-		private readonly StateMachine<EnemyState> _stateMachine = new();
+		private readonly StateMachine _stateMachine = new();
 		
 		private readonly EnemyWaitState _waitState;
 		private readonly EnemyMoveToState _moveToState;

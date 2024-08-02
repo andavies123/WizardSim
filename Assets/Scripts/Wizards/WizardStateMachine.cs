@@ -5,7 +5,7 @@ using Wizards.States;
 namespace Wizards
 {
 	[RequireComponent(typeof(Wizard))]
-	public class WizardStateMachine : StateMachineComponent<WizardState>
+	public class WizardStateMachine : StateMachineComponent
 	{
 		[Header("Idle State Defaults")]
 		[SerializeField] private float idleRadius = 10;

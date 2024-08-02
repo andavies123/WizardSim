@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using Extensions;
 using GameWorld.WorldObjects.Rocks;
 using StateMachines;
-using Utilities;
 
 namespace Wizards.States
 {
 	public class DestroyRocksTaskState : WizardTaskState
 	{
 		private readonly List<Rock> _rocks;
-		private readonly StateMachine<WizardState> _stateMachine = new();
+		private readonly StateMachine _stateMachine = new();
 		private readonly int _initialRockCount;
 		
 		private WizardMoveToState _moveToState;
