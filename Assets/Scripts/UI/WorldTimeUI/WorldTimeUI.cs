@@ -1,6 +1,7 @@
 ﻿using System.Collections;
+using AndysTools.GameWorldTimeManagement;
+using AndysTools.GameWorldTimeManagement.Runtime;
 using Extensions;
-using GameWorld;
 using TMPro;
 using UnityEngine;
 
@@ -8,7 +9,7 @@ namespace UI.WorldTimeUI
 {
 	public class WorldTimeUI : MonoBehaviour
 	{
-		[SerializeField] private WorldTime worldTime;
+		[SerializeField] private GameWorldTimeBehaviour worldTime;
 		[SerializeField] private TMP_Text timeText;
 		[SerializeField] private float updatesPerSecond;
 		
@@ -21,7 +22,7 @@ namespace UI.WorldTimeUI
 			worldTime.ThrowIfNull(nameof(worldTime));
 			timeText.ThrowIfNull(nameof(timeText));
 
-			_waitTime = 1 / updatesPerSecond;
+			_waitTime = 1.0f / updatesPerSecond;
 		}
 
 		private void Start()
@@ -38,7 +39,7 @@ namespace UI.WorldTimeUI
 		{
 			while (UpdateText)
 			{
-				timeText.SetText($"Day: {worldTime.CurrentDays} ({worldTime.CurrentHours:00}:{worldTime.CurrentMinutes:00})");
+				timeText.SetText($"Day: {worldTime.Days} ({worldTime.Hours:00}:{worldTime.Minutes:00})");
 				yield return new WaitForSeconds(_waitTime);
 			}
 		}

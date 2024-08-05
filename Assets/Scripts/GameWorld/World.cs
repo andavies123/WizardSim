@@ -1,18 +1,21 @@
 ﻿using System.Collections.Generic;
+using AndysTools.GameWorldTimeManagement;
+using AndysTools.GameWorldTimeManagement.Runtime;
 using Extensions;
 using GameWorld.Tiles;
 using UnityEngine;
 
 namespace GameWorld
 {
+	[RequireComponent(typeof(GameWorldTimeBehaviour))]
 	public class World : MonoBehaviour
 	{
 		[SerializeField] private WorldDetails worldDetails;
-		[SerializeField] private WorldTime worldTime;
 		[SerializeField] private Transform worldObjectContainer;
 		
 		private readonly Dictionary<Vector2Int, Chunk> _chunks = new();
-
+		private GameWorldTimeBehaviour _gameWorldTime;
+		
 		public WorldDetails WorldDetails => worldDetails;
 		public IReadOnlyDictionary<Vector2Int, Chunk> Chunks => _chunks;
 		public Transform WorldObjectContainer => worldObjectContainer;
@@ -133,12 +136,7 @@ namespace GameWorld
 		{
 			worldDetails.ThrowIfNull(nameof(worldDetails));
 			worldObjectContainer.ThrowIfNull(nameof(worldObjectContainer));
-			worldTime.ThrowIfNull(nameof(worldTime));
-		}
-
-		private void Update()
-		{
-			worldTime.UpdateCurrentTime(Time.deltaTime);
+			_gameWorldTime = GetComponent<GameWorldTimeBehaviour>().ThrowIfNull(nameof(_gameWorldTime));
 		}
 	}
 }
