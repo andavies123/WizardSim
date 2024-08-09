@@ -93,6 +93,14 @@ namespace AndysTools.GameWorldTimeManagement.Runtime
 		
 		public void AdvanceTime(float elapsedRealWorldSeconds)
 		{
+			if (elapsedRealWorldSeconds < 0)
+			{
+				if (Debug.isDebugBuild)
+					Debug.LogWarning($"Parameter {nameof(elapsedRealWorldSeconds)} has a value of {elapsedRealWorldSeconds}. Value should be >= 0. Unable to advance time.", _debugLogContext);
+
+				return;
+			}
+			
 			DeltaTime = ConvertToWorldTime(elapsedRealWorldSeconds);
 			TotalSeconds += DeltaTime;
 			Seconds += DeltaTime;

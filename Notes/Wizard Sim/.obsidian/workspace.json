@@ -16,8 +16,19 @@
                 "file": "Tasks.md"
               }
             }
+          },
+          {
+            "id": "9d1eeddbc061d6fb",
+            "type": "leaf",
+            "state": {
+              "type": "release-notes",
+              "state": {
+                "currentVersion": "1.6.5"
+              }
+            }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -144,7 +155,7 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "251a8e83b6f1e9ee",
+  "active": "9d1eeddbc061d6fb",
   "lastOpenFiles": [
     "font color= cyan Health Bar UI font.md",
     "Tasks.md",

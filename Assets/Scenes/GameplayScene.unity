@@ -2912,6 +2912,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1445392003}
   m_CullTransparentMesh: 1
+--- !u!1 &1490349615
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1490349617}
+  - component: {fileID: 1490349616}
+  m_Layer: 0
+  m_Name: Sample World
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1490349616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1490349615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48b7413964f448428d4d01772ceeb28e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  realLifeSecondsPerGameWorldDay: 600
+--- !u!4 &1490349617
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1490349615}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1550178613
 GameObject:
   m_ObjectHideFlags: 0
@@ -3644,6 +3689,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2007172220}
   - component: {fileID: 2007172221}
+  - component: {fileID: 2007172222}
   m_Layer: 0
   m_Name: World
   m_TagString: Untagged
@@ -3682,8 +3728,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   worldDetails: {fileID: 11400000, guid: e582ff65a9a14e9418ca71ac487ff365, type: 2}
-  worldTime: {fileID: 11400000, guid: 57e03fa5362639442ba3a34557042ad1, type: 2}
   worldObjectContainer: {fileID: 1790581159}
+--- !u!114 &2007172222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2007172219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48b7413964f448428d4d01772ceeb28e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  realLifeSecondsPerGameWorldDay: 600
 --- !u!224 &2081699357
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4021,3 +4079,4 @@ SceneRoots:
   - {fileID: 992639649}
   - {fileID: 2007172220}
   - {fileID: 1292581496}
+  - {fileID: 1490349617}

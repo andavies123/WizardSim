@@ -7,6 +7,12 @@
       "dependencies": {},
       "hash": "12574c32f658fa23c194357141abc3fc157ea362"
     },
+    "com.unity.asset-store-tools": {
+      "version": "file:com.unity.asset-store-tools",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.unity.burst": {
       "version": "1.8.12",
       "depth": 1,

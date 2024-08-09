@@ -16,7 +16,7 @@ namespace AndysTools.GameWorldTimeManagement.Runtime
 	public class GameWorldTimeBehaviour : MonoBehaviour, IGameWorldTime
 	{
 		[Tooltip("How many real world seconds it takes for one in game day to occur. Ex: A value of 60 would take 60 real world seconds for one in-game day")]
-		[SerializeField] private float realLifeSecondsPerGameWorldDay;
+		[SerializeField] private float realLifeSecondsPerGameWorldDay = 600;
 		
 		private IGameWorldTime _gameWorldTime;
 		
@@ -58,7 +58,23 @@ namespace AndysTools.GameWorldTimeManagement.Runtime
 		protected virtual void Update()
 		{
 			// Since _gameWorldTime is not a MonoBehaviour, we need to update the time here in the update method 
-			AdvanceTime(Time.deltaTime);
+			_gameWorldTime.AdvanceTime(Time.deltaTime);
+		}
+	}
+
+
+	public class TestGameWorldBehaviour : MonoBehaviour
+	{
+		private IGameWorldTime _gameWorldTime;
+
+		protected virtual void Awake()
+		{
+			_gameWorldTime = new GameWorldTime(600, this);
+		}
+
+		protected virtual void Update()
+		{
+			_gameWorldTime.AdvanceTime(Time.deltaTime);
 		}
 	}
 }
