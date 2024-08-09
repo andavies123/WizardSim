@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using AndysTools.GameWorldTimeManagement;
 using AndysTools.GameWorldTimeManagement.Runtime;
 using Extensions;
 using Game.MessengerSystem;
@@ -20,7 +19,8 @@ namespace Wizards
 	public class Wizard : Character, ITaskUser<IWizardTask>
 	{
 		[SerializeField] private WizardStats stats;
-		[SerializeField] private GameWorldTimeBehaviour worldTime;
+		
+		private GameWorldTimeBehaviour _worldTime;
 
 		public string Name { get; set; }
 		public WizardType WizardType { get; set; } = WizardType.Earth;
@@ -92,10 +92,11 @@ namespace Wizards
 
 		#endregion
 		
-		public void InitializeWizard(string wizardName, WizardType wizardType)
+		public void InitializeWizard(string wizardName, WizardType wizardType, GameWorldTimeBehaviour worldTime)
 		{
 			Name = wizardName;
 			WizardType = wizardType;
+			_worldTime = worldTime;
 			
 			gameObject.name = $"Wizard - {Name} - {wizardType.ToString()}";
 		}
@@ -123,7 +124,7 @@ namespace Wizards
 
 		private void Update()
 		{
-			Age.IncreaseAge(worldTime.DeltaTime);
+			Age.IncreaseAge(_worldTime.DeltaTime);
 		}
 
 		protected override void OnDestroy()
