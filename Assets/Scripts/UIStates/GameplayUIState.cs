@@ -19,6 +19,7 @@ namespace UIStates
 		[SerializeField] private ContextMenu contextMenu;
 		[SerializeField] private HotBar hotBar;
 		[SerializeField] private WizardTaskManagementUI taskManagementWindow;
+		[SerializeField] private Canvas interactionCanvas;
 		
 		public event EventHandler PauseButtonPressed;
 
@@ -33,6 +34,9 @@ namespace UIStates
 		public void OpenTaskManagementWindow() => taskManagementWindow.Open();
 		public void CloseTaskManagementWindow() => taskManagementWindow.Close();
 
+		public void EnableInteractionUI() => interactionCanvas.enabled = true;
+		public void DisableInteractionUI() => interactionCanvas.enabled = false;
+
 		protected override void Awake()
 		{
 			base.Awake();
@@ -41,6 +45,7 @@ namespace UIStates
 			contextMenu.ThrowIfNull(nameof(contextMenu));
 			hotBar.ThrowIfNull(nameof(hotBar));
 			taskManagementWindow.ThrowIfNull(nameof(taskManagementWindow));
+			interactionCanvas.ThrowIfNull(nameof(interactionCanvas));
 		}
 		
         protected override void OnStateEnabled()

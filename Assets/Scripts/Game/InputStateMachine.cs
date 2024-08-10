@@ -4,13 +4,13 @@ namespace Game
 {
 	public class InputStateMachine
 	{
-		private IInputState currentInputState;
+		public IInputState CurrentInputState { get; private set; }
 
 		public void SetCurrentState(IInputState inputState)
 		{
-			currentInputState?.Disable();
-			currentInputState = inputState;
-			currentInputState?.Enable();
+			CurrentInputState?.Disable();
+			CurrentInputState = inputState;
+			CurrentInputState?.Enable();
 		}
 	}
 }

@@ -128,12 +128,14 @@ namespace Game
 
 		private void StartInteraction(Action<MonoBehaviour> interactionCallback)
 		{
+			_gameplayUIState.EnableInteractionUI();
 			interactionInputState.InteractionCallback = interactionCallback;
 			_subInputStateMachine.SetCurrentState(interactionInputState);
 		}
 
 		private void EndInteraction()
 		{
+			_gameplayUIState.DisableInteractionUI();
 			interactionInputState.InteractionCallback = null;
 			_subInputStateMachine.SetCurrentState(secondaryGameplayInputState);
 		}
@@ -176,7 +178,13 @@ namespace Game
 		private void EndContextMenuMode()
 		{
 			_mainInputStateMachine.SetCurrentState(gameplayInputState);
-			_subInputStateMachine.SetCurrentState(secondaryGameplayInputState);
+			
+			// Due to the possibility of a context mode to invoke the interaction mode,
+			// we have to add this check, so we don't override the state
+			if (_subInputStateMachine.CurrentInputState == contextMenuInputState)
+			{
+				_subInputStateMachine.SetCurrentState(secondaryGameplayInputState);
+			}
 		}
 		
 		private void RaisePauseGameRequested(object sender)

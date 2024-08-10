@@ -27,7 +27,7 @@ namespace CameraComponents
 		private void Update()
 		{
 			if (EventSystem.current.IsPointerOverGameObject())
-				return; // We don't want handle interactable raycasting if UI is being hovered
+				return; // We don't want to handle interactable raycasting if the UI is being hovered
 			
 			Ray ray = camera.ScreenPointToRay(Input.mousePosition);
 			Interactable interactable = null;

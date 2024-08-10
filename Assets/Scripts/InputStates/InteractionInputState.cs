@@ -41,8 +41,10 @@ namespace InputStates
 			_interactableRaycaster.InteractableSelectedPrimary -= OnInteractableSelectedPrimary;
 		}
 
-		private void OnCancelInteractionActionPerformed(InputAction.CallbackContext context) => 
+		private void OnCancelInteractionActionPerformed(InputAction.CallbackContext context)
+		{
 			CancelInteractionActionPerformed?.Invoke(this, EventArgs.Empty);
+		}
 
 		private void OnInteractableSelectedPrimary(object sender, InteractableRaycasterEventArgs args)
 		{
