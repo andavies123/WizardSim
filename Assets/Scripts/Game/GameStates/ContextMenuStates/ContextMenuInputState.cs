@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.InputAction;
 using static UnityEngine.InputSystem.PlayerInputActions;
 
-namespace InputStates
+namespace Game.GameStates.ContextMenuStates
 {
 	public class ContextMenuInputState : IInputState
 	{

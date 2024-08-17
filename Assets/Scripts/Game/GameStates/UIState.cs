@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace UIStates
+namespace Game.GameStates
 {
 	[RequireComponent(typeof(Canvas))]
 	public abstract class UIState : MonoBehaviour

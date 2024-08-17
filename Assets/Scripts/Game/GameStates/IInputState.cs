@@ -1,4 +1,4 @@
-﻿namespace InputStates
+﻿namespace Game.GameStates
 {
 	public interface IInputState
 	{

@@ -4,9 +4,9 @@ using InputStates.InputEventArgs;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace InputStates
+namespace Game.GameStates.GameplayStates
 {
-	public class GameplayInputState : IInputState
+	public class CameraInputState : IInputState
 	{
 		private PlayerInputActions _playerInputActions = new();
 		
@@ -24,18 +24,12 @@ namespace InputStates
 		public event EventHandler CameraLookActivatedEnded;
 		public event EventHandler<CameraZoomInputEventArgs> CameraZoomInputPerformed;
 
-		public Vector3 CurrentMoveValue
-		{
-			get
-			{
-				Vector2 horizontalMoveValue = CurrentHorizontalMoveValue;
-				return new Vector3(horizontalMoveValue.x, CurrentVerticalMoveValue, horizontalMoveValue.y);
-			}
-		}
+		public Vector3 CurrentMoveValue => new(CurrentHorizontalMoveValue.x, CurrentVerticalMoveValue, CurrentHorizontalMoveValue.y);
 		public Vector2 CurrentHorizontalMoveValue => _latestMoveContext.ReadValue<Vector2>();
 		public Vector2 CurrentLookValue => _latestLookContext.ReadValue<Vector2>();
 		public float CurrentVerticalMoveValue => _latestVerticalMoveContext.ReadValue<float>();
 
+		public bool IsEnabled { get; private set; }
 		public bool ShowInteractions => true;
 		public bool IsMoveActive { get; private set; }
 		public bool IsLookActive { get; private set; }
@@ -46,46 +40,48 @@ namespace InputStates
 		{
 			_playerInputActions ??= new PlayerInputActions();
 			
-			_playerInputActions.Gameplay.Move.started += OnMoveActionStarted;
-			_playerInputActions.Gameplay.Move.canceled += OnMoveActionCanceled;
-			_playerInputActions.Gameplay.Move.performed += OnMoveActionPerformed;
+			_playerInputActions.CameraControls.Move.started += OnMoveActionStarted;
+			_playerInputActions.CameraControls.Move.canceled += OnMoveActionCanceled;
+			_playerInputActions.CameraControls.Move.performed += OnMoveActionPerformed;
 
-			_playerInputActions.Gameplay.CameraLook.started += OnCameraLookActionStarted;
-			_playerInputActions.Gameplay.CameraLook.canceled += OnCameraLookActionCanceled;
-			_playerInputActions.Gameplay.CameraLook.performed += OnCameraLookActionPerformed;
+			_playerInputActions.CameraControls.CameraLook.started += OnCameraLookActionStarted;
+			_playerInputActions.CameraControls.CameraLook.canceled += OnCameraLookActionCanceled;
+			_playerInputActions.CameraControls.CameraLook.performed += OnCameraLookActionPerformed;
 
-			_playerInputActions.Gameplay.VerticalMove.started += OnVerticalMoveActionStarted;
-			_playerInputActions.Gameplay.VerticalMove.canceled += OnVerticalMoveActionCanceled;
-			_playerInputActions.Gameplay.VerticalMove.performed += OnVerticalMoveActionPerformed;
+			_playerInputActions.CameraControls.VerticalMove.started += OnVerticalMoveActionStarted;
+			_playerInputActions.CameraControls.VerticalMove.canceled += OnVerticalMoveActionCanceled;
+			_playerInputActions.CameraControls.VerticalMove.performed += OnVerticalMoveActionPerformed;
 
-			_playerInputActions.Gameplay.CameraLookActivate.started += OnCameraLookActivateActionStarted;
-			_playerInputActions.Gameplay.CameraLookActivate.canceled += OnCameraLookActivateActionCanceled;
+			_playerInputActions.CameraControls.CameraLookActivate.started += OnCameraLookActivateActionStarted;
+			_playerInputActions.CameraControls.CameraLookActivate.canceled += OnCameraLookActivateActionCanceled;
 
-			_playerInputActions.Gameplay.CameraZoom.performed += OnCameraZoomActionPerformed;
+			_playerInputActions.CameraControls.CameraZoom.performed += OnCameraZoomActionPerformed;
 			
-			_playerInputActions.Gameplay.Enable();
+			_playerInputActions.CameraControls.Enable();
+			IsEnabled = true;
 		}
 
 		public void Disable()
 		{
-			_playerInputActions.Gameplay.Disable();
+			_playerInputActions.CameraControls.Disable();
 			
-			_playerInputActions.Gameplay.Move.started -= OnMoveActionStarted;
-			_playerInputActions.Gameplay.Move.canceled -= OnMoveActionCanceled;
-			_playerInputActions.Gameplay.Move.performed -= OnMoveActionPerformed;
+			_playerInputActions.CameraControls.Move.started -= OnMoveActionStarted;
+			_playerInputActions.CameraControls.Move.canceled -= OnMoveActionCanceled;
+			_playerInputActions.CameraControls.Move.performed -= OnMoveActionPerformed;
 			
-			_playerInputActions.Gameplay.CameraLook.started -= OnCameraLookActionStarted;
-			_playerInputActions.Gameplay.CameraLook.canceled -= OnCameraLookActionCanceled;
-			_playerInputActions.Gameplay.CameraLook.performed -= OnCameraLookActionPerformed;
+			_playerInputActions.CameraControls.CameraLook.started -= OnCameraLookActionStarted;
+			_playerInputActions.CameraControls.CameraLook.canceled -= OnCameraLookActionCanceled;
+			_playerInputActions.CameraControls.CameraLook.performed -= OnCameraLookActionPerformed;
 
-			_playerInputActions.Gameplay.VerticalMove.started -= OnVerticalMoveActionStarted;
-			_playerInputActions.Gameplay.VerticalMove.canceled -= OnVerticalMoveActionCanceled;
-			_playerInputActions.Gameplay.VerticalMove.performed -= OnVerticalMoveActionPerformed;
+			_playerInputActions.CameraControls.VerticalMove.started -= OnVerticalMoveActionStarted;
+			_playerInputActions.CameraControls.VerticalMove.canceled -= OnVerticalMoveActionCanceled;
+			_playerInputActions.CameraControls.VerticalMove.performed -= OnVerticalMoveActionPerformed;
 
-			_playerInputActions.Gameplay.CameraLookActivate.started -= OnCameraLookActivateActionStarted;
-			_playerInputActions.Gameplay.CameraLookActivate.canceled -= OnCameraLookActivateActionCanceled;
+			_playerInputActions.CameraControls.CameraLookActivate.started -= OnCameraLookActivateActionStarted;
+			_playerInputActions.CameraControls.CameraLookActivate.canceled -= OnCameraLookActivateActionCanceled;
 
-			_playerInputActions.Gameplay.CameraZoom.performed -= OnCameraZoomActionPerformed;
+			_playerInputActions.CameraControls.CameraZoom.performed -= OnCameraZoomActionPerformed;
+			IsEnabled = false;
 		}
 
 		private void OnMoveActionStarted(InputAction.CallbackContext callbackContext)
@@ -100,7 +96,10 @@ namespace InputStates
 			MoveActionEnded?.Invoke(this, EventArgs.Empty);
 		}
 
-		private void OnMoveActionPerformed(InputAction.CallbackContext callbackContext) => _latestMoveContext = callbackContext;
+		private void OnMoveActionPerformed(InputAction.CallbackContext callbackContext)
+		{
+			_latestMoveContext = callbackContext;
+		}
 
 		private void OnVerticalMoveActionStarted(InputAction.CallbackContext callbackContext)
 		{
@@ -114,7 +113,10 @@ namespace InputStates
 			VerticalMoveActionEnded?.Invoke(this, EventArgs.Empty);
 		}
 
-		private void OnVerticalMoveActionPerformed(InputAction.CallbackContext callbackContext) => _latestVerticalMoveContext = callbackContext;
+		private void OnVerticalMoveActionPerformed(InputAction.CallbackContext callbackContext)
+		{
+			_latestVerticalMoveContext = callbackContext;
+		}
 
 		private void OnCameraLookActionStarted(InputAction.CallbackContext callbackContext)
 		{
@@ -128,7 +130,10 @@ namespace InputStates
 			LookActionEnded?.Invoke(this, EventArgs.Empty);
 		}
 
-		private void OnCameraLookActionPerformed(InputAction.CallbackContext callbackContext) => _latestLookContext = callbackContext;
+		private void OnCameraLookActionPerformed(InputAction.CallbackContext callbackContext)
+		{
+			_latestLookContext = callbackContext;
+		}
 
 		private void OnCameraLookActivateActionStarted(InputAction.CallbackContext callbackContext)
 		{

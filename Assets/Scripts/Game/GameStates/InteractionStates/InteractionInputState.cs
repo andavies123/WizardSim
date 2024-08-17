@@ -2,15 +2,17 @@
 using CameraComponents;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.InputSystem.InputAction;
+using static UnityEngine.InputSystem.PlayerInputActions;
 
-namespace InputStates
+namespace Game.GameStates.InteractionStates
 {
 	public class InteractionInputState : IInputState
 	{
 		private readonly PlayerInputActions _playerInputActions = new();
 		private readonly InteractableRaycaster _interactableRaycaster;
 		
-		private PlayerInputActions.InteractionActions _interaction;
+		private InteractionActions _interaction;
 		
 		public event EventHandler CancelInteractionActionPerformed;
 		
@@ -26,7 +28,6 @@ namespace InputStates
 		public void Enable()
 		{
 			_interaction.CancelInteraction.performed += OnCancelInteractionActionPerformed;
-
 			_interactableRaycaster.InteractableSelectedPrimary += OnInteractableSelectedPrimary;
 			
 			_interaction.Enable();
@@ -37,11 +38,10 @@ namespace InputStates
 			_interaction.Disable();
 
 			_interaction.CancelInteraction.performed -= OnCancelInteractionActionPerformed;
-
 			_interactableRaycaster.InteractableSelectedPrimary -= OnInteractableSelectedPrimary;
 		}
 
-		private void OnCancelInteractionActionPerformed(InputAction.CallbackContext context)
+		private void OnCancelInteractionActionPerformed(CallbackContext context)
 		{
 			CancelInteractionActionPerformed?.Invoke(this, EventArgs.Empty);
 		}
@@ -51,7 +51,7 @@ namespace InputStates
 			if (InteractionCallback != null)
 			{
 				InteractionCallback.Invoke(args.Interactable);
-				args.Interactable.IsSelected = false; // Gets marked as selected
+				args.Interactable.IsSelected = false; // Gets marked as not selected
 			}
 		}
 	}

@@ -3,54 +3,51 @@ using CameraComponents;
 using Game.MessengerSystem;
 using InputStates.InputEventArgs;
 using UI.Messages;
-using UIStates;
 using UnityEngine.InputSystem;
 
-namespace InputStates
+namespace Game.GameStates.GameplayStates
 {
-	public class SecondaryGameplayInputState : IInputState
+	public class GameplayInputState : IInputState
 	{
 		private readonly PlayerInputActions _playerInputActions = new();
 		private readonly InteractableRaycaster _interactableRaycaster;
-		private readonly GameplayUIState _gameplayUIState;
 		
-		private PlayerInputActions.SecondaryGameplayActions _secondaryGameplay;
+		private PlayerInputActions.GameplayActions _gameplay;
 		
-		public SecondaryGameplayInputState(InteractableRaycaster interactableRaycaster, GameplayUIState gameplayUIState)
+		public GameplayInputState(InteractableRaycaster interactableRaycaster)
 		{
 			_interactableRaycaster = interactableRaycaster;
-			_gameplayUIState = gameplayUIState;
-			_secondaryGameplay = _playerInputActions.SecondaryGameplay;
+			_gameplay = _playerInputActions.Gameplay;
 		}
 		
-		public event EventHandler PauseActionPerformed;
+		public event EventHandler PauseInputPerformed;
 		public event EventHandler<OpenInfoWindowEventArgs> OpenInfoWindowRequested;
 		public event EventHandler<OpenContextMenuEventArgs> OpenContextMenuRequested;
 		public event EventHandler CloseInfoWindowRequested;
 		public event EventHandler CloseContextMenuRequested;
 		public event EventHandler OpenTaskManagementRequested;
 		
-		public bool ShowInteractions => false;
+		public bool ShowInteractions => true;
 
 		public void Enable()
 		{
-			_secondaryGameplay.PauseGame.performed += OnPauseActionPerformed;
-			_secondaryGameplay.OpenTaskManagement.performed += OnOpenTaskManagementActionPerformed;
+			_gameplay.PauseGame.performed += OnPauseActionPerformed;
+			_gameplay.OpenTaskManagement.performed += OnOpenTaskManagementActionPerformed;
 
 			_interactableRaycaster.InteractableSelectedPrimary += OnInteractablePrimaryActionSelected;
 			_interactableRaycaster.NonInteractableSelectedPrimary += OnNonInteractablePrimaryActionSelected;
 			
 			GlobalMessenger.Subscribe<OpenContextMenuRequest>(OnOpenContextMenuRequestReceived);
 
-			_secondaryGameplay.Enable();
+			_gameplay.Enable();
 		}
 
 		public void Disable()
 		{
-			_secondaryGameplay.Disable();
+			_gameplay.Disable();
 			
-			_secondaryGameplay.PauseGame.performed -= OnPauseActionPerformed;
-			_secondaryGameplay.OpenTaskManagement.performed -= OnOpenTaskManagementActionPerformed;
+			_gameplay.PauseGame.performed -= OnPauseActionPerformed;
+			_gameplay.OpenTaskManagement.performed -= OnOpenTaskManagementActionPerformed;
 
 			_interactableRaycaster.InteractableSelectedPrimary -= OnInteractablePrimaryActionSelected;
 			_interactableRaycaster.NonInteractableSelectedPrimary -= OnNonInteractablePrimaryActionSelected;
@@ -58,7 +55,10 @@ namespace InputStates
 			GlobalMessenger.Unsubscribe<OpenContextMenuRequest>(OnOpenContextMenuRequestReceived);
 		}
 		
-		private void OnPauseActionPerformed(InputAction.CallbackContext callbackContext) => PauseActionPerformed?.Invoke(this, EventArgs.Empty);
+		private void OnPauseActionPerformed(InputAction.CallbackContext callbackContext)
+		{
+			PauseInputPerformed?.Invoke(this, EventArgs.Empty);
+		}
 
 		private void OnInteractablePrimaryActionSelected(object sender, InteractableRaycasterEventArgs args)
 		{

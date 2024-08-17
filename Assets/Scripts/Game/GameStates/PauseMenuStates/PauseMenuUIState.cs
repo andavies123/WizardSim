@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UIStates
+namespace Game.GameStates.PauseMenuStates
 {
 	public class PauseMenuUIState : UIState
 	{

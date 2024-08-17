@@ -27,296 +27,49 @@ namespace UnityEngine.InputSystem
     ""maps"": [
         {
             ""name"": ""Gameplay"",
-            ""id"": ""df70fa95-8a34-4494-b137-73ab6b9c7d37"",
+            ""id"": ""943a80f5-f591-4dd8-bca0-b2d0eecf9011"",
             ""actions"": [
                 {
-                    ""name"": ""Move"",
-                    ""type"": ""Value"",
-                    ""id"": ""351f2ccd-1f9f-44bf-9bec-d62ac5c5f408"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""Camera Look Activate"",
+                    ""name"": ""Pause Game"",
                     ""type"": ""Button"",
-                    ""id"": ""3ed94f25-6b0b-45bf-be52-8e524ec14823"",
+                    ""id"": ""b01a66f5-843b-4a50-b973-c78f5d7cbdf0"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Camera Look"",
-                    ""type"": ""Value"",
-                    ""id"": ""6b444451-8a00-4d00-a97e-f47457f736a8"",
-                    ""expectedControlType"": ""Vector2"",
+                    ""name"": ""Open Task Management"",
+                    ""type"": ""Button"",
+                    ""id"": ""28d04ff8-0584-4240-aadd-833c1a7b685b"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""Camera Zoom"",
-                    ""type"": ""Value"",
-                    ""id"": ""f9809272-15be-43cc-96e7-d374d1c8eae6"",
-                    ""expectedControlType"": ""Axis"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""Vertical Move"",
-                    ""type"": ""Value"",
-                    ""id"": ""3d741956-bef1-4c09-b90b-00fb62d715ef"",
-                    ""expectedControlType"": ""Axis"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""978bfe49-cc26-4a3d-ab7b-7d7a29327403"",
-                    ""path"": ""<Gamepad>/leftStick"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""WASD"",
-                    ""id"": ""00ca640b-d935-4593-8157-c05846ea39b3"",
-                    ""path"": ""Dpad"",
+                    ""id"": ""9f1e576e-ed2b-49af-acea-ddd7c2241d5d"",
+                    ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Move"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""e2062cb9-1b15-46a2-838c-2f8d72a0bdd9"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""up"",
-                    ""id"": ""8180e8bd-4097-4f4e-ab88-4523101a6ce9"",
-                    ""path"": ""<Keyboard>/upArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""320bffee-a40b-4347-ac70-c210eb8bc73a"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""down"",
-                    ""id"": ""1c5327b5-f71c-4f60-99c7-4e737386f1d1"",
-                    ""path"": ""<Keyboard>/downArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""d2581a9b-1d11-4566-b27d-b92aff5fabbc"",
-                    ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""left"",
-                    ""id"": ""2e46982e-44cc-431b-9f0b-c11910bf467a"",
-                    ""path"": ""<Keyboard>/leftArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""fcfe95b8-67b9-4526-84b5-5d0bc98d6400"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""right"",
-                    ""id"": ""77bff152-3580-4b21-b6de-dcd0c7e41164"",
-                    ""path"": ""<Keyboard>/rightArrow"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""1635d3fe-58b6-4ba9-a4e2-f4b964f6b5c8"",
-                    ""path"": ""<XRController>/{Primary2DAxis}"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""XR"",
-                    ""action"": ""Move"",
+                    ""action"": ""Pause Game"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""3ea4d645-4504-4529-b061-ab81934c3752"",
-                    ""path"": ""<Joystick>/stick"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Joystick"",
-                    ""action"": ""Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""c1f7a91b-d0fd-4a62-997e-7fb9b69bf235"",
-                    ""path"": ""<Gamepad>/rightStick"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Gamepad"",
-                    ""action"": ""Camera Look"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""8c8e490b-c610-4785-884f-f04217b23ca4"",
-                    ""path"": ""<Pointer>/delta"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": "";Keyboard&Mouse;Touch"",
-                    ""action"": ""Camera Look"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""3e5f5442-8668-4b27-a940-df99bad7e831"",
-                    ""path"": ""<Joystick>/{Hatswitch}"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Joystick"",
-                    ""action"": ""Camera Look"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""UpDown"",
-                    ""id"": ""673ee5e9-ef61-427b-b852-c1d14c2496e9"",
-                    ""path"": ""1DAxis"",
+                    ""id"": ""9367d0b3-76b2-496f-97df-51c90a2baae0"",
+                    ""path"": ""<Keyboard>/tab"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Vertical Move"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""negative"",
-                    ""id"": ""711077fb-e0d6-4d1d-8b06-15b186549018"",
-                    ""path"": ""<Keyboard>/leftShift"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Vertical Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""positive"",
-                    ""id"": ""c261f92a-134c-4d03-b2c8-44f1763dd1f3"",
-                    ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Vertical Move"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""197a3cbe-6f7d-4d2d-8a25-4d6f2e13a280"",
-                    ""path"": ""<Mouse>/middleButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Camera Look Activate"",
+                    ""action"": ""Open Task Management"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""Mouse Wheel"",
-                    ""id"": ""9837e036-c1b8-4fff-8b00-36889351c4d5"",
-                    ""path"": ""1DAxis"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Camera Zoom"",
-                    ""isComposite"": true,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": ""negative"",
-                    ""id"": ""9867540d-2fdf-4ae7-a610-3f8127a8eb98"",
-                    ""path"": ""<Mouse>/scroll/up"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Camera Zoom"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""positive"",
-                    ""id"": ""65db52a4-b1bf-4b1b-b90d-1d9ee41f5c56"",
-                    ""path"": ""<Mouse>/scroll/down"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Camera Zoom"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -921,54 +674,6 @@ namespace UnityEngine.InputSystem
             ]
         },
         {
-            ""name"": ""SecondaryGameplay"",
-            ""id"": ""943a80f5-f591-4dd8-bca0-b2d0eecf9011"",
-            ""actions"": [
-                {
-                    ""name"": ""Pause Game"",
-                    ""type"": ""Button"",
-                    ""id"": ""b01a66f5-843b-4a50-b973-c78f5d7cbdf0"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Open Task Management"",
-                    ""type"": ""Button"",
-                    ""id"": ""28d04ff8-0584-4240-aadd-833c1a7b685b"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""9f1e576e-ed2b-49af-acea-ddd7c2241d5d"",
-                    ""path"": ""<Keyboard>/escape"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Pause Game"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""9367d0b3-76b2-496f-97df-51c90a2baae0"",
-                    ""path"": ""<Keyboard>/tab"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Open Task Management"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
-        },
-        {
             ""name"": ""Task Management"",
             ""id"": ""fe14e39d-fed0-4336-9cea-9564c304239f"",
             ""actions"": [
@@ -1129,6 +834,301 @@ namespace UnityEngine.InputSystem
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""Camera Controls"",
+            ""id"": ""df70fa95-8a34-4494-b137-73ab6b9c7d37"",
+            ""actions"": [
+                {
+                    ""name"": ""Move"",
+                    ""type"": ""Value"",
+                    ""id"": ""351f2ccd-1f9f-44bf-9bec-d62ac5c5f408"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Camera Look Activate"",
+                    ""type"": ""Button"",
+                    ""id"": ""3ed94f25-6b0b-45bf-be52-8e524ec14823"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Camera Look"",
+                    ""type"": ""Value"",
+                    ""id"": ""6b444451-8a00-4d00-a97e-f47457f736a8"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Camera Zoom"",
+                    ""type"": ""Value"",
+                    ""id"": ""f9809272-15be-43cc-96e7-d374d1c8eae6"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Vertical Move"",
+                    ""type"": ""Value"",
+                    ""id"": ""3d741956-bef1-4c09-b90b-00fb62d715ef"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""978bfe49-cc26-4a3d-ab7b-7d7a29327403"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""WASD"",
+                    ""id"": ""00ca640b-d935-4593-8157-c05846ea39b3"",
+                    ""path"": ""Dpad"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""e2062cb9-1b15-46a2-838c-2f8d72a0bdd9"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""8180e8bd-4097-4f4e-ab88-4523101a6ce9"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""320bffee-a40b-4347-ac70-c210eb8bc73a"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""1c5327b5-f71c-4f60-99c7-4e737386f1d1"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""d2581a9b-1d11-4566-b27d-b92aff5fabbc"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""2e46982e-44cc-431b-9f0b-c11910bf467a"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""fcfe95b8-67b9-4526-84b5-5d0bc98d6400"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""77bff152-3580-4b21-b6de-dcd0c7e41164"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1635d3fe-58b6-4ba9-a4e2-f4b964f6b5c8"",
+                    ""path"": ""<XRController>/{Primary2DAxis}"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""XR"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3ea4d645-4504-4529-b061-ab81934c3752"",
+                    ""path"": ""<Joystick>/stick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Joystick"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c1f7a91b-d0fd-4a62-997e-7fb9b69bf235"",
+                    ""path"": ""<Gamepad>/rightStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Camera Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8c8e490b-c610-4785-884f-f04217b23ca4"",
+                    ""path"": ""<Pointer>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse;Touch"",
+                    ""action"": ""Camera Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3e5f5442-8668-4b27-a940-df99bad7e831"",
+                    ""path"": ""<Joystick>/{Hatswitch}"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Joystick"",
+                    ""action"": ""Camera Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""UpDown"",
+                    ""id"": ""673ee5e9-ef61-427b-b852-c1d14c2496e9"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Vertical Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""711077fb-e0d6-4d1d-8b06-15b186549018"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Vertical Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""c261f92a-134c-4d03-b2c8-44f1763dd1f3"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Vertical Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""197a3cbe-6f7d-4d2d-8a25-4d6f2e13a280"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Camera Look Activate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""Mouse Wheel"",
+                    ""id"": ""9837e036-c1b8-4fff-8b00-36889351c4d5"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Camera Zoom"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""9867540d-2fdf-4ae7-a610-3f8127a8eb98"",
+                    ""path"": ""<Mouse>/scroll/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Camera Zoom"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""65db52a4-b1bf-4b1b-b90d-1d9ee41f5c56"",
+                    ""path"": ""<Mouse>/scroll/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Camera Zoom"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -1196,11 +1196,8 @@ namespace UnityEngine.InputSystem
 }");
             // Gameplay
             m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
-            m_Gameplay_Move = m_Gameplay.FindAction("Move", throwIfNotFound: true);
-            m_Gameplay_CameraLookActivate = m_Gameplay.FindAction("Camera Look Activate", throwIfNotFound: true);
-            m_Gameplay_CameraLook = m_Gameplay.FindAction("Camera Look", throwIfNotFound: true);
-            m_Gameplay_CameraZoom = m_Gameplay.FindAction("Camera Zoom", throwIfNotFound: true);
-            m_Gameplay_VerticalMove = m_Gameplay.FindAction("Vertical Move", throwIfNotFound: true);
+            m_Gameplay_PauseGame = m_Gameplay.FindAction("Pause Game", throwIfNotFound: true);
+            m_Gameplay_OpenTaskManagement = m_Gameplay.FindAction("Open Task Management", throwIfNotFound: true);
             // Pause Menu
             m_PauseMenu = asset.FindActionMap("Pause Menu", throwIfNotFound: true);
             m_PauseMenu_ResumeGame = m_PauseMenu.FindAction("Resume Game", throwIfNotFound: true);
@@ -1222,10 +1219,6 @@ namespace UnityEngine.InputSystem
             // Placement Mode
             m_PlacementMode = asset.FindActionMap("Placement Mode", throwIfNotFound: true);
             m_PlacementMode_EndPlacementMode = m_PlacementMode.FindAction("End Placement Mode", throwIfNotFound: true);
-            // SecondaryGameplay
-            m_SecondaryGameplay = asset.FindActionMap("SecondaryGameplay", throwIfNotFound: true);
-            m_SecondaryGameplay_PauseGame = m_SecondaryGameplay.FindAction("Pause Game", throwIfNotFound: true);
-            m_SecondaryGameplay_OpenTaskManagement = m_SecondaryGameplay.FindAction("Open Task Management", throwIfNotFound: true);
             // Task Management
             m_TaskManagement = asset.FindActionMap("Task Management", throwIfNotFound: true);
             m_TaskManagement_CloseWindow = m_TaskManagement.FindAction("Close Window", throwIfNotFound: true);
@@ -1234,6 +1227,13 @@ namespace UnityEngine.InputSystem
             m_ContextMenu_Select = m_ContextMenu.FindAction("Select", throwIfNotFound: true);
             m_ContextMenu_Close = m_ContextMenu.FindAction("Close", throwIfNotFound: true);
             m_ContextMenu_Navigation = m_ContextMenu.FindAction("Navigation", throwIfNotFound: true);
+            // Camera Controls
+            m_CameraControls = asset.FindActionMap("Camera Controls", throwIfNotFound: true);
+            m_CameraControls_Move = m_CameraControls.FindAction("Move", throwIfNotFound: true);
+            m_CameraControls_CameraLookActivate = m_CameraControls.FindAction("Camera Look Activate", throwIfNotFound: true);
+            m_CameraControls_CameraLook = m_CameraControls.FindAction("Camera Look", throwIfNotFound: true);
+            m_CameraControls_CameraZoom = m_CameraControls.FindAction("Camera Zoom", throwIfNotFound: true);
+            m_CameraControls_VerticalMove = m_CameraControls.FindAction("Vertical Move", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -1295,20 +1295,14 @@ namespace UnityEngine.InputSystem
         // Gameplay
         private readonly InputActionMap m_Gameplay;
         private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
-        private readonly InputAction m_Gameplay_Move;
-        private readonly InputAction m_Gameplay_CameraLookActivate;
-        private readonly InputAction m_Gameplay_CameraLook;
-        private readonly InputAction m_Gameplay_CameraZoom;
-        private readonly InputAction m_Gameplay_VerticalMove;
+        private readonly InputAction m_Gameplay_PauseGame;
+        private readonly InputAction m_Gameplay_OpenTaskManagement;
         public struct GameplayActions
         {
             private @PlayerInputActions m_Wrapper;
             public GameplayActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
-            public InputAction @Move => m_Wrapper.m_Gameplay_Move;
-            public InputAction @CameraLookActivate => m_Wrapper.m_Gameplay_CameraLookActivate;
-            public InputAction @CameraLook => m_Wrapper.m_Gameplay_CameraLook;
-            public InputAction @CameraZoom => m_Wrapper.m_Gameplay_CameraZoom;
-            public InputAction @VerticalMove => m_Wrapper.m_Gameplay_VerticalMove;
+            public InputAction @PauseGame => m_Wrapper.m_Gameplay_PauseGame;
+            public InputAction @OpenTaskManagement => m_Wrapper.m_Gameplay_OpenTaskManagement;
             public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -1318,40 +1312,22 @@ namespace UnityEngine.InputSystem
             {
                 if (instance == null || m_Wrapper.m_GameplayActionsCallbackInterfaces.Contains(instance)) return;
                 m_Wrapper.m_GameplayActionsCallbackInterfaces.Add(instance);
-                @Move.started += instance.OnMove;
-                @Move.performed += instance.OnMove;
-                @Move.canceled += instance.OnMove;
-                @CameraLookActivate.started += instance.OnCameraLookActivate;
-                @CameraLookActivate.performed += instance.OnCameraLookActivate;
-                @CameraLookActivate.canceled += instance.OnCameraLookActivate;
-                @CameraLook.started += instance.OnCameraLook;
-                @CameraLook.performed += instance.OnCameraLook;
-                @CameraLook.canceled += instance.OnCameraLook;
-                @CameraZoom.started += instance.OnCameraZoom;
-                @CameraZoom.performed += instance.OnCameraZoom;
-                @CameraZoom.canceled += instance.OnCameraZoom;
-                @VerticalMove.started += instance.OnVerticalMove;
-                @VerticalMove.performed += instance.OnVerticalMove;
-                @VerticalMove.canceled += instance.OnVerticalMove;
+                @PauseGame.started += instance.OnPauseGame;
+                @PauseGame.performed += instance.OnPauseGame;
+                @PauseGame.canceled += instance.OnPauseGame;
+                @OpenTaskManagement.started += instance.OnOpenTaskManagement;
+                @OpenTaskManagement.performed += instance.OnOpenTaskManagement;
+                @OpenTaskManagement.canceled += instance.OnOpenTaskManagement;
             }
 
             private void UnregisterCallbacks(IGameplayActions instance)
             {
-                @Move.started -= instance.OnMove;
-                @Move.performed -= instance.OnMove;
-                @Move.canceled -= instance.OnMove;
-                @CameraLookActivate.started -= instance.OnCameraLookActivate;
-                @CameraLookActivate.performed -= instance.OnCameraLookActivate;
-                @CameraLookActivate.canceled -= instance.OnCameraLookActivate;
-                @CameraLook.started -= instance.OnCameraLook;
-                @CameraLook.performed -= instance.OnCameraLook;
-                @CameraLook.canceled -= instance.OnCameraLook;
-                @CameraZoom.started -= instance.OnCameraZoom;
-                @CameraZoom.performed -= instance.OnCameraZoom;
-                @CameraZoom.canceled -= instance.OnCameraZoom;
-                @VerticalMove.started -= instance.OnVerticalMove;
-                @VerticalMove.performed -= instance.OnVerticalMove;
-                @VerticalMove.canceled -= instance.OnVerticalMove;
+                @PauseGame.started -= instance.OnPauseGame;
+                @PauseGame.performed -= instance.OnPauseGame;
+                @PauseGame.canceled -= instance.OnPauseGame;
+                @OpenTaskManagement.started -= instance.OnOpenTaskManagement;
+                @OpenTaskManagement.performed -= instance.OnOpenTaskManagement;
+                @OpenTaskManagement.canceled -= instance.OnOpenTaskManagement;
             }
 
             public void RemoveCallbacks(IGameplayActions instance)
@@ -1626,60 +1602,6 @@ namespace UnityEngine.InputSystem
         }
         public PlacementModeActions @PlacementMode => new PlacementModeActions(this);
 
-        // SecondaryGameplay
-        private readonly InputActionMap m_SecondaryGameplay;
-        private List<ISecondaryGameplayActions> m_SecondaryGameplayActionsCallbackInterfaces = new List<ISecondaryGameplayActions>();
-        private readonly InputAction m_SecondaryGameplay_PauseGame;
-        private readonly InputAction m_SecondaryGameplay_OpenTaskManagement;
-        public struct SecondaryGameplayActions
-        {
-            private @PlayerInputActions m_Wrapper;
-            public SecondaryGameplayActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
-            public InputAction @PauseGame => m_Wrapper.m_SecondaryGameplay_PauseGame;
-            public InputAction @OpenTaskManagement => m_Wrapper.m_SecondaryGameplay_OpenTaskManagement;
-            public InputActionMap Get() { return m_Wrapper.m_SecondaryGameplay; }
-            public void Enable() { Get().Enable(); }
-            public void Disable() { Get().Disable(); }
-            public bool enabled => Get().enabled;
-            public static implicit operator InputActionMap(SecondaryGameplayActions set) { return set.Get(); }
-            public void AddCallbacks(ISecondaryGameplayActions instance)
-            {
-                if (instance == null || m_Wrapper.m_SecondaryGameplayActionsCallbackInterfaces.Contains(instance)) return;
-                m_Wrapper.m_SecondaryGameplayActionsCallbackInterfaces.Add(instance);
-                @PauseGame.started += instance.OnPauseGame;
-                @PauseGame.performed += instance.OnPauseGame;
-                @PauseGame.canceled += instance.OnPauseGame;
-                @OpenTaskManagement.started += instance.OnOpenTaskManagement;
-                @OpenTaskManagement.performed += instance.OnOpenTaskManagement;
-                @OpenTaskManagement.canceled += instance.OnOpenTaskManagement;
-            }
-
-            private void UnregisterCallbacks(ISecondaryGameplayActions instance)
-            {
-                @PauseGame.started -= instance.OnPauseGame;
-                @PauseGame.performed -= instance.OnPauseGame;
-                @PauseGame.canceled -= instance.OnPauseGame;
-                @OpenTaskManagement.started -= instance.OnOpenTaskManagement;
-                @OpenTaskManagement.performed -= instance.OnOpenTaskManagement;
-                @OpenTaskManagement.canceled -= instance.OnOpenTaskManagement;
-            }
-
-            public void RemoveCallbacks(ISecondaryGameplayActions instance)
-            {
-                if (m_Wrapper.m_SecondaryGameplayActionsCallbackInterfaces.Remove(instance))
-                    UnregisterCallbacks(instance);
-            }
-
-            public void SetCallbacks(ISecondaryGameplayActions instance)
-            {
-                foreach (var item in m_Wrapper.m_SecondaryGameplayActionsCallbackInterfaces)
-                    UnregisterCallbacks(item);
-                m_Wrapper.m_SecondaryGameplayActionsCallbackInterfaces.Clear();
-                AddCallbacks(instance);
-            }
-        }
-        public SecondaryGameplayActions @SecondaryGameplay => new SecondaryGameplayActions(this);
-
         // Task Management
         private readonly InputActionMap m_TaskManagement;
         private List<ITaskManagementActions> m_TaskManagementActionsCallbackInterfaces = new List<ITaskManagementActions>();
@@ -1787,6 +1709,84 @@ namespace UnityEngine.InputSystem
             }
         }
         public ContextMenuActions @ContextMenu => new ContextMenuActions(this);
+
+        // Camera Controls
+        private readonly InputActionMap m_CameraControls;
+        private List<ICameraControlsActions> m_CameraControlsActionsCallbackInterfaces = new List<ICameraControlsActions>();
+        private readonly InputAction m_CameraControls_Move;
+        private readonly InputAction m_CameraControls_CameraLookActivate;
+        private readonly InputAction m_CameraControls_CameraLook;
+        private readonly InputAction m_CameraControls_CameraZoom;
+        private readonly InputAction m_CameraControls_VerticalMove;
+        public struct CameraControlsActions
+        {
+            private @PlayerInputActions m_Wrapper;
+            public CameraControlsActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Move => m_Wrapper.m_CameraControls_Move;
+            public InputAction @CameraLookActivate => m_Wrapper.m_CameraControls_CameraLookActivate;
+            public InputAction @CameraLook => m_Wrapper.m_CameraControls_CameraLook;
+            public InputAction @CameraZoom => m_Wrapper.m_CameraControls_CameraZoom;
+            public InputAction @VerticalMove => m_Wrapper.m_CameraControls_VerticalMove;
+            public InputActionMap Get() { return m_Wrapper.m_CameraControls; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(CameraControlsActions set) { return set.Get(); }
+            public void AddCallbacks(ICameraControlsActions instance)
+            {
+                if (instance == null || m_Wrapper.m_CameraControlsActionsCallbackInterfaces.Contains(instance)) return;
+                m_Wrapper.m_CameraControlsActionsCallbackInterfaces.Add(instance);
+                @Move.started += instance.OnMove;
+                @Move.performed += instance.OnMove;
+                @Move.canceled += instance.OnMove;
+                @CameraLookActivate.started += instance.OnCameraLookActivate;
+                @CameraLookActivate.performed += instance.OnCameraLookActivate;
+                @CameraLookActivate.canceled += instance.OnCameraLookActivate;
+                @CameraLook.started += instance.OnCameraLook;
+                @CameraLook.performed += instance.OnCameraLook;
+                @CameraLook.canceled += instance.OnCameraLook;
+                @CameraZoom.started += instance.OnCameraZoom;
+                @CameraZoom.performed += instance.OnCameraZoom;
+                @CameraZoom.canceled += instance.OnCameraZoom;
+                @VerticalMove.started += instance.OnVerticalMove;
+                @VerticalMove.performed += instance.OnVerticalMove;
+                @VerticalMove.canceled += instance.OnVerticalMove;
+            }
+
+            private void UnregisterCallbacks(ICameraControlsActions instance)
+            {
+                @Move.started -= instance.OnMove;
+                @Move.performed -= instance.OnMove;
+                @Move.canceled -= instance.OnMove;
+                @CameraLookActivate.started -= instance.OnCameraLookActivate;
+                @CameraLookActivate.performed -= instance.OnCameraLookActivate;
+                @CameraLookActivate.canceled -= instance.OnCameraLookActivate;
+                @CameraLook.started -= instance.OnCameraLook;
+                @CameraLook.performed -= instance.OnCameraLook;
+                @CameraLook.canceled -= instance.OnCameraLook;
+                @CameraZoom.started -= instance.OnCameraZoom;
+                @CameraZoom.performed -= instance.OnCameraZoom;
+                @CameraZoom.canceled -= instance.OnCameraZoom;
+                @VerticalMove.started -= instance.OnVerticalMove;
+                @VerticalMove.performed -= instance.OnVerticalMove;
+                @VerticalMove.canceled -= instance.OnVerticalMove;
+            }
+
+            public void RemoveCallbacks(ICameraControlsActions instance)
+            {
+                if (m_Wrapper.m_CameraControlsActionsCallbackInterfaces.Remove(instance))
+                    UnregisterCallbacks(instance);
+            }
+
+            public void SetCallbacks(ICameraControlsActions instance)
+            {
+                foreach (var item in m_Wrapper.m_CameraControlsActionsCallbackInterfaces)
+                    UnregisterCallbacks(item);
+                m_Wrapper.m_CameraControlsActionsCallbackInterfaces.Clear();
+                AddCallbacks(instance);
+            }
+        }
+        public CameraControlsActions @CameraControls => new CameraControlsActions(this);
         private int m_KeyboardMouseSchemeIndex = -1;
         public InputControlScheme KeyboardMouseScheme
         {
@@ -1834,11 +1834,8 @@ namespace UnityEngine.InputSystem
         }
         public interface IGameplayActions
         {
-            void OnMove(InputAction.CallbackContext context);
-            void OnCameraLookActivate(InputAction.CallbackContext context);
-            void OnCameraLook(InputAction.CallbackContext context);
-            void OnCameraZoom(InputAction.CallbackContext context);
-            void OnVerticalMove(InputAction.CallbackContext context);
+            void OnPauseGame(InputAction.CallbackContext context);
+            void OnOpenTaskManagement(InputAction.CallbackContext context);
         }
         public interface IPauseMenuActions
         {
@@ -1865,11 +1862,6 @@ namespace UnityEngine.InputSystem
         {
             void OnEndPlacementMode(InputAction.CallbackContext context);
         }
-        public interface ISecondaryGameplayActions
-        {
-            void OnPauseGame(InputAction.CallbackContext context);
-            void OnOpenTaskManagement(InputAction.CallbackContext context);
-        }
         public interface ITaskManagementActions
         {
             void OnCloseWindow(InputAction.CallbackContext context);
@@ -1879,6 +1871,14 @@ namespace UnityEngine.InputSystem
             void OnSelect(InputAction.CallbackContext context);
             void OnClose(InputAction.CallbackContext context);
             void OnNavigation(InputAction.CallbackContext context);
+        }
+        public interface ICameraControlsActions
+        {
+            void OnMove(InputAction.CallbackContext context);
+            void OnCameraLookActivate(InputAction.CallbackContext context);
+            void OnCameraLook(InputAction.CallbackContext context);
+            void OnCameraZoom(InputAction.CallbackContext context);
+            void OnVerticalMove(InputAction.CallbackContext context);
         }
     }
 }

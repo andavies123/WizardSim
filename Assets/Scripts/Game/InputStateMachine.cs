@@ -1,4 +1,5 @@
-﻿using InputStates;
+﻿using Game.GameStates;
+using InputStates;
 
 namespace Game
 {

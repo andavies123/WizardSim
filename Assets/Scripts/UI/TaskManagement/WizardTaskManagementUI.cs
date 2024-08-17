@@ -22,14 +22,10 @@ namespace UI.TaskManagement
 
 			unassignedTaskListUI.TaskDeleted += OnTaskDeletedThroughUI;
 			assignedTaskListUI.TaskDeleted += OnTaskDeletedThroughUI;
-			
-			gameObject.SetActive(true);
 		}
 
 		public void Close()
 		{
-			gameObject.SetActive(false);
-			
 			wizardTaskManager.TaskAssigned -= OnTaskAssigned;
 			wizardTaskManager.TaskAdded -= OnTaskAdded;
 			wizardTaskManager.TaskRemoved -= OnTaskRemoved;

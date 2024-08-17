@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.InputAction;
 using static UnityEngine.InputSystem.PlayerInputActions;
 
-namespace InputStates
+namespace Game.GameStates.TaskManagementGameStates
 {
 	public class TaskManagementInputState : IInputState
 	{
@@ -33,9 +33,7 @@ namespace InputStates
 			_taskManagement.CloseWindow.performed -= OnCloseWindowActionPerformed;
 		}
 
-		private void OnCloseWindowActionPerformed(CallbackContext context)
-		{
+		private void OnCloseWindowActionPerformed(CallbackContext context) =>
 			CloseWindowRequested?.Invoke(this, EventArgs.Empty);
-		}
 	}
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine.InputSystem;
 
-namespace InputStates
+namespace Game.GameStates.PauseMenuStates
 {
 	public class PauseMenuInputState : IInputState
 	{

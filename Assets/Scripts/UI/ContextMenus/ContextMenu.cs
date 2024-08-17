@@ -28,12 +28,9 @@ namespace UI.ContextMenus
 		private float _groupWidth = 0;
 		private bool _isSubscribedToGroupEvents = false;
 
-		public event EventHandler MenuOpened;
 		public event EventHandler MenuClosed;
 
-		public bool IsOpen { get; private set; }
-
-		public void OpenMenu(ContextMenuUser user, Vector2 screenPosition)
+		public void Initialize(ContextMenuUser user, Vector2 screenPosition)
 		{
 			_menuItems.Clear();
             
@@ -47,16 +44,10 @@ namespace UI.ContextMenus
 			_mouseClickScreenPosition = screenPosition;
 			pathText.rectTransform.position = CalculatePathTextPosition();
 			BuildContextMenu();
-			gameObject.SetActive(true);
-			IsOpen = true;
-			MenuOpened?.Invoke(this, EventArgs.Empty);
 		}
 		
 		public void CloseMenu()
 		{
-			IsOpen = false;
-			gameObject.SetActive(false);
-			
 			if (_contextMenuUser)
 			{
 				_contextMenuUser.IsOpen = false;
@@ -170,7 +161,7 @@ namespace UI.ContextMenus
 			// that the context menu would be, so I would build upwards instead of down.
 			
 			// One issue I can see stemming from this is when the initial menu is small enough to be built
-			// downwards but if the next menu group is longer, it would go upwards and would confuse the player.
+			// downwards, but if the next menu group is longer, it would go upwards and would confuse the player.
 			
 			// This would have to be something I would want to play around with when I don't have
 			// any changes, so I could revert easier.

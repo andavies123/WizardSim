@@ -1,4 +1,6 @@
-﻿using Game;
+﻿using Extensions;
+using Game;
+using Game.GameStates.GameplayStates;
 using InputStates;
 using InputStates.Enums;
 using InputStates.InputEventArgs;
@@ -24,7 +26,7 @@ namespace CameraComponents
 		[SerializeField] private float minZoom = 30f;
 		[SerializeField] private float maxZoom = 70f;
 
-		private GameplayInputState gameplayInputState;
+		private CameraInputState cameraInputState;
 		private Transform _cameraTransform;
 		private float _currentVerticalRotation;
 		private float _currentHorizontalRotation;
@@ -32,13 +34,13 @@ namespace CameraComponents
 		private void Awake()
 		{
 			Dependencies.RegisterDependency(playerCamera);
-			gameplayInputState = Dependencies.GetDependency<GameplayInputState>();
 			_cameraTransform = playerCamera.GetComponent<Transform>();
 		}
 
 		private void Start()
 		{
-			gameplayInputState.CameraZoomInputPerformed += OnCameraZoomInputStatePerformed;
+			cameraInputState = Dependencies.GetDependency<CameraInputState>();
+			cameraInputState.CameraZoomInputPerformed += OnCameraZoomInputStatePerformed;
 			
 			ClampCameraPosition();
 			ClampCameraRotation();
@@ -47,15 +49,15 @@ namespace CameraComponents
 
 		private void Update()
 		{
-			if (gameplayInputState.IsMoveActive || gameplayInputState.IsVerticalMoveActive)
-				ControlPosition(gameplayInputState.CurrentMoveValue);
-			if (gameplayInputState.IsCameraLookActivated && gameplayInputState.IsLookActive)
-				ControlRotation(gameplayInputState.CurrentLookValue);
+			if (cameraInputState.IsMoveActive || cameraInputState.IsVerticalMoveActive)
+				ControlPosition(cameraInputState.CurrentMoveValue);
+			if (cameraInputState.IsCameraLookActivated && cameraInputState.IsLookActive)
+				ControlRotation(cameraInputState.CurrentLookValue);
 		}
 
 		private void OnDestroy()
 		{
-			gameplayInputState.CameraZoomInputPerformed -= OnCameraZoomInputStatePerformed;
+			cameraInputState.CameraZoomInputPerformed -= OnCameraZoomInputStatePerformed;
 		}
 
 		private void OnCameraZoomInputStatePerformed(object sender, CameraZoomInputEventArgs args) => ControlZoom(ZoomTypeToValue(args.Zoom));

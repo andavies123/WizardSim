@@ -4,7 +4,7 @@ using GameWorld.GameWorldEventArgs;
 using GameWorld.Tiles;
 using UnityEngine.InputSystem;
 
-namespace InputStates
+namespace Game.GameStates.PlacementModeStates
 {
 	public class PlacementModeInputState : IInputState
 	{
