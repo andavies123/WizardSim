@@ -26,6 +26,7 @@ namespace GeneralBehaviours
 			_targetPosition = position;
 			_maxDistanceForArrival = maxDistanceForArrival;
 			IsMoving = true;
+			ReleasePathLine();
 			_pathLine = _pathLineObjectPool.GetPathLineRenderer();
 		}
 
@@ -33,6 +34,7 @@ namespace GeneralBehaviours
 		{
 			_targetPosition = null;
 			IsMoving = false;
+			ReleasePathLine();
 		}
 
 		private void Awake()
@@ -61,8 +63,14 @@ namespace GeneralBehaviours
 
 			if (Vector3.Distance(_transform.position, _targetPosition.Value) <= (_maxDistanceForArrival ?? 0.1f))
 			{
-				_targetPosition = null;
-				IsMoving = false;
+				CancelMoveTo();
+			}
+		}
+
+		private void ReleasePathLine()
+		{
+			if (_pathLine)
+			{
 				_pathLineObjectPool.ReleasePathLineRenderer(_pathLine);
 				_pathLine = null;
 			}
