@@ -23,6 +23,7 @@ namespace GameWorld.WorldObjects
 
 		public abstract Vector3Int Size { get; } // Size in world tiles
 		public abstract Vector3 InitialPositionOffset { get; } // Offset in world space
+		public abstract int MaxAllowed { get; } // How many objects can exist
 		protected abstract string ItemName { get; } // Name for loading properties
 		
 		public event EventHandler Destroyed;

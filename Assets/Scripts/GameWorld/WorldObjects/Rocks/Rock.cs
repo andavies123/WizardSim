@@ -14,6 +14,7 @@ namespace GameWorld.WorldObjects.Rocks
 	{
 		public override Vector3Int Size { get; } = Vector3Int.one;
 		public override Vector3 InitialPositionOffset { get; } = new(0.5f, 0.5f, 0.5f);
+		public override int MaxAllowed => -1;
 		protected override string ItemName => "Rock";
 
 		protected override void InitializeContextMenu()

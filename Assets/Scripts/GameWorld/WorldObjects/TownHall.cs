@@ -7,6 +7,7 @@ namespace GameWorld.WorldObjects
 	{
 		public override Vector3Int Size { get; } = new(1, 3, 1);
 		public override Vector3 InitialPositionOffset { get; } = new(0.5f, 3, 0.5f);
+		public override int MaxAllowed => 1;
 		protected override string ItemName => "Town Hall";
 		
 		protected override void InitializeContextMenu()
