@@ -4,9 +4,10 @@ using Wizards;
 
 namespace GameWorld.Messages
 {
-	public class WizardSpawnRequestMessage : IMessage
+	public class WizardSpawnRequestMessage : Message
 	{
-		public WizardSpawnRequestMessage(Vector3 spawnPosition, WizardType wizardType)
+		public WizardSpawnRequestMessage(object sender, Vector3 spawnPosition, WizardType wizardType)
+			: base(sender)
 		{
 			SpawnPosition = spawnPosition;
 			WizardType = wizardType;

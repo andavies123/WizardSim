@@ -3,9 +3,10 @@ using UnityEngine;
 
 namespace GameWorld.Messages
 {
-	public class WorldObjectPlacementRequest : IMessage
+	public class WorldObjectPlacementRequest : Message
 	{
-		public WorldObjectPlacementRequest(Vector2Int chunkPosition, Vector2Int tilePosition, GameObject worldObjectPrefab)
+		public WorldObjectPlacementRequest(object sender, Vector2Int chunkPosition, Vector2Int tilePosition, GameObject worldObjectPrefab)
+			: base(sender)
 		{
 			ChunkPosition = chunkPosition;
 			TilePosition = tilePosition;

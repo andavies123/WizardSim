@@ -3,10 +3,13 @@ using UnityEngine;
 
 namespace Game.Messages
 {
-	public class BeginPlacementModeRequest : IMessage
+	public class BeginPlacementModeRequest : Message
 	{
-		public BeginPlacementModeRequest(GameObject placementPrefab) => PlacementPrefab = placementPrefab;
-		
+		public BeginPlacementModeRequest(object sender, GameObject placementPrefab) : base(sender)
+		{
+			PlacementPrefab = placementPrefab;
+		}
+
 		public GameObject PlacementPrefab { get; }
 	}
 }

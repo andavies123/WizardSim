@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace UI.Messages
 {
-	public class StartInteractionRequest : IMessage
+	public class StartInteractionRequest : Message
 	{
-		public StartInteractionRequest(Action<MonoBehaviour> interactionCallback)
+		public StartInteractionRequest(object sender, Action<MonoBehaviour> interactionCallback) : base(sender)
 		{
 			InteractionCallback = interactionCallback;
 		}

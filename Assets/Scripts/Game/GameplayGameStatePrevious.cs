@@ -132,7 +132,7 @@ namespace Game
 		{
 			_subInputStateMachine.SetCurrentState(gameplayInputState);
 			_placementPrefab = null;
-			GlobalMessenger.Publish(new PlacementModeEnded());
+			GlobalMessenger.Publish(new WorldObjectPreviewDeleteRequest(this));
 		}
 
 		private void EnableTaskManagementWindow()
@@ -201,13 +201,13 @@ namespace Game
 		private void OnPlacementModeInputStateEndActionPerformed(object sender, EventArgs args) => EndPlacementMode();
 
 		private void OnPlacementModeInputStatePreviewUpdated(object sender, WorldPositionEventArgs args) =>
-			GlobalMessenger.Publish(new WorldObjectPreviewRequest(args.ChunkPosition, args.TilePosition, _placementPrefab));
+			GlobalMessenger.Publish(new WorldObjectPreviewRequest(sender, args.ChunkPosition, args.TilePosition, _placementPrefab));
 
 		private void OnPlacementModeInputStatePlacementRequested(object sender, WorldPositionEventArgs args) =>
-			GlobalMessenger.Publish(new WorldObjectPlacementRequest(args.ChunkPosition, args.TilePosition, _placementPrefab));
+			GlobalMessenger.Publish(new WorldObjectPlacementRequest(sender, args.ChunkPosition, args.TilePosition, _placementPrefab));
 
 		private static void OnHidePlacementPreviewRequested(object sender, EventArgs args) =>
-			GlobalMessenger.Publish(new WorldObjectHidePreviewRequest());
+			GlobalMessenger.Publish(new WorldObjectHidePreviewRequest(sender));
 
 		#endregion
 

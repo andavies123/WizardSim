@@ -52,8 +52,13 @@ namespace Extensions
 		};
 	}
 
+	/// <summary>
+	/// Enum to describe the position/order the Vector2 values will be
+	/// inserted into the Vector3.
+	/// E.g., SubYX would insert into the Vector3 like new Vector3(sub, vector2.y, vector2.x) 
+	/// </summary>
 	public enum VectorSub
 	{
-		SubXY, SubYX, XSubY, YSubX, XYSub, YXSub 
+		SubXY, SubYX, XSubY, YSubX, XYSub, YXSub
 	}
 }

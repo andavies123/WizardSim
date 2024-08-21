@@ -12,40 +12,21 @@ namespace GameWorld.WorldObjects.Rocks
 	[RequireComponent(typeof(ContextMenuUser))]
 	public class Rock : WorldObject
 	{
-		private ContextMenuUser _contextMenuUser;
-
+		public override Vector3Int Size { get; } = Vector3Int.one;
+		public override Vector3 InitialPositionOffset { get; } = new(0.5f, 0.5f, 0.5f);
 		protected override string ItemName => "Rock";
 
-		protected override void UpdateInitialLocation()
+		protected override void InitializeContextMenu()
 		{
-			transform.position += new Vector3(0.5f, 0.5f, 0.5f);
-		}
-		
-		protected override void Awake()
-		{
-			base.Awake();
-			
-			_contextMenuUser = GetComponent<ContextMenuUser>();
-		}
-
-		protected override void Start()
-		{
-			base.Start();
-            
-			InitializeContextMenu();
-		}
-
-		private void InitializeContextMenu()
-		{
-			_contextMenuUser.AddMenuItem(
+			ContextMenuUser.AddMenuItem(
 				ContextMenuBuilder.BuildPath("Destroy", "Single"),
-				() => GlobalMessenger.Publish(new AddWizardTaskRequest(new DestroyRocksTask(new List<Rock> {this}))),
+				() => GlobalMessenger.Publish(new AddWizardTaskRequest(this, new DestroyRocksTask(new List<Rock> {this}))),
 				() => true,
 				() => true);
 			
-			_contextMenuUser.AddMenuItem(
+			ContextMenuUser.AddMenuItem(
 				ContextMenuBuilder.BuildPath("Destroy", "Surrounding"),
-				() => GlobalMessenger.Publish(new AddWizardTaskRequest(new DestroyRocksTask(GetSurroundingRocks()))),
+				() => GlobalMessenger.Publish(new AddWizardTaskRequest(this, new DestroyRocksTask(GetSurroundingRocks()))),
 				() => true,
 				() => true);
 		}

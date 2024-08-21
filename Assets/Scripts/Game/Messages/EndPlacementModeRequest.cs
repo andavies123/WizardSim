@@ -2,5 +2,8 @@
 
 namespace Game.Messages
 {
-	public class EndPlacementModeRequest : IMessage {}
+	public class EndPlacementModeRequest : Message
+	{
+		public EndPlacementModeRequest(object sender) : base(sender) { }
+	}
 }

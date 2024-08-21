@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace UI.Messages
 {
-	public class OpenContextMenuRequest : IMessage
+	public class OpenContextMenuRequest : Message
 	{
-		public OpenContextMenuRequest(ContextMenuUser contextMenuUser, Vector2 screenPosition)
+		public OpenContextMenuRequest(object sender, ContextMenuUser contextMenuUser, Vector2 screenPosition) : base(sender)
 		{
 			ContextMenuUser = contextMenuUser;
 			ScreenPosition = screenPosition;

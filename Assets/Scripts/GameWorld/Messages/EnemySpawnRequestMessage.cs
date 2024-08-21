@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace GameWorld.Messages
 {
-	public class EnemySpawnRequestMessage : IMessage
+	public class EnemySpawnRequestMessage : Message
 	{
-		public EnemySpawnRequestMessage(Vector3 spawnPosition)
+		public EnemySpawnRequestMessage(object sender, Vector3 spawnPosition) : base(sender)
 		{
 			SpawnPosition = spawnPosition;
 		}

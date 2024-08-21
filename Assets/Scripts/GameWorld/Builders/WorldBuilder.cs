@@ -1,6 +1,5 @@
 ﻿using System;
 using Extensions;
-using Game.Messages;
 using Game.MessengerSystem;
 using GameWorld.Messages;
 using GameWorld.Spawners;
@@ -28,7 +27,7 @@ namespace GameWorld.Builders
 		[SerializeField] private GameObject rockPrefab;
 		[SerializeField] private int rocksPerChunk;
 
-		private WorldObject _previewWorldObject;
+		private WorldObjectPreviewManager _worldObjectPreviewManager;
 
 		public RockObjectBuilder RockObjectBuilder { get; private set; }
 
@@ -36,23 +35,20 @@ namespace GameWorld.Builders
 		{
 			RockObjectBuilder = new RockObjectBuilder(world, rockPrefab, worldObjectParent);
 			GenerateWorld();
+			_worldObjectPreviewManager = new WorldObjectPreviewManager(world, transform);
 			
 			GlobalMessenger.Subscribe<WizardSpawnRequestMessage>(OnWizardSpawnRequested);
 			GlobalMessenger.Subscribe<EnemySpawnRequestMessage>(OnEnemySpawnRequested);
-			GlobalMessenger.Subscribe<WorldObjectPreviewRequest>(OnWorldObjectPreviewRequested);
-			GlobalMessenger.Subscribe<WorldObjectPlacementRequest>(OnWorldObjectPlacementRequested);
-			GlobalMessenger.Subscribe<WorldObjectHidePreviewRequest>(OnWorldObjectHidePreviewRequested);
-			GlobalMessenger.Subscribe<PlacementModeEnded>(OnPlacementModeEnded);
+			_worldObjectPreviewManager.SubscribeToMessages();
+			_worldObjectPreviewManager.CreateWorldObjectRequested += OnCreateWorldObjectRequested;
 		}
 
 		private void OnDestroy()
 		{
 			GlobalMessenger.Unsubscribe<WizardSpawnRequestMessage>(OnWizardSpawnRequested);
 			GlobalMessenger.Unsubscribe<EnemySpawnRequestMessage>(OnEnemySpawnRequested);
-			GlobalMessenger.Unsubscribe<WorldObjectPreviewRequest>(OnWorldObjectPreviewRequested);
-			GlobalMessenger.Unsubscribe<WorldObjectPlacementRequest>(OnWorldObjectPlacementRequested);
-			GlobalMessenger.Unsubscribe<WorldObjectHidePreviewRequest>(OnWorldObjectHidePreviewRequested);
-			GlobalMessenger.Unsubscribe<PlacementModeEnded>(OnPlacementModeEnded);
+			_worldObjectPreviewManager.UnsubscribeFromMessages();
+			_worldObjectPreviewManager.CreateWorldObjectRequested -= OnCreateWorldObjectRequested;
 		}
 
 		private void GenerateWorld()
@@ -125,38 +121,43 @@ namespace GameWorld.Builders
 
 		private void OnWizardSpawnRequested(WizardSpawnRequestMessage message) => wizardSpawner.SpawnWizard(message.SpawnPosition, message.WizardType);
 		private void OnEnemySpawnRequested(EnemySpawnRequestMessage message) => enemySpawner.SpawnEntity(message.SpawnPosition);
-		
-		private void OnWorldObjectPreviewRequested(WorldObjectPreviewRequest message)
+
+		private void OnCreateWorldObjectRequested(object sender, CreateWorldObjectRequestEventArgs args)
 		{
-			if (message.WorldObjectPrefab == rockPrefab)
+			if (!TrySpawnSingle(args.WorldObjectPrefab, args.ChunkPosition, args.TilePosition, worldObjectParent))
 			{
-				if (_previewWorldObject == null)
-					_previewWorldObject = RockObjectBuilder.SpawnPreview();
-				
-				Vector3 worldPosition = world.WorldPositionFromTilePosition(message.TilePosition, message.ChunkPosition, centerOfTile: false).ToVector3(VectorSub.XSubY);
-				_previewWorldObject.transform.SetPositionAndRotation(worldPosition, Quaternion.identity);
+				Debug.LogWarning("Unable to create world object");
+			}
+		}
+
+		private bool TrySpawnSingle(GameObject prefab, Vector2Int chunkPosition, Vector2Int localChunkPosition, Transform container)
+		{
+			if (!world.Chunks.TryGetValue(chunkPosition, out Chunk chunk))
+				return false;
+
+			// Initial check to avoid creating unnecessary objects and destroying them
+			// BUG: This wouldn't work for objects bigger than 1x1
+			if (!chunk.IsValidTilePosition(localChunkPosition) || !chunk.IsWorldObjectSpaceEmpty(localChunkPosition))
+				return false;
+			
+			// Convert to world position to be placed
+			Vector3 worldPosition = world
+				.WorldPositionFromTilePosition(localChunkPosition, chunk.Position, centerOfTile: false)
+				.ToVector3(VectorSub.XSubY);
+			
+			// Instantiate and set position
+			WorldObject worldObject = Instantiate(prefab, container).GetComponent<WorldObject>();
+			worldObject.transform.SetPositionAndRotation(worldPosition + worldObject.InitialPositionOffset, Quaternion.identity);
+			worldObject.Init(new ChunkPlacementData(chunk.Position, localChunkPosition));
+			
+			// Add reference to the world object in the chunk and destroy the world object if unable to add to chunk
+			if (!chunk.TryAddWorldObject(worldObject))
+			{
+				worldObject.gameObject.Destroy();
+				return false;
 			}
 
-			// Make sure the game object is active as it might have been disabled due to the hide request
-			_previewWorldObject.gameObject.SetActive(true);
+			return true;
 		}
-        
-		private void OnWorldObjectPlacementRequested(WorldObjectPlacementRequest message)
-		{
-			if (!world.Chunks.TryGetValue(message.ChunkPosition, out Chunk chunk))
-				return;
-			
-			if (message.WorldObjectPrefab == rockPrefab)
-				RockObjectBuilder.TrySpawnSingle(chunk, message.TilePosition);
-		}
-
-		private void OnWorldObjectHidePreviewRequested(WorldObjectHidePreviewRequest message)
-		{
-			if (_previewWorldObject)
-				_previewWorldObject.gameObject.SetActive(false);
-		}
-
-		private void OnPlacementModeEnded(PlacementModeEnded message) =>
-			_previewWorldObject.gameObject.Destroy();
 	}
 }

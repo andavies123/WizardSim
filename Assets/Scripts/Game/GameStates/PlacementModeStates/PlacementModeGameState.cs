@@ -1,6 +1,7 @@
 ﻿using System;
 using CameraComponents;
 using Extensions;
+using Game.Messages;
 using Game.MessengerSystem;
 using GameWorld.GameWorldEventArgs;
 using GameWorld.Messages;
@@ -38,15 +39,17 @@ namespace Game.GameStates.PlacementModeStates
 		protected override UIState UIState => _placementModeUIState;
 		
 		protected override void OnEnabled() { }
-		protected override void OnDisabled() { }
+
+		protected override void OnDisabled() =>
+			GlobalMessenger.Publish(new WorldObjectPreviewDeleteRequest(this));
 
 		private void OnPlacementRequested(object sender, WorldPositionEventArgs args) =>
-			GlobalMessenger.Publish(new WorldObjectPreviewRequest(args.ChunkPosition, args.TilePosition, PlacementPrefab));
+			GlobalMessenger.Publish(new WorldObjectPlacementRequest(this, args.ChunkPosition, args.TilePosition, PlacementPrefab));
 
 		private void OnPreviewPositionUpdated(object sender, WorldPositionEventArgs args) =>
-			GlobalMessenger.Publish(new WorldObjectPlacementRequest(args.ChunkPosition, args.TilePosition, PlacementPrefab));
+			GlobalMessenger.Publish(new WorldObjectPreviewRequest(this, args.ChunkPosition, args.TilePosition, PlacementPrefab));
 
-		private static void OnHidePlacementPreviewRequested(object sender, EventArgs args) =>
-			GlobalMessenger.Publish(new WorldObjectHidePreviewRequest());
+		private void OnHidePlacementPreviewRequested(object sender, EventArgs args) =>
+			GlobalMessenger.Publish(new WorldObjectHidePreviewRequest(this));
 	}
 }

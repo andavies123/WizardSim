@@ -43,9 +43,9 @@ namespace GameWorld
 		{
 			List<Vector2Int> positions = new();
 
-			for (int x = worldObject.LocalChunkPosition.x; x < worldObject.Size.x; x++)
+			for (int x = worldObject.ChunkPlacementData.TilePosition.x; x < worldObject.Size.x; x++)
 			{
-				for (int z = worldObject.LocalChunkPosition.y; z < worldObject.Size.y; z++)
+				for (int z = worldObject.ChunkPlacementData.TilePosition.y; z < worldObject.Size.y; z++)
 				{
 					Vector2Int position = new(x, z);
 					

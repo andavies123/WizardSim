@@ -1,7 +1,5 @@
-﻿using System.Linq;
-using Extensions;
+﻿using Extensions;
 using GameWorld.WorldObjects;
-using GeneralBehaviours.ShaderManagers;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -9,8 +7,6 @@ namespace GameWorld.Builders
 {
 	public class RockObjectBuilder : IWorldObjectBuilder
 	{
-		private static readonly int BaseColor = Shader.PropertyToID("_BaseColor");
-		
 		private readonly World _world;
 		private readonly GameObject _rockPrefab;
 		private readonly Transform _rockContainer;
@@ -32,14 +28,16 @@ namespace GameWorld.Builders
 				return false;
 			
 			// Convert to world position to be placed
-			Vector3 worldPosition = _world.WorldPositionFromTilePosition(localChunkPosition, chunk.Position, centerOfTile: false).ToVector3(VectorSub.XSubY);
+			Vector3 worldPosition = _world
+				.WorldPositionFromTilePosition(localChunkPosition, chunk.Position, centerOfTile: false)
+				.ToVector3(VectorSub.XSubY);
 			
 			// Instantiate and set position
 			WorldObject rock = Object.Instantiate(_rockPrefab, _rockContainer).GetComponent<WorldObject>();
-			rock.transform.SetPositionAndRotation(worldPosition, Quaternion.identity);
-			rock.Init(localChunkPosition);
+			rock.transform.SetPositionAndRotation(worldPosition + rock.InitialPositionOffset, Quaternion.identity);
+			rock.Init(new ChunkPlacementData(chunk.Position, localChunkPosition));
 			
-			// Add reference to world object in the chunk and destroy world object if unable to add to chunk
+			// Add reference to the world object in the chunk and destroy the world object if unable to add to chunk
 			if (!chunk.TryAddWorldObject(rock))
 			{
 				rock.gameObject.Destroy();
@@ -47,22 +45,6 @@ namespace GameWorld.Builders
 			}
 
 			return true;
-		}
-
-		public WorldObject SpawnPreview()
-		{
-			WorldObject rock = Object.Instantiate(_rockPrefab, _rockContainer).GetComponent<WorldObject>();
-			
-			rock.GetComponent<InteractionShaderManager>().enabled = false;
-			rock.GetComponentsInChildren<Collider>(true).ToList().ForEach(x => x.enabled = false);
-			rock.GetComponentsInChildren<MeshRenderer>(true).ToList().ForEach(renderer =>
-			{
-				Color color = renderer.material.GetColor(BaseColor);
-				color.a = 0.25f;
-				renderer.material.SetColor(BaseColor, color);
-			});
-
-			return rock;
 		}
 	}
 }

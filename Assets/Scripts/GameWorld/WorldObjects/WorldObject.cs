@@ -1,53 +1,52 @@
 ﻿using System;
 using Extensions;
 using GeneralBehaviours.HealthBehaviours;
+using GeneralBehaviours.ShaderManagers;
 using UI;
+using UI.ContextMenus;
 using UnityEngine;
 
 namespace GameWorld.WorldObjects
 {
 	[DisallowMultipleComponent]
 	[RequireComponent(typeof(Interactable))]
-	public class WorldObject : MonoBehaviour
+	[RequireComponent(typeof(InteractionShaderManager))]
+	[RequireComponent(typeof(ContextMenuUser))]
+	public abstract class WorldObject : MonoBehaviour
 	{
-		[SerializeField] private Vector2Int size;
-
 		private WorldObjectProperties _worldObjectProperties;
 		
-		// Components
 		public HealthComponent Health { get; private set; }
 		public Interactable Interactable { get; private set; }
+		public ContextMenuUser ContextMenuUser { get; private set; }
+		public ChunkPlacementData ChunkPlacementData { get; private set; }
 
+		public abstract Vector3Int Size { get; } // Size in world tiles
+		public abstract Vector3 InitialPositionOffset { get; } // Offset in world space
+		protected abstract string ItemName { get; } // Name for loading properties
+		
 		public event EventHandler Destroyed;
 
-		public Vector2Int Size => size;
-		public Vector2Int LocalChunkPosition { get; private set; }
+		public void Init(ChunkPlacementData chunkPlacementData) => ChunkPlacementData = chunkPlacementData;
+
+		protected abstract void InitializeContextMenu();
 		
-		protected virtual string ItemName => string.Empty;
-
-		public void Init(Vector2Int localChunkPosition)
-		{
-			LocalChunkPosition = localChunkPosition;
-		}
-
-		protected virtual void UpdateInitialLocation() { }
-
 		protected virtual void Awake()
 		{
 			Interactable = gameObject.GetOrAddComponent<Interactable>();
+			ContextMenuUser = gameObject.GetOrAddComponent<ContextMenuUser>();
 		}
 
 		protected virtual void Start()
 		{
-			UpdateInitialLocation();
 			LoadProperties();
-			
 			Interactable.InitializeWithProperties(_worldObjectProperties.InteractableProperties);
+			InitializeContextMenu();
 		}
 
 		protected virtual void OnDestroy()
 		{
-			Destroyed?.Invoke(this, System.EventArgs.Empty);
+			Destroyed?.Invoke(this, EventArgs.Empty);
 		}
 
 		private void LoadProperties()
@@ -66,6 +65,18 @@ namespace GameWorld.WorldObjects
 			}
 
 			gameObject.name = _worldObjectProperties.Id;
+		}
+	}
+
+	public struct ChunkPlacementData
+	{
+		public Vector2Int ChunkPosition { get; }
+		public Vector2Int TilePosition { get; }
+        
+		public ChunkPlacementData(Vector2Int chunkPosition, Vector2Int tilePosition)
+		{
+			ChunkPosition = chunkPosition;
+			TilePosition = tilePosition;
 		}
 	}
 }

@@ -2,6 +2,6 @@
 {
 	public interface IMessage
 	{
-		
+		object Sender { get; }
 	}
 }

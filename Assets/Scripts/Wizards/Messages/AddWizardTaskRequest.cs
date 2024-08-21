@@ -3,13 +3,13 @@ using Wizards.Tasks;
 
 namespace Wizards.Messages
 {
-	public class AddWizardTaskRequest : IMessage
+	public class AddWizardTaskRequest : Message
 	{
-		public AddWizardTaskRequest(IWizardTask task)
+		public AddWizardTaskRequest(object sender, IWizardTask task) : base(sender)
 		{
 			Task = task;
 		}
-		
+
 		public IWizardTask Task { get; }
 	}
 }

@@ -19,7 +19,7 @@ namespace Game.GameStates.ContextMenuStates
 		}
 
 		public override bool AllowCameraInputs => false;
-		public override bool AllowInteractions => false;
+		public override bool AllowInteractions => true;
 
 		protected override UIState UIState => _contextMenuUIState;
 		protected override IInputState InputState => _contextMenuInputState;

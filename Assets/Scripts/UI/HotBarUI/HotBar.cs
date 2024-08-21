@@ -1,31 +1,30 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Game.Messages;
 using Game.MessengerSystem;
 using UnityEngine;
+using static UI.HotBarUI.HotBarItem;
 
 namespace UI.HotBarUI
 {
 	public class HotBar : MonoBehaviour
 	{
-		[Header("Hot Bar Items")]
-		[SerializeField] private HotBarItem placeRockHotBarItem;
+		private List<HotBarItem> _hotBarItems = new();
 
-		[Header("Prefabs")]
-		[SerializeField] private GameObject rockPrefab;
+		private void Awake()
+		{
+			FindAllHotBarItems();
+			InitializeButtons();
+		}
 
-		private void Awake() => InitializeButtons();
 		private void OnDestroy() => CleanUpButtons();
 
-		private void InitializeButtons()
-		{
-			placeRockHotBarItem.ButtonClicked += OnPlaceRockButtonClicked;
-		}
+		private void FindAllHotBarItems() => _hotBarItems = GetComponentsInChildren<HotBarItem>().ToList();
+		private void InitializeButtons() => _hotBarItems.ForEach(hotBarItem => hotBarItem.Selected += OnHotBarItemSelected);
+		private void CleanUpButtons() => _hotBarItems.ForEach(hotBarItem => hotBarItem.Selected -= OnHotBarItemSelected);
 
-		private void CleanUpButtons()
-		{
-			placeRockHotBarItem.ButtonClicked -= OnPlaceRockButtonClicked;
-		}
+		private void OnHotBarItemSelected(object sender, HotBarItemSelectedEventArgs args) =>
+			GlobalMessenger.Publish(new BeginPlacementModeRequest(this, args.Prefab));
 
-		private void OnPlaceRockButtonClicked(object sender, EventArgs args) => GlobalMessenger.Publish(new BeginPlacementModeRequest(rockPrefab));
 	}
 }

@@ -1,0 +1,23 @@
+﻿{
+  "Id": "Town Hall",
+  "HealthProperties": {
+    "MaxHealth": 500,
+    "CanRechargeHealth": true,
+    "HealthGainedPerInterval": 0.1,
+    "RechargeIntervalMSec": 100,
+    "TimeUntilRechargeStartsMSec": 5000
+  },
+  "InteractableProperties": {
+    "Title": "Town Hall",
+    "Description": "Center of civilization"
+  },
+  "DestroyedProperties": {
+    "MinDrops": 0,
+    "MaxDrops": 0,
+    "OnZeroHealthActions":
+    [
+      "Destroy",
+      "GameOver"
+    ]
+  }
+}

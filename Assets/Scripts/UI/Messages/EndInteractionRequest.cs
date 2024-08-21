@@ -2,8 +2,8 @@
 
 namespace UI.Messages
 {
-	public class EndInteractionRequest : IMessage
+	public class EndInteractionRequest : Message
 	{
-		
+		public EndInteractionRequest(object sender) : base(sender) { }
 	}
 }

@@ -2,6 +2,7 @@
 using CameraComponents;
 using GameWorld.GameWorldEventArgs;
 using GameWorld.Tiles;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Game.GameStates.PlacementModeStates
@@ -61,7 +62,9 @@ namespace Game.GameStates.PlacementModeStates
 		private void OnInteractableSelectedPrimary(object sender, InteractableRaycasterEventArgs args)
 		{
 			if (args.Interactable.TryGetComponent(out Tile tile))
+			{
 				PlacementRequested?.Invoke(this, new WorldPositionEventArgs(tile));
+			}
 		}
 
 		private void OnNonInteractableHoverBegin(object sender, EventArgs args) =>
