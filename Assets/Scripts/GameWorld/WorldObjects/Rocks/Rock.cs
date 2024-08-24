@@ -9,15 +9,23 @@ using Wizards.Tasks;
 
 namespace GameWorld.WorldObjects.Rocks
 {
+	[RequireComponent(typeof(WorldObject))]
 	[RequireComponent(typeof(ContextMenuUser))]
-	public class Rock : WorldObject
+	public class Rock : MonoBehaviour
 	{
-		public override Vector3Int Size { get; } = Vector3Int.one;
-		public override Vector3 InitialPositionOffset { get; } = new(0.5f, 0.5f, 0.5f);
-		public override int MaxAllowed => -1;
-		protected override string ItemName => "Rock";
+		public WorldObject WorldObject { get; private set; }
+		private ContextMenuUser ContextMenuUser { get; set; }
+		
+		public Vector3 InitialPositionOffset { get; } = new(0.5f, 0.5f, 0.5f);
 
-		protected override void InitializeContextMenu()
+		private void Awake()
+		{
+			WorldObject = GetComponent<WorldObject>();
+			ContextMenuUser = GetComponent<ContextMenuUser>();
+			InitializeContextMenu();
+		}
+
+		private void InitializeContextMenu()
 		{
 			ContextMenuUser.AddMenuItem(
 				ContextMenuBuilder.BuildPath("Destroy", "Single"),

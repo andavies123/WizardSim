@@ -1,15 +1,15 @@
 ﻿using Game.MessengerSystem;
-using UnityEngine;
+using GameWorld.WorldObjects;
 
 namespace Game.Messages
 {
 	public class BeginPlacementModeRequest : Message
 	{
-		public BeginPlacementModeRequest(object sender, GameObject placementPrefab) : base(sender)
+		public BeginPlacementModeRequest(object sender, WorldObjectDetails placementDetails) : base(sender)
 		{
-			PlacementPrefab = placementPrefab;
+			PlacementDetails = placementDetails;
 		}
 
-		public GameObject PlacementPrefab { get; }
+		public WorldObjectDetails PlacementDetails { get; }
 	}
 }

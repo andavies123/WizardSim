@@ -5,6 +5,7 @@ using Game.Messages;
 using Game.MessengerSystem;
 using GameWorld.GameWorldEventArgs;
 using GameWorld.Messages;
+using GameWorld.WorldObjects;
 using UnityEngine;
 
 namespace Game.GameStates.PlacementModeStates
@@ -30,7 +31,7 @@ namespace Game.GameStates.PlacementModeStates
 			_placementModeInputState.HidePlacementPreviewRequested += OnHidePlacementPreviewRequested;
 		}
 
-		public GameObject PlacementPrefab { get; set; }
+		public WorldObjectDetails PlacementDetails { get; set; }
 			
 		public override bool AllowCameraInputs => true;
 		public override bool AllowInteractions => true;
@@ -44,10 +45,10 @@ namespace Game.GameStates.PlacementModeStates
 			GlobalMessenger.Publish(new WorldObjectPreviewDeleteRequest(this));
 
 		private void OnPlacementRequested(object sender, WorldPositionEventArgs args) =>
-			GlobalMessenger.Publish(new WorldObjectPlacementRequest(this, args.ChunkPosition, args.TilePosition, PlacementPrefab));
+			GlobalMessenger.Publish(new WorldObjectPlacementRequest(this, args.ChunkPosition, args.TilePosition, PlacementDetails));
 
 		private void OnPreviewPositionUpdated(object sender, WorldPositionEventArgs args) =>
-			GlobalMessenger.Publish(new WorldObjectPreviewRequest(this, args.ChunkPosition, args.TilePosition, PlacementPrefab));
+			GlobalMessenger.Publish(new WorldObjectPreviewRequest(this, args.ChunkPosition, args.TilePosition, PlacementDetails));
 
 		private void OnHidePlacementPreviewRequested(object sender, EventArgs args) =>
 			GlobalMessenger.Publish(new WorldObjectHidePreviewRequest(this));

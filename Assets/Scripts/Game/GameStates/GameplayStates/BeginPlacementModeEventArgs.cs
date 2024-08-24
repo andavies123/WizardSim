@@ -1,15 +1,15 @@
 ﻿using System;
-using UnityEngine;
+using GameWorld.WorldObjects;
 
 namespace Game.GameStates.GameplayStates
 {
 	public class BeginPlacementModeEventArgs : EventArgs
 	{
-		public BeginPlacementModeEventArgs(GameObject placementPrefab)
+		public BeginPlacementModeEventArgs(WorldObjectDetails placementDetails)
 		{
-			PlacementPrefab = placementPrefab;
+			PlacementDetails = placementDetails;
 		}
 		
-		public GameObject PlacementPrefab { get; }
+		public WorldObjectDetails PlacementDetails { get; }
 	}
 }

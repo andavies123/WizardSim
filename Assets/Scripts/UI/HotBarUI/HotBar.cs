@@ -24,7 +24,6 @@ namespace UI.HotBarUI
 		private void CleanUpButtons() => _hotBarItems.ForEach(hotBarItem => hotBarItem.Selected -= OnHotBarItemSelected);
 
 		private void OnHotBarItemSelected(object sender, HotBarItemSelectedEventArgs args) =>
-			GlobalMessenger.Publish(new BeginPlacementModeRequest(this, args.Prefab));
-
+			GlobalMessenger.Publish(new BeginPlacementModeRequest(this, args.WorldObjectWorldObjectDetails));
 	}
 }

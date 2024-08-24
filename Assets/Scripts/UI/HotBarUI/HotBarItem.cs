@@ -1,5 +1,6 @@
 ﻿using System;
 using Extensions;
+using GameWorld.WorldObjects;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,28 +9,28 @@ namespace UI.HotBarUI
 	public class HotBarItem : MonoBehaviour
 	{
 		[SerializeField] private Button button;
-		[SerializeField] private GameObject prefab;
+		[SerializeField] private WorldObjectDetails worldObjectDetails;
 
 		public event EventHandler<HotBarItemSelectedEventArgs> Selected;
 		
 		private void Awake()
 		{
 			button.ThrowIfNull(nameof(button));
-			prefab.ThrowIfNull(nameof(prefab));
+			worldObjectDetails.ThrowIfNull(nameof(worldObjectDetails));
 			button.onClick.AddListener(OnButtonClicked);
 		}
 
 		private void OnDestroy() => button.onClick.RemoveListener(OnButtonClicked);
-		private void OnButtonClicked() => Selected?.Invoke(this, new HotBarItemSelectedEventArgs(prefab));
+		private void OnButtonClicked() => Selected?.Invoke(this, new HotBarItemSelectedEventArgs(worldObjectDetails));
 
 		public class HotBarItemSelectedEventArgs : EventArgs
 		{
-			public HotBarItemSelectedEventArgs(GameObject prefab)
+			public HotBarItemSelectedEventArgs(WorldObjectDetails worldObjectDetails)
 			{
-				Prefab = prefab;
+				WorldObjectWorldObjectDetails = worldObjectDetails;
 			}
 			
-			public GameObject Prefab { get; }
+			public WorldObjectDetails WorldObjectWorldObjectDetails { get; }
 		}
 	}
 }

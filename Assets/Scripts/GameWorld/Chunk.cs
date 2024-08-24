@@ -8,20 +8,20 @@ namespace GameWorld
 	public class Chunk : MonoBehaviour
 	{
 		[SerializeField] private Transform worldObjectsParent;
-        
-		private Tile[,] _tiles;
-		private WorldObject[,] _worldObjects;
 
-		public Transform WorldObjectsParent => worldObjectsParent;
+		private readonly World parentWorld;
+		private Tile[,] _tiles;
+		private bool[,] _occupiedTiles;
+
 		public Vector2Int SizeInTiles { get; private set; }
 		public Vector2Int Position { get; private set; }
 
-		public void Initialize(Vector2Int sizeInTiles, Vector2Int position, Tile[,] tiles)
+		public void Initialize(World world, Vector2Int position, Tile[,] tiles)
 		{
-			SizeInTiles = sizeInTiles;
+			SizeInTiles = world.WorldDetails.ChunkTiles;
 			Position = position;
 			_tiles = tiles;
-			_worldObjects = new WorldObject[sizeInTiles.x, sizeInTiles.y]; // Should be same size as tile array
+			_occupiedTiles = new bool[SizeInTiles.x, SizeInTiles.y];
 
 			gameObject.name = $"Chunk - {position}";
 		}
@@ -43,15 +43,15 @@ namespace GameWorld
 		{
 			List<Vector2Int> positions = new();
 
-			for (int x = worldObject.ChunkPlacementData.TilePosition.x; x < worldObject.Size.x; x++)
+			for (int x = worldObject.ChunkPlacementData.TilePosition.x; x < worldObject.Details.PlacementProperties.Size.x; x++)
 			{
-				for (int z = worldObject.ChunkPlacementData.TilePosition.y; z < worldObject.Size.y; z++)
+				for (int z = worldObject.ChunkPlacementData.TilePosition.y; z < worldObject.Details.PlacementProperties.Size.z; z++)
 				{
 					Vector2Int position = new(x, z);
 					
 					// Make sure the positions are valid and there isn't anything here
 					// BUG: Might be an issue for objects that span multiple chunks
-					if (!IsValidTilePosition(position) || !IsWorldObjectSpaceEmpty(position))
+					if (!IsValidTilePosition(position) || IsTileOccupied(position))
 						return false;
 					
 					positions.Add(position);
@@ -59,7 +59,7 @@ namespace GameWorld
 			}
 			
 			// Update local collection
-			positions.ForEach(position => _worldObjects[position.x, position.y] = worldObject);
+			positions.ForEach(position => _occupiedTiles[position.x, position.y] = true);
 
 			return true;
 		}
@@ -68,7 +68,7 @@ namespace GameWorld
 			tilePosition.x >= 0 && tilePosition.x < SizeInTiles.x &&
 			tilePosition.y >= 0 && tilePosition.y < SizeInTiles.y;
 
-		public bool IsWorldObjectSpaceEmpty(Vector2Int localChunkPosition) =>
-			!_worldObjects[localChunkPosition.x, localChunkPosition.y];
+		public bool IsTileOccupied(Vector2Int localChunkPosition) =>
+			_occupiedTiles[localChunkPosition.x, localChunkPosition.y];
 	}
 }

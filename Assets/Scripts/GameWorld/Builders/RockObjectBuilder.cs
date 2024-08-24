@@ -7,6 +7,8 @@ namespace GameWorld.Builders
 {
 	public class RockObjectBuilder : IWorldObjectBuilder
 	{
+		private const string ROCK_DETAILS_NAME = "Rock";
+		
 		private readonly World _world;
 		private readonly GameObject _rockPrefab;
 		private readonly Transform _rockContainer;
@@ -24,7 +26,7 @@ namespace GameWorld.Builders
 		{
 			// Initial check to avoid creating unnecessary objects and destroying them
 			// BUG: This wouldn't work for objects bigger than 1x1
-			if (!chunk.IsValidTilePosition(localChunkPosition) || !chunk.IsWorldObjectSpaceEmpty(localChunkPosition))
+			if (!chunk.IsValidTilePosition(localChunkPosition) || chunk.IsTileOccupied(localChunkPosition))
 				return false;
 			
 			// Convert to world position to be placed
@@ -34,8 +36,15 @@ namespace GameWorld.Builders
 			
 			// Instantiate and set position
 			WorldObject rock = Object.Instantiate(_rockPrefab, _rockContainer).GetComponent<WorldObject>();
-			rock.transform.SetPositionAndRotation(worldPosition + rock.InitialPositionOffset, Quaternion.identity);
-			rock.Init(new ChunkPlacementData(chunk.Position, localChunkPosition));
+			rock.transform.SetPositionAndRotation(worldPosition, Quaternion.identity);
+
+			// Get the details of the world object
+			if (!_world.DetailsMap.TryGetDetails(ROCK_DETAILS_NAME, out WorldObjectDetails worldObjectDetails))
+			{
+				Debug.LogWarning($"Unable to find {nameof(WorldObjectDetails)} for \"{ROCK_DETAILS_NAME}\"");
+				return false;
+			}
+			rock.Init(worldObjectDetails, new ChunkPlacementData(chunk.Position, localChunkPosition));
 			
 			// Add reference to the world object in the chunk and destroy the world object if unable to add to chunk
 			if (!chunk.TryAddWorldObject(rock))

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8e788e2dda648ebb01d33ce7fa0cf27, type: 3}
+  m_Name: Rock Details
+  m_EditorClassIdentifier: 
+  <Name>k__BackingField: Rock
+  <Prefab>k__BackingField: {fileID: 346430161919122289, guid: 70ca3cc2895272241a88451b6498dfe8, type: 3}
+  <PlacementProperties>k__BackingField:
+    <Size>k__BackingField: {x: 1, y: 1, z: 1}
+    <MaxObjectsAllowed>k__BackingField: -1
+  <HealthProperties>k__BackingField:
+    <MaxHealth>k__BackingField: 50

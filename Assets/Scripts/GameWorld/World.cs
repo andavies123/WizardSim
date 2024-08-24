@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
-using AndysTools.GameWorldTimeManagement;
 using AndysTools.GameWorldTimeManagement.Runtime;
 using Extensions;
 using GameWorld.Tiles;
+using GameWorld.WorldObjects;
 using UnityEngine;
 
 namespace GameWorld
 {
 	[RequireComponent(typeof(GameWorldTimeBehaviour))]
+	[RequireComponent(typeof(WorldObjectDetailsMap))]
 	public class World : MonoBehaviour
 	{
 		[SerializeField] private WorldDetails worldDetails;
@@ -18,7 +19,8 @@ namespace GameWorld
 		
 		public WorldDetails WorldDetails => worldDetails;
 		public IReadOnlyDictionary<Vector2Int, Chunk> Chunks => _chunks;
-		public Transform WorldObjectContainer => worldObjectContainer;
+		public IWorldObjectManager WorldObjectManager { get; private set; }
+		public WorldObjectDetailsMap DetailsMap { get; private set; }
 
 		public void AddChunk(Chunk chunk)
 		{
@@ -137,6 +139,8 @@ namespace GameWorld
 			worldDetails.ThrowIfNull(nameof(worldDetails));
 			worldObjectContainer.ThrowIfNull(nameof(worldObjectContainer));
 			_gameWorldTime = GetComponent<GameWorldTimeBehaviour>().ThrowIfNull(nameof(_gameWorldTime));
+			DetailsMap = GetComponent<WorldObjectDetailsMap>().ThrowIfNull(nameof(DetailsMap));
+			WorldObjectManager = new WorldObjectManager(worldObjectContainer);
 		}
 	}
 }

@@ -46,11 +46,11 @@ namespace GameWorld.Builders
 		private void OnPreviewRequested(WorldObjectPreviewRequest message)
 		{
 			if (!_previewObject)
-				_previewObject = CreatePreview(message.WorldObjectPrefab, _previewParent);
+				_previewObject = CreatePreview(message.WorldObjectDetails, _previewParent);
 			
 			Vector3 worldPosition = _world
 				.WorldPositionFromTilePosition(message.TilePosition, message.ChunkPosition, centerOfTile: false)
-				.ToVector3(VectorSub.XSubY) + _previewObject.InitialPositionOffset;
+				.ToVector3(VectorSub.XSubY);
 			_previewObject.transform.SetPositionAndRotation(worldPosition, Quaternion.identity);
 
 			// Make sure the game object is active as it might have been disabled due to the hide request
@@ -61,7 +61,7 @@ namespace GameWorld.Builders
 		{
 			CreateWorldObjectRequested?.Invoke(this, new CreateWorldObjectRequestEventArgs
 			{
-				WorldObjectPrefab = message.WorldObjectPrefab,
+				WorldObjectDetails = message.WorldObjectDetails,
 				ChunkPosition = message.ChunkPosition,
 				TilePosition = message.TilePosition
 			});
@@ -84,9 +84,9 @@ namespace GameWorld.Builders
 			}
 		}
 		
-		private static WorldObject CreatePreview(GameObject prefab, Transform parent)
+		private static WorldObject CreatePreview(WorldObjectDetails worldObjectDetails, Transform parent)
 		{
-			WorldObject worldObject = Object.Instantiate(prefab, parent).GetComponent<WorldObject>();
+			WorldObject worldObject = Object.Instantiate(worldObjectDetails.Prefab, parent);
 
 			worldObject.GetComponent<InteractionShaderManager>().enabled = false;
 			worldObject.GetComponentsInChildren<Collider>(true).ToList().ForEach(collider => collider.enabled = false);

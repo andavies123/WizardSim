@@ -152,7 +152,7 @@ namespace Game
 		// Placement Mode Related Events
 		private void OnBeginPlacementModeRequested(object sender, BeginPlacementModeEventArgs args)
 		{
-			_placementModeGameState.PlacementPrefab = args.PlacementPrefab;
+			_placementModeGameState.PlacementDetails = args.PlacementDetails;
 			UpdateCurrentState(_placementModeGameState);
 		}
 		private void OnPlacementModeEnded(object sender, EventArgs args) => UpdateCurrentState(_gameplayGameState);

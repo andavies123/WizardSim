@@ -71,6 +71,6 @@ namespace Game.GameStates.GameplayStates
 			OpenContextMenuRequested?.Invoke(sender, args);
 
 		private void OnBeginPlacementModeRequested(BeginPlacementModeRequest request) =>
-			BeginPlacementModeRequested?.Invoke(this, new BeginPlacementModeEventArgs(request.PlacementPrefab));
+			BeginPlacementModeRequested?.Invoke(this, new BeginPlacementModeEventArgs(request.PlacementDetails));
 	}
 }

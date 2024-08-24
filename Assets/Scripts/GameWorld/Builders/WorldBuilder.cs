@@ -34,13 +34,17 @@ namespace GameWorld.Builders
 		private void Awake()
 		{
 			RockObjectBuilder = new RockObjectBuilder(world, rockPrefab, worldObjectParent);
-			GenerateWorld();
 			_worldObjectPreviewManager = new WorldObjectPreviewManager(world, transform);
 			
 			GlobalMessenger.Subscribe<WizardSpawnRequestMessage>(OnWizardSpawnRequested);
 			GlobalMessenger.Subscribe<EnemySpawnRequestMessage>(OnEnemySpawnRequested);
 			_worldObjectPreviewManager.SubscribeToMessages();
 			_worldObjectPreviewManager.CreateWorldObjectRequested += OnCreateWorldObjectRequested;
+		}
+
+		private void Start()
+		{
+			GenerateWorld();
 		}
 
 		private void OnDestroy()
@@ -73,7 +77,7 @@ namespace GameWorld.Builders
 
 					Transform chunkTransform = chunk.transform;
 					chunkTransform.localPosition = spawnPosition;
-					chunk.Initialize(world.WorldDetails.ChunkTiles, chunkPosition, GenerateTilesForChunk(chunk, chunkTransform));
+					chunk.Initialize(world, chunkPosition, GenerateTilesForChunk(chunk, chunkTransform));
 					GenerateRocks(chunk);
 					
 					world.AddChunk(chunk);
@@ -124,20 +128,23 @@ namespace GameWorld.Builders
 
 		private void OnCreateWorldObjectRequested(object sender, CreateWorldObjectRequestEventArgs args)
 		{
-			if (!TrySpawnSingle(args.WorldObjectPrefab, args.ChunkPosition, args.TilePosition, worldObjectParent))
+			if (!TrySpawnSingle(args.WorldObjectDetails, args.ChunkPosition, args.TilePosition, worldObjectParent))
 			{
 				Debug.LogWarning("Unable to create world object");
 			}
 		}
 
-		private bool TrySpawnSingle(GameObject prefab, Vector2Int chunkPosition, Vector2Int localChunkPosition, Transform container)
+		private bool TrySpawnSingle(WorldObjectDetails details, Vector2Int chunkPosition, Vector2Int localChunkPosition, Transform container)
 		{
+			if (world.WorldObjectManager.IsAtMaxCapacity(details))
+				return false;
+			
 			if (!world.Chunks.TryGetValue(chunkPosition, out Chunk chunk))
 				return false;
 
 			// Initial check to avoid creating unnecessary objects and destroying them
 			// BUG: This wouldn't work for objects bigger than 1x1
-			if (!chunk.IsValidTilePosition(localChunkPosition) || !chunk.IsWorldObjectSpaceEmpty(localChunkPosition))
+			if (!chunk.IsValidTilePosition(localChunkPosition) || chunk.IsTileOccupied(localChunkPosition))
 				return false;
 			
 			// Convert to world position to be placed
@@ -146,9 +153,11 @@ namespace GameWorld.Builders
 				.ToVector3(VectorSub.XSubY);
 			
 			// Instantiate and set position
-			WorldObject worldObject = Instantiate(prefab, container).GetComponent<WorldObject>();
-			worldObject.transform.SetPositionAndRotation(worldPosition + worldObject.InitialPositionOffset, Quaternion.identity);
-			worldObject.Init(new ChunkPlacementData(chunk.Position, localChunkPosition));
+			WorldObject worldObject = Instantiate(details.Prefab, container);
+			worldObject.transform.SetPositionAndRotation(worldPosition, Quaternion.identity);
+
+			// Get the details of the world object
+			worldObject.Init(details, new ChunkPlacementData(chunk.Position, localChunkPosition));
 			
 			// Add reference to the world object in the chunk and destroy the world object if unable to add to chunk
 			if (!chunk.TryAddWorldObject(worldObject))
@@ -156,6 +165,8 @@ namespace GameWorld.Builders
 				worldObject.gameObject.Destroy();
 				return false;
 			}
+			
+			world.WorldObjectManager.AddWorldObject(worldObject);
 
 			return true;
 		}

@@ -3327,7 +3327,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   button: {fileID: 1316745128}
-  prefab: {fileID: 1780704494485840721, guid: 4a87562d92989e5469a8268fbc272843, type: 3}
+  worldObjectDetails: {fileID: 11400000, guid: 59c7d942cba0b504d8460beb62f6ee34, type: 2}
 --- !u!1 &1424243599
 GameObject:
   m_ObjectHideFlags: 0
@@ -4442,6 +4442,7 @@ GameObject:
   - component: {fileID: 2007172220}
   - component: {fileID: 2007172221}
   - component: {fileID: 2007172222}
+  - component: {fileID: 2007172223}
   m_Layer: 0
   m_Name: World
   m_TagString: Untagged
@@ -4494,6 +4495,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   realLifeSecondsPerGameWorldDay: 600
+--- !u!114 &2007172223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2007172219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91f196cc9a8b4a1bb0053596d8386aff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &2081699357
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4609,7 +4622,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   button: {fileID: 2081699358}
-  prefab: {fileID: 9090978207146980024, guid: 70ca3cc2895272241a88451b6498dfe8, type: 3}
+  worldObjectDetails: {fileID: 11400000, guid: 9cc4138a8c9033d48bb30449e0d8cd3d, type: 2}
 --- !u!224 &2099059557 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7575635562821945125, guid: 953b31e6686fcf444900efb4550f5bc2, type: 3}
