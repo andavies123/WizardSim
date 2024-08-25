@@ -130,23 +130,40 @@ namespace GameWorld.Builders
 		{
 			if (!TrySpawnSingle(args.WorldObjectDetails, args.ChunkPosition, args.TilePosition, worldObjectParent))
 			{
-				Debug.LogWarning("Unable to create world object");
+				Debug.LogWarning($"{args.WorldObjectDetails.Name} was not able to be spawned.", this);
 			}
 		}
 
 		private bool TrySpawnSingle(WorldObjectDetails details, Vector2Int chunkPosition, Vector2Int localChunkPosition, Transform container)
 		{
+			// Initial checks to avoid creating unnecessary objects and destroying them
 			if (world.WorldObjectManager.IsAtMaxCapacity(details))
+			{
+				Debug.LogWarning($"Unable to place {details.Name}. There are already {world.WorldObjectManager.GetObjectCount(details)} of {details.PlacementProperties.MaxObjectsAllowed} objects already placed.");
 				return false;
-			
-			if (!world.Chunks.TryGetValue(chunkPosition, out Chunk chunk))
-				return false;
+			}
 
-			// Initial check to avoid creating unnecessary objects and destroying them
-			// BUG: This wouldn't work for objects bigger than 1x1
-			if (!chunk.IsValidTilePosition(localChunkPosition) || chunk.IsTileOccupied(localChunkPosition))
+			if (!world.Chunks.TryGetValue(chunkPosition, out Chunk chunk))
+			{
+				Debug.LogWarning($"Unable to place {details.Name}. The chunk at {chunkPosition} does not currently exist.");
 				return false;
+			}
 			
+			// Todo: Need to check all positions for objects that are larger than 1x1x1
+			if (!chunk.IsValidTilePosition(localChunkPosition))
+			{
+				Debug.LogWarning($"Unable to place {details.Name}. {localChunkPosition} is not a valid tile position.");
+                return false;
+			}
+
+			// Todo: Need to check all positions for objects that are larger than 1x1x1
+			if (chunk.IsTileOccupied(localChunkPosition))
+			{
+				Debug.LogWarning($"Unable to place {details.Name}. {localChunkPosition} is already occupied by another world object");
+				return false;
+			}
+
+			// By this point we should have all checks to make sure we can place a valid object
 			// Convert to world position to be placed
 			Vector3 worldPosition = world
 				.WorldPositionFromTilePosition(localChunkPosition, chunk.Position, centerOfTile: false)
@@ -163,6 +180,7 @@ namespace GameWorld.Builders
 			if (!chunk.TryAddWorldObject(worldObject))
 			{
 				worldObject.gameObject.Destroy();
+				Debug.LogWarning($"Unable to place {details.Name}. Object was unable to be added to the chunk.");
 				return false;
 			}
 			
