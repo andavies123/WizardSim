@@ -172,6 +172,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5bf9553e9f94893858b9e02ced2f2d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  world: {fileID: 2007172221}
 --- !u!224 &77647170 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6181420583714759637, guid: e26871ae0d4c1084bb799129eedd3e08, type: 3}

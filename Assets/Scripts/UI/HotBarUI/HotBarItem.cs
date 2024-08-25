@@ -12,6 +12,11 @@ namespace UI.HotBarUI
 		[SerializeField] private WorldObjectDetails worldObjectDetails;
 
 		public event EventHandler<HotBarItemSelectedEventArgs> Selected;
+
+		public WorldObjectDetails WorldObjectDetails => worldObjectDetails;
+
+		public void Enable() => button.interactable = true;
+		public void Disable() => button.interactable = false;
 		
 		private void Awake()
 		{

@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using GameWorld.WorldObjects;
 using UnityEngine;
@@ -9,6 +10,9 @@ namespace GameWorld
 	{
 		private readonly ConcurrentDictionary<WorldObjectDetails, HashSet<WorldObject>> _worldObjectsByName = new();
 		private readonly Transform _worldObjectParent;
+
+		public event EventHandler<WorldObjectManagerEventArgs> WorldObjectAdded;
+		public event EventHandler<WorldObjectManagerEventArgs> WorldObjectRemoved;
 
 		public WorldObjectManager(Transform worldObjectParent)
 		{
@@ -32,6 +36,7 @@ namespace GameWorld
 			}
 
 			worldObject.transform.parent = _worldObjectParent;
+			WorldObjectAdded?.Invoke(this, new WorldObjectManagerEventArgs() {Details = worldObject.Details});
 		}
 
 		public void RemoveWorldObject(WorldObject worldObject)
@@ -45,7 +50,10 @@ namespace GameWorld
 			if (!worldObjects.Remove(worldObject))
 			{
 				Debug.LogWarning($"Unable to remove {worldObject.Details.Name}. It might have already been removed..");
+				return;
 			}
+
+			WorldObjectRemoved?.Invoke(this, new WorldObjectManagerEventArgs {Details = worldObject.Details});
 		}
 		
 		public int GetObjectCount(WorldObjectDetails details)
