@@ -4,6 +4,7 @@ using Extensions;
 using GameWorld.Tiles;
 using GameWorld.WorldObjects;
 using UnityEngine;
+using Utilities.Attributes;
 
 namespace GameWorld
 {
@@ -11,8 +12,8 @@ namespace GameWorld
 	[RequireComponent(typeof(WorldObjectDetailsMap))]
 	public class World : MonoBehaviour
 	{
-		[SerializeField] private WorldDetails worldDetails;
-		[SerializeField] private Transform worldObjectContainer;
+		[SerializeField, ThrowIfNull] private WorldDetails worldDetails;
+		[SerializeField, ThrowIfNull] private Transform worldObjectContainer;
 		
 		private readonly Dictionary<Vector2Int, Chunk> _chunks = new();
 		private GameWorldTimeBehaviour _gameWorldTime;
@@ -136,10 +137,8 @@ namespace GameWorld
 
 		private void Awake()
 		{
-			worldDetails.ThrowIfNull(nameof(worldDetails));
-			worldObjectContainer.ThrowIfNull(nameof(worldObjectContainer));
-			_gameWorldTime = GetComponent<GameWorldTimeBehaviour>().ThrowIfNull(nameof(_gameWorldTime));
-			DetailsMap = GetComponent<WorldObjectDetailsMap>().ThrowIfNull(nameof(DetailsMap));
+			_gameWorldTime = GetComponent<GameWorldTimeBehaviour>();
+			DetailsMap = GetComponent<WorldObjectDetailsMap>();
 			WorldObjectManager = new WorldObjectManager(worldObjectContainer);
 		}
 	}

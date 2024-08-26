@@ -309,6 +309,7 @@ GameObject:
   - component: {fileID: 276745013}
   - component: {fileID: 276745016}
   - component: {fileID: 276745018}
+  - component: {fileID: 276745019}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -362,6 +363,20 @@ MonoBehaviour:
   placementModeUIState: {fileID: 664519175}
   taskManagementUIState: {fileID: 1834829560}
   interactableRaycaster: {fileID: 391488598}
+--- !u!114 &276745019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 276745012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d76d489b42d4406bf0c0329bd4a1372, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  revalidate: 0
+  throwIfNull: 1
 --- !u!1 &305748071
 GameObject:
   m_ObjectHideFlags: 0
