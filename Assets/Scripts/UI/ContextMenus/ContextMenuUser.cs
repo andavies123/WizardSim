@@ -51,7 +51,12 @@ namespace UI.ContextMenus
 		
 		private void OnInteractableContextMenuOpened(object sender, EventArgs args)
 		{
-			GlobalMessenger.Publish(new OpenContextMenuRequest(sender, this, Input.mousePosition));
+			GlobalMessenger.Publish(new OpenContextMenuRequest
+			{
+				Sender = this,
+				ContextMenuUser = this,
+				ScreenPosition = Input.mousePosition
+			});
 		}
 	}
 }

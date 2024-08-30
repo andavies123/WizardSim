@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Utilities.Attributes
 {
@@ -15,24 +16,28 @@ namespace Utilities.Attributes
 		
 		private void OnValidate()
 		{
-			if (throwIfNull)
+			FindObjectsOfType<MonoBehaviour>().ToList().ForEach(CheckScript);
+		}
+
+		private void CheckScript(MonoBehaviour script)
+		{
+			Type scriptType = script.GetType();
+
+			FieldInfo[] fields = scriptType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+			
+			fields.Where(field => Attribute.IsDefined(field, typeof(RequiredAttribute)))
+				.ToList()
+				.ForEach(field => HandleThrowIfNull(field, script));
+		}
+
+		private void HandleThrowIfNull(FieldInfo fieldInfo, Object script)
+		{
+			if (!throwIfNull)
+				return;
+
+			if (fieldInfo.GetValue(script) == null)
 			{
-				FindObjectsOfType<MonoBehaviour>()
-					.ToList()
-					.ForEach(script =>
-					{
-						script.GetType()
-							.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-							.Where(field => Attribute.IsDefined(field, typeof(ThrowIfNullAttribute)))
-							.ToList()
-							.ForEach(member =>
-							{
-								if (member.GetValue(script) == null)
-								{
-									Debug.LogError($"{member.Name} is currently null in the inspector.", script);
-								}
-							});
-					});	
+				Debug.LogError($"\"{fieldInfo.Name}\" is not set in the inspector for the component \"{script.GetType().Name}\"", script);
 			}
 		}
 	}

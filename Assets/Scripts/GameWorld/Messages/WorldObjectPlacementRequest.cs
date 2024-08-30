@@ -6,16 +6,8 @@ namespace GameWorld.Messages
 {
 	public class WorldObjectPlacementRequest : Message
 	{
-		public WorldObjectPlacementRequest(object sender, Vector2Int chunkPosition, Vector2Int tilePosition, WorldObjectDetails worldObjectDetails)
-			: base(sender)
-		{
-			ChunkPosition = chunkPosition;
-			TilePosition = tilePosition;
-			WorldObjectDetails = worldObjectDetails;
-		}
-		
-		public Vector2Int ChunkPosition { get; }
-		public Vector2Int TilePosition { get; }
-		public WorldObjectDetails WorldObjectDetails { get; }
+		public Vector2Int ChunkPosition { get; set; }
+		public Vector2Int TilePosition { get; set; }
+		public WorldObjectDetails WorldObjectDetails { get; set; }
 	}
 }

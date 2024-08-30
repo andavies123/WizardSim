@@ -5,11 +5,6 @@ namespace Game.Messages
 {
 	public class BeginPlacementModeRequest : Message
 	{
-		public BeginPlacementModeRequest(object sender, WorldObjectDetails placementDetails) : base(sender)
-		{
-			PlacementDetails = placementDetails;
-		}
-
-		public WorldObjectDetails PlacementDetails { get; }
+		public WorldObjectDetails PlacementDetails { get; set; }
 	}
 }

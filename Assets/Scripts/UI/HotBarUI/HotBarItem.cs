@@ -32,10 +32,10 @@ namespace UI.HotBarUI
 		{
 			public HotBarItemSelectedEventArgs(WorldObjectDetails worldObjectDetails)
 			{
-				WorldObjectWorldObjectDetails = worldObjectDetails;
+				WorldObjectDetails = worldObjectDetails;
 			}
 			
-			public WorldObjectDetails WorldObjectWorldObjectDetails { get; }
+			public WorldObjectDetails WorldObjectDetails { get; }
 		}
 	}
 }

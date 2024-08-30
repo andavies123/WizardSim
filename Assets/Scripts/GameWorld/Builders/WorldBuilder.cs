@@ -4,6 +4,7 @@ using Game.MessengerSystem;
 using GameWorld.Messages;
 using GameWorld.Spawners;
 using GameWorld.Tiles;
+using GameWorld.WorldObjectPreviews;
 using GameWorld.WorldObjects;
 using UnityEngine;
 using Utilities;
@@ -36,10 +37,11 @@ namespace GameWorld.Builders
 			RockObjectBuilder = new RockObjectBuilder(world, rockPrefab, worldObjectParent);
 			_worldObjectPreviewManager = new WorldObjectPreviewManager(world, transform);
 			
+			GlobalMessenger.Subscribe<WorldObjectPlacementRequest>(OnPlaceWorldObjectRequested);
 			GlobalMessenger.Subscribe<WizardSpawnRequestMessage>(OnWizardSpawnRequested);
 			GlobalMessenger.Subscribe<EnemySpawnRequestMessage>(OnEnemySpawnRequested);
+			
 			_worldObjectPreviewManager.SubscribeToMessages();
-			_worldObjectPreviewManager.CreateWorldObjectRequested += OnCreateWorldObjectRequested;
 		}
 
 		private void Start()
@@ -49,10 +51,11 @@ namespace GameWorld.Builders
 
 		private void OnDestroy()
 		{
+			GlobalMessenger.Unsubscribe<WorldObjectPlacementRequest>(OnPlaceWorldObjectRequested);
 			GlobalMessenger.Unsubscribe<WizardSpawnRequestMessage>(OnWizardSpawnRequested);
 			GlobalMessenger.Unsubscribe<EnemySpawnRequestMessage>(OnEnemySpawnRequested);
+			
 			_worldObjectPreviewManager.UnsubscribeFromMessages();
-			_worldObjectPreviewManager.CreateWorldObjectRequested -= OnCreateWorldObjectRequested;
 		}
 
 		private void GenerateWorld()
@@ -126,11 +129,17 @@ namespace GameWorld.Builders
 		private void OnWizardSpawnRequested(WizardSpawnRequestMessage message) => wizardSpawner.SpawnWizard(message.SpawnPosition, message.WizardType);
 		private void OnEnemySpawnRequested(EnemySpawnRequestMessage message) => enemySpawner.SpawnEntity(message.SpawnPosition);
 
-		private void OnCreateWorldObjectRequested(object sender, CreateWorldObjectRequestEventArgs args)
+		private void OnPlaceWorldObjectRequested(WorldObjectPlacementRequest message)
 		{
-			if (!TrySpawnSingle(args.WorldObjectDetails, args.ChunkPosition, args.TilePosition, worldObjectParent))
+			if (message == null)
 			{
-				Debug.LogWarning($"{args.WorldObjectDetails.Name} was not able to be spawned.", this);
+				Debug.Log($"Received invalid {nameof(WorldObjectPlacementRequest)} message");
+				return;
+			}
+			
+			if (!TrySpawnSingle(message.WorldObjectDetails, message.ChunkPosition, message.TilePosition, worldObjectParent))
+			{
+				Debug.LogWarning($"{message.WorldObjectDetails.Name} was not able to be spawned.", this);
 			}
 		}
 

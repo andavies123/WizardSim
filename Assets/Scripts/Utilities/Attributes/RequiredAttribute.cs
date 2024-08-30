@@ -4,5 +4,5 @@ using UnityEngine;
 namespace Utilities.Attributes
 {
 	[AttributeUsage(AttributeTargets.Field, Inherited = true, AllowMultiple = false)]
-	public class ThrowIfNullAttribute : PropertyAttribute { }
+	public class RequiredAttribute : PropertyAttribute { }
 }

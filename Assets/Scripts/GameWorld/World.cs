@@ -12,8 +12,8 @@ namespace GameWorld
 	[RequireComponent(typeof(WorldObjectDetailsMap))]
 	public class World : MonoBehaviour
 	{
-		[SerializeField, ThrowIfNull] private WorldDetails worldDetails;
-		[SerializeField, ThrowIfNull] private Transform worldObjectContainer;
+		[SerializeField, Required] private WorldDetails worldDetails;
+		[SerializeField, Required] private Transform worldObjectContainer;
 		
 		private readonly Dictionary<Vector2Int, Chunk> _chunks = new();
 		private GameWorldTimeBehaviour _gameWorldTime;

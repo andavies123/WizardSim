@@ -1,37 +1,42 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using Extensions;
-using Game.Messages;
-using Game.MessengerSystem;
 using GameWorld;
 using GameWorld.WorldObjects;
 using UnityEngine;
+using Utilities.Attributes;
 using static UI.HotBarUI.HotBarItem;
 
 namespace UI.HotBarUI
 {
-	public class HotBar : MonoBehaviour
+	public class HotBar : UIComponent
 	{
-		[SerializeField] private World world;
+		[SerializeField, Required] private World world;
         
 		private readonly Dictionary<WorldObjectDetails, HotBarItem> _hotBarItems = new();
 
-		private void Awake()
+		public event EventHandler<WorldObjectDetails> HotBarItemSelected;
+
+		protected override void Awake()
 		{
-			world.ThrowIfNull(nameof(world));
+			base.Awake();
 			
 			FindAllHotBarItems();
 			InitializeHotBarItems();
 		}
 
-		private void Start()
+		protected override void Start()
 		{
+			base.Start();
+			
 			world.WorldObjectManager.WorldObjectAdded += OnWorldObjectAdded;
 			world.WorldObjectManager.WorldObjectRemoved += OnWorldObjectRemoved;
 		}
 
-		private void OnDestroy()
+		protected override void OnDestroy()
 		{
+			base.Start();
+			
 			CleanUpHotBarItems();
 			
 			world.WorldObjectManager.WorldObjectAdded -= OnWorldObjectAdded;
@@ -56,7 +61,7 @@ namespace UI.HotBarUI
 
 		private void OnHotBarItemSelected(object sender, HotBarItemSelectedEventArgs args)
 		{
-			GlobalMessenger.Publish(new BeginPlacementModeRequest(this, args.WorldObjectWorldObjectDetails));
+			HotBarItemSelected?.Invoke(sender, args.WorldObjectDetails);
 		}
 
 		private void OnWorldObjectAdded(object sender, WorldObjectManagerEventArgs args)

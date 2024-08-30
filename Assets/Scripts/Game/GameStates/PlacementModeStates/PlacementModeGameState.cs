@@ -1,12 +1,11 @@
 ﻿using System;
 using CameraComponents;
 using Extensions;
-using Game.Messages;
 using Game.MessengerSystem;
 using GameWorld.GameWorldEventArgs;
 using GameWorld.Messages;
+using GameWorld.WorldObjectPreviews.Messages;
 using GameWorld.WorldObjects;
-using UnityEngine;
 
 namespace Game.GameStates.PlacementModeStates
 {
@@ -23,12 +22,14 @@ namespace Game.GameStates.PlacementModeStates
 		
 		public PlacementModeGameState(PlacementModeUIState placementModeUIState, InteractableRaycaster interactableRaycaster)
 		{
-			_placementModeUIState = placementModeUIState.ThrowIfNull(nameof(placementModeUIState));
 			_placementModeInputState = new PlacementModeInputState(interactableRaycaster);
+			_placementModeUIState = placementModeUIState.ThrowIfNull(nameof(placementModeUIState));
 
 			_placementModeInputState.PlacementRequested += OnPlacementRequested;
 			_placementModeInputState.PreviewPositionUpdated += OnPreviewPositionUpdated;
-			_placementModeInputState.HidePlacementPreviewRequested += OnHidePlacementPreviewRequested;
+			_placementModeInputState.PreviewVisibilityUpdated += OnPreviewVisibilityUpdated;
+			
+			_placementModeUIState.HotBarItemSelected += OnHotBarItemSelected;
 		}
 
 		public WorldObjectDetails PlacementDetails { get; set; }
@@ -38,19 +39,55 @@ namespace Game.GameStates.PlacementModeStates
 
 		protected override IInputState InputState => _placementModeInputState;
 		protected override UIState UIState => _placementModeUIState;
-		
-		protected override void OnEnabled() { }
+
+		protected override void OnEnabled()
+		{
+			GlobalMessenger.Publish(new WorldObjectPreviewSetDetailsMessage
+			{
+				Sender = this,
+				Details = PlacementDetails
+			});
+		}
 
 		protected override void OnDisabled() =>
-			GlobalMessenger.Publish(new WorldObjectPreviewDeleteRequest(this));
-
-		private void OnPlacementRequested(object sender, WorldPositionEventArgs args) =>
-			GlobalMessenger.Publish(new WorldObjectPlacementRequest(this, args.ChunkPosition, args.TilePosition, PlacementDetails));
+			GlobalMessenger.Publish(new WorldObjectPreviewDeleteMessage
+			{
+				Sender = this
+			});
 
 		private void OnPreviewPositionUpdated(object sender, WorldPositionEventArgs args) =>
-			GlobalMessenger.Publish(new WorldObjectPreviewRequest(this, args.ChunkPosition, args.TilePosition, PlacementDetails));
+			GlobalMessenger.Publish(new WorldObjectPreviewSetPositionMessage
+			{
+				Sender = this,
+				ChunkPosition = args.ChunkPosition,
+				TilePosition = args.TilePosition
+			});
 
-		private void OnHidePlacementPreviewRequested(object sender, EventArgs args) =>
-			GlobalMessenger.Publish(new WorldObjectHidePreviewRequest(this));
+		private void OnPreviewVisibilityUpdated(object sender, bool visibility) =>
+			GlobalMessenger.Publish(new WorldObjectPreviewSetVisibilityMessage
+			{
+				Sender = this,
+				Visibility = visibility
+			});
+		
+		private void OnHotBarItemSelected(object sender, WorldObjectDetails details)
+		{
+			PlacementDetails = details;
+			
+			GlobalMessenger.Publish(new WorldObjectPreviewSetDetailsMessage
+			{
+				Sender = this,
+				Details = details
+			});
+		}
+
+		private void OnPlacementRequested(object sender, WorldPositionEventArgs args) =>
+			GlobalMessenger.Publish(new WorldObjectPlacementRequest
+			{
+				Sender = this,
+				ChunkPosition = args.ChunkPosition,
+				TilePosition = args.TilePosition,
+				WorldObjectDetails = PlacementDetails
+			});
 	}
 }

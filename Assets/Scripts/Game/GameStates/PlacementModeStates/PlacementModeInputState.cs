@@ -2,7 +2,6 @@
 using CameraComponents;
 using GameWorld.GameWorldEventArgs;
 using GameWorld.Tiles;
-using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Game.GameStates.PlacementModeStates
@@ -19,10 +18,11 @@ namespace Game.GameStates.PlacementModeStates
 			placementMode = _playerInputActions.PlacementMode;
 		}
 		
-		public event EventHandler EndPlacementModeActionPerformed;
-		public event EventHandler<WorldPositionEventArgs> PreviewPositionUpdated;
 		public event EventHandler<WorldPositionEventArgs> PlacementRequested;
-		public event EventHandler HidePlacementPreviewRequested;
+		public event EventHandler EndPlacementModeActionPerformed;
+		
+		public event EventHandler<WorldPositionEventArgs> PreviewPositionUpdated;
+		public event EventHandler<bool> PreviewVisibilityUpdated;
         
 		public bool ShowInteractions => true;
 
@@ -54,9 +54,14 @@ namespace Game.GameStates.PlacementModeStates
 		private void OnInteractableHoverBegin(object sender, InteractableRaycasterEventArgs args)
 		{
 			if (args.Interactable.TryGetComponent(out Tile tile))
+			{
 				PreviewPositionUpdated?.Invoke(this, new WorldPositionEventArgs(tile));
+				PreviewVisibilityUpdated?.Invoke(this, true);
+			}
 			else
-				HidePlacementPreviewRequested?.Invoke(this, EventArgs.Empty);
+			{
+				PreviewVisibilityUpdated?.Invoke(this, false);
+			}
 		}
 
 		private void OnInteractableSelectedPrimary(object sender, InteractableRaycasterEventArgs args)
@@ -68,6 +73,6 @@ namespace Game.GameStates.PlacementModeStates
 		}
 
 		private void OnNonInteractableHoverBegin(object sender, EventArgs args) =>
-			HidePlacementPreviewRequested?.Invoke(this, EventArgs.Empty);
+			PreviewVisibilityUpdated?.Invoke(this, false);
 	}
 }

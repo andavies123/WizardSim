@@ -82,7 +82,12 @@ namespace GameWorld.Tiles
 			Vector2 tileWorldPosition = ParentWorld.WorldPositionFromTile(this, centerOfTile: true);
 			Vector3 spawnPosition = new(tileWorldPosition.x, 1, tileWorldPosition.y);
 			
-			GlobalMessenger.Publish(new WizardSpawnRequestMessage(this, spawnPosition, wizardType));
+			GlobalMessenger.Publish(new WizardSpawnRequestMessage
+			{
+				Sender = this,
+				SpawnPosition = spawnPosition,
+				WizardType = wizardType
+			});
 		}
 
 		private void SpawnEnemy()
@@ -90,7 +95,11 @@ namespace GameWorld.Tiles
 			Vector2 tileWorldPosition = ParentWorld.WorldPositionFromTile(this, centerOfTile: true);
 			Vector3 spawnPosition = new(tileWorldPosition.x, 1, tileWorldPosition.y);
 			
-			GlobalMessenger.Publish(new EnemySpawnRequestMessage(this, spawnPosition));
+			GlobalMessenger.Publish(new EnemySpawnRequestMessage
+			{
+				Sender = this,
+				SpawnPosition = spawnPosition
+			});
 		}
 	}
 }

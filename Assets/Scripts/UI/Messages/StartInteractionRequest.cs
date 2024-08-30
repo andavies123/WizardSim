@@ -6,11 +6,6 @@ namespace UI.Messages
 {
 	public class StartInteractionRequest : Message
 	{
-		public StartInteractionRequest(object sender, Action<MonoBehaviour> interactionCallback) : base(sender)
-		{
-			InteractionCallback = interactionCallback;
-		}
-		
-		public Action<MonoBehaviour> InteractionCallback { get; }
+		public Action<MonoBehaviour> InteractionCallback { get; set; }
 	}
 }

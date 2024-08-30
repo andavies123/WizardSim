@@ -1,8 +1,7 @@
 ﻿using System;
 using CameraComponents;
 using Extensions;
-using Game.Messages;
-using Game.MessengerSystem;
+using GameWorld.WorldObjects;
 using InputStates.InputEventArgs;
 
 namespace Game.GameStates.GameplayStates
@@ -43,9 +42,7 @@ namespace Game.GameStates.GameplayStates
 			
 			// UI
 			_gameplayUIState.PauseButtonPressed += OnPauseButtonPressed;
-			
-			// Global Messenger
-			GlobalMessenger.Subscribe<BeginPlacementModeRequest>(OnBeginPlacementModeRequested);
+			_gameplayUIState.HotBarItemSelected += OnPlacementModeRequested;
 		}
 
 		protected override void OnDisabled()
@@ -56,9 +53,7 @@ namespace Game.GameStates.GameplayStates
 			
 			// UI
 			_gameplayUIState.PauseButtonPressed -= OnPauseButtonPressed;
-			
-			// Global Messenger
-			GlobalMessenger.Unsubscribe<BeginPlacementModeRequest>(OnBeginPlacementModeRequested);
+			_gameplayUIState.HotBarItemSelected -= OnPlacementModeRequested;
 		}
 
 		private void OnPauseInputPerformed(object sender, EventArgs args) => 
@@ -69,8 +64,8 @@ namespace Game.GameStates.GameplayStates
 
 		private void OnOpenContextMenuRequested(object sender, OpenContextMenuEventArgs args) => 
 			OpenContextMenuRequested?.Invoke(sender, args);
-
-		private void OnBeginPlacementModeRequested(BeginPlacementModeRequest request) =>
-			BeginPlacementModeRequested?.Invoke(this, new BeginPlacementModeEventArgs(request.PlacementDetails));
+		
+		private void OnPlacementModeRequested(object sender, WorldObjectDetails details) =>
+			BeginPlacementModeRequested?.Invoke(this, new BeginPlacementModeEventArgs(details));
 	}
 }

@@ -149,7 +149,7 @@ namespace Wizards
 			
 			ContextMenuUser.AddMenuItem(
 				ContextMenuBuilder.BuildPath("Action", "Move To"),
-				() => GlobalMessenger.Publish(new StartInteractionRequest(this, OnInteractionCallback)),
+				() => GlobalMessenger.Publish(new StartInteractionRequest{Sender = this, InteractionCallback = OnInteractionCallback}),
 				() => true,
 				() => true);
 
@@ -170,7 +170,8 @@ namespace Wizards
 			Vector3 tilePosition = tile.Transform.position;
 			Vector3 moveToPosition = new(tilePosition.x, Transform.position.y, tilePosition.z);
 			StateMachine.MoveTo(moveToPosition);
-			GlobalMessenger.Publish(new EndInteractionRequest(this));
+            
+			GlobalMessenger.Publish(new EndInteractionRequest {Sender = this});
 		}
 		
 		private void OnCurrentHealthChanged(object sender, CurrentHealthChangedEventArgs args) => UpdateInteractableInfoText();

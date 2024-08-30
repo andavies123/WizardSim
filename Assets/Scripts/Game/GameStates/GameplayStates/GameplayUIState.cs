@@ -1,60 +1,41 @@
 using System;
-using Extensions;
-using UI;
+using GameWorld.WorldObjects;
 using UI.HotBarUI;
-using UI.InfoWindows;
-using UI.TaskManagement;
 using UnityEngine;
 using UnityEngine.UI;
+using Utilities.Attributes;
 
 namespace Game.GameStates.GameplayStates
 {
 	public class GameplayUIState : UIState
 	{
 		[Header("UI Elements")]
-		[SerializeField] private Button pauseButton;
-		[SerializeField] private InfoWindow infoWindow;
-		[SerializeField] private HotBar hotBar;
-		[SerializeField] private WizardTaskManagementUI taskManagementWindow;
+		[SerializeField, Required] private Button pauseButton;
+		[SerializeField, Required] private HotBar hotBar;
 		
 		public event EventHandler PauseButtonPressed;
-
-		public void OpenInfoWindow(Interactable interactable) => infoWindow.OpenWindow(interactable);
-		public void CloseInfoWindow() => infoWindow.CloseWindow();
-		
-		//public void OpenContextMenu(ContextMenuUser contextMenuUser, Vector3 screenPosition) => contextMenu.OpenMenu(contextMenuUser, screenPosition);
-
-		public void OpenTaskManagementWindow() => taskManagementWindow.Open();
-		public void CloseTaskManagementWindow() => taskManagementWindow.Close();
-
-		protected override void Awake()
-		{
-			base.Awake();
-			pauseButton.ThrowIfNull(nameof(pauseButton));
-			infoWindow.ThrowIfNull(nameof(infoWindow));
-			hotBar.ThrowIfNull(nameof(hotBar));
-			taskManagementWindow.ThrowIfNull(nameof(taskManagementWindow));
-		}
+		public event EventHandler<WorldObjectDetails> HotBarItemSelected; 
 		
         protected override void OnStateEnabled()
 		{
 			pauseButton.onClick.AddListener(OnPauseButtonPressed);
 
-			//contextMenu.MenuClosed += OnContextMenuClosed;
-
-			hotBar.enabled = true;
+			hotBar.HotBarItemSelected += OnHotBarItemSelected;
+			hotBar.Show();
 		}
 
 		protected override void OnStateDisabled()
 		{
 			pauseButton.onClick.RemoveListener(OnPauseButtonPressed);
-
-			//contextMenu.MenuClosed -= OnContextMenuClosed;
-
-			hotBar.enabled = false;
+			
+			hotBar.HotBarItemSelected -= OnHotBarItemSelected;
+			hotBar.Hide();
 		}
 
-		private void OnPauseButtonPressed() => PauseButtonPressed?.Invoke(this, EventArgs.Empty);
-		private void OnContextMenuClosed(object sender, EventArgs args) => CloseInfoWindow();
+		private void OnPauseButtonPressed() => 
+			PauseButtonPressed?.Invoke(this, EventArgs.Empty);
+		
+		private void OnHotBarItemSelected(object sender, WorldObjectDetails details) => 
+			HotBarItemSelected?.Invoke(sender, details);
 	}
 }
