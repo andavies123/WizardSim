@@ -36,7 +36,11 @@ namespace GameWorld
 			}
 
 			worldObject.transform.parent = _worldObjectParent;
-			WorldObjectAdded?.Invoke(this, new WorldObjectManagerEventArgs() {Details = worldObject.Details});
+			WorldObjectAdded?.Invoke(this, new WorldObjectManagerEventArgs
+			{
+				Details = worldObject.Details,
+				Count = GetObjectCount(worldObject.Details)
+			});
 		}
 
 		public void RemoveWorldObject(WorldObject worldObject)
@@ -53,7 +57,11 @@ namespace GameWorld
 				return;
 			}
 
-			WorldObjectRemoved?.Invoke(this, new WorldObjectManagerEventArgs {Details = worldObject.Details});
+			WorldObjectRemoved?.Invoke(this, new WorldObjectManagerEventArgs
+			{
+				Details = worldObject.Details,
+				Count = GetObjectCount(worldObject.Details)
+			});
 		}
 		
 		public int GetObjectCount(WorldObjectDetails details)

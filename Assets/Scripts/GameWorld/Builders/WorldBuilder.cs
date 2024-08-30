@@ -36,16 +36,16 @@ namespace GameWorld.Builders
 		{
 			RockObjectBuilder = new RockObjectBuilder(world, rockPrefab, worldObjectParent);
 			_worldObjectPreviewManager = new WorldObjectPreviewManager(world, transform);
-			
+		}
+
+		private void Start()
+		{
 			GlobalMessenger.Subscribe<WorldObjectPlacementRequest>(OnPlaceWorldObjectRequested);
 			GlobalMessenger.Subscribe<WizardSpawnRequestMessage>(OnWizardSpawnRequested);
 			GlobalMessenger.Subscribe<EnemySpawnRequestMessage>(OnEnemySpawnRequested);
 			
 			_worldObjectPreviewManager.SubscribeToMessages();
-		}
-
-		private void Start()
-		{
+			
 			GenerateWorld();
 		}
 

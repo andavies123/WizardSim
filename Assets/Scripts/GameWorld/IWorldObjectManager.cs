@@ -45,5 +45,6 @@ namespace GameWorld
 	public class WorldObjectManagerEventArgs : EventArgs
 	{
 		public WorldObjectDetails Details { get; set; }
+		public int Count { get; set; }
 	}
 }

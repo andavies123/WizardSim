@@ -11,11 +11,14 @@ namespace GameWorld.WorldObjectPreviews
 {
 	public class WorldObjectPreviewManager
 	{
-		private static readonly int BaseColorShaderId = Shader.PropertyToID("_BaseColor");
+		private const float PREVIEW_ALPHA_VALUE = 0.4f;
+
+		private static readonly Color DefaultPreviewColor = new(0.5f, 0.5f, 0.5f, PREVIEW_ALPHA_VALUE);
+		private static readonly Color MaxObjectCountPreviewColor = new(0.75f, 0, 0, PREVIEW_ALPHA_VALUE);
+		private static readonly int BaseColorShaderID = Shader.PropertyToID("_BaseColor");
 
 		private readonly World _world;
 		private readonly Transform _previewParent;
-		private WorldObject _previewObject;
 
 		public WorldObjectPreviewManager(World world, Transform previewParent)
 		{
@@ -23,6 +26,7 @@ namespace GameWorld.WorldObjectPreviews
 			_previewParent = previewParent;
 		}
 		
+		private WorldObject PreviewObject { get; set; }
 		private WorldObjectDetails PreviewDetails { get; set; }
 		private Vector3 PreviewWorldPosition { get; set; }
 		private bool PreviewVisibility { get; set; }
@@ -33,6 +37,9 @@ namespace GameWorld.WorldObjectPreviews
 			GlobalMessenger.Subscribe<WorldObjectPreviewSetPositionMessage>(OnSetPositionMessageReceived);
 			GlobalMessenger.Subscribe<WorldObjectPreviewSetVisibilityMessage>(OnSetVisibilityMessageReceived);
 			GlobalMessenger.Subscribe<WorldObjectPreviewDeleteMessage>(OnDeletePreviewMessageReceived);
+
+			_world.WorldObjectManager.WorldObjectAdded += OnWorldObjectCountChanged;
+			_world.WorldObjectManager.WorldObjectRemoved += OnWorldObjectCountChanged;
 		}
 
 		public void UnsubscribeFromMessages()
@@ -41,6 +48,9 @@ namespace GameWorld.WorldObjectPreviews
 			GlobalMessenger.Unsubscribe<WorldObjectPreviewSetPositionMessage>(OnSetPositionMessageReceived);
 			GlobalMessenger.Unsubscribe<WorldObjectPreviewSetVisibilityMessage>(OnSetVisibilityMessageReceived);
 			GlobalMessenger.Unsubscribe<WorldObjectPreviewDeleteMessage>(OnDeletePreviewMessageReceived);
+
+			_world.WorldObjectManager.WorldObjectAdded -= OnWorldObjectCountChanged;
+			_world.WorldObjectManager.WorldObjectRemoved -= OnWorldObjectCountChanged;
 		}
 
 		private void OnSetDetailsMessageReceived(WorldObjectPreviewSetDetailsMessage message)
@@ -53,12 +63,9 @@ namespace GameWorld.WorldObjectPreviews
 			
 			PreviewDetails = message.Details;
 			
-			if (_previewObject)
-				DeletePreview();
-                
-			_previewObject = CreatePreview(PreviewDetails, _previewParent);
-			_previewObject.transform.SetPositionAndRotation(PreviewWorldPosition, Quaternion.identity);
-			_previewObject.gameObject.SetActive(PreviewVisibility);
+			CreatePreview(PreviewDetails, _previewParent);
+			PreviewObject.transform.SetPositionAndRotation(PreviewWorldPosition, Quaternion.identity);
+			PreviewObject.gameObject.SetActive(PreviewVisibility);
 		}
 
 		private void OnSetPositionMessageReceived(WorldObjectPreviewSetPositionMessage message)
@@ -73,8 +80,8 @@ namespace GameWorld.WorldObjectPreviews
 				.WorldPositionFromTilePosition(message.TilePosition, message.ChunkPosition, centerOfTile: false)
 				.ToVector3(VectorSub.XSubY);
 			
-			if (_previewObject)
-				_previewObject.transform.SetPositionAndRotation(PreviewWorldPosition, Quaternion.identity);
+			if (PreviewObject)
+				PreviewObject.transform.SetPositionAndRotation(PreviewWorldPosition, Quaternion.identity);
 		}
 
 		private void OnSetVisibilityMessageReceived(WorldObjectPreviewSetVisibilityMessage message)
@@ -87,8 +94,8 @@ namespace GameWorld.WorldObjectPreviews
 
 			PreviewVisibility = message.Visibility;
             
-			if (_previewObject)
-				_previewObject.gameObject.SetActive(PreviewVisibility);
+			if (PreviewObject)
+				PreviewObject.gameObject.SetActive(PreviewVisibility);
 		}
 
 		private void OnDeletePreviewMessageReceived(WorldObjectPreviewDeleteMessage message)
@@ -102,29 +109,46 @@ namespace GameWorld.WorldObjectPreviews
 			DeletePreview();
 		}
 
+		private void OnWorldObjectCountChanged(object sender, WorldObjectManagerEventArgs args)
+		{
+			if (args.Details != PreviewDetails)
+				return; // We only care about the current detail set
+
+			UpdatePreviewColor();
+		}
+
 		private void DeletePreview()
 		{
-			if (_previewObject)
+			if (PreviewObject)
 			{
-				_previewObject.gameObject.Destroy();
-				_previewObject = null;
+				PreviewObject.gameObject.Destroy();
+				PreviewObject = null;
 			}
 		}
-		
-		private static WorldObject CreatePreview(WorldObjectDetails worldObjectDetails, Transform parent)
+
+		private void UpdatePreviewColor()
 		{
-			WorldObject worldObject = Object.Instantiate(worldObjectDetails.Prefab, parent);
+			if (!PreviewObject)
+				return;
 
-			worldObject.GetComponent<InteractionShaderManager>().enabled = false;
-			worldObject.GetComponentsInChildren<Collider>(true).ToList().ForEach(collider => collider.enabled = false);
-			worldObject.GetComponentsInChildren<MeshRenderer>(true).ToList().ForEach(renderer =>
+			Color previewColor = _world.WorldObjectManager.IsAtMaxCapacity(PreviewDetails) ? MaxObjectCountPreviewColor : DefaultPreviewColor;
+			
+			PreviewObject.GetComponentsInChildren<MeshRenderer>(true).ToList().ForEach(renderer =>
 			{
-				Color color = renderer.material.GetColor(BaseColorShaderId);
-				color.a = 0.75f;
-				renderer.material.SetColor(BaseColorShaderId, color);
+				renderer.material.SetColor(BaseColorShaderID, previewColor);
 			});
+		}
+		
+		private void CreatePreview(WorldObjectDetails worldObjectDetails, Transform parent)
+		{
+			if (PreviewObject)
+				DeletePreview();
 
-			return worldObject;
+			PreviewObject = Object.Instantiate(worldObjectDetails.Prefab, parent);
+
+			PreviewObject.GetComponent<InteractionShaderManager>().enabled = false;
+			PreviewObject.GetComponentsInChildren<Collider>(true).ToList().ForEach(collider => collider.enabled = false);
+			UpdatePreviewColor();
 		}
 	}
 }
