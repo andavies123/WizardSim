@@ -2,6 +2,7 @@
 using CameraComponents;
 using GameWorld.GameWorldEventArgs;
 using GameWorld.Tiles;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Game.GameStates.PlacementModeStates
@@ -29,6 +30,7 @@ namespace Game.GameStates.PlacementModeStates
 		public void Enable()
 		{
 			_interactableRaycaster.InteractableHoverBegin += OnInteractableHoverBegin;
+			_interactableRaycaster.UIHoverBegin += OnUIHoverBegin;
 			_interactableRaycaster.InteractableSelectedPrimary += OnInteractableSelectedPrimary;
 			_interactableRaycaster.NonInteractableHoverBegin += OnNonInteractableHoverBegin;
 			
@@ -42,6 +44,7 @@ namespace Game.GameStates.PlacementModeStates
 			placementMode.Disable();
 
 			_interactableRaycaster.InteractableHoverBegin -= OnInteractableHoverBegin;
+			_interactableRaycaster.UIHoverBegin -= OnUIHoverBegin;
 			_interactableRaycaster.InteractableSelectedPrimary -= OnInteractableSelectedPrimary;
 			_interactableRaycaster.NonInteractableHoverBegin -= OnNonInteractableHoverBegin;
 			
@@ -62,6 +65,11 @@ namespace Game.GameStates.PlacementModeStates
 			{
 				PreviewVisibilityUpdated?.Invoke(this, false);
 			}
+		}
+
+		private void OnUIHoverBegin(object sender, EventArgs args)
+		{
+			PreviewVisibilityUpdated?.Invoke(this, false);
 		}
 
 		private void OnInteractableSelectedPrimary(object sender, InteractableRaycasterEventArgs args)

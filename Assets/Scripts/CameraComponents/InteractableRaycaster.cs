@@ -13,6 +13,7 @@ namespace CameraComponents
 
 		private Interactable _currentHover;
 		private Interactable _currentSelected;
+		private bool _isPointerOverUI = false;
         
 		public event EventHandler<InteractableRaycasterEventArgs> InteractableSelectedPrimary;
         public event EventHandler<InteractableRaycasterEventArgs> InteractableSelectedSecondary;
@@ -21,13 +22,27 @@ namespace CameraComponents
         public event EventHandler NonInteractableSelectedPrimary;
         public event EventHandler NonInteractableSelectedSecondary;
         public event EventHandler NonInteractableHoverBegin;
+        public event EventHandler UIHoverBegin;
+        public event EventHandler UIHoverEnd;
 
         public bool IsInteractableCurrentlyHovered => _currentHover;
 
 		private void Update()
 		{
-			if (EventSystem.current.IsPointerOverGameObject())
-				return; // We don't want to handle interactable raycasting if the UI is being hovered
+			bool isPointerOverGameObject = EventSystem.current.IsPointerOverGameObject();
+
+			if (isPointerOverGameObject != _isPointerOverUI)
+			{
+				_isPointerOverUI = isPointerOverGameObject;
+
+				if (_isPointerOverUI)
+					UIHoverBegin?.Invoke(this, EventArgs.Empty);
+				else
+					UIHoverEnd?.Invoke(this, EventArgs.Empty);
+			}
+
+			if (_isPointerOverUI)
+				return; // We don't want to continue if we are over UI
 			
 			Ray ray = camera.ScreenPointToRay(Input.mousePosition);
 			Interactable interactable = null;
