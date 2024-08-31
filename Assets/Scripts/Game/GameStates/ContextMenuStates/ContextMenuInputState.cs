@@ -1,4 +1,7 @@
 ﻿using System;
+using CameraComponents;
+using Extensions;
+using UI.ContextMenus;
 using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.InputAction;
 using static UnityEngine.InputSystem.PlayerInputActions;
@@ -8,14 +11,17 @@ namespace Game.GameStates.ContextMenuStates
 	public class ContextMenuInputState : IInputState
 	{
 		private readonly PlayerInputActions _playerInputActions = new();
+		private readonly InteractableRaycaster _interactableRaycaster;
 		private ContextMenuActions _contextMenuActions;
 		
-		public ContextMenuInputState()
+		public ContextMenuInputState(InteractableRaycaster interactableRaycaster)
 		{
+			_interactableRaycaster = interactableRaycaster.ThrowIfNull(nameof(interactableRaycaster));
 			_contextMenuActions = _playerInputActions.ContextMenu;
 		}
 
 		public event EventHandler<ContextMenuNavigationEventArgs> NavigationActionPerformed;
+		public event EventHandler<ContextMenuUser> OpenNewContextMenuRequested;
 		public event EventHandler SelectActionPerformed;
 		public event EventHandler CloseActionPerformed;
 		
@@ -23,6 +29,8 @@ namespace Game.GameStates.ContextMenuStates
 		
 		public void Enable()
 		{
+			_interactableRaycaster.InteractableSelectedSecondary += OnInteractableSelectedSecondary;
+			
 			_contextMenuActions.Navigation.performed += OnNavigationActionPerformed;
 			_contextMenuActions.Select.performed += OnSelectActionPerformed;
 			_contextMenuActions.Close.performed += OnCloseActionPerformed;
@@ -32,11 +40,22 @@ namespace Game.GameStates.ContextMenuStates
 
 		public void Disable()
 		{
+			_interactableRaycaster.InteractableSelectedSecondary -= OnInteractableSelectedSecondary;
+			
 			_contextMenuActions.Disable();
 			
 			_contextMenuActions.Navigation.performed -= OnNavigationActionPerformed;
 			_contextMenuActions.Select.performed -= OnSelectActionPerformed;
 			_contextMenuActions.Close.performed -= OnCloseActionPerformed;
+		}
+
+		private void OnInteractableSelectedSecondary(object sender, InteractableRaycasterEventArgs args)
+		{
+			if (!args?.Interactable)
+				return;
+			
+			if (args.Interactable.TryGetComponent(out ContextMenuUser contextMenuUser))
+				OpenNewContextMenuRequested?.Invoke(this, contextMenuUser);
 		}
 
 		private void OnNavigationActionPerformed(CallbackContext context)

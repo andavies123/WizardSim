@@ -1,6 +1,4 @@
 ﻿using System;
-using Game.MessengerSystem;
-using UI.Messages;
 using UnityEngine;
 
 namespace UI.ContextMenus
@@ -37,26 +35,6 @@ namespace UI.ContextMenus
 		private void Awake()
 		{
 			Interactable = GetComponent<Interactable>();
-		}
-
-		private void Start()
-		{
-			Interactable.SecondaryActionSelected += OnInteractableContextMenuOpened;
-		}
-
-		private void OnDestroy()
-		{
-			Interactable.SecondaryActionSelected -= OnInteractableContextMenuOpened;
-		}
-		
-		private void OnInteractableContextMenuOpened(object sender, EventArgs args)
-		{
-			GlobalMessenger.Publish(new OpenContextMenuRequest
-			{
-				Sender = this,
-				ContextMenuUser = this,
-				ScreenPosition = Input.mousePosition
-			});
 		}
 	}
 }

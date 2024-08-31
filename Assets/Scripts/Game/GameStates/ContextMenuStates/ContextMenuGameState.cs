@@ -1,4 +1,5 @@
 ﻿using System;
+using CameraComponents;
 using Extensions;
 using UI.ContextMenus;
 using UnityEngine;
@@ -12,10 +13,10 @@ namespace Game.GameStates.ContextMenuStates
 
 		public event EventHandler MenuClosed;
         
-		public ContextMenuGameState(ContextMenuUIState uiState)
+		public ContextMenuGameState(ContextMenuUIState uiState, InteractableRaycaster interactableRaycaster)
 		{
 			_contextMenuUIState = uiState.ThrowIfNull(nameof(uiState));
-			_contextMenuInputState = new ContextMenuInputState();
+			_contextMenuInputState = new ContextMenuInputState(interactableRaycaster);
 		}
 
 		public override bool AllowCameraInputs => false;
@@ -34,6 +35,7 @@ namespace Game.GameStates.ContextMenuStates
 			_contextMenuInputState.NavigationActionPerformed += OnNavigationInputPerformed;
 			_contextMenuInputState.CloseActionPerformed += OnCloseInputPerformed;
 			_contextMenuInputState.SelectActionPerformed += OnSelectInputPerformed;
+			_contextMenuInputState.OpenNewContextMenuRequested += OnOpenNewContextMenuRequested;
 
 			_contextMenuUIState.ContextMenuClosed += OnContextMenuClosed;
 		}
@@ -43,6 +45,7 @@ namespace Game.GameStates.ContextMenuStates
 			_contextMenuInputState.NavigationActionPerformed -= OnNavigationInputPerformed;
 			_contextMenuInputState.CloseActionPerformed -= OnCloseInputPerformed;
 			_contextMenuInputState.SelectActionPerformed -= OnSelectInputPerformed;
+			_contextMenuInputState.OpenNewContextMenuRequested -= OnOpenNewContextMenuRequested;
 
 			_contextMenuUIState.ContextMenuClosed -= OnContextMenuClosed;
 		}
@@ -76,6 +79,11 @@ namespace Game.GameStates.ContextMenuStates
 		private void OnCloseInputPerformed(object sender, EventArgs args)
 		{
 			_contextMenuUIState.ContextMenu.CloseMenu();
+		}
+
+		private void OnOpenNewContextMenuRequested(object sender, ContextMenuUser contextMenuUser)
+		{
+			_contextMenuUIState.ContextMenu.Initialize(contextMenuUser, Input.mousePosition);
 		}
 
 		private void OnContextMenuClosed(object sender, EventArgs args)

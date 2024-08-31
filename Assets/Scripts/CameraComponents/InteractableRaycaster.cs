@@ -6,7 +6,7 @@ using Utilities;
 
 namespace CameraComponents
 {
-	public class InteractableRaycaster : MonoBehaviour
+	public class   InteractableRaycaster : MonoBehaviour
 	{
 		[SerializeField] private new Camera camera;
 		[SerializeField] private float maxRaycastDistance = 1000;

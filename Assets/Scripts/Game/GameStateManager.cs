@@ -9,6 +9,7 @@ using Game.GameStates.PlacementModeStates;
 using Game.GameStates.TaskManagementGameStates;
 using Game.MessengerSystem;
 using InputStates.InputEventArgs;
+using UI.ContextMenus;
 using UI.Messages;
 using UnityEngine;
 
@@ -64,7 +65,7 @@ namespace Game
 			_gameplayGameState = new GameplayGameState(gameplayUIState, interactableRaycaster);
 			_pauseMenuGameState = new PauseMenuGameState(pauseMenuUIState);
 			_interactionGameState = new InteractionGameState(interactionUIState, interactableRaycaster);
-			_contextMenuGameState = new ContextMenuGameState(contextMenuUIState);
+			_contextMenuGameState = new ContextMenuGameState(contextMenuUIState, interactableRaycaster);
 			_placementModeGameState = new PlacementModeGameState(placementModeUIState, interactableRaycaster);
 			_taskManagementGameState = new TaskManagementGameState(taskManagementUIState);
 			
@@ -136,9 +137,9 @@ namespace Game
 		private static void OnQuitGameRequested(object sender, EventArgs args) => GameManager.Instance.QuitGame();
 
 		// Context Menu Related Events
-		private void OnOpenContextMenuRequested(object sender, OpenContextMenuEventArgs args)
+		private void OnOpenContextMenuRequested(object sender, (ContextMenuUser contextMenuUser, Vector2 screenPosition) args)
 		{
-			_contextMenuGameState.Initialize(args.ContextMenuUser, args.ScreenPosition);
+			_contextMenuGameState.Initialize(args.contextMenuUser, args.screenPosition);
 			UpdateCurrentState(_contextMenuGameState);
 		}
 		private void OnContextMenuClosed(object sender, EventArgs args)

@@ -2,7 +2,8 @@
 using CameraComponents;
 using Extensions;
 using GameWorld.WorldObjects;
-using InputStates.InputEventArgs;
+using UI.ContextMenus;
+using UnityEngine;
 
 namespace Game.GameStates.GameplayStates
 {
@@ -12,7 +13,7 @@ namespace Game.GameStates.GameplayStates
 		private readonly GameplayInputState _gameplayInputState;
 
 		public event EventHandler PauseGameRequested;
-		public event EventHandler<OpenContextMenuEventArgs> OpenContextMenuRequested;
+		public event EventHandler<(ContextMenuUser, Vector2)> OpenContextMenuRequested;
 		public event EventHandler<BeginPlacementModeEventArgs> BeginPlacementModeRequested;
 		public event EventHandler OpenTaskManagementWindow
 		{
@@ -62,8 +63,8 @@ namespace Game.GameStates.GameplayStates
 		private void OnPauseButtonPressed(object sender, EventArgs args) => 
 			PauseGameRequested?.Invoke(sender, args);
 
-		private void OnOpenContextMenuRequested(object sender, OpenContextMenuEventArgs args) => 
-			OpenContextMenuRequested?.Invoke(sender, args);
+		private void OnOpenContextMenuRequested(object sender, ContextMenuUser contextMenuUser) => 
+			OpenContextMenuRequested?.Invoke(sender, (contextMenuUser, Input.mousePosition));
 		
 		private void OnPlacementModeRequested(object sender, WorldObjectDetails details) =>
 			BeginPlacementModeRequested?.Invoke(this, new BeginPlacementModeEventArgs(details));
