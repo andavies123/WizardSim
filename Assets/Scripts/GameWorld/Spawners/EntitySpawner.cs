@@ -13,7 +13,8 @@ namespace GameWorld.Spawners
 		[Header("Spawn Settings")] 
 		[SerializeField] private int initialSpawns = 5;
 		[SerializeField] private Vector3Int spawnCenter = Vector3Int.zero;
-		[SerializeField] private int spawnRadius = 10;
+		[SerializeField] private int minSpawnDistance = 10;
+		[SerializeField] private int maxSpawnDistance = 25;
 
 		public void SpawnEntity(Vector3 spawnPosition)
 		{
@@ -30,7 +31,9 @@ namespace GameWorld.Spawners
 
 		private void SpawnRandomEntity()
 		{
-			Vector2 randomSpawn = Random.insideUnitCircle * spawnRadius;
+			Vector2 randomDirection = Random.insideUnitCircle.normalized;
+			float randomDistance = Random.Range(minSpawnDistance, maxSpawnDistance);
+			Vector2 randomSpawn = randomDirection * randomDistance;
 			
 			SpawnEntity(new Vector3(
 				(int)randomSpawn.x + spawnCenter.x + 0.5f,
