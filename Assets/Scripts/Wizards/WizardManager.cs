@@ -27,6 +27,25 @@ namespace Wizards
 			WizardRemoved?.Invoke(this, new WizardManagerEventArgs(wizard));
 		}
 
+		public bool TryGetClosestWizard(Vector3 worldPosition, out Wizard closestWizard, out float distance)
+		{
+			closestWizard = null;
+			distance = float.MaxValue;
+            
+			foreach (Wizard wizard in _wizards.Values)
+			{
+				float currentDistance = Vector3.Distance(worldPosition, wizard.Transform.position);
+
+				if (currentDistance < distance)
+				{
+					distance = currentDistance;
+					closestWizard = wizard;
+				}
+			}
+			
+			return (bool)closestWizard;
+		}
+
 		private void OnWizardDied(object sender, WizardDiedEventArgs args)
 		{
 			Remove(args.DeadWizard);

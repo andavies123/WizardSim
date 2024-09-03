@@ -1,6 +1,8 @@
-﻿using Enemies.States;
+﻿using System;
+using Enemies.States;
 using GeneralBehaviours;
 using UnityEngine;
+using Wizards;
 
 namespace Enemies
 {
@@ -9,31 +11,78 @@ namespace Enemies
 	{
 		[Header("Idle State Defaults")]
 		[SerializeField] private float idleRadius = 10;
-		
+
+		[Header("Attack State Defaults")]
+		[SerializeField] private float targetRadius = 5f;
+		[SerializeField] private float targetLossRadius = 10f;
+		[SerializeField] private float attackRadius = 1f;
+
 		private Enemy _enemy;
-		private EnemyIdleState _idleState;
+		
+		private IdleEnemyState _idleState;
+		private AttackWizardEnemyState _attackWizardState;
 		
 		public void Idle()
 		{
-			_idleState.IdleRadius = idleRadius;
 			StateMachine.SetCurrentState(_idleState);
+		}
+		
+		public void AttackWizard(Wizard targetWizard)
+		{
+			_attackWizardState.TargetWizard = targetWizard;
+			
+			StateMachine.SetCurrentState(_attackWizardState);
 		}
 
 		private void Awake()
 		{
 			_enemy = GetComponent<Enemy>();
 
-			_idleState = new EnemyIdleState(_enemy);
+			_idleState = new IdleEnemyState(_enemy)
+			{
+				IdleRadius = idleRadius
+			};
+			
+			_attackWizardState = new AttackWizardEnemyState(_enemy)
+			{
+				AttackRadius = attackRadius,
+				TargetLossRadius = targetLossRadius
+			};
 		}
 
 		private void Start()
 		{
+			_attackWizardState.AttackFinished += OnWizardAttackFinished;
+			
 			Idle();
 		}
 
 		private void Update()
 		{
 			StateMachine.Update();
+		
+			if (!StateMachine.IsCurrentState(_attackWizardState) && CheckForSurroundingWizards(out Wizard targetWizard))
+				AttackWizard(targetWizard);
 		}
+
+		private void OnDestroy()
+		{
+			_attackWizardState.AttackFinished -= OnWizardAttackFinished;
+		}
+
+		private bool CheckForSurroundingWizards(out Wizard targetWizard)
+		{
+			// Get the surrounding wizard
+			if (!_enemy.ParentWorld.WizardManager.TryGetClosestWizard(_enemy.transform.position, out targetWizard, out float distance))
+				return false;
+
+			// Check the distance
+			if (distance > targetRadius)
+				return false;
+
+			return true;
+		}
+
+		private void OnWizardAttackFinished(object sender, EventArgs args) => Idle();
 	}
 }

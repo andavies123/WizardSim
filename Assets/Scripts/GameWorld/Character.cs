@@ -20,11 +20,17 @@ namespace GameWorld
 		protected abstract string CharacterType { get; }
 		
 		public Guid Id { get; } = Guid.NewGuid();
+		public World ParentWorld { get; private set; }
 		public Transform Transform { get; private set; }
 		public HealthComponent Health { get; private set; }
 		
 		protected ContextMenuUser ContextMenuUser { get; private set; }
 		protected Interactable Interactable { get; private set; }
+
+		public void Initialize(World parentWorld)
+		{
+			ParentWorld = parentWorld;
+		}
 
 		protected virtual void Awake()
 		{

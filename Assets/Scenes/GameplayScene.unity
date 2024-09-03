@@ -324,10 +324,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   entityManager: {fileID: 262803725}
+  parentWorld: {fileID: 2007172221}
   entityPrefab: {fileID: 2414322042265852574, guid: acf0f75cea44c4242994f8240489675b, type: 3}
   initialSpawns: 3
   spawnCenter: {x: 0, y: 0, z: 0}
-  spawnRadius: 10
+  minSpawnDistance: 10
+  maxSpawnDistance: 25
 --- !u!114 &262803725
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4603,6 +4605,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldDetails: {fileID: 11400000, guid: e582ff65a9a14e9418ca71ac487ff365, type: 2}
   worldObjectContainer: {fileID: 1790581159}
+  wizardManager: {fileID: 1202947231}
+  enemyManager: {fileID: 262803725}
 --- !u!114 &2007172222
 MonoBehaviour:
   m_ObjectHideFlags: 0

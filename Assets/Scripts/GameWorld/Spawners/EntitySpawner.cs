@@ -1,14 +1,16 @@
 ﻿using UnityEngine;
 using Utilities;
+using Utilities.Attributes;
 
 namespace GameWorld.Spawners
 {
 	public class EntitySpawner : MonoBehaviour
 	{
-		[SerializeField] private EntityManager entityManager;
+		[SerializeField, Required] private EntityManager entityManager;
+		[SerializeField, Required] private World parentWorld;
 
 		[Header("Prefabs")]
-		[SerializeField] private GameObject entityPrefab;
+		[SerializeField, Required] private GameObject entityPrefab;
 
 		[Header("Spawn Settings")] 
 		[SerializeField] private int initialSpawns = 5;
@@ -21,6 +23,7 @@ namespace GameWorld.Spawners
 			GameObject entityGameObject = Instantiate(entityPrefab, entityManager.transform);
 			entityGameObject.transform.position = spawnPosition;
 			Character character = entityGameObject.GetComponent<Character>();
+			character.Initialize(parentWorld);
 			entityManager.Add(character);
 		}
 		

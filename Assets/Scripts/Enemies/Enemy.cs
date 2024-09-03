@@ -5,12 +5,13 @@ using GeneralBehaviours.Utilities.ContextMenuBuilders;
 using GeneralClasses.Health.HealthEventArgs;
 using Stats;
 using UnityEngine;
+using Utilities.Attributes;
 
 namespace Enemies
 {
 	public class Enemy : Character
 	{
-		[SerializeField] private EnemyStats stats;
+		[SerializeField, Required] private EnemyStats stats;
 		
 		// Components
 		public EnemyStateMachine StateMachine { get; private set; }

@@ -5,7 +5,7 @@ using Random = UnityEngine.Random;
 
 namespace Enemies.States
 {
-	public class EnemyIdleState : EnemyState
+	public class IdleEnemyState : EnemyState
 	{
 		private readonly StateMachine _stateMachine = new();
 		
@@ -14,7 +14,7 @@ namespace Enemies.States
 
 		private Vector3 _centerIdlePosition;
 
-		public EnemyIdleState(Enemy enemy) : base(enemy)
+		public IdleEnemyState(Enemy enemy) : base(enemy)
 		{
 			_waitState = new EnemyWaitState(enemy);
 			_moveToState = new EnemyMoveToState(enemy);
@@ -54,12 +54,15 @@ namespace Enemies.States
 		private void ChangeToWaitState()
 		{
 			_waitState.WaitTime = GetRandomWaitTime();
+			
 			_stateMachine.SetCurrentState(_waitState);
 		}
 
 		private void ChangeToMoveState()
 		{
-			_moveToState.Initialize(GetNextMoveToPosition(), .5f);
+			_moveToState.MaxDistanceForArrival = .5f;
+			_moveToState.MoveToPosition = GetNextMoveToPosition();
+			
 			_stateMachine.SetCurrentState(_moveToState);
 		}
 	}

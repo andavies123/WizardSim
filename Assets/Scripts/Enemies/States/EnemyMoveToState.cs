@@ -15,31 +15,51 @@ namespace Enemies.States
 		public override string DisplayName => "Moving";
 		public override string DisplayStatus { get; protected set; }
 
-		public void Initialize(Vector3 moveToPosition, float maxDistanceForArrival)
+		public Vector3 MoveToPosition
 		{
-			_moveToPosition = moveToPosition;
-			_maxDistanceForArrival = maxDistanceForArrival;
+			get => _moveToPosition;
+			set
+			{
+				if (value == _moveToPosition)
+					return;
+
+				_moveToPosition = value;
+				Enemy.Movement.SetMoveToPosition(_moveToPosition, _maxDistanceForArrival);
+			}
+		}
+
+		public float MaxDistanceForArrival
+		{
+			get => _maxDistanceForArrival;
+			set
+			{
+				if (Mathf.Approximately(value, _maxDistanceForArrival))
+					return;
+
+				_maxDistanceForArrival = value;
+				Enemy.Movement.SetMoveToPosition(_moveToPosition, _maxDistanceForArrival);
+			}
 		}
 
 		public override void Begin()
 		{
-			Enemy.Movement.SetMoveToPosition(_moveToPosition, _maxDistanceForArrival);
+			Enemy.Movement.SetMoveToPosition(MoveToPosition, MaxDistanceForArrival);
 		}
 
 		public override void Update()
 		{
-			if (!Enemy.Movement.IsMoving)
+			if (Enemy.Movement.IsMoving)
+			{
+				float currentDistance = Vector3.Distance(Enemy.transform.position, MoveToPosition);
+				DisplayStatus = $"Moving: {currentDistance:F1} m away";
+			}
+			else
 			{
 				DisplayStatus = "Arrived";
 				ArrivedAtPosition?.Invoke(this, EventArgs.Empty);
 			}
-			else
-			{
-				float currentDistance = Vector3.Distance(Enemy.transform.position, _moveToPosition);
-				DisplayStatus = $"Moving: {currentDistance:F1} m away";
-			}
 		}
-		
+
 		public override void End() { }
 	}
 }

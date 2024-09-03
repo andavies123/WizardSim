@@ -65,6 +65,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   idleRadius: 10
+  targetRadius: 5
+  targetLossRadius: 10
+  attackRadius: 2
 --- !u!114 &5329288241691076669
 MonoBehaviour:
   m_ObjectHideFlags: 0
