@@ -54,12 +54,15 @@ namespace GeneralBehaviours
 			Vector3 direction = (_targetPosition.Value - currentPosition).normalized;
 			Vector3 newPosition = currentPosition + direction * (_character.MovementStats.Speed * Time.fixedDeltaTime);
 			_rigidbody.MovePosition(newPosition);
-			
-			_pathLine.UpdateLine(new[]
+
+			if (_pathLine)
 			{
-				_targetPosition.Value,
-				transform.position
-			});
+				_pathLine.UpdateLine(new[]
+				{
+					_targetPosition.Value,
+					transform.position
+				});	
+			}
 
 			if (Vector3.Distance(_transform.position, _targetPosition.Value) <= (_maxDistanceForArrival ?? 0.1f))
 			{

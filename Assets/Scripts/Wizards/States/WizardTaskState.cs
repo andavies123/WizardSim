@@ -6,7 +6,7 @@ namespace Wizards.States
 	{
 		public event EventHandler Completed;
 
-		protected void Complete()
+		protected void CompleteTask()
 		{
 			Completed?.Invoke(this, EventArgs.Empty);
 		}

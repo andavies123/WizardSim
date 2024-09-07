@@ -12,7 +12,7 @@ namespace Wizards.States
 		protected WizardState(Wizard wizard) => SetWizard(wizard);
 		
 		// Events
-		public event EventHandler<StateExitEventArgs> StateForceExited;
+		public abstract event EventHandler<string> ExitRequested;
 		
 		// Display Strings
 		public abstract string DisplayName { get; }
@@ -25,9 +25,6 @@ namespace Wizards.States
 		public abstract void Begin();
 		public abstract void Update();
 		public abstract void End();
-		
-		// Event Invocators
-		protected void ForceExit(StateExitEventArgs args) => StateForceExited?.Invoke(this, args);
 	}
 
 	public class StateExitEventArgs

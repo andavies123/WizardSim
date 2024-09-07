@@ -326,7 +326,7 @@ MonoBehaviour:
   entityManager: {fileID: 262803725}
   parentWorld: {fileID: 2007172221}
   entityPrefab: {fileID: 2414322042265852574, guid: acf0f75cea44c4242994f8240489675b, type: 3}
-  initialSpawns: 3
+  initialSpawns: 0
   spawnCenter: {x: 0, y: 0, z: 0}
   minSpawnDistance: 10
   maxSpawnDistance: 25

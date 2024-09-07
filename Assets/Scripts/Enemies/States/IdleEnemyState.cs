@@ -1,4 +1,5 @@
 ﻿using System;
+using GameWorld;
 using StateMachines;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -9,18 +10,27 @@ namespace Enemies.States
 	{
 		private readonly StateMachine _stateMachine = new();
 		
-		private readonly EnemyWaitState _waitState;
+		private readonly WaitCharacterState _waitState;
 		private readonly EnemyMoveToState _moveToState;
 
 		private Vector3 _centerIdlePosition;
 
+		public override event EventHandler<string> ExitRequested;
+
 		public IdleEnemyState(Enemy enemy) : base(enemy)
 		{
-			_waitState = new EnemyWaitState(enemy);
-			_moveToState = new EnemyMoveToState(enemy);
-
-			_waitState.WaitFinished += OnIdleWaitFinished;
-			_moveToState.ArrivedAtPosition += OnMoveToArrivedAtPosition;
+			_waitState = new WaitCharacterState(enemy);
+			_moveToState = new EnemyMoveToState(enemy)
+			{
+				MaxDistanceForArrival = .5f
+			};
+			
+			_stateMachine.AddStateTransition(
+				_waitState, WaitCharacterState.EXIT_REASON_DONE_WAITING,
+				_moveToState, OnDoneWaiting);
+			_stateMachine.AddStateTransition(
+				_moveToState, EnemyMoveToState.EXIT_REASON_ARRIVED,
+				_waitState, OnDoneMoving);
 		}
 
 		public override string DisplayName => "Idling";
@@ -40,8 +50,8 @@ namespace Enemies.States
 		
 		public override void End() { }
 
-		private void OnIdleWaitFinished() => ChangeToMoveState();
-		private void OnMoveToArrivedAtPosition(object sender, EventArgs args) => ChangeToWaitState();
+        private void OnDoneWaiting() => _moveToState.MoveToPosition = GetNextMoveToPosition();
+        private void OnDoneMoving() => _waitState.WaitTime = GetRandomWaitTime();
 
 		private Vector3 GetNextMoveToPosition()
 		{
@@ -50,20 +60,5 @@ namespace Enemies.States
 		}
 		
 		private static float GetRandomWaitTime() => Random.Range(5, 10);
-
-		private void ChangeToWaitState()
-		{
-			_waitState.WaitTime = GetRandomWaitTime();
-			
-			_stateMachine.SetCurrentState(_waitState);
-		}
-
-		private void ChangeToMoveState()
-		{
-			_moveToState.MaxDistanceForArrival = .5f;
-			_moveToState.MoveToPosition = GetNextMoveToPosition();
-			
-			_stateMachine.SetCurrentState(_moveToState);
-		}
 	}
 }

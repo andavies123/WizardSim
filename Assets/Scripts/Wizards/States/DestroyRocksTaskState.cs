@@ -12,72 +12,65 @@ namespace Wizards.States
 		private readonly StateMachine _stateMachine = new();
 		private readonly int _initialRockCount;
 		
-		private WizardMoveToState _moveToState;
-		private DestroyRockState _destroyRockState;
+		private readonly WizardMoveToState _moveToState;
+		private readonly DestroyRockState _destroyRockState;
 
+		public override event EventHandler<string> ExitRequested;
+		
 		public DestroyRocksTaskState(List<Rock> rocks)
-		{
-			_rocks = rocks;
-			_initialRockCount = rocks.Count;
-			UpdateDisplayStatus();
-		}
-		
-		public override string DisplayName => $"Destroying {_rocks.Count} Rocks";
-		public override string DisplayStatus { get; protected set; }
-		
-		public override void Begin()
 		{
 			_moveToState = new WizardMoveToState(Wizard);
 			_destroyRockState = new DestroyRockState(Wizard);
-
-			_moveToState.ArrivedAtPosition += OnArrivedAtRock;
-			_destroyRockState.RockDestroyed += OnRockDestroyed;
-            
-			ChangeToMoveToState();
+			
+			_rocks = rocks;
+			_initialRockCount = rocks.Count;
+			UpdateDisplayStatus();
+			
+			_stateMachine.AddStateTransition(
+				_moveToState, WizardMoveToState.EXIT_REASON_ARRIVED_AT_POSITION, 
+				_destroyRockState, OnArrivedAtRock);
+			
+			_stateMachine.AddStateTransition(
+				_destroyRockState, DestroyRockState.EXIT_REASON_ROCK_DESTROYED,
+				_moveToState, OnRockDestroyed);
 		}
+
+		public override string DisplayName => $"Destroying {_rocks.Count} Rocks";
+		public override string DisplayStatus { get; protected set; }
+		
+		public override void Begin() { }
 
 		public override void Update()
 		{
 			_stateMachine.Update();
-			DisplayStatus = $"Rocks Destroyed: {_initialRockCount - _rocks.Count} of {_initialRockCount} | " + _stateMachine.CurrentStateDisplayStatus;
+			DisplayStatus = $"Rocks Destroyed: {_initialRockCount - _rocks.Count} of {_initialRockCount} | {_stateMachine.CurrentStateDisplayStatus}";
 		}
 
 		public override void End() { }
-
-		private void ChangeToMoveToState()
-		{
-			if (_rocks.IsEmpty())
-			{
-				Complete();
-				return;
-			}
-
-			Rock rock = _rocks[0];
-			_moveToState.Initialize(rock.transform.position, 2f);
-			_stateMachine.SetCurrentState(_moveToState);
-		}
-
-		private void ChangeToDestroyRockState()
-		{
-			_destroyRockState.Initialize(_rocks[0]);
-			_stateMachine.SetCurrentState(_destroyRockState);
-		}
-
+		
 		private void UpdateDisplayStatus()
 		{
 			DisplayStatus = $"Rocks Destroyed: {_initialRockCount - _rocks.Count}/{_initialRockCount}";
 		}
 		
-		private void OnArrivedAtRock(object sender, EventArgs args)
+		private void OnArrivedAtRock()
 		{
-			ChangeToDestroyRockState();
+			_destroyRockState.Initialize(_rocks[0]);
 		}
 
-		private void OnRockDestroyed(object sender, EventArgs args)
+		private void OnRockDestroyed()
 		{
 			_rocks.RemoveAt(0);
 			UpdateDisplayStatus();
-			ChangeToMoveToState();
+			
+			if (_rocks.IsEmpty())
+			{
+				CompleteTask();
+				return;
+			}
+
+			Rock rock = _rocks[0];
+			_moveToState.Initialize(rock.transform.position, 2f);
 		}
 	}
 }

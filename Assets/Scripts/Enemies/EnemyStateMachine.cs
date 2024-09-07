@@ -1,5 +1,4 @@
-﻿using System;
-using Enemies.States;
+﻿using Enemies.States;
 using GeneralBehaviours;
 using UnityEngine;
 using Wizards;
@@ -52,7 +51,9 @@ namespace Enemies
 
 		private void Start()
 		{
-			_attackWizardState.AttackFinished += OnWizardAttackFinished;
+			StateMachine.AddStateTransition(
+				_attackWizardState, AttackWizardEnemyState.EXIT_REASON_ATTACK_FINISHED,
+				_idleState, null);
 			
 			Idle();
 		}
@@ -63,11 +64,6 @@ namespace Enemies
 		
 			if (!StateMachine.IsCurrentState(_attackWizardState) && CheckForSurroundingWizards(out Wizard targetWizard))
 				AttackWizard(targetWizard);
-		}
-
-		private void OnDestroy()
-		{
-			_attackWizardState.AttackFinished -= OnWizardAttackFinished;
 		}
 
 		private bool CheckForSurroundingWizards(out Wizard targetWizard)
@@ -82,7 +78,5 @@ namespace Enemies
 
 			return true;
 		}
-
-		private void OnWizardAttackFinished(object sender, EventArgs args) => Idle();
 	}
 }

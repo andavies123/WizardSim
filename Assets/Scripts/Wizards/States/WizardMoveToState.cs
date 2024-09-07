@@ -5,12 +5,14 @@ namespace Wizards.States
 {
 	public class WizardMoveToState : WizardState
 	{
+		public const string EXIT_REASON_ARRIVED_AT_POSITION = nameof(EXIT_REASON_ARRIVED_AT_POSITION);
+		
 		private Vector3 _moveToPosition;
 		private float _maxDistanceForArrival;
 		
 		public WizardMoveToState(Wizard wizard) => SetWizard(wizard);
 
-		public event EventHandler ArrivedAtPosition;
+		public override event EventHandler<string> ExitRequested;
 
 		public override string DisplayName => "Moving";
 		public override string DisplayStatus { get; protected set; }
@@ -31,7 +33,7 @@ namespace Wizards.States
 			if (!Wizard.Movement.IsMoving)
 			{
 				DisplayStatus = "Arrived";
-				ArrivedAtPosition?.Invoke(this, EventArgs.Empty);
+				ExitRequested?.Invoke(this, EXIT_REASON_ARRIVED_AT_POSITION);
 			}
 			else
 			{

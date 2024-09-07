@@ -6,9 +6,11 @@ namespace Enemies.States
 {
 	public class AttackEnemyState : EnemyState
 	{
+		public const string EXIT_REASON_ATTACK_FINISHED = nameof(EXIT_REASON_ATTACK_FINISHED);
+		
 		private float _secondsSinceLastAttack = 0f;
 
-		public event EventHandler AttackingFinished; 
+		public override event EventHandler<string> ExitRequested;
         
 		public AttackEnemyState(Enemy enemy) : base(enemy) { }
 
@@ -29,7 +31,7 @@ namespace Enemies.States
 		{
 			if (!Target)
 			{
-				AttackingFinished?.Invoke(this, EventArgs.Empty);
+				ExitRequested?.Invoke(this, EXIT_REASON_ATTACK_FINISHED);
 				return;
 			}
 			
@@ -46,7 +48,7 @@ namespace Enemies.States
 			
 			if (Target.Health.IsAtMinHealth)
 			{
-				AttackingFinished?.Invoke(this, EventArgs.Empty);
+				ExitRequested?.Invoke(this, EXIT_REASON_ATTACK_FINISHED);
 			}
 		}
 

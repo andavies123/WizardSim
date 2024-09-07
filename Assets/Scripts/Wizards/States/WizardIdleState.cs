@@ -1,4 +1,5 @@
 ﻿using System;
+using GameWorld;
 using StateMachines;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -9,18 +10,24 @@ namespace Wizards.States
 	{
 		private readonly StateMachine _stateMachine = new();
 		
-		private readonly WizardWaitState _waitState;
+		private readonly WaitCharacterState _waitState;
 		private readonly WizardMoveToState _moveToState;
 
 		private Vector3 _centerIdlePosition;
+		
+		public override event EventHandler<string> ExitRequested;
 
 		public WizardIdleState(Wizard wizard) : base(wizard)
 		{
-			_waitState = new WizardWaitState(wizard);
+			_waitState = new WaitCharacterState(wizard);
 			_moveToState = new WizardMoveToState(wizard);
 
-			_waitState.WaitFinished += OnIdleWaitFinished;
-			_moveToState.ArrivedAtPosition += OnMoveToArrivedAtPosition;
+			_stateMachine.AddStateTransition(
+				_waitState, WaitCharacterState.EXIT_REASON_DONE_WAITING, 
+				_moveToState, OnWaitTimerFinished);
+			_stateMachine.AddStateTransition(
+				_moveToState, WizardMoveToState.EXIT_REASON_ARRIVED_AT_POSITION, 
+				_waitState, OnArrivedAtPosition);
 		}
 
 		public override string DisplayName => "Idling";
@@ -29,6 +36,7 @@ namespace Wizards.States
 
 		public override void Begin()
 		{
+			_waitState.WaitTime = GetRandomWaitTime();
 			_stateMachine.SetCurrentState(_waitState);
 		}
 
@@ -40,8 +48,8 @@ namespace Wizards.States
 		
 		public override void End() { }
 
-		private void OnIdleWaitFinished() => ChangeToMoveState();
-		private void OnMoveToArrivedAtPosition(object sender, EventArgs args) => ChangeToWaitState();
+		private void OnWaitTimerFinished() => _moveToState.Initialize(GetNextMoveToPosition(), .5f);
+		private void OnArrivedAtPosition() => _waitState.WaitTime = GetRandomWaitTime();
 
 		private Vector3 GetNextMoveToPosition()
 		{
@@ -50,17 +58,5 @@ namespace Wizards.States
 		}
 		
 		private static float GetRandomWaitTime() => Random.Range(5, 10);
-
-		private void ChangeToWaitState()
-		{
-			_waitState.WaitTime = GetRandomWaitTime();
-			_stateMachine.SetCurrentState(_waitState);
-		}
-
-		private void ChangeToMoveState()
-		{
-			_moveToState.Initialize(GetNextMoveToPosition(), .5f);
-			_stateMachine.SetCurrentState(_moveToState);
-		}
 	}
 }

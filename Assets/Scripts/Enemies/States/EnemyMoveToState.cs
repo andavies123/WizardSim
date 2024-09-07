@@ -5,12 +5,14 @@ namespace Enemies.States
 {
 	public class EnemyMoveToState : EnemyState
 	{
+		public const string EXIT_REASON_ARRIVED = nameof(EXIT_REASON_ARRIVED);
+        
 		private Vector3 _moveToPosition;
 		private float _maxDistanceForArrival;
 		
 		public EnemyMoveToState(Enemy enemy) : base(enemy) { }
 
-		public event EventHandler ArrivedAtPosition;
+		public override event EventHandler<string> ExitRequested;
 
 		public override string DisplayName => "Moving";
 		public override string DisplayStatus { get; protected set; }
@@ -56,7 +58,7 @@ namespace Enemies.States
 			else
 			{
 				DisplayStatus = "Arrived";
-				ArrivedAtPosition?.Invoke(this, EventArgs.Empty);
+				ExitRequested?.Invoke(this, EXIT_REASON_ARRIVED);
 			}
 		}
 

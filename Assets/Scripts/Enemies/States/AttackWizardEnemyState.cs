@@ -1,23 +1,31 @@
 ﻿using System;
-using GeneralBehaviours.HealthBehaviours;
 using StateMachines;
-using UnityEngine;
 using Wizards;
 
 namespace Enemies.States
 {
 	public class AttackWizardEnemyState : EnemyState
 	{
+		public const string EXIT_REASON_ATTACK_FINISHED = nameof(EXIT_REASON_ATTACK_FINISHED);
+		
 		private readonly StateMachine _stateMachine = new();
 		private readonly EnemyMoveToState _moveToState;
 		private readonly AttackEnemyState _attackEnemyState;
 
-		public event EventHandler AttackFinished;
+		public override event EventHandler<string> ExitRequested;
 
 		public AttackWizardEnemyState(Enemy enemy) : base(enemy)
 		{
 			_moveToState = new EnemyMoveToState(enemy);
 			_attackEnemyState = new AttackEnemyState(enemy);
+			
+			_stateMachine.AddStateTransition(
+				_moveToState, EnemyMoveToState.EXIT_REASON_ARRIVED,
+				_attackEnemyState, OnArrivedAtTarget);
+			
+			_stateMachine.AddStateTransition(
+				_attackEnemyState, AttackEnemyState.EXIT_REASON_ATTACK_FINISHED,
+				null, OnFinishedAttacking);
 		}
 
 		public override string DisplayName => "Attacking";
@@ -30,14 +38,8 @@ namespace Enemies.States
 		public override void Begin()
 		{
 			_moveToState.MaxDistanceForArrival = AttackRadius;
-			
 			_attackEnemyState.DamagePerHit = 5;
 			_attackEnemyState.SecondsBetweenAttacks = 0.5f;
-			
-			_moveToState.ArrivedAtPosition += OnArrivedAtTarget;
-			_attackEnemyState.AttackingFinished += OnAttackingFinished;
-			
-			MoveToWizard(TargetWizard.Transform.position);
 		}
 
 		public override void Update()
@@ -52,29 +54,13 @@ namespace Enemies.States
 			}
 			else
 			{
-				AttackFinished?.Invoke(this, EventArgs.Empty);
+				ExitRequested?.Invoke(this, EXIT_REASON_ATTACK_FINISHED);
 			}
 		}
 
-		public override void End()
-		{
-			_moveToState.ArrivedAtPosition -= OnArrivedAtTarget;
-			_attackEnemyState.AttackingFinished -= OnAttackingFinished;
-		}
+		public override void End() { }
 
-		private void MoveToWizard(Vector3 wizardPosition)
-		{
-			_moveToState.MoveToPosition = wizardPosition;
-			_stateMachine.SetCurrentState(_moveToState);
-		}
-
-		private void AttackWizard(HealthComponent wizardHealth)
-		{
-			_attackEnemyState.Target = wizardHealth;
-			_stateMachine.SetCurrentState(_attackEnemyState);
-		}
-
-		private void OnArrivedAtTarget(object sender, EventArgs args) => AttackWizard(TargetWizard.Health);
-		private void OnAttackingFinished(object sender, EventArgs args) => AttackFinished?.Invoke(this, EventArgs.Empty);
+		private void OnArrivedAtTarget() => _attackEnemyState.Target = TargetWizard.Health;
+		private void OnFinishedAttacking() => ExitRequested?.Invoke(this, EXIT_REASON_ATTACK_FINISHED);
 	}
 }

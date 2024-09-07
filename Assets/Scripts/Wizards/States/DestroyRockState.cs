@@ -7,11 +7,13 @@ namespace Wizards.States
 {
 	public class DestroyRockState : WizardState
 	{
+		public const string EXIT_REASON_ROCK_DESTROYED = nameof(EXIT_REASON_ROCK_DESTROYED);
+		
 		private Rock _rock;
 		
 		public DestroyRockState(Wizard wizard) : base(wizard) { }
 
-		public event EventHandler RockDestroyed;
+		public override event EventHandler<string> ExitRequested;
 
 		public override string DisplayName => "Destroy Rock";
 		public override string DisplayStatus { get; protected set; } = "Breaking Rock";
@@ -24,9 +26,6 @@ namespace Wizards.States
 		
 		public override void Begin()
 		{
-			if (!_rock)
-				ForceExit(StateExitEventArgs.NotInitialized);
-
 			_attackTimer = 0.0f;
 			UpdateDisplayStatus();
 		}
@@ -53,6 +52,10 @@ namespace Wizards.States
 
 				UpdateDisplayStatus();
 			}
+			else
+			{
+				ExitRequested?.Invoke(this, EXIT_REASON_ROCK_DESTROYED);
+			}
 		}
 
 		public override void End() { }
@@ -64,7 +67,7 @@ namespace Wizards.States
 
 		private void OnRockDestroyed(object sender, EventArgs args)
 		{
-			RockDestroyed?.Invoke(this, EventArgs.Empty);
+			ExitRequested?.Invoke(this, EXIT_REASON_ROCK_DESTROYED);
 		}
 	}
 }
