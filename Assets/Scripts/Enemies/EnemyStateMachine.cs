@@ -1,5 +1,6 @@
 ﻿using Enemies.States;
 using GeneralBehaviours;
+using StateMachines;
 using UnityEngine;
 using Wizards;
 
@@ -36,24 +37,12 @@ namespace Enemies
 		private void Awake()
 		{
 			_enemy = GetComponent<Enemy>();
-
-			_idleState = new IdleEnemyState(_enemy)
-			{
-				IdleRadius = idleRadius
-			};
-			
-			_attackWizardState = new AttackWizardEnemyState(_enemy)
-			{
-				AttackRadius = attackRadius,
-				TargetLossRadius = targetLossRadius
-			};
 		}
 
 		private void Start()
 		{
-			StateMachine.AddStateTransition(
-				_attackWizardState, AttackWizardEnemyState.EXIT_REASON_ATTACK_FINISHED,
-				_idleState, null);
+			InitializeStates();
+			InitializeStateTransitions();
 			
 			Idle();
 		}
@@ -64,6 +53,24 @@ namespace Enemies
 		
 			if (!StateMachine.IsCurrentState(_attackWizardState) && CheckForSurroundingWizards(out Wizard targetWizard))
 				AttackWizard(targetWizard);
+		}
+
+		private void InitializeStates()
+		{
+			_idleState = new IdleEnemyState(_enemy) { IdleRadius = idleRadius };
+			
+			_attackWizardState = new AttackWizardEnemyState(_enemy)
+			{
+				AttackRadius = attackRadius,
+				TargetLossRadius = targetLossRadius
+			};
+		}
+
+		private void InitializeStateTransitions()
+		{
+			StateMachine.AddStateTransition(
+				new StateTransitionKey(_attackWizardState, AttackWizardEnemyState.EXIT_REASON_ATTACK_FINISHED),
+				new StateTransitionValue(_idleState, null, () => true));
 		}
 
 		private bool CheckForSurroundingWizards(out Wizard targetWizard)

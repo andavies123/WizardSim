@@ -1,4 +1,5 @@
 ﻿using Game;
+using GameWorld.WorldObjects;
 using GeneralClasses.Health;
 using GeneralClasses.Health.Interfaces;
 using UnityEngine;
@@ -19,6 +20,15 @@ namespace GeneralBehaviours.HealthBehaviours
 			}
 			
 			Health = GlobalFactories.HealthFactory.CreateHealth(healthProperties);
+		}
+
+		public void InitializeWithProperties(HealthRelatedProperties healthRelatedProperties)
+		{
+			InitializeWithProperties(new HealthProperties
+			{
+				MaxHealth = healthRelatedProperties.MaxHealth,
+				CanRechargeHealth = false
+			});
 		}
 		
 		internal void IncreaseHealthByPercent(float percent01) => Health.CurrentHealth += Health.MaxHealth * percent01;

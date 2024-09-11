@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Extensions;
 using GameWorld.WorldObjects.Rocks;
 using StateMachines;
+using UnityEngine;
 
 namespace Wizards.States
 {
@@ -25,20 +26,18 @@ namespace Wizards.States
 			_rocks = rocks;
 			_initialRockCount = rocks.Count;
 			UpdateDisplayStatus();
-			
-			_stateMachine.AddStateTransition(
-				_moveToState, WizardMoveToState.EXIT_REASON_ARRIVED_AT_POSITION, 
-				_destroyRockState, OnArrivedAtRock);
-			
-			_stateMachine.AddStateTransition(
-				_destroyRockState, DestroyRockState.EXIT_REASON_ROCK_DESTROYED,
-				_moveToState, OnRockDestroyed);
+			AddStateTransitions();
 		}
 
 		public override string DisplayName => $"Destroying {_rocks.Count} Rocks";
 		public override string DisplayStatus { get; protected set; }
-		
-		public override void Begin() { }
+
+		public override void Begin()
+		{
+			_moveToState.SetWizard(Wizard);
+			_moveToState.Initialize(_rocks[0].transform.position, 2f);
+			_stateMachine.SetCurrentState(_moveToState);
+		}
 
 		public override void Update()
 		{
@@ -47,18 +46,29 @@ namespace Wizards.States
 		}
 
 		public override void End() { }
+
+		private void AddStateTransitions()
+		{
+			_stateMachine.AddStateTransition(
+				new StateTransitionKey(_moveToState, WizardMoveToState.EXIT_REASON_ARRIVED_AT_POSITION),
+				new StateTransitionValue(_destroyRockState, InitializeDestroyRockState, () => true));
+			
+			_stateMachine.AddStateTransition(
+				new StateTransitionKey(_destroyRockState, DestroyRockState.EXIT_REASON_ROCK_DESTROYED),
+				new StateTransitionValue(_moveToState, InitializeMoveToState, () => true));
+		}
 		
 		private void UpdateDisplayStatus()
 		{
 			DisplayStatus = $"Rocks Destroyed: {_initialRockCount - _rocks.Count}/{_initialRockCount}";
 		}
 		
-		private void OnArrivedAtRock()
+		private void InitializeDestroyRockState()
 		{
 			_destroyRockState.Initialize(_rocks[0]);
 		}
 
-		private void OnRockDestroyed()
+		private void InitializeMoveToState()
 		{
 			_rocks.RemoveAt(0);
 			UpdateDisplayStatus();

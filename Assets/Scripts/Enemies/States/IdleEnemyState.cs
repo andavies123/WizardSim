@@ -25,12 +25,7 @@ namespace Enemies.States
 				MaxDistanceForArrival = .5f
 			};
 			
-			_stateMachine.AddStateTransition(
-				_waitState, WaitCharacterState.EXIT_REASON_DONE_WAITING,
-				_moveToState, OnDoneWaiting);
-			_stateMachine.AddStateTransition(
-				_moveToState, EnemyMoveToState.EXIT_REASON_ARRIVED,
-				_waitState, OnDoneMoving);
+			AddStateTransitions();
 		}
 
 		public override string DisplayName => "Idling";
@@ -49,6 +44,17 @@ namespace Enemies.States
 		}
 		
 		public override void End() { }
+
+		private void AddStateTransitions()
+		{
+			_stateMachine.AddStateTransition(
+				new StateTransitionKey(_waitState, WaitCharacterState.EXIT_REASON_DONE_WAITING),
+				new StateTransitionValue(_moveToState, OnDoneWaiting, () => true));
+			
+			_stateMachine.AddStateTransition(
+				new StateTransitionKey(_moveToState, EnemyMoveToState.EXIT_REASON_ARRIVED),
+				new StateTransitionValue(_waitState, OnDoneMoving, () => true));
+		}
 
         private void OnDoneWaiting() => _moveToState.MoveToPosition = GetNextMoveToPosition();
         private void OnDoneMoving() => _waitState.WaitTime = GetRandomWaitTime();

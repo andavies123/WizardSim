@@ -37,6 +37,8 @@ namespace Wizards
 
 			_idleState = new WizardIdleState(_wizard);
 			_moveToState = new WizardMoveToState(_wizard);
+
+			StateMachine.DefaultState = _idleState;
 		}
 
 		private void Update()

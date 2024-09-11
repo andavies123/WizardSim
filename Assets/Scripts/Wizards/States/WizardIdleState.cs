@@ -9,7 +9,6 @@ namespace Wizards.States
 	public class WizardIdleState : WizardState
 	{
 		private readonly StateMachine _stateMachine = new();
-		
 		private readonly WaitCharacterState _waitState;
 		private readonly WizardMoveToState _moveToState;
 
@@ -21,13 +20,10 @@ namespace Wizards.States
 		{
 			_waitState = new WaitCharacterState(wizard);
 			_moveToState = new WizardMoveToState(wizard);
-
-			_stateMachine.AddStateTransition(
-				_waitState, WaitCharacterState.EXIT_REASON_DONE_WAITING, 
-				_moveToState, OnWaitTimerFinished);
-			_stateMachine.AddStateTransition(
-				_moveToState, WizardMoveToState.EXIT_REASON_ARRIVED_AT_POSITION, 
-				_waitState, OnArrivedAtPosition);
+			
+			_stateMachine.DefaultState = _waitState;
+			
+			InitializeStateTransitions();
 		}
 
 		public override string DisplayName => "Idling";
@@ -47,6 +43,17 @@ namespace Wizards.States
 		}
 		
 		public override void End() { }
+
+		private void InitializeStateTransitions()
+		{
+			_stateMachine.AddStateTransition(
+				new StateTransitionKey(_waitState, WaitCharacterState.EXIT_REASON_DONE_WAITING),
+				new StateTransitionValue(_moveToState, OnWaitTimerFinished, () => true));
+			
+			_stateMachine.AddStateTransition(
+				new StateTransitionKey(_moveToState, WizardMoveToState.EXIT_REASON_ARRIVED_AT_POSITION),
+				new StateTransitionValue(_waitState, OnArrivedAtPosition, () => true));
+		}
 
 		private void OnWaitTimerFinished() => _moveToState.Initialize(GetNextMoveToPosition(), .5f);
 		private void OnArrivedAtPosition() => _waitState.WaitTime = GetRandomWaitTime();

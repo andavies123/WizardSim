@@ -1,6 +1,7 @@
 ﻿using System;
 using GeneralBehaviours.HealthBehaviours;
 using GeneralBehaviours.ShaderManagers;
+using GeneralClasses.Health;
 using UI;
 using UnityEngine;
 
@@ -12,6 +13,8 @@ namespace GameWorld.WorldObjects
 	[RequireComponent(typeof(InteractionShaderManager))]
 	public sealed class WorldObject : MonoBehaviour
 	{
+		[SerializeField] private HealthProperties healthProperties;
+        
 		public WorldObjectDetails Details { get; private set; }
 		public ChunkPlacementData ChunkPlacementData { get; private set; }
 		public HealthComponent Health { get; private set; }
@@ -26,6 +29,8 @@ namespace GameWorld.WorldObjects
 			ChunkPlacementData = chunkPlacementData;
 
 			gameObject.name = Details.Name;
+			
+			Health.InitializeWithProperties(Details.HealthProperties);
 		}
 		
 		private void Awake()

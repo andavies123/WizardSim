@@ -30,6 +30,12 @@ namespace Wizards.States
 
 		public override void Update()
 		{
+			if (!Wizard)
+			{
+				Debug.Log("Wizard is null???");
+				return;
+			}
+            
 			if (!Wizard.Movement.IsMoving)
 			{
 				DisplayStatus = "Arrived";

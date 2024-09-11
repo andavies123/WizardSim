@@ -13,7 +13,7 @@ namespace GeneralClasses.Health
 		public float HealthGainedPerInterval { get; }
 		public int RechargeIntervalMSec { get; }
 		public int TimeUntilRechargeStartsMSec { get; }
-
+		
 		public RechargeableHealth(ITimerFactory timerFactory, HealthProperties healthProperties) : base(healthProperties.MaxHealth)
 		{
 			_ = timerFactory ?? throw new ArgumentNullException(nameof(timerFactory));

@@ -18,14 +18,6 @@ namespace Enemies.States
 		{
 			_moveToState = new EnemyMoveToState(enemy);
 			_attackEnemyState = new AttackEnemyState(enemy);
-			
-			_stateMachine.AddStateTransition(
-				_moveToState, EnemyMoveToState.EXIT_REASON_ARRIVED,
-				_attackEnemyState, OnArrivedAtTarget);
-			
-			_stateMachine.AddStateTransition(
-				_attackEnemyState, AttackEnemyState.EXIT_REASON_ATTACK_FINISHED,
-				null, OnFinishedAttacking);
 		}
 
 		public override string DisplayName => "Attacking";
@@ -60,7 +52,18 @@ namespace Enemies.States
 
 		public override void End() { }
 
-		private void OnArrivedAtTarget() => _attackEnemyState.Target = TargetWizard.Health;
+		private void AddStateTransitions()
+		{
+			_stateMachine.AddStateTransition(
+				new StateTransitionKey(_moveToState, EnemyMoveToState.EXIT_REASON_ARRIVED),
+				new StateTransitionValue(_attackEnemyState, InitializeAttackEnemyState, () => true));
+			
+			_stateMachine.AddStateTransition(
+				new StateTransitionKey(_attackEnemyState, AttackEnemyState.EXIT_REASON_ATTACK_FINISHED),
+				new StateTransitionValue(null, OnFinishedAttacking, () => true));
+		}
+		
+		private void InitializeAttackEnemyState() => _attackEnemyState.Target = TargetWizard.Health;
 		private void OnFinishedAttacking() => ExitRequested?.Invoke(this, EXIT_REASON_ATTACK_FINISHED);
 	}
 }
