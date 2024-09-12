@@ -45,6 +45,12 @@ namespace GeneralBehaviours
 			_pathLineObjectPool = PathLineRendererObjectPool.Instance.ThrowIfNull(nameof(_pathLineObjectPool));
 		}
 
+		private void OnDestroy()
+		{
+			if (_pathLine)
+				_pathLineObjectPool.ReleasePathLineRenderer(_pathLine);
+		}
+
 		private void FixedUpdate()
 		{
 			if (!_targetPosition.HasValue)

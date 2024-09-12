@@ -32,19 +32,21 @@ namespace Enemies.States
 
 		public override void Update()
 		{
+			// Make sure the target still exists
 			if (!Target)
 			{
 				ExitRequested?.Invoke(this, EXIT_REASON_ATTACK_FINISHED);
 				return;
 			}
 
-			Debug.Log($"Target Range: {Vector3.Distance(Target.transform.position, Enemy.Transform.position)}\tTarget Loss: {AttackRadius}");
+			// Make sure the target hasn't gone too far away
 			if (Vector3.Distance(Target.transform.position, Enemy.Transform.position) >= AttackRadius)
 			{
 				ExitRequested?.Invoke(this, EXIT_REASON_TARGET_OUT_OF_RANGE);
 				return;
 			}
 			
+			// Check to see if we can deal some damage yet
 			if (_secondsSinceLastAttack < SecondsBetweenAttacks)
 			{
 				_secondsSinceLastAttack += Time.deltaTime;
