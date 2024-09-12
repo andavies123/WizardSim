@@ -1,5 +1,6 @@
 ﻿using System;
 using StateMachines;
+using UnityEngine;
 using Wizards;
 
 namespace Enemies.States
@@ -18,6 +19,8 @@ namespace Enemies.States
 		{
 			_moveToState = new EnemyMoveToState(enemy);
 			_attackEnemyState = new AttackEnemyState(enemy);
+
+			AddStateTransitions();
 		}
 
 		public override string DisplayName => "Attacking";
@@ -30,8 +33,12 @@ namespace Enemies.States
 		public override void Begin()
 		{
 			_moveToState.MaxDistanceForArrival = AttackRadius;
+			
+			_attackEnemyState.AttackRadius = AttackRadius;
 			_attackEnemyState.DamagePerHit = 5;
 			_attackEnemyState.SecondsBetweenAttacks = 0.5f;
+			
+			_stateMachine.SetCurrentState(_moveToState);
 		}
 
 		public override void Update()
@@ -40,9 +47,10 @@ namespace Enemies.States
 			
 			if (TargetWizard)
 			{
-				// Todo: Check the distance and if its greater than the target loss distance, then finish the state
-				
-				_moveToState.MoveToPosition = TargetWizard.Transform.position;
+				if (_stateMachine.IsCurrentState(_moveToState))
+				{
+					_moveToState.MoveToPosition = TargetWizard.Transform.position;
+				}
 			}
 			else
 			{
@@ -57,6 +65,10 @@ namespace Enemies.States
 			_stateMachine.AddStateTransition(
 				new StateTransitionKey(_moveToState, EnemyMoveToState.EXIT_REASON_ARRIVED),
 				new StateTransitionValue(_attackEnemyState, InitializeAttackEnemyState, () => true));
+			
+			_stateMachine.AddStateTransition(
+				new StateTransitionKey(_attackEnemyState, AttackEnemyState.EXIT_REASON_TARGET_OUT_OF_RANGE),
+				new StateTransitionValue(_moveToState, null, () => true));
 			
 			_stateMachine.AddStateTransition(
 				new StateTransitionKey(_attackEnemyState, AttackEnemyState.EXIT_REASON_ATTACK_FINISHED),

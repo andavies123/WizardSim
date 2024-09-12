@@ -1,5 +1,6 @@
 ﻿using System;
 using GeneralBehaviours.HealthBehaviours;
+using UnityEngine;
 using Time = UnityEngine.Time;
 
 namespace Enemies.States
@@ -7,6 +8,7 @@ namespace Enemies.States
 	public class AttackEnemyState : EnemyState
 	{
 		public const string EXIT_REASON_ATTACK_FINISHED = nameof(EXIT_REASON_ATTACK_FINISHED);
+		public const string EXIT_REASON_TARGET_OUT_OF_RANGE = nameof(EXIT_REASON_TARGET_OUT_OF_RANGE);
 		
 		private float _secondsSinceLastAttack = 0f;
 
@@ -18,6 +20,7 @@ namespace Enemies.States
 		public override string DisplayStatus { get; protected set; }
 		
 		public HealthComponent Target { get; set; }
+		public float AttackRadius { get; set; }
 		public float DamagePerHit { get; set; }
 		public float SecondsBetweenAttacks { get; set; }
 		
@@ -32,6 +35,13 @@ namespace Enemies.States
 			if (!Target)
 			{
 				ExitRequested?.Invoke(this, EXIT_REASON_ATTACK_FINISHED);
+				return;
+			}
+
+			Debug.Log($"Target Range: {Vector3.Distance(Target.transform.position, Enemy.Transform.position)}\tTarget Loss: {AttackRadius}");
+			if (Vector3.Distance(Target.transform.position, Enemy.Transform.position) >= AttackRadius)
+			{
+				ExitRequested?.Invoke(this, EXIT_REASON_TARGET_OUT_OF_RANGE);
 				return;
 			}
 			
