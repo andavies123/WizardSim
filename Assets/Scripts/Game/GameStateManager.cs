@@ -8,25 +8,25 @@ using Game.GameStates.PauseMenuStates;
 using Game.GameStates.PlacementModeStates;
 using Game.GameStates.TaskManagementGameStates;
 using Game.MessengerSystem;
-using InputStates.InputEventArgs;
 using UI.ContextMenus;
 using UI.Messages;
 using UnityEngine;
+using Utilities.Attributes;
 
 namespace Game
 {
 	public class GameStateManager : MonoBehaviour
 	{
 		[Header("UI States")]
-		[SerializeField] private GameplayUIState gameplayUIState;
-		[SerializeField] private PauseMenuUIState pauseMenuUIState;
-		[SerializeField] private InteractionUIState interactionUIState;
-		[SerializeField] private ContextMenuUIState contextMenuUIState;
-		[SerializeField] private PlacementModeUIState placementModeUIState;
-		[SerializeField] private TaskManagementUIState taskManagementUIState;
+		[SerializeField, Required] private GameplayUIState gameplayUIState;
+		[SerializeField, Required] private PauseMenuUIState pauseMenuUIState;
+		[SerializeField, Required] private InteractionUIState interactionUIState;
+		[SerializeField, Required] private ContextMenuUIState contextMenuUIState;
+		[SerializeField, Required] private PlacementModeUIState placementModeUIState;
+		[SerializeField, Required] private TaskManagementUIState taskManagementUIState;
 
 		[Header("External Components")]
-		[SerializeField] private InteractableRaycaster interactableRaycaster;
+		[SerializeField, Required] private InteractableRaycaster interactableRaycaster;
 
 		private GameState _currentGameState;
 

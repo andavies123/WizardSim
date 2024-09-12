@@ -98,7 +98,7 @@ namespace Wizards
 			WizardType = wizardType;
 			_worldTime = worldTime;
 			
-			gameObject.name = $"Wizard - {Name} - {wizardType.ToString()}";
+			gameObject.name = $"Wizard - {Name} - {wizardType}";
 		}
 		
 		protected override void Awake()

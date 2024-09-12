@@ -2,7 +2,9 @@
 using CameraComponents;
 using Game.MessengerSystem;
 using InputStates.InputEventArgs;
+using UI;
 using UI.ContextMenus;
+using UI.InfoWindows;
 using UI.Messages;
 using UnityEngine.InputSystem;
 
@@ -22,7 +24,7 @@ namespace Game.GameStates.GameplayStates
 		}
 		
 		public event EventHandler PauseInputPerformed;
-		public event EventHandler<OpenInfoWindowEventArgs> OpenInfoWindowRequested;
+		public event EventHandler<Interactable> OpenInfoWindowRequested;
 		public event EventHandler<ContextMenuUser> OpenContextMenuRequested;
 		public event EventHandler CloseInfoWindowRequested;
 		public event EventHandler CloseContextMenuRequested;
@@ -34,6 +36,7 @@ namespace Game.GameStates.GameplayStates
 		{
 			_gameplay.PauseGame.performed += OnPauseActionPerformed;
 			_gameplay.OpenTaskManagement.performed += OnOpenTaskManagementActionPerformed;
+			_gameplay.Cancel.performed += OnCancelActionPerformed;
 
 			_interactableRaycaster.InteractableSelectedPrimary += OnInteractablePrimaryActionSelected;
 			_interactableRaycaster.InteractableSelectedSecondary += OnInteractableSelectedSecondary;
@@ -48,6 +51,7 @@ namespace Game.GameStates.GameplayStates
 			
 			_gameplay.PauseGame.performed -= OnPauseActionPerformed;
 			_gameplay.OpenTaskManagement.performed -= OnOpenTaskManagementActionPerformed;
+			_gameplay.Cancel.performed -= OnCancelActionPerformed;
 
 			_interactableRaycaster.InteractableSelectedPrimary -= OnInteractablePrimaryActionSelected;
 			_interactableRaycaster.InteractableSelectedSecondary -= OnInteractableSelectedSecondary;
@@ -61,10 +65,15 @@ namespace Game.GameStates.GameplayStates
 			PauseInputPerformed?.Invoke(this, EventArgs.Empty);
 		}
 
+		private void OnCancelActionPerformed(InputAction.CallbackContext callbackContext)
+		{
+			CloseInfoWindowRequested?.Invoke(this, EventArgs.Empty);
+		}
+
 		private void OnInteractablePrimaryActionSelected(object sender, InteractableRaycasterEventArgs args)
 		{
 			CloseContextMenuRequested?.Invoke(this, EventArgs.Empty);
-			OpenInfoWindowRequested?.Invoke(this, new OpenInfoWindowEventArgs(args.Interactable));
+			OpenInfoWindowRequested?.Invoke(this, args.Interactable);
 		}
 		
 		private void OnInteractableSelectedSecondary(object sender, InteractableRaycasterEventArgs args)
@@ -87,7 +96,7 @@ namespace Game.GameStates.GameplayStates
 
 		private void OnOpenContextMenuRequestReceived(OpenContextMenuRequest message)
 		{
-			OpenInfoWindowRequested?.Invoke(this, new OpenInfoWindowEventArgs(message.ContextMenuUser.Interactable));
+			OpenInfoWindowRequested?.Invoke(this, message.ContextMenuUser.Interactable);
 		}
 
 		private void OnOpenTaskManagementActionPerformed(InputAction.CallbackContext callbackContext)

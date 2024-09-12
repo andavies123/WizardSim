@@ -46,6 +46,15 @@ namespace UnityEngine.InputSystem
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Cancel"",
+                    ""type"": ""Button"",
+                    ""id"": ""8cb99a1f-373c-4fe9-ad22-2dcdbaa10806"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -68,6 +77,17 @@ namespace UnityEngine.InputSystem
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Open Task Management"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""491f69a9-7267-440f-9b15-fe5747d787c0"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Cancel"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1198,6 +1218,7 @@ namespace UnityEngine.InputSystem
             m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
             m_Gameplay_PauseGame = m_Gameplay.FindAction("Pause Game", throwIfNotFound: true);
             m_Gameplay_OpenTaskManagement = m_Gameplay.FindAction("Open Task Management", throwIfNotFound: true);
+            m_Gameplay_Cancel = m_Gameplay.FindAction("Cancel", throwIfNotFound: true);
             // Pause Menu
             m_PauseMenu = asset.FindActionMap("Pause Menu", throwIfNotFound: true);
             m_PauseMenu_ResumeGame = m_PauseMenu.FindAction("Resume Game", throwIfNotFound: true);
@@ -1297,12 +1318,14 @@ namespace UnityEngine.InputSystem
         private List<IGameplayActions> m_GameplayActionsCallbackInterfaces = new List<IGameplayActions>();
         private readonly InputAction m_Gameplay_PauseGame;
         private readonly InputAction m_Gameplay_OpenTaskManagement;
+        private readonly InputAction m_Gameplay_Cancel;
         public struct GameplayActions
         {
             private @PlayerInputActions m_Wrapper;
             public GameplayActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
             public InputAction @PauseGame => m_Wrapper.m_Gameplay_PauseGame;
             public InputAction @OpenTaskManagement => m_Wrapper.m_Gameplay_OpenTaskManagement;
+            public InputAction @Cancel => m_Wrapper.m_Gameplay_Cancel;
             public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -1318,6 +1341,9 @@ namespace UnityEngine.InputSystem
                 @OpenTaskManagement.started += instance.OnOpenTaskManagement;
                 @OpenTaskManagement.performed += instance.OnOpenTaskManagement;
                 @OpenTaskManagement.canceled += instance.OnOpenTaskManagement;
+                @Cancel.started += instance.OnCancel;
+                @Cancel.performed += instance.OnCancel;
+                @Cancel.canceled += instance.OnCancel;
             }
 
             private void UnregisterCallbacks(IGameplayActions instance)
@@ -1328,6 +1354,9 @@ namespace UnityEngine.InputSystem
                 @OpenTaskManagement.started -= instance.OnOpenTaskManagement;
                 @OpenTaskManagement.performed -= instance.OnOpenTaskManagement;
                 @OpenTaskManagement.canceled -= instance.OnOpenTaskManagement;
+                @Cancel.started -= instance.OnCancel;
+                @Cancel.performed -= instance.OnCancel;
+                @Cancel.canceled -= instance.OnCancel;
             }
 
             public void RemoveCallbacks(IGameplayActions instance)
@@ -1836,6 +1865,7 @@ namespace UnityEngine.InputSystem
         {
             void OnPauseGame(InputAction.CallbackContext context);
             void OnOpenTaskManagement(InputAction.CallbackContext context);
+            void OnCancel(InputAction.CallbackContext context);
         }
         public interface IPauseMenuActions
         {

@@ -1526,6 +1526,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pauseButton: {fileID: 1695901135}
   hotBar: {fileID: 59640414}
+  infoWindow: {fileID: 1685961581}
 --- !u!1 &709951699
 GameObject:
   m_ObjectHideFlags: 0

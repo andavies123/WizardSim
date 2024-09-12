@@ -2,6 +2,7 @@
 using CameraComponents;
 using Extensions;
 using GameWorld.WorldObjects;
+using UI;
 using UI.ContextMenus;
 using UnityEngine;
 
@@ -24,8 +25,8 @@ namespace Game.GameStates.GameplayStates
 		public GameplayGameState(GameplayUIState gameplayUIState, InteractableRaycaster interactableRaycaster)
 		{
 			_gameplayUIState = gameplayUIState.ThrowIfNull(nameof(gameplayUIState));
-            
 			interactableRaycaster.ThrowIfNull(nameof(interactableRaycaster));
+            
 			_gameplayInputState = new GameplayInputState(interactableRaycaster);
 		}
 
@@ -40,6 +41,8 @@ namespace Game.GameStates.GameplayStates
 			// Inputs
 			_gameplayInputState.PauseInputPerformed += OnPauseInputPerformed;
 			_gameplayInputState.OpenContextMenuRequested += OnOpenContextMenuRequested;
+			_gameplayInputState.OpenInfoWindowRequested += OnOpenInfoWindowRequested;
+			_gameplayInputState.CloseInfoWindowRequested += OnCloseInfoWindowRequested;
 			
 			// UI
 			_gameplayUIState.PauseButtonPressed += OnPauseButtonPressed;
@@ -51,14 +54,19 @@ namespace Game.GameStates.GameplayStates
 			// Inputs
 			_gameplayInputState.PauseInputPerformed -= OnPauseInputPerformed;
 			_gameplayInputState.OpenContextMenuRequested -= OnOpenContextMenuRequested;
-			
+			_gameplayInputState.OpenInfoWindowRequested -= OnOpenInfoWindowRequested;
+			_gameplayInputState.CloseInfoWindowRequested -= OnCloseInfoWindowRequested;
+
 			// UI
 			_gameplayUIState.PauseButtonPressed -= OnPauseButtonPressed;
 			_gameplayUIState.HotBarItemSelected -= OnPlacementModeRequested;
 		}
 
-		private void OnPauseInputPerformed(object sender, EventArgs args) => 
-			PauseGameRequested?.Invoke(sender, args);
+		private void OnPauseInputPerformed(object sender, EventArgs args)
+		{
+			if (!_gameplayUIState.InfoWindow.IsOpen)
+				PauseGameRequested?.Invoke(sender, args);
+		}
 		
 		private void OnPauseButtonPressed(object sender, EventArgs args) => 
 			PauseGameRequested?.Invoke(sender, args);
@@ -68,5 +76,11 @@ namespace Game.GameStates.GameplayStates
 		
 		private void OnPlacementModeRequested(object sender, WorldObjectDetails details) =>
 			BeginPlacementModeRequested?.Invoke(this, new BeginPlacementModeEventArgs(details));
+
+		private void OnOpenInfoWindowRequested(object sender, Interactable interactable) =>
+			_gameplayUIState.InfoWindow.OpenWindow(interactable);
+
+		private void OnCloseInfoWindowRequested(object sender, EventArgs args) =>
+			_gameplayUIState.InfoWindow.CloseWindow();
 	}
 }
