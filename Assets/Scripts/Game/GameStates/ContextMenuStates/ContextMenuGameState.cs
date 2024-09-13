@@ -33,7 +33,7 @@ namespace Game.GameStates.ContextMenuStates
 		protected override void OnEnabled()
 		{
 			_contextMenuInputState.NavigationActionPerformed += OnNavigationInputPerformed;
-			_contextMenuInputState.CloseActionPerformed += OnCloseInputPerformed;
+			_contextMenuInputState.CloseRequested += OnCloseInputPerformed;
 			_contextMenuInputState.SelectActionPerformed += OnSelectInputPerformed;
 			_contextMenuInputState.OpenNewContextMenuRequested += OnOpenNewContextMenuRequested;
 
@@ -43,7 +43,7 @@ namespace Game.GameStates.ContextMenuStates
 		protected override void OnDisabled()
 		{
 			_contextMenuInputState.NavigationActionPerformed -= OnNavigationInputPerformed;
-			_contextMenuInputState.CloseActionPerformed -= OnCloseInputPerformed;
+			_contextMenuInputState.CloseRequested -= OnCloseInputPerformed;
 			_contextMenuInputState.SelectActionPerformed -= OnSelectInputPerformed;
 			_contextMenuInputState.OpenNewContextMenuRequested -= OnOpenNewContextMenuRequested;
 

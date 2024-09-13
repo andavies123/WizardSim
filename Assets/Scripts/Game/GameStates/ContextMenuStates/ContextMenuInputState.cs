@@ -23,12 +23,13 @@ namespace Game.GameStates.ContextMenuStates
 		public event EventHandler<ContextMenuNavigationEventArgs> NavigationActionPerformed;
 		public event EventHandler<ContextMenuUser> OpenNewContextMenuRequested;
 		public event EventHandler SelectActionPerformed;
-		public event EventHandler CloseActionPerformed;
+		public event EventHandler CloseRequested;
 		
 		public bool ShowInteractions => true;
 		
 		public void Enable()
 		{
+			_interactableRaycaster.InteractableSelectedPrimary += OnInteractableSelectedPrimary;
 			_interactableRaycaster.InteractableSelectedSecondary += OnInteractableSelectedSecondary;
 			
 			_contextMenuActions.Navigation.performed += OnNavigationActionPerformed;
@@ -40,6 +41,7 @@ namespace Game.GameStates.ContextMenuStates
 
 		public void Disable()
 		{
+			_interactableRaycaster.InteractableSelectedPrimary -= OnInteractableSelectedPrimary;
 			_interactableRaycaster.InteractableSelectedSecondary -= OnInteractableSelectedSecondary;
 			
 			_contextMenuActions.Disable();
@@ -70,8 +72,10 @@ namespace Game.GameStates.ContextMenuStates
 			NavigationActionPerformed?.Invoke(this, new ContextMenuNavigationEventArgs(navigationOption));
 		}
 
+
+		private void OnInteractableSelectedPrimary(object sender, InteractableRaycasterEventArgs args) => CloseRequested?.Invoke(this, EventArgs.Empty);
 		private void OnSelectActionPerformed(CallbackContext context) => SelectActionPerformed?.Invoke(this, EventArgs.Empty);
-		private void OnCloseActionPerformed(CallbackContext context) => CloseActionPerformed?.Invoke(this, EventArgs.Empty);
+		private void OnCloseActionPerformed(CallbackContext context) => CloseRequested?.Invoke(this, EventArgs.Empty);
 	}
 
 	public class ContextMenuNavigationEventArgs : EventArgs
