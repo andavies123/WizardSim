@@ -2,6 +2,7 @@
 using Extensions;
 using GeneralBehaviours.HealthBehaviours;
 using GeneralBehaviours.Utilities.ContextMenuBuilders;
+using GeneralClasses.Health.HealthEventArgs;
 using Stats;
 using UI;
 using UI.ContextMenus;
@@ -15,7 +16,10 @@ namespace GameWorld
 	public abstract class Character : MonoBehaviour
 	{
 		private CharacterProperties _characterProperties;
-		
+
+		// Events
+		public event EventHandler OnDamageDealt;
+
 		public abstract MovementStats MovementStats { get; }
 		protected abstract string CharacterType { get; }
 		
@@ -23,6 +27,7 @@ namespace GameWorld
 		public World ParentWorld { get; private set; }
 		public Transform Transform { get; private set; }
 		public HealthComponent Health { get; private set; }
+		public Vector3 Position => Transform.position;
 		
 		protected ContextMenuUser ContextMenuUser { get; private set; }
 		protected Interactable Interactable { get; private set; }
@@ -38,9 +43,6 @@ namespace GameWorld
 			
 			Transform = transform;
 			ContextMenuUser = GetComponent<ContextMenuUser>();
-			
-			Interactable = GetComponent<Interactable>();
-			Interactable.InitializeWithProperties(_characterProperties.InteractableProperties);
 		}
 
 		protected virtual void OnDestroy() { }
@@ -64,6 +66,7 @@ namespace GameWorld
 			{
 				Health = gameObject.AddComponent<HealthComponent>();
 				Health.InitializeWithProperties(_characterProperties.HealthProperties);
+				Health.Health.CurrentHealthChanged += OnHealthChanged;
 			}
 
 			if (_characterProperties.InteractableProperties != null)
@@ -78,6 +81,14 @@ namespace GameWorld
 			}	
 
 			gameObject.name = _characterProperties.Id;
+		}
+
+		private void OnHealthChanged(object sender, CurrentHealthChangedEventArgs args)
+		{
+			if (args.IsDecrease)
+			{
+				OnDamageDealt?.Invoke(this, EventArgs.Empty);
+			}
 		}
 	}
 }

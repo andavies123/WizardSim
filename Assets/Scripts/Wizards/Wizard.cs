@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using AndysTools.GameWorldTimeManagement.Runtime;
 using Extensions;
 using Game.MessengerSystem;
@@ -33,7 +34,7 @@ namespace Wizards
 		public IAge Age { get; } = new Age();
 		public WizardStats Stats => stats;
 		public bool IsIdling => StateMachine.CurrentState is WizardIdleState;
-		
+
 		// Overrides
 		public override MovementStats MovementStats => Stats.MovementStats;
 		protected override string CharacterType => "Wizard";

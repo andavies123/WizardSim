@@ -1,4 +1,6 @@
 ﻿using GeneralBehaviours;
+using StateMachines;
+using System;
 using UnityEngine;
 using Wizards.States;
 
@@ -13,6 +15,7 @@ namespace Wizards
 		private Wizard _wizard;
 		private WizardIdleState _idleState;
 		private WizardMoveToState _moveToState;
+		private RunAwayWizardState _runAwayState;
 
 		public void OverrideCurrentState(WizardState state)
 		{
@@ -37,13 +40,33 @@ namespace Wizards
 
 			_idleState = new WizardIdleState(_wizard);
 			_moveToState = new WizardMoveToState(_wizard);
+			_runAwayState = new RunAwayWizardState(_wizard, 10f);
 
 			StateMachine.DefaultState = _idleState;
+		}
+
+		private void Start()
+		{
+			_wizard.OnDamageDealt += OnWizardHurt;
+
+			StateMachine.AddStateTransition(
+				new StateTransitionKey(_runAwayState, RunAwayWizardState.EXIT_REASON_GOT_AWAY),
+				new StateTransitionValue(_idleState, null, () => true));
+		}
+
+		private void OnDestroy()
+		{
+			_wizard.OnDamageDealt -= OnWizardHurt;
 		}
 
 		private void Update()
 		{
 			StateMachine.Update();
+		}
+
+		private void OnWizardHurt(object sender, EventArgs args)
+		{
+			StateMachine.SetCurrentState(_runAwayState);
 		}
 	}
 }
