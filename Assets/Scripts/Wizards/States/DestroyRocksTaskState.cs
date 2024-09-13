@@ -42,6 +42,16 @@ namespace Wizards.States
 		public override void Update()
 		{
 			_stateMachine.Update();
+
+			if (_stateMachine.IsCurrentState(_moveToState))
+			{
+				if (!_rocks[0])
+				{
+					MoveToNextRock();
+					_stateMachine.SetCurrentState(_moveToState);
+				}
+			}
+
 			DisplayStatus = $"Rocks Destroyed: {_initialRockCount - _rocks.Count} of {_initialRockCount} | {_stateMachine.CurrentStateDisplayStatus}";
 		}
 
@@ -55,7 +65,7 @@ namespace Wizards.States
 			
 			_stateMachine.AddStateTransition(
 				new StateTransitionKey(_destroyRockState, DestroyRockState.EXIT_REASON_ROCK_DESTROYED),
-				new StateTransitionValue(_moveToState, InitializeMoveToState, () => true));
+				new StateTransitionValue(_moveToState, MoveToNextRock, () => true));
 		}
 		
 		private void UpdateDisplayStatus()
@@ -68,7 +78,7 @@ namespace Wizards.States
 			_destroyRockState.Initialize(_rocks[0]);
 		}
 
-		private void InitializeMoveToState()
+		private void MoveToNextRock()
 		{
 			_rocks.RemoveAt(0);
 			UpdateDisplayStatus();
