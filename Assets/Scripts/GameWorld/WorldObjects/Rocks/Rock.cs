@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Game.MessengerSystem;
-using GeneralBehaviours.HealthBehaviours;
 using GeneralBehaviours.Utilities.ContextMenuBuilders;
 using UI.ContextMenus;
 using UnityEngine;
@@ -16,8 +15,6 @@ namespace GameWorld.WorldObjects.Rocks
 	{
 		public WorldObject WorldObject { get; private set; }
 		private ContextMenuUser ContextMenuUser { get; set; }
-		
-		public Vector3 InitialPositionOffset { get; } = new(0.5f, 0.5f, 0.5f);
 
 		private void Awake()
 		{

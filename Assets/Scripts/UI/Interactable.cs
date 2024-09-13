@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace UI
 {
+	[RequireComponent(typeof(Rigidbody))]
 	public class Interactable : MonoBehaviour, INotifyPropertyChanged
 	{
 		private bool _isHovered = false;
@@ -45,6 +46,12 @@ namespace UI
 		public void SelectSecondaryAction() => SecondaryActionSelected?.Invoke(this, EventArgs.Empty);
 
 		public void InitializeWithProperties(InteractableProperties properties)
+		{
+			TitleText = properties.Title;
+			InfoText = properties.Description;
+		}
+
+		public void InitializeWithProperties(InteractableRelatedProperties properties)
 		{
 			TitleText = properties.Title;
 			InfoText = properties.Description;

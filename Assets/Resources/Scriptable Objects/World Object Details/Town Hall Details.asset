@@ -17,5 +17,8 @@ MonoBehaviour:
   <PlacementProperties>k__BackingField:
     <Size>k__BackingField: {x: 1, y: 3, z: 1}
     <MaxObjectsAllowed>k__BackingField: 1
+  <InteractableProperties>k__BackingField:
+    <Title>k__BackingField: Town Hall
+    <Description>k__BackingField: The center of your village
   <HealthProperties>k__BackingField:
     <MaxHealth>k__BackingField: 100

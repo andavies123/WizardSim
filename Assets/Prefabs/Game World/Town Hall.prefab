@@ -119,9 +119,10 @@ GameObject:
   - component: {fileID: 8762413910232433244}
   - component: {fileID: 4884935886393915854}
   - component: {fileID: 3970755491624863158}
-  - component: {fileID: 7141968566687313981}
   - component: {fileID: 4263565806528274479}
   - component: {fileID: 5415270311774085700}
+  - component: {fileID: 7141968566687313981}
+  - component: {fileID: 8945681970817137696}
   m_Layer: 0
   m_Name: Town Hall
   m_TagString: Untagged
@@ -181,23 +182,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b300eabee1624c15a8fee72b4ef559af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7141968566687313981
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1780704494485840721}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6336935f880644388ac3a9199c804290, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseTexture: {fileID: 0}
-  baseColor: {r: 0.24106589, g: 0.4811321, b: 0.22014064, a: 1}
-  meshRenderer: {fileID: 8703740331311475399}
-  interactable: {fileID: 3970755491624863158}
-  contextMenuUser: {fileID: 4263565806528274479}
 --- !u!114 &4263565806528274479
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -222,3 +206,47 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 434865b72fd64e1283258037ba5a0623, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7141968566687313981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1780704494485840721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6336935f880644388ac3a9199c804290, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseTexture: {fileID: 0}
+  baseColor: {r: 0.24106589, g: 0.4811321, b: 0.22014064, a: 1}
+  meshRenderer: {fileID: 8703740331311475399}
+  interactable: {fileID: 3970755491624863158}
+  contextMenuUser: {fileID: 4263565806528274479}
+--- !u!54 &8945681970817137696
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1780704494485840721}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 126
+  m_CollisionDetection: 0

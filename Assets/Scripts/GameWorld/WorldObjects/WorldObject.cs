@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace GameWorld.WorldObjects
 {
+	[SelectionBase]
 	[DisallowMultipleComponent]
 	[RequireComponent(typeof(HealthComponent))]
 	[RequireComponent(typeof(Interactable))]
@@ -31,6 +32,7 @@ namespace GameWorld.WorldObjects
 			gameObject.name = Details.Name;
 			
 			Health.InitializeWithProperties(Details.HealthProperties);
+			Interactable.InitializeWithProperties(Details.InteractableProperties);
 		}
 		
 		private void Awake()
