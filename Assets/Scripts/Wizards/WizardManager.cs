@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameWorld.Characters;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -46,9 +47,12 @@ namespace Wizards
 			return (bool)closestWizard;
 		}
 
-		private void OnWizardDied(object sender, WizardDiedEventArgs args)
+		private void OnWizardDied(object sender, CharacterDiedEventArgs args)
 		{
-			Remove(args.DeadWizard);
+			if (args.DeadCharacter is Wizard deadWizard)
+			{
+				Remove(deadWizard);
+			}
 		}
 	}
 }

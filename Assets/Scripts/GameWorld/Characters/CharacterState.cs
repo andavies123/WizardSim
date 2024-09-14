@@ -1,7 +1,7 @@
 ﻿using System;
 using StateMachines;
 
-namespace GameWorld
+namespace GameWorld.Characters
 {
 	public abstract class CharacterState : IState
 	{

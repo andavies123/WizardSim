@@ -1,5 +1,5 @@
 ﻿using System;
-using GeneralBehaviours.HealthBehaviours;
+using GameWorld.Characters;
 using UnityEngine;
 using Time = UnityEngine.Time;
 
@@ -19,7 +19,7 @@ namespace Enemies.States
 		public override string DisplayName => "Attacking";
 		public override string DisplayStatus { get; protected set; }
 		
-		public HealthComponent Target { get; set; }
+		public Character Target { get; set; }
 		public float AttackRadius { get; set; }
 		public float DamagePerHit { get; set; }
 		public float SecondsBetweenAttacks { get; set; }
@@ -56,9 +56,9 @@ namespace Enemies.States
 			// Not setting attack timer back to zero.
 			// Depending on the timing, we could lose a lot of attacks over time
 			_secondsSinceLastAttack -= SecondsBetweenAttacks;
-			Target.Health.CurrentHealth -= DamagePerHit;
+			Target.Damageable.DealDamage(DamagePerHit, Enemy);
 			
-			if (Target.Health.IsAtMinHealth)
+			if (Target.Health.Health.IsAtMinHealth)
 			{
 				ExitRequested?.Invoke(this, EXIT_REASON_ATTACK_FINISHED);
 			}

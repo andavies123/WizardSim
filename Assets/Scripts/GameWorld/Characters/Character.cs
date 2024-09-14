@@ -1,4 +1,5 @@
 ﻿using System;
+using GeneralBehaviours.Damageable;
 using Extensions;
 using GeneralBehaviours.HealthBehaviours;
 using GeneralBehaviours.Utilities.ContextMenuBuilders;
@@ -8,17 +9,17 @@ using UI;
 using UI.ContextMenus;
 using UnityEngine;
 
-namespace GameWorld
+namespace GameWorld.Characters
 {
 	[DisallowMultipleComponent]
+	[RequireComponent(typeof(CharacterDeath))]
 	[RequireComponent(typeof(ContextMenuUser))]
+	[RequireComponent(typeof(Damageable))]
+	[RequireComponent(typeof(HealthComponent))]
 	[RequireComponent(typeof(Interactable))]
 	public abstract class Character : MonoBehaviour
 	{
 		private CharacterProperties _characterProperties;
-
-		// Events
-		public event EventHandler OnDamageDealt;
 
 		public abstract MovementStats MovementStats { get; }
 		protected abstract string CharacterType { get; }
@@ -27,6 +28,8 @@ namespace GameWorld
 		public World ParentWorld { get; private set; }
 		public Transform Transform { get; private set; }
 		public HealthComponent Health { get; private set; }
+		public Damageable Damageable { get; private set; }
+		public CharacterDeath Death { get; private set; }
 		public Vector3 Position => Transform.position;
 		
 		protected ContextMenuUser ContextMenuUser { get; private set; }
@@ -39,13 +42,18 @@ namespace GameWorld
 
 		protected virtual void Awake()
 		{
-			LoadProperties();
-			
 			Transform = transform;
 			ContextMenuUser = GetComponent<ContextMenuUser>();
+			Damageable = GetComponent<Damageable>();
+			Health = GetComponent<HealthComponent>();
+			Death = GetComponent<CharacterDeath>();
+
+			LoadProperties();
 		}
 
+		protected virtual void Start() { }
 		protected virtual void OnDestroy() { }
+		protected virtual void Update() { }
 
 		protected virtual void InitializeContextMenu()
 		{
@@ -64,9 +72,7 @@ namespace GameWorld
 			
 			if (_characterProperties.HealthProperties != null)
 			{
-				Health = gameObject.AddComponent<HealthComponent>();
 				Health.InitializeWithProperties(_characterProperties.HealthProperties);
-				Health.Health.CurrentHealthChanged += OnHealthChanged;
 			}
 
 			if (_characterProperties.InteractableProperties != null)
@@ -81,14 +87,6 @@ namespace GameWorld
 			}	
 
 			gameObject.name = _characterProperties.Id;
-		}
-
-		private void OnHealthChanged(object sender, CurrentHealthChangedEventArgs args)
-		{
-			if (args.IsDecrease)
-			{
-				OnDamageDealt?.Invoke(this, EventArgs.Empty);
-			}
 		}
 	}
 }

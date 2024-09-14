@@ -1,5 +1,7 @@
 ﻿using Enemies;
+using GameWorld.Characters;
 using GeneralBehaviours;
+using GeneralBehaviours.Damageable;
 using StateMachines;
 using System;
 using UnityEngine;
@@ -50,7 +52,7 @@ namespace Wizards
 
 		private void Start()
 		{
-			_wizard.OnDamageDealt += OnWizardHurt;
+			_wizard.Damageable.DamageReceived += OnWizardReceivedDamage;
 
 			StateMachine.AddStateTransition(
 				new StateTransitionKey(_runAwayState, RunAwayWizardState.EXIT_REASON_GOT_AWAY),
@@ -67,7 +69,7 @@ namespace Wizards
 
 		private void OnDestroy()
 		{
-			_wizard.OnDamageDealt -= OnWizardHurt;
+			_wizard.Damageable.DamageReceived -= OnWizardReceivedDamage;
 		}
 
 		private void Update()
@@ -75,7 +77,7 @@ namespace Wizards
 			StateMachine.Update();
 		}
 
-		private void OnWizardHurt(object sender, EventArgs args)
+		private void OnWizardReceivedDamage(object sender, DamageReceivedEventArgs args)
 		{
 			if (!StateMachine.IsCurrentState(_runAwayState) && !StateMachine.IsCurrentState(_attackState))
 			{
@@ -86,7 +88,7 @@ namespace Wizards
 					_attackState.AttackDamage = 5;
 					_attackState.AttackRadius = 2f;
 					_attackState.TimeBetweenAttacks = 1f;
-					_attackState.Target = FindFirstObjectByType<Enemy>(); // Todo: Find a way to get the enemy that is attacking them
+					_attackState.Target = args.DamageDealer;
 					StateMachine.SetCurrentState(_attackState);
 				}
 			}

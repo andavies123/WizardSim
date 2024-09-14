@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using GameWorld.Characters;
 using GameWorld.WorldObjects;
 using Unity.Plastic.Newtonsoft.Json;
 using UnityEngine;

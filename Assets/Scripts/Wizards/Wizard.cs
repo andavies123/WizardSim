@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using AndysTools.GameWorldTimeManagement.Runtime;
 using Extensions;
 using Game.MessengerSystem;
-using GameWorld;
+using GameWorld.Characters;
 using GameWorld.Tiles;
 using GeneralBehaviours;
 using GeneralBehaviours.Utilities.ContextMenuBuilders;
@@ -29,7 +29,6 @@ namespace Wizards
 		// Components
 		public WizardStateMachine StateMachine { get; private set; }
 		public Movement Movement { get; private set; }
-		public WizardDeath Death { get; private set; }
 
 		public IAge Age { get; } = new Age();
 		public WizardStats Stats => stats;
@@ -107,15 +106,16 @@ namespace Wizards
 			base.Awake();
 
 			// Add/get components
-			Death = gameObject.AddComponent<WizardDeath>();
 			StateMachine = GetComponent<WizardStateMachine>();
 			Movement = GetComponent<Movement>();
 
 			Health.Health.CurrentHealthChanged += OnCurrentHealthChanged;
 		}
 
-		private void Start()
+		protected override void Start()
 		{
+			base.Start();
+
 			UpdateInteractableInfoText();
 			InitializeContextMenu();
 			
@@ -123,15 +123,18 @@ namespace Wizards
 				StateMachine.Idle();
 		}
 
-		private void Update()
-		{
-			Age.IncreaseAge(_worldTime.DeltaTime);
-		}
-
 		protected override void OnDestroy()
 		{
 			base.OnDestroy();
+
 			Health.Health.CurrentHealthChanged -= OnCurrentHealthChanged;
+		}
+
+		protected override void Update()
+		{
+			base.Update();
+
+			Age.IncreaseAge(_worldTime.DeltaTime);
 		}
 
 		private void UpdateInteractableInfoText()

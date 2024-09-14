@@ -1,5 +1,5 @@
 ﻿using Extensions;
-using GameWorld;
+using GameWorld.Characters;
 using GeneralBehaviours;
 using GeneralBehaviours.Utilities.ContextMenuBuilders;
 using GeneralClasses.Health.HealthEventArgs;
@@ -33,14 +33,18 @@ namespace Enemies
 			Health.Health.CurrentHealthChanged += OnCurrentHealthChanged;
 		}
 
-		private void Start()
+		protected override void Start()
 		{
+			base.Start();
+
 			UpdateInteractableInfoText();
 			InitializeContextMenu();
 		}
 
 		protected override void OnDestroy()
 		{
+			base.OnDestroy();
+
 			Health.Health.CurrentHealthChanged -= OnCurrentHealthChanged;
 		}
 		

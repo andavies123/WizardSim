@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using GameWorld.Characters;
+using UnityEngine;
 using Utilities;
 using Utilities.Attributes;
 

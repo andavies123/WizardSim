@@ -1,5 +1,5 @@
 ﻿using System;
-using GameWorld;
+using GameWorld.Characters;
 using StateMachines;
 using UnityEngine;
 using Random = UnityEngine.Random;

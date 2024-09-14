@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace GameWorld
+namespace GameWorld.Characters
 {
 	public class WaitCharacterState : CharacterState
 	{

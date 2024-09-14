@@ -8,17 +8,16 @@ namespace GeneralBehaviours.HealthBehaviours
 {
 	public class HealthComponent : MonoBehaviour
 	{
-		public IHealth Health { get; private set; }
+		public IHealth Health { get; private set; } = new Health(1);
 		
 		public void InitializeWithProperties(HealthProperties healthProperties)
 		{
 			if (healthProperties == null)
 			{
-				Debug.Log($"Unable to initialize {nameof(HealthComponent)} with a null {nameof(healthProperties)}");
-				Destroy(this);
+				Debug.LogError($"Unable to initialize {nameof(HealthComponent)} with a null {nameof(healthProperties)}");
 				return;
 			}
-			
+
 			Health = GlobalFactories.HealthFactory.CreateHealth(healthProperties);
 		}
 

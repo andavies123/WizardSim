@@ -1,4 +1,4 @@
-﻿using GameWorld;
+﻿using GameWorld.Characters;
 using System;
 using UnityEngine;
 
@@ -56,7 +56,7 @@ namespace Wizards.States
 
 			if (CanAttack)
 			{
-				Target.Health.Health.CurrentHealth -= AttackDamage;
+				Target.Damageable.DealDamage(AttackDamage, Wizard);
 				_attackTimer -= TimeBetweenAttacks;
 			}
 		}

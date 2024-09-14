@@ -1,5 +1,5 @@
 ﻿using Extensions;
-using GameWorld;
+using GameWorld.Characters;
 using PathLineRenderers;
 using UnityEngine;
 

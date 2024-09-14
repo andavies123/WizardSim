@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GameWorld
+namespace GameWorld.Characters
 {
 	public class CharacterEventArgs : EventArgs
 	{

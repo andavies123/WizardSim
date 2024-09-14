@@ -75,7 +75,7 @@ namespace Enemies.States
 				new StateTransitionValue(null, OnFinishedAttacking, () => true));
 		}
 		
-		private void InitializeAttackEnemyState() => _attackEnemyState.Target = TargetWizard.Health;
+		private void InitializeAttackEnemyState() => _attackEnemyState.Target = TargetWizard;
 		private void OnFinishedAttacking() => ExitRequested?.Invoke(this, EXIT_REASON_ATTACK_FINISHED);
 	}
 }

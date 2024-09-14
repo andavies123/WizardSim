@@ -1,7 +1,7 @@
 ﻿using GameWorld.WorldObjects;
 using GeneralClasses.Health;
 
-namespace GameWorld
+namespace GameWorld.Characters
 {
 	public class CharacterProperties : Properties
 	{
