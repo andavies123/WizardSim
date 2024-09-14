@@ -1,15 +1,15 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Enemies.States
+namespace GameWorld.Characters.Enemies.States
 {
 	public class EnemyMoveToState : EnemyState
 	{
 		public const string EXIT_REASON_ARRIVED = nameof(EXIT_REASON_ARRIVED);
-        
+
 		private Vector3 _moveToPosition;
 		private float _maxDistanceForArrival;
-		
+
 		public EnemyMoveToState(Enemy enemy) : base(enemy) { }
 
 		public override event EventHandler<string> ExitRequested;

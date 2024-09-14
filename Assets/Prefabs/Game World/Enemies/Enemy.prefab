@@ -48,7 +48,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2414322042265852574}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3e0e796400546aa96e552b7737bf12e, type: 3}
+  m_Script: {fileID: 11500000, guid: a5a6831915b83a54ebc759eae66d51d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 11400000, guid: acaafe96a44c78345ad539638bb7333c, type: 2}
@@ -61,13 +61,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 2414322042265852574}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9ccba7121404e72b39da432d2f8271f, type: 3}
+  m_Script: {fileID: 11500000, guid: 424c5032520b8224293982f96c86a0df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   idleRadius: 10
   targetRadius: 5
   targetLossRadius: 10
-  attackRadius: 2
+  attackRadius: 1
 --- !u!114 &5329288241691076669
 MonoBehaviour:
   m_ObjectHideFlags: 0

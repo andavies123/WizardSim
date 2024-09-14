@@ -1,10 +1,10 @@
-﻿using Enemies.States;
+﻿using GameWorld.Characters.Enemies.States;
 using GeneralBehaviours;
 using StateMachines;
 using UnityEngine;
 using Wizards;
 
-namespace Enemies
+namespace GameWorld.Characters.Enemies
 {
 	[RequireComponent(typeof(Enemy))]
 	public class EnemyStateMachine : StateMachineComponent
@@ -18,19 +18,19 @@ namespace Enemies
 		[SerializeField] private float attackRadius = 1f;
 
 		private Enemy _enemy;
-		
+
 		private IdleEnemyState _idleState;
 		private AttackWizardEnemyState _attackWizardState;
-		
+
 		public void Idle()
 		{
 			StateMachine.SetCurrentState(_idleState);
 		}
-		
+
 		public void AttackWizard(Wizard targetWizard)
 		{
 			_attackWizardState.TargetWizard = targetWizard;
-			
+
 			StateMachine.SetCurrentState(_attackWizardState);
 		}
 
@@ -43,14 +43,14 @@ namespace Enemies
 		{
 			InitializeStates();
 			InitializeStateTransitions();
-			
+
 			Idle();
 		}
 
 		private void Update()
 		{
 			StateMachine.Update();
-		
+
 			if (!StateMachine.IsCurrentState(_attackWizardState) && CheckForSurroundingWizards(out Wizard targetWizard))
 				AttackWizard(targetWizard);
 		}
@@ -58,7 +58,7 @@ namespace Enemies
 		private void InitializeStates()
 		{
 			_idleState = new IdleEnemyState(_enemy) { IdleRadius = idleRadius };
-			
+
 			_attackWizardState = new AttackWizardEnemyState(_enemy)
 			{
 				AttackRadius = attackRadius,

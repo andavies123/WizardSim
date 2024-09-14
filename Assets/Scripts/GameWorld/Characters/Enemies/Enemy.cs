@@ -1,31 +1,29 @@
 ﻿using Extensions;
-using GameWorld.Characters;
-using GeneralBehaviours;
 using GeneralBehaviours.Utilities.ContextMenuBuilders;
 using GeneralClasses.Health.HealthEventArgs;
 using Stats;
 using UnityEngine;
 using Utilities.Attributes;
 
-namespace Enemies
+namespace GameWorld.Characters.Enemies
 {
 	public class Enemy : Character
 	{
 		[SerializeField, Required] private EnemyStats stats;
-		
+
 		// Components
 		public EnemyStateMachine StateMachine { get; private set; }
-		
+
 		public EnemyStats Stats => stats;
-		
+
 		// Overrides
 		public override MovementStats MovementStats => Stats.MovementStats;
 		protected override string CharacterType => "Enemy";
-		
+
 		protected override void Awake()
 		{
 			base.Awake();
-            
+
 			StateMachine = GetComponent<EnemyStateMachine>();
 
 			Health.Health.CurrentHealthChanged += OnCurrentHealthChanged;
@@ -45,7 +43,7 @@ namespace Enemies
 
 			Health.Health.CurrentHealthChanged -= OnCurrentHealthChanged;
 		}
-		
+
 		protected override void InitializeContextMenu()
 		{
 			ContextMenuUser.AddMenuItem(

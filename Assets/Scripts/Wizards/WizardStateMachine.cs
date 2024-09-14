@@ -1,9 +1,6 @@
-﻿using Enemies;
-using GameWorld.Characters;
-using GeneralBehaviours;
+﻿using GeneralBehaviours;
 using GeneralBehaviours.Damageable;
 using StateMachines;
-using System;
 using UnityEngine;
 using Wizards.States;
 
