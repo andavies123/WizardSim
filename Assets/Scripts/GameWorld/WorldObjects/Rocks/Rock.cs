@@ -4,8 +4,8 @@ using Game.MessengerSystem;
 using GeneralBehaviours.Utilities.ContextMenuBuilders;
 using UI.ContextMenus;
 using UnityEngine;
-using Wizards.Messages;
-using Wizards.Tasks;
+using GameWorld.Characters.Wizards.Messages;
+using GameWorld.Characters.Wizards.Tasks;
 
 namespace GameWorld.WorldObjects.Rocks
 {

@@ -8,7 +8,7 @@ using GameWorld.WorldObjectPreviews;
 using GameWorld.WorldObjects;
 using UnityEngine;
 using Utilities;
-using Wizards;
+using GameWorld.Characters.Wizards;
 
 namespace GameWorld.Builders
 {

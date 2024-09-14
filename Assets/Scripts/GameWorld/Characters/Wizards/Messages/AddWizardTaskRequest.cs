@@ -1,7 +1,7 @@
 ﻿using Game.MessengerSystem;
-using Wizards.Tasks;
+using GameWorld.Characters.Wizards.Tasks;
 
-namespace Wizards.Messages
+namespace GameWorld.Characters.Wizards.Messages
 {
 	public class AddWizardTaskRequest : Message
 	{

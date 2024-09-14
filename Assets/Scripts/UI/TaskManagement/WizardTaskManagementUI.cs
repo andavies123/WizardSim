@@ -1,8 +1,8 @@
 ﻿using Extensions;
 using UI.TaskManagement.WizardEventArgs;
 using UnityEngine;
-using Wizards.Tasks;
-using Wizards.TaskSystem;
+using GameWorld.Characters.Wizards.Tasks;
+using GameWorld.Characters.Wizards.TaskSystem;
 
 namespace UI.TaskManagement
 {

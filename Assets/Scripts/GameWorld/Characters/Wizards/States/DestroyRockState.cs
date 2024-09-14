@@ -3,7 +3,7 @@ using Extensions;
 using GameWorld.WorldObjects.Rocks;
 using UnityEngine;
 
-namespace Wizards.States
+namespace GameWorld.Characters.Wizards.States
 {
 	public class DestroyRockState : WizardState
 	{

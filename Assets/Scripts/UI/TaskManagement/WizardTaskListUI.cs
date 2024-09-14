@@ -5,7 +5,7 @@ using Extensions;
 using GameObjectPools;
 using UI.TaskManagement.WizardEventArgs;
 using UnityEngine;
-using Wizards.Tasks;
+using GameWorld.Characters.Wizards.Tasks;
 
 namespace UI.TaskManagement
 {

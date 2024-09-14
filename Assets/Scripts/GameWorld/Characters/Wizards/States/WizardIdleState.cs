@@ -4,7 +4,7 @@ using StateMachines;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Wizards.States
+namespace GameWorld.Characters.Wizards.States
 {
 	public class WizardIdleState : WizardState
 	{

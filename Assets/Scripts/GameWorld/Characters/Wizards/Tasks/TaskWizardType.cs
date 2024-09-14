@@ -1,4 +1,4 @@
-﻿namespace Wizards.Tasks
+﻿namespace GameWorld.Characters.Wizards.Tasks
 {
 	public enum TaskWizardType
 	{

@@ -1,9 +1,9 @@
 ﻿using System;
 using TaskSystem;
 using UnityEngine;
-using Wizards.States;
+using GameWorld.Characters.Wizards.States;
 
-namespace Wizards.Tasks
+namespace GameWorld.Characters.Wizards.Tasks
 {
 	public abstract class WizardTask : IWizardTask
 	{

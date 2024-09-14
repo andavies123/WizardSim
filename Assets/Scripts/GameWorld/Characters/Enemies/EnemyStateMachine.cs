@@ -2,7 +2,7 @@
 using GeneralBehaviours;
 using StateMachines;
 using UnityEngine;
-using Wizards;
+using GameWorld.Characters.Wizards;
 
 namespace GameWorld.Characters.Enemies
 {

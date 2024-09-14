@@ -2,9 +2,9 @@
 using GeneralBehaviours.Damageable;
 using StateMachines;
 using UnityEngine;
-using Wizards.States;
+using GameWorld.Characters.Wizards.States;
 
-namespace Wizards
+namespace GameWorld.Characters.Wizards
 {
 	[RequireComponent(typeof(Wizard))]
 	public class WizardStateMachine : StateMachineComponent

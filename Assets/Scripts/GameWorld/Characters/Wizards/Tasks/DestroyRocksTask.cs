@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using GameWorld.WorldObjects.Rocks;
-using Wizards.States;
+using GameWorld.Characters.Wizards.States;
 
-namespace Wizards.Tasks
+namespace GameWorld.Characters.Wizards.Tasks
 {
 	public class DestroyRocksTask : WizardTask
 	{

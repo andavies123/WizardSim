@@ -1,6 +1,6 @@
 ﻿using Game.MessengerSystem;
 using UnityEngine;
-using Wizards;
+using GameWorld.Characters.Wizards;
 
 namespace GameWorld.Messages
 {

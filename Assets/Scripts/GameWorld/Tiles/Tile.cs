@@ -4,7 +4,7 @@ using GeneralBehaviours.Utilities.ContextMenuBuilders;
 using UI;
 using UI.ContextMenus;
 using UnityEngine;
-using Wizards;
+using GameWorld.Characters.Wizards;
 
 namespace GameWorld.Tiles
 {

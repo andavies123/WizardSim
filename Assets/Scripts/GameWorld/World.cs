@@ -4,7 +4,7 @@ using GameWorld.Tiles;
 using GameWorld.WorldObjects;
 using UnityEngine;
 using Utilities.Attributes;
-using Wizards;
+using GameWorld.Characters.Wizards;
 
 namespace GameWorld
 {

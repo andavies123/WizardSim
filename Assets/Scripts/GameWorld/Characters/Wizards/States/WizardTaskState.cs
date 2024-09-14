@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Wizards.States
+namespace GameWorld.Characters.Wizards.States
 {
 	public abstract class WizardTaskState : WizardState
 	{

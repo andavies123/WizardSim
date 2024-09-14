@@ -5,7 +5,7 @@ using TMPro;
 using UI.TaskManagement.WizardEventArgs;
 using UnityEngine;
 using UnityEngine.UI;
-using Wizards.Tasks;
+using GameWorld.Characters.Wizards.Tasks;
 
 namespace UI.TaskManagement
 {

@@ -5,10 +5,10 @@ using Game.MessengerSystem;
 using TaskSystem;
 using TaskSystem.Interfaces;
 using UnityEngine;
-using Wizards.Messages;
-using Wizards.Tasks;
+using GameWorld.Characters.Wizards.Messages;
+using GameWorld.Characters.Wizards.Tasks;
 
-namespace Wizards.TaskSystem
+namespace GameWorld.Characters.Wizards.TaskSystem
 {
 	public class WizardTaskManager : MonoBehaviour
 	{

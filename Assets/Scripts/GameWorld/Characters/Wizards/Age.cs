@@ -1,4 +1,4 @@
-﻿namespace Wizards
+﻿namespace GameWorld.Characters.Wizards
 {
 	public class Age : IAge
 	{

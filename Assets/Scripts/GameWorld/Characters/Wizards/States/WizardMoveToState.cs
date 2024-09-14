@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Wizards.States
+namespace GameWorld.Characters.Wizards.States
 {
 	public class WizardMoveToState : WizardState
 	{

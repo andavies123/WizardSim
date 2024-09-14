@@ -1,7 +1,7 @@
 ﻿using TaskSystem.Interfaces;
-using Wizards.States;
+using GameWorld.Characters.Wizards.States;
 
-namespace Wizards.Tasks
+namespace GameWorld.Characters.Wizards.Tasks
 {
 	public interface IWizardTask : ITask
 	{

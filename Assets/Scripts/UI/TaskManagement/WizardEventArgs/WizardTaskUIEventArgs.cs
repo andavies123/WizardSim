@@ -1,5 +1,5 @@
 ﻿using System;
-using Wizards.Tasks;
+using GameWorld.Characters.Wizards.Tasks;
 
 namespace UI.TaskManagement.WizardEventArgs
 {

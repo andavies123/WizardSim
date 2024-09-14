@@ -5,7 +5,7 @@ using UnityEngine;
 using Utilities;
 using Random = UnityEngine.Random;
 
-namespace Wizards
+namespace GameWorld.Characters.Wizards
 {
 	public class WizardSpawner : MonoBehaviour
 	{

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using AndysTools.GameWorldTimeManagement.Runtime;
 using Extensions;
 using Game.MessengerSystem;
-using GameWorld.Characters;
 using GameWorld.Tiles;
 using GeneralBehaviours.Utilities.ContextMenuBuilders;
 using GeneralClasses.Health.HealthEventArgs;
@@ -11,10 +9,10 @@ using Stats;
 using TaskSystem.Interfaces;
 using UI.Messages;
 using UnityEngine;
-using Wizards.States;
-using Wizards.Tasks;
+using GameWorld.Characters.Wizards.States;
+using GameWorld.Characters.Wizards.Tasks;
 
-namespace Wizards
+namespace GameWorld.Characters.Wizards
 {
 	public class Wizard : Character, ITaskUser<IWizardTask>
 	{

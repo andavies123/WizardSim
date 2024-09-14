@@ -1,7 +1,7 @@
 ﻿using System;
-using Wizards.Tasks;
+using GameWorld.Characters.Wizards.Tasks;
 
-namespace Wizards.TaskSystem
+namespace GameWorld.Characters.Wizards.TaskSystem
 {
 	public class WizardTaskManagerEventArgs : EventArgs
 	{

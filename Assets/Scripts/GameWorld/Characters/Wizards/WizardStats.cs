@@ -1,7 +1,7 @@
 ﻿using Stats;
 using UnityEngine;
 
-namespace Wizards
+namespace GameWorld.Characters.Wizards
 {
 	[CreateAssetMenu(menuName = "Stats/Wizard", fileName = "WizardStats", order = 0)]
 	public class WizardStats : ScriptableObject
