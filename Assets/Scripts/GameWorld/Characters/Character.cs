@@ -3,11 +3,11 @@ using GeneralBehaviours.Damageable;
 using Extensions;
 using GeneralBehaviours.HealthBehaviours;
 using GeneralBehaviours.Utilities.ContextMenuBuilders;
-using GeneralClasses.Health.HealthEventArgs;
 using Stats;
 using UI;
 using UI.ContextMenus;
 using UnityEngine;
+using GeneralBehaviours;
 
 namespace GameWorld.Characters
 {
@@ -17,6 +17,7 @@ namespace GameWorld.Characters
 	[RequireComponent(typeof(Damageable))]
 	[RequireComponent(typeof(HealthComponent))]
 	[RequireComponent(typeof(Interactable))]
+	[RequireComponent(typeof(Movement))]
 	public abstract class Character : MonoBehaviour
 	{
 		private CharacterProperties _characterProperties;
@@ -30,6 +31,8 @@ namespace GameWorld.Characters
 		public HealthComponent Health { get; private set; }
 		public Damageable Damageable { get; private set; }
 		public CharacterDeath Death { get; private set; }
+		public Movement Movement { get; private set; }
+
 		public Vector3 Position => Transform.position;
 		
 		protected ContextMenuUser ContextMenuUser { get; private set; }
@@ -47,6 +50,7 @@ namespace GameWorld.Characters
 			Damageable = GetComponent<Damageable>();
 			Health = GetComponent<HealthComponent>();
 			Death = GetComponent<CharacterDeath>();
+			Movement = GetComponent<Movement>();
 
 			LoadProperties();
 		}

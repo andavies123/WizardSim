@@ -28,7 +28,6 @@ namespace Wizards
 		
 		// Components
 		public WizardStateMachine StateMachine { get; private set; }
-		public Movement Movement { get; private set; }
 
 		public IAge Age { get; } = new Age();
 		public WizardStats Stats => stats;
@@ -107,7 +106,6 @@ namespace Wizards
 
 			// Add/get components
 			StateMachine = GetComponent<WizardStateMachine>();
-			Movement = GetComponent<Movement>();
 
 			Health.Health.CurrentHealthChanged += OnCurrentHealthChanged;
 		}

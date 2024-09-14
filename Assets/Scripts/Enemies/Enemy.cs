@@ -15,7 +15,6 @@ namespace Enemies
 		
 		// Components
 		public EnemyStateMachine StateMachine { get; private set; }
-		public Movement Movement { get; private set; }
 		
 		public EnemyStats Stats => stats;
 		
@@ -28,7 +27,6 @@ namespace Enemies
 			base.Awake();
             
 			StateMachine = GetComponent<EnemyStateMachine>();
-			Movement = GetComponent<Movement>();
 
 			Health.Health.CurrentHealthChanged += OnCurrentHealthChanged;
 		}
