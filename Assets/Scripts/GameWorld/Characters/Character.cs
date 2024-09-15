@@ -7,7 +7,7 @@ using Stats;
 using UI;
 using UI.ContextMenus;
 using UnityEngine;
-using GeneralBehaviours;
+using GameWorld.Characters.GeneralComponents;
 
 namespace GameWorld.Characters
 {

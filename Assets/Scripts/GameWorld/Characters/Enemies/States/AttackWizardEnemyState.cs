@@ -1,6 +1,7 @@
 ﻿using System;
 using StateMachines;
 using GameWorld.Characters.Wizards;
+using UnityEngine;
 
 namespace GameWorld.Characters.Enemies.States
 {
@@ -48,6 +49,12 @@ namespace GameWorld.Characters.Enemies.States
 			{
 				if (_stateMachine.IsCurrentState(_moveToState))
 				{
+					if (Vector3.Distance(Enemy.Position, TargetWizard.Position) >= TargetLossRadius)
+					{
+						ExitRequested?.Invoke(this, EXIT_REASON_ATTACK_FINISHED);
+						return;
+					}
+
 					_moveToState.MoveToPosition = TargetWizard.Transform.position;
 				}
 			}

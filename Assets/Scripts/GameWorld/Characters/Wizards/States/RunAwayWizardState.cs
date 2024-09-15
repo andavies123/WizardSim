@@ -7,6 +7,7 @@ namespace GameWorld.Characters.Wizards.States
 	{
 		public const string EXIT_REASON_GOT_AWAY = nameof(EXIT_REASON_GOT_AWAY);
 
+		private Character _attacker;
 		private float _currentTimeRunningAway = 0f;
 
 		public override event EventHandler<string> ExitRequested;
@@ -20,10 +21,18 @@ namespace GameWorld.Characters.Wizards.States
 			RunAwayTime = runAwayTime;
 		}
 
+		public void Initialize(Character attacker)
+		{
+			_attacker = attacker;
+		}
+
 		public override void Begin()
 		{
-			// Temporary position for now to run away to
-			Wizard.Movement.SetMoveToPosition(Vector3.zero, 1f);
+			if (_attacker)
+				Wizard.Movement.SetMoveDirection(Wizard.Position - _attacker.Position);
+			else
+				Wizard.Movement.SetMoveToPosition(Vector3.zero, 1f);
+
 			_currentTimeRunningAway = 0f;
 		}
 

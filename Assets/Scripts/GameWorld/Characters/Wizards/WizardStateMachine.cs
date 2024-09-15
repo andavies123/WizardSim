@@ -78,8 +78,11 @@ namespace GameWorld.Characters.Wizards
 		{
 			if (!StateMachine.IsCurrentState(_runAwayState) && !StateMachine.IsCurrentState(_attackState))
 			{
-				if (UnityEngine.Random.Range(0, 2) == 0)
+				if (Random.Range(0, 2) == 0)
+				{
+					_runAwayState.Initialize(args.DamageDealer);
 					StateMachine.SetCurrentState(_runAwayState);
+				}
 				else
 				{
 					_attackState.AttackDamage = 5;

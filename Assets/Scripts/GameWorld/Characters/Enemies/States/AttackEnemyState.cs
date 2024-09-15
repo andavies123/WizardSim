@@ -39,7 +39,7 @@ namespace GameWorld.Characters.Enemies.States
 			}
 
 			// Make sure the target hasn't gone too far away
-			if (Vector3.Distance(Target.transform.position, Enemy.Transform.position) >= AttackRadius)
+			if (Vector3.Distance(Target.Position, Enemy.Position) >= AttackRadius)
 			{
 				ExitRequested?.Invoke(this, EXIT_REASON_TARGET_OUT_OF_RANGE);
 				return;
