@@ -2,7 +2,9 @@
 {
 	public interface IAge
 	{
-		float CurrentAge { get; }
+		float Years { get; }
+		float Days { get; }
+		float Seconds { get; }
 
 		void IncreaseAge(float elapsedWorldTime);
 	}

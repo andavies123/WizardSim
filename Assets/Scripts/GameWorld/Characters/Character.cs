@@ -32,12 +32,11 @@ namespace GameWorld.Characters
 		public Damageable Damageable { get; private set; }
 		public CharacterDeath Death { get; private set; }
 		public Movement Movement { get; private set; }
-
-		public Vector3 Position => Transform.position;
-		
 		protected ContextMenuUser ContextMenuUser { get; private set; }
 		protected Interactable Interactable { get; private set; }
 
+		public Vector3 Position => Transform.position;
+		
 		public void Initialize(World parentWorld)
 		{
 			ParentWorld = parentWorld;
@@ -51,6 +50,7 @@ namespace GameWorld.Characters
 			Health = GetComponent<HealthComponent>();
 			Death = GetComponent<CharacterDeath>();
 			Movement = GetComponent<Movement>();
+			Interactable = GetComponent<Interactable>();
 
 			LoadProperties();
 		}
@@ -75,15 +75,9 @@ namespace GameWorld.Characters
 			}
 			
 			if (_characterProperties.HealthProperties != null)
-			{
 				Health.InitializeWithProperties(_characterProperties.HealthProperties);
-			}
-
 			if (_characterProperties.InteractableProperties != null)
-			{
-				Interactable = gameObject.AddComponent<Interactable>();
 				Interactable.InitializeWithProperties(_characterProperties.InteractableProperties);
-			}
 
 			if (_characterProperties.DestroyedProperties != null)
 			{

@@ -130,12 +130,13 @@ namespace GameWorld.Characters.Wizards
 			base.Update();
 
 			Age.IncreaseAge(_worldTime.DeltaTime);
+			UpdateInteractableInfoText();
 		}
 
 		private void UpdateInteractableInfoText()
 		{
 			Interactable.TitleText = Name;
-			Interactable.InfoText = $"Wizard - {Health.Health.CurrentHealth:0}/{Health.Health.MaxHealth:0} ({Health.Health.CurrentHealth.PercentageOf(Health.Health.MaxHealth):0}%)";
+			Interactable.InfoText = $"{Age.Days:0.#} days - {Health.Health.CurrentHealth:0}/{Health.Health.MaxHealth:0} ({Health.Health.CurrentHealth.PercentageOf(Health.Health.MaxHealth):0}%)";
 		}
 
 		protected override void InitializeContextMenu()
