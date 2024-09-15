@@ -16,6 +16,9 @@ GameObject:
   - component: {fileID: 323713175569000968}
   - component: {fileID: -564846168271158495}
   - component: {fileID: 3264566444634898711}
+  - component: {fileID: 7787529806279207512}
+  - component: {fileID: 881733641806660213}
+  - component: {fileID: 4995779945318081132}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -67,7 +70,7 @@ MonoBehaviour:
   idleRadius: 10
   targetRadius: 5
   targetLossRadius: 10
-  attackRadius: 1
+  attackRadius: 2
 --- !u!114 &5329288241691076669
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146,6 +149,42 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 77f396fb3a734918ba467592d0b07b8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7787529806279207512
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2414322042265852574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1d8e3a84e5c24943bed2f8f4a3ec4b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &881733641806660213
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2414322042265852574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 434865b72fd64e1283258037ba5a0623, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4995779945318081132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2414322042265852574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d8358cace9e8a94b8760044903c4eaf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &3636136914844696014

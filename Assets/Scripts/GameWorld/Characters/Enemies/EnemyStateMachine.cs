@@ -15,7 +15,7 @@ namespace GameWorld.Characters.Enemies
 		[Header("Attack State Defaults")]
 		[SerializeField] private float targetRadius = 5f;
 		[SerializeField] private float targetLossRadius = 10f;
-		[SerializeField] private float attackRadius = 1f;
+		[SerializeField] private float attackRadius = 2f;
 
 		private Enemy _enemy;
 
