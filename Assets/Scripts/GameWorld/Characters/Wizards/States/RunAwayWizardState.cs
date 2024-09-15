@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GeneralBehaviours.Damageable;
+using System;
 using UnityEngine;
 
 namespace GameWorld.Characters.Wizards.States
@@ -34,6 +35,13 @@ namespace GameWorld.Characters.Wizards.States
 				Wizard.Movement.SetMoveToPosition(Vector3.zero, 1f);
 
 			_currentTimeRunningAway = 0f;
+
+			Wizard.Damageable.DamageReceived += OnDamageReceived;
+		}
+
+		public override void End() 
+		{
+			Wizard.Damageable.DamageReceived -= OnDamageReceived;
 		}
 
 		public override void Update()
@@ -46,6 +54,11 @@ namespace GameWorld.Characters.Wizards.States
 			}
 		}
 
-		public override void End() { }
+		private void OnDamageReceived(object sender, DamageReceivedEventArgs args)
+		{
+			// We want to reset the runing away time so the wizard doesn't
+			// randomly stop running while in the middle of being attacked
+			_currentTimeRunningAway = 0;
+		}
 	}
 }
