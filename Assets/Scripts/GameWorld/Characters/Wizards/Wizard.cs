@@ -11,6 +11,7 @@ using UI.Messages;
 using UnityEngine;
 using GameWorld.Characters.Wizards.States;
 using GameWorld.Characters.Wizards.Tasks;
+using System;
 
 namespace GameWorld.Characters.Wizards
 {
@@ -136,7 +137,8 @@ namespace GameWorld.Characters.Wizards
 		private void UpdateInteractableInfoText()
 		{
 			Interactable.TitleText = Name;
-			Interactable.InfoText = $"{Age.Days:0.#} days - {Health.Health.CurrentHealth:0}/{Health.Health.MaxHealth:0} ({Health.Health.CurrentHealth.PercentageOf(Health.Health.MaxHealth):0}%)";
+			string ageInDays = $"{Math.Floor(Age.Days * 10) / 10:0.#}";
+			Interactable.InfoText = $"{ageInDays} days - {Health.Health.CurrentHealth:0}/{Health.Health.MaxHealth:0} ({Health.Health.CurrentHealth.PercentageOf(Health.Health.MaxHealth):0}%)";
 		}
 
 		protected override void InitializeContextMenu()
