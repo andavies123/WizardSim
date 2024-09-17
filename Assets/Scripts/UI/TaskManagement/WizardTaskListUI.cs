@@ -6,17 +6,20 @@ using GameObjectPools;
 using UI.TaskManagement.WizardEventArgs;
 using UnityEngine;
 using GameWorld.Characters.Wizards.Tasks;
+using TMPro;
+using Utilities.Attributes;
 
 namespace UI.TaskManagement
 {
 	internal class WizardTaskListUI : MonoBehaviour
 	{
-		[SerializeField] private WizardTaskUI taskUIPrefab;
-		[SerializeField] private Transform taskContainer;
-		[SerializeField] private Transform inactiveTaskContainer;
+		[SerializeField, Required] private WizardTaskUI taskUIPrefab;
+		[SerializeField, Required] private Transform taskContainer;
+		[SerializeField, Required] private Transform inactiveTaskContainer;
+		[SerializeField, Required] private TMP_Dropdown sortByDropdown;
 
 		protected IGameObjectPool TaskUIObjectPool;
-		private readonly List<WizardTaskUI> _taskUIs = new();
+		private List<WizardTaskUI> _taskUIs = new();
 
 		internal event EventHandler<WizardTaskDeletedEventArgs> TaskDeleted;
 
@@ -35,6 +38,7 @@ namespace UI.TaskManagement
 			
 			// Get task ui from object pool
 			WizardTaskUI taskUI = TaskUIObjectPool.GetFromPool(taskContainer).GetComponent<WizardTaskUI>();
+			taskUI.gameObject.name = $"Task UI #{_taskUIs.Count + 1}";
 			taskUI.TaskDeleted += OnTaskDeleted;
 			task.Completed += OnTaskCompleted;
 			
@@ -83,11 +87,17 @@ namespace UI.TaskManagement
 
 		private void Awake()
 		{
-			taskUIPrefab.ThrowIfNull(nameof(taskUIPrefab));
-			taskContainer.ThrowIfNull(nameof(taskContainer));
-			inactiveTaskContainer.ThrowIfNull(nameof(inactiveTaskContainer));
-
 			TaskUIObjectPool = new GameObjectPool(taskUIPrefab.gameObject, inactiveTaskContainer, 10, 20);
+		}
+
+		private void Start()
+		{
+			sortByDropdown.onValueChanged.AddListener(OnSortByDropdownValueChanged);
+		}
+
+		private void OnDestroy()
+		{
+			sortByDropdown.onValueChanged.RemoveListener(OnSortByDropdownValueChanged);
 		}
 
 		private void OnTaskCompleted(object sender, EventArgs args)
@@ -103,6 +113,35 @@ namespace UI.TaskManagement
 			if (args?.WizardTask != null)
 			{
 				TaskDeleted?.Invoke(this, new WizardTaskDeletedEventArgs(args.WizardTask));
+			}
+		}
+
+		private void OnSortByDropdownValueChanged(int option)
+		{
+			
+			switch(option)
+			{
+				case 0: // Sort by highest priority first
+					_taskUIs = _taskUIs.OrderByDescending(taskUI => taskUI.Task.Priority).ToList();
+					break;
+				case 1: // Sort by lowest priority first
+					_taskUIs = _taskUIs.OrderBy(taskUI => taskUI.Task.Priority).ToList();
+					break;
+				case 2: // Sort by oldest first
+					_taskUIs = _taskUIs.OrderBy(taskUI => taskUI.Task.CreationTime).ToList();
+					break;
+				case 3: // Sort by newest first
+					_taskUIs = _taskUIs.OrderByDescending(taskUI => taskUI.Task.CreationTime).ToList();
+					break;
+				default:
+					Debug.LogWarning("Task Management Window sort-by option hasn't been set up yet");
+					break;
+			}
+
+			// Put the UI elements in the right order
+			for (int index = 0; index < _taskUIs.Count; index++)
+			{
+				_taskUIs[index].transform.SetSiblingIndex(index);
 			}
 		}
 	}
