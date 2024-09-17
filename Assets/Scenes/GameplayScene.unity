@@ -4958,26 +4958,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Unassigned Tasks Panel
       objectReference: {fileID: 0}
-    - target: {fileID: 1306349615514856805, guid: 953b31e6686fcf444900efb4550f5bc2, type: 3}
-      propertyPath: m_Options.m_Options.Array.size
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 1306349615514856805, guid: 953b31e6686fcf444900efb4550f5bc2, type: 3}
-      propertyPath: m_Options.m_Options.Array.data[0].m_Text
-      value: Highest Priority
-      objectReference: {fileID: 0}
-    - target: {fileID: 1306349615514856805, guid: 953b31e6686fcf444900efb4550f5bc2, type: 3}
-      propertyPath: m_Options.m_Options.Array.data[1].m_Text
-      value: Lowest Priority
-      objectReference: {fileID: 0}
-    - target: {fileID: 1306349615514856805, guid: 953b31e6686fcf444900efb4550f5bc2, type: 3}
-      propertyPath: m_Options.m_Options.Array.data[2].m_Text
-      value: Oldest
-      objectReference: {fileID: 0}
-    - target: {fileID: 1306349615514856805, guid: 953b31e6686fcf444900efb4550f5bc2, type: 3}
-      propertyPath: m_Options.m_Options.Array.data[3].m_Text
-      value: Newest
-      objectReference: {fileID: 0}
     - target: {fileID: 7575635562821945125, guid: 953b31e6686fcf444900efb4550f5bc2, type: 3}
       propertyPath: m_Pivot.x
       value: 0
