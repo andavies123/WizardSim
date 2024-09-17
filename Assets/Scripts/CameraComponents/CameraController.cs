@@ -1,7 +1,5 @@
-﻿using Extensions;
-using Game;
+﻿using Game;
 using Game.GameStates.GameplayStates;
-using InputStates;
 using InputStates.Enums;
 using InputStates.InputEventArgs;
 using UnityEngine;
@@ -71,7 +69,7 @@ namespace CameraComponents
 			Vector3 zVector = new Vector3(cameraForward.x, 0, cameraForward.z).normalized * moveVector.z;
 
 			// Set position and clamp the height
-			Vector3 newPosition = _cameraTransform.position + (xVector + yVector + zVector).normalized * (Time.deltaTime * cameraMoveSpeed);
+			Vector3 newPosition = _cameraTransform.position + (xVector + yVector + zVector).normalized * (Time.unscaledDeltaTime * cameraMoveSpeed);
 			_cameraTransform.position = newPosition;
 			
 			ClampCameraPosition();
