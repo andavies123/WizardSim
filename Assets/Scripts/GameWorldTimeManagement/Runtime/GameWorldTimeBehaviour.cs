@@ -58,23 +58,7 @@ namespace AndysTools.GameWorldTimeManagement.Runtime
 		protected virtual void Update()
 		{
 			// Since _gameWorldTime is not a MonoBehaviour, we need to update the time here in the update method 
-			_gameWorldTime.AdvanceTime(Time.deltaTime);
-		}
-	}
-
-
-	public class TestGameWorldBehaviour : MonoBehaviour
-	{
-		private IGameWorldTime _gameWorldTime;
-
-		protected virtual void Awake()
-		{
-			_gameWorldTime = new GameWorldTime(600, this);
-		}
-
-		protected virtual void Update()
-		{
-			_gameWorldTime.AdvanceTime(Time.deltaTime);
+			_gameWorldTime.AdvanceTime(Time.unscaledDeltaTime);
 		}
 	}
 }
