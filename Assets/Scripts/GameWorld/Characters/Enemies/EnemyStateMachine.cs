@@ -76,14 +76,11 @@ namespace GameWorld.Characters.Enemies
 		private bool CheckForSurroundingWizards(out Wizard targetWizard)
 		{
 			// Get the surrounding wizard
-			if (!_enemy.ParentWorld.WizardManager.TryGetClosestWizard(_enemy.transform.position, out targetWizard, out float distance))
+			if (!_enemy.ParentWorld.Settlement.TryGetClosestWizard(_enemy.transform.position, out targetWizard, out float distance))
 				return false;
 
 			// Check the distance
-			if (distance > targetRadius)
-				return false;
-
-			return true;
+			return distance <= targetRadius;
 		}
 	}
 }

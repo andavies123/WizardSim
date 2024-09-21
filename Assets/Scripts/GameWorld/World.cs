@@ -4,8 +4,8 @@ using GameWorld.Tiles;
 using GameWorld.WorldObjects;
 using UnityEngine;
 using Utilities.Attributes;
-using GameWorld.Characters.Wizards;
 using GameWorld.Settlements;
+using GameWorld.Settlements.Interfaces;
 
 namespace GameWorld
 {
@@ -17,8 +17,11 @@ namespace GameWorld
 		[SerializeField, Required] private Transform worldObjectContainer;
 		
 		[Header("Character Managers")]
-		[SerializeField, Required] private WizardManager wizardManager;
 		[SerializeField, Required] private EntityManager enemyManager;
+
+		[Header("Required for Settlement")]
+		[SerializeField, Required] private WizardSpawner wizardSpawner;
+		[SerializeField, Required] private Transform wizardContainer;
 		
 		private readonly Dictionary<Vector2Int, Chunk> _chunks = new();
 		private GameWorldTimeBehaviour _gameWorldTime;
@@ -30,7 +33,6 @@ namespace GameWorld
 		public IWorldObjectManager WorldObjectManager { get; private set; }
 		public WorldObjectDetailsMap DetailsMap { get; private set; }
 
-		public WizardManager WizardManager => wizardManager;
 		public EntityManager EnemyManager => enemyManager;
 
 		public void AddChunk(Chunk chunk)
@@ -151,7 +153,7 @@ namespace GameWorld
 			DetailsMap = GetComponent<WorldObjectDetailsMap>();
 			WorldObjectManager = new WorldObjectManager(worldObjectContainer);
 
-			Settlement = new Settlement(this);
+			Settlement = new Settlement(wizardSpawner, wizardContainer);
 		}
 	}
 }

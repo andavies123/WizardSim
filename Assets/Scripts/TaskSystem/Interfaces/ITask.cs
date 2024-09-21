@@ -5,9 +5,9 @@ namespace TaskSystem.Interfaces
 	public interface ITask
 	{
 		/// <summary>
-		/// Raised when the task has been completed
+		/// Raised when this task has been completed
 		/// </summary>
-		event EventHandler Completed;
+		event Action<ITask> Completed;
 
 		/// <summary>
 		/// Raised when important properties of this task are updated

@@ -1,16 +1,18 @@
 ﻿using System;
 using AndysTools.GameWorldTimeManagement.Runtime;
+using Extensions;
+using GameWorld.Characters.Wizards;
+using GameWorld.Settlements.Interfaces;
 using GeneralBehaviours.ShaderManagers;
 using UnityEngine;
 using Utilities;
 using Random = UnityEngine.Random;
 
-namespace GameWorld.Characters.Wizards
+namespace GameWorld.Settlements
 {
-	public class WizardSpawner : MonoBehaviour
+	public class WizardSpawner : MonoBehaviour, IWizardSpawner
 	{
 		[Header("External Components")]
-		[SerializeField] private WizardManager wizardManager;
 		[SerializeField] private GameWorldTimeBehaviour gameWorldTime;
 
 		[Header("Prefabs")]
@@ -27,15 +29,26 @@ namespace GameWorld.Characters.Wizards
 		[SerializeField] private Color waterWizardColor;
 		[SerializeField] private Color lightningWizardColor;
 
+		private IWizardRepo _wizardRepo;
+
+		public void Initialize(IWizardRepo wizardRepo)
+		{
+			_wizardRepo = wizardRepo.ThrowIfNull(nameof(wizardRepo));
+		}
+
 		public void SpawnWizard(Vector3 spawnPosition, WizardType wizardType)
 		{
-			Wizard wizard = Instantiate(entityPrefab, wizardManager.transform);
+			Wizard wizard = Instantiate(entityPrefab);
 			wizard.Transform.position = spawnPosition;
 
 			wizard.InitializeWizard(NameGenerator.GetNewName(), wizardType, gameWorldTime);
 			wizard.GetComponent<InteractionShaderManager>().OverrideBaseColor(GetColorFromWizardType(wizardType));
-			
-			wizardManager.Add(wizard);
+
+			if (!_wizardRepo.TryAddWizard(wizard))
+			{
+				Debug.LogWarning("Unable to add wizard to wizard repository... Destroying wizard");
+				wizard.gameObject.Destroy();
+			}
 		}
 		
 		private void Start()

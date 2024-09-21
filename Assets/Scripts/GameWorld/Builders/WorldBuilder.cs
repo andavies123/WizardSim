@@ -9,6 +9,7 @@ using GameWorld.WorldObjects;
 using UnityEngine;
 using Utilities;
 using GameWorld.Characters.Wizards;
+using GameWorld.Settlements;
 
 namespace GameWorld.Builders
 {

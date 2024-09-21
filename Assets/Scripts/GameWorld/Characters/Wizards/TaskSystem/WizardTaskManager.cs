@@ -61,7 +61,7 @@ namespace GameWorld.Characters.Wizards.TaskSystem
 			// Find a proper fit for this wizard
 			foreach (IWizardTask task in _taskManager.Tasks)
 			{
-				if (IsValidWizardType(wizard, task))
+				if (Settlements.WizardTaskManager.IsValidWizardType(wizard, task))
 				{
 					assignedTask = task;
 					break;
@@ -108,21 +108,6 @@ namespace GameWorld.Characters.Wizards.TaskSystem
 		private void OnWizardAdded(object sender, WizardManagerEventArgs args)
 		{
 			TryAssignTaskToWizard(args.Wizard);
-		}
-
-		private static bool IsValidWizardType(Wizard wizard, IWizardTask task)
-		{
-			if (task.AllowedWizardTypes.Contains(TaskWizardType.Any))
-				return true;
-
-			return wizard.WizardType switch
-			{
-				WizardType.Earth => task.AllowedWizardTypes.Contains(TaskWizardType.Earth),
-				WizardType.Water => task.AllowedWizardTypes.Contains(TaskWizardType.Water),
-				WizardType.Fire => task.AllowedWizardTypes.Contains(TaskWizardType.Fire),
-				WizardType.Lightning => task.AllowedWizardTypes.Contains(TaskWizardType.Lightning),
-				_ => throw new ArgumentOutOfRangeException()
-			};
 		}
 	}
 }

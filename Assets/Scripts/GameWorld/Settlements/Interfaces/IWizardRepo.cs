@@ -1,8 +1,8 @@
-﻿using GameWorld.Characters.Wizards;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using GameWorld.Characters.Wizards;
 
-namespace GameWorld.Settlements
+namespace GameWorld.Settlements.Interfaces
 {
 	public interface IWizardRepo
 	{
@@ -20,7 +20,7 @@ namespace GameWorld.Settlements
 		/// Dictionary of all wizards (Key => Wizard ID, Value => Wizard)
 		/// </summary>
 		IReadOnlyDictionary<Guid, Wizard> AllWizards { get; }
-
+		
 		/// <summary>
 		/// Attempts to add a wizard to the repository using the wizard Id
 		/// </summary>
@@ -34,5 +34,20 @@ namespace GameWorld.Settlements
 		/// <param name="wizardId">The unique wizard Id</param>
 		/// <returns>True if the wizard was successfully removed. False if the wizard was not removed or does not exist</returns>
 		bool TryRemoveWizard(Guid wizardId);
+
+		/// <summary>
+		/// Attempts to get a wizard using the unique Wizard ID
+		/// </summary>
+		/// <param name="wizardId">The unique ID of the wizard to look for</param>
+		/// <param name="wizard">The wizard object that was found with the given ID. Null if none were found</param>
+		/// <returns>True if a wizard was found with the given ID. False if no wizards were found</returns>
+		bool TryGetWizardById(Guid wizardId, out Wizard wizard);
+		
+		/// <summary>
+		/// Gets all wizards of a certain <see cref="WizardType"/>
+		/// </summary>
+		/// <param name="wizardType">The type of wizard to query for</param>
+		/// <returns>Collection of all wizards of the given <see cref="WizardType"/></returns>
+		IList<Wizard> GetAllWizardsByType(WizardType wizardType);
 	}
 }
