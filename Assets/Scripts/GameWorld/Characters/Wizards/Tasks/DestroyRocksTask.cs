@@ -13,7 +13,8 @@ namespace GameWorld.Characters.Wizards.Tasks
 			WizardTaskState = new DestroyRocksTaskState(rocks);
 		}
 
-		public override TaskWizardType[] AllowedWizardTypes { get; } = { TaskWizardType.Earth };
+		public override WizardType[] AllowedWizardTypes { get; } = { WizardType.Earth };
+		public override bool AllowAllWizardTypes => false;
 		public override string DisplayName => "Destroy Rocks";
 	}
 }

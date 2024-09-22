@@ -2,6 +2,7 @@
 using TaskSystem;
 using UnityEngine;
 using GameWorld.Characters.Wizards.States;
+using TaskSystem.Interfaces;
 
 namespace GameWorld.Characters.Wizards.Tasks
 {
@@ -10,10 +11,11 @@ namespace GameWorld.Characters.Wizards.Tasks
 		private WizardTaskState _wizardTaskState;
 		private Wizard _assignedWizard;
 		
-		public event EventHandler Completed;
+		public event Action<ITask> Completed;
 		public event EventHandler<TaskUpdatedEventArgs> Updated;
 		
-		public abstract TaskWizardType[] AllowedWizardTypes { get; }
+		public abstract WizardType[] AllowedWizardTypes { get; }
+		public abstract bool AllowAllWizardTypes { get; }
 		public abstract string DisplayName { get; }
 
 		public string CurrentStatus => WizardTaskState.DisplayStatus;
@@ -47,7 +49,7 @@ namespace GameWorld.Characters.Wizards.Tasks
 
 		protected void OnTaskCompleted(object sender, EventArgs args)
 		{
-			Completed?.Invoke(this, EventArgs.Empty);
+			Completed?.Invoke(this);
 		}
 	}
 }

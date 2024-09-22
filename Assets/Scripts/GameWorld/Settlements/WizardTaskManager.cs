@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Extensions;
+using Game.MessengerSystem;
 using GameWorld.Characters.Wizards;
+using GameWorld.Characters.Wizards.Messages;
 using GameWorld.Characters.Wizards.Tasks;
 using GameWorld.Settlements.Interfaces;
 using TaskSystem;
@@ -22,6 +24,8 @@ namespace GameWorld.Settlements
 		public WizardTaskManager(IWizardRepo wizardRepo)
 		{
 			_wizardRepo = wizardRepo.ThrowIfNull(nameof(wizardRepo));
+
+			GlobalMessenger.Subscribe<AddWizardTaskRequest>(OnAddWizardTaskRequested);
 		}
 
 		public IReadOnlyList<IWizardTask> Tasks => _taskManager.Tasks;
@@ -34,6 +38,7 @@ namespace GameWorld.Settlements
 			_taskManager.AddTask(wizardTask);
 			wizardTask.Completed += OnTaskCompleted;
 			TaskAdded?.Invoke(wizardTask);
+
 			TryAssignTask(wizardTask);
 		}
 
@@ -68,22 +73,11 @@ namespace GameWorld.Settlements
 			
 			RemoveTask(wizardTask);
 		}
-		
-		public static bool IsValidWizardType(Wizard wizard, IWizardTask task)
-		{
-			if (task.AllowedWizardTypes.Contains(TaskWizardType.Any))
-				return true;
-			
-			return task.AllowedWizardTypes.Contains(WizardType)
 
-			return wizard.WizardType switch
-			{
-				WizardType.Earth => task.AllowedWizardTypes.Contains(TaskWizardType.Earth),
-				WizardType.Water => task.AllowedWizardTypes.Contains(TaskWizardType.Water),
-				WizardType.Fire => task.AllowedWizardTypes.Contains(TaskWizardType.Fire),
-				WizardType.Lightning => task.AllowedWizardTypes.Contains(TaskWizardType.Lightning),
-				_ => throw new ArgumentOutOfRangeException()
-			};
-		}
+		private void OnAddWizardTaskRequested(AddWizardTaskRequest request) =>
+			AddTask(request.Task);
+		
+		private static bool IsValidWizardType(Wizard wizard, IWizardTask task) =>
+			task.AllowAllWizardTypes || task.AllowedWizardTypes.Contains(wizard.WizardType);
 	}
 }
