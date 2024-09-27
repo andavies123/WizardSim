@@ -9,12 +9,12 @@ namespace GameWorld.Settlements.Interfaces
 		/// <summary>
 		/// Raised when a wizard is added to the repository
 		/// </summary>
-		event EventHandler<Wizard> WizardAdded;
+		event Action<Wizard> WizardAdded;
 
 		/// <summary>
 		/// Raised when a wizard is removed from the repository
 		/// </summary>
-		event EventHandler<Wizard> WizardRemoved;
+		event Action<Wizard> WizardRemoved;
 
 		/// <summary>
 		/// Dictionary of all wizards (Key => Wizard ID, Value => Wizard)

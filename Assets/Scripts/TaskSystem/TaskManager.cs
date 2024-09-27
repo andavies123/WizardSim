@@ -48,7 +48,6 @@ namespace TaskSystem
 
 					index++;
 				}
-				
 			}
 		}
 

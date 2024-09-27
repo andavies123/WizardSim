@@ -8,8 +8,8 @@ using GameWorld.WorldObjectPreviews;
 using GameWorld.WorldObjects;
 using UnityEngine;
 using Utilities;
-using GameWorld.Characters.Wizards;
 using GameWorld.Settlements;
+using UnityEngine.Serialization;
 
 namespace GameWorld.Builders
 {
@@ -18,8 +18,9 @@ namespace GameWorld.Builders
 		[SerializeField] private World world;
 		[SerializeField] private Transform worldObjectParent;
 		
+		[FormerlySerializedAs("wizardSpawner")]
 		[Header("Spawners")]
-		[SerializeField] private WizardSpawner wizardSpawner;
+		[SerializeField] private WizardFactory wizardFactory;
 		[SerializeField] private EntitySpawner enemySpawner;
 
 		[Header("Settings")]
@@ -127,7 +128,7 @@ namespace GameWorld.Builders
 			}
 		}
 
-		private void OnWizardSpawnRequested(WizardSpawnRequestMessage message) => wizardSpawner.SpawnWizard(message.SpawnPosition, message.WizardType);
+		private void OnWizardSpawnRequested(WizardSpawnRequestMessage message) => wizardFactory.CreateWizard(message.SpawnPosition, message.WizardType);
 		private void OnEnemySpawnRequested(EnemySpawnRequestMessage message) => enemySpawner.SpawnEntity(message.SpawnPosition);
 
 		private void OnPlaceWorldObjectRequested(WorldObjectPlacementRequest message)

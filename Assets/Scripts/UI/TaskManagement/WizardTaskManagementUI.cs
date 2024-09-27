@@ -1,24 +1,27 @@
-﻿using Extensions;
+﻿using GameWorld;
 using UI.TaskManagement.WizardEventArgs;
 using UnityEngine;
 using GameWorld.Characters.Wizards.Tasks;
-using GameWorld.Characters.Wizards.TaskSystem;
+using GameWorld.Settlements.Interfaces;
+using Utilities.Attributes;
 
 namespace UI.TaskManagement
 {
 	internal class WizardTaskManagementUI : MonoBehaviour
 	{
-		[SerializeField] private WizardTaskListUI unassignedTaskListUI;
-		[SerializeField] private WizardTaskListUI assignedTaskListUI;
-		[SerializeField] private WizardTaskManager wizardTaskManager;
+		[SerializeField, Required] private WizardTaskListUI unassignedTaskListUI;
+		[SerializeField, Required] private WizardTaskListUI assignedTaskListUI;
+		[SerializeField, Required] private World world;
+
+		private IWizardTaskManager WizardTaskManager => world.Settlement.WizardManager.TaskManager;
 
 		public void Open()
 		{
 			PopulateTaskLists();
 			
-			wizardTaskManager.TaskAssigned += OnTaskAssigned;
-			wizardTaskManager.TaskAdded += OnTaskAdded;
-			wizardTaskManager.TaskRemoved += OnTaskRemoved;
+			WizardTaskManager.TaskAssigned += OnTaskAssigned;
+			WizardTaskManager.TaskAdded += OnTaskAdded;
+			WizardTaskManager.TaskRemoved += OnTaskRemoved;
 
 			unassignedTaskListUI.TaskDeleted += OnTaskDeletedThroughUI;
 			assignedTaskListUI.TaskDeleted += OnTaskDeletedThroughUI;
@@ -26,9 +29,9 @@ namespace UI.TaskManagement
 
 		public void Close()
 		{
-			wizardTaskManager.TaskAssigned -= OnTaskAssigned;
-			wizardTaskManager.TaskAdded -= OnTaskAdded;
-			wizardTaskManager.TaskRemoved -= OnTaskRemoved;
+			WizardTaskManager.TaskAssigned -= OnTaskAssigned;
+			WizardTaskManager.TaskAdded -= OnTaskAdded;
+			WizardTaskManager.TaskRemoved -= OnTaskRemoved;
 			
 			unassignedTaskListUI.TaskDeleted -= OnTaskDeletedThroughUI;
 			assignedTaskListUI.TaskDeleted -= OnTaskDeletedThroughUI;
@@ -40,45 +43,37 @@ namespace UI.TaskManagement
 		private void PopulateTaskLists()
 		{
 			unassignedTaskListUI.ClearTasks();
-			foreach (IWizardTask task in wizardTaskManager.Tasks)
-			{
-				unassignedTaskListUI.AddTask(task);
-			}
-
 			assignedTaskListUI.ClearTasks();
-			foreach (IWizardTask task in wizardTaskManager.AssignedTasks.Values)
+			
+			foreach (IWizardTask task in WizardTaskManager.Tasks)
 			{
-				assignedTaskListUI.AddTask(task);
+				if (task.IsAssigned)
+					assignedTaskListUI.AddTask(task);
+				else
+					unassignedTaskListUI.AddTask(task);
 			}
 		}
 
-		private void Awake()
+		private void OnTaskAssigned(IWizardTask assignedTask)
 		{
-			unassignedTaskListUI.ThrowIfNull(nameof(unassignedTaskListUI));
-			assignedTaskListUI.ThrowIfNull(nameof(assignedTaskListUI));
-			wizardTaskManager.ThrowIfNull(nameof(wizardTaskManager));
+			if (unassignedTaskListUI.TryRemoveTask(assignedTask))
+				assignedTaskListUI.AddTask(assignedTask);
 		}
 
-		private void OnTaskAssigned(object sender, WizardTaskManagerEventArgs args)
+		private void OnTaskAdded(IWizardTask addedTask)
 		{
-			if (unassignedTaskListUI.TryRemoveTask(args.WizardTask))
-				assignedTaskListUI.AddTask(args.WizardTask);
-		}
-
-		private void OnTaskAdded(object sender, WizardTaskManagerEventArgs args)
-		{
-			if (args.WizardTask.IsAssigned)
-				assignedTaskListUI.AddTask(args.WizardTask);
+			if (addedTask.IsAssigned)
+				assignedTaskListUI.AddTask(addedTask);
 			else
-				unassignedTaskListUI.AddTask(args.WizardTask);
+				unassignedTaskListUI.AddTask(addedTask);
 		}
 
-		private void OnTaskRemoved(object sender, WizardTaskManagerEventArgs args)
+		private void OnTaskRemoved(IWizardTask removedTask)
 		{
-			if (unassignedTaskListUI.TryRemoveTask(args.WizardTask))
+			if (unassignedTaskListUI.TryRemoveTask(removedTask))
 				return;
 
-			assignedTaskListUI.TryRemoveTask(args.WizardTask);
+			assignedTaskListUI.TryRemoveTask(removedTask);
 		}
 
 		private void OnTaskDeletedThroughUI(object sender, WizardTaskDeletedEventArgs args)
@@ -89,7 +84,7 @@ namespace UI.TaskManagement
 				return;
 			}
 			
-			wizardTaskManager.RemoveTask(args.DeletedTask);
+			WizardTaskManager.RemoveTask(args.DeletedTask);
 		}
 	}
 }

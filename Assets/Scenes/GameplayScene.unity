@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657838, g: 0.49641228, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2576,7 +2576,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   world: {fileID: 2007172221}
   worldObjectParent: {fileID: 1790581159}
-  wizardSpawner: {fileID: 1202947230}
+  wizardFactory: {fileID: 1202947230}
   enemySpawner: {fileID: 262803724}
   initialGenerationRadius: 4
   rockPrefab: {fileID: 9090978207146980024, guid: 70ca3cc2895272241a88451b6498dfe8, type: 3}
@@ -2918,11 +2918,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1202947226}
-  - component: {fileID: 1202947231}
   - component: {fileID: 1202947230}
-  - component: {fileID: 1202947229}
   m_Layer: 0
-  m_Name: Wizard Manager
+  m_Name: Wizard Factory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2943,19 +2941,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2007172220}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1202947229
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1202947225}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d2ccfbbbb5747aa9ca324dd9f6eda96, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  wizardManager: {fileID: 1202947231}
 --- !u!114 &1202947230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2968,7 +2953,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 608a50db2fc94295b12bf0dbc68eea29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wizardManager: {fileID: 1202947231}
   gameWorldTime: {fileID: 2007172222}
   entityPrefab: {fileID: 5741234536930111, guid: 4bfb0bac7ec87bb4ca8c5e6e14993c85, type: 3}
   initialSpawns: 5
@@ -2978,18 +2962,37 @@ MonoBehaviour:
   earthWizardColor: {r: 0.2830189, g: 0.12974739, b: 0, a: 1}
   waterWizardColor: {r: 0.11173906, g: 0.47570392, b: 0.8773585, a: 1}
   lightningWizardColor: {r: 0.88722146, g: 0.8962264, b: 0.054957304, a: 1}
---- !u!114 &1202947231
-MonoBehaviour:
+--- !u!1 &1205596787
+GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1202947225}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a7b733741396445293a994c4b5350fd3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1205596788}
+  m_Layer: 0
+  m_Name: Wizard Container
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1205596788
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1205596787}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2007172220}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1234145056
 GameObject:
   m_ObjectHideFlags: 0
@@ -3545,7 +3548,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unassignedTaskListUI: {fileID: 2099059560}
   assignedTaskListUI: {fileID: 733805460}
-  wizardTaskManager: {fileID: 1202947229}
+  world: {fileID: 2007172221}
 --- !u!1 &1445392003
 GameObject:
   m_ObjectHideFlags: 0
@@ -4590,6 +4593,7 @@ Transform:
   - {fileID: 1790581159}
   - {fileID: 1202947226}
   - {fileID: 262803723}
+  - {fileID: 1205596788}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2007172221
@@ -4606,8 +4610,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldDetails: {fileID: 11400000, guid: e582ff65a9a14e9418ca71ac487ff365, type: 2}
   worldObjectContainer: {fileID: 1790581159}
-  wizardManager: {fileID: 1202947231}
   enemyManager: {fileID: 262803725}
+  wizardFactory: {fileID: 1202947230}
+  wizardContainer: {fileID: 1205596788}
 --- !u!114 &2007172222
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4773,6 +4778,58 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 688369677}
     m_Modifications:
+    - target: {fileID: 327427745427833258, guid: e26871ae0d4c1084bb799129eedd3e08, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 327427745427833258, guid: e26871ae0d4c1084bb799129eedd3e08, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 327427745427833258, guid: e26871ae0d4c1084bb799129eedd3e08, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2055868525015942345, guid: e26871ae0d4c1084bb799129eedd3e08, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2055868525015942345, guid: e26871ae0d4c1084bb799129eedd3e08, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2055868525015942345, guid: e26871ae0d4c1084bb799129eedd3e08, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3561514192924684935, guid: e26871ae0d4c1084bb799129eedd3e08, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3561514192924684935, guid: e26871ae0d4c1084bb799129eedd3e08, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3561514192924684935, guid: e26871ae0d4c1084bb799129eedd3e08, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5207013312905834915, guid: e26871ae0d4c1084bb799129eedd3e08, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5207013312905834915, guid: e26871ae0d4c1084bb799129eedd3e08, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5207013312905834915, guid: e26871ae0d4c1084bb799129eedd3e08, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5207013312905834915, guid: e26871ae0d4c1084bb799129eedd3e08, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6089421242095172547, guid: e26871ae0d4c1084bb799129eedd3e08, type: 3}
       propertyPath: m_Name
       value: World Time
@@ -4855,6 +4912,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6181420583714759637, guid: e26871ae0d4c1084bb799129eedd3e08, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6252050735734404564, guid: e26871ae0d4c1084bb799129eedd3e08, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6252050735734404564, guid: e26871ae0d4c1084bb799129eedd3e08, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6252050735734404564, guid: e26871ae0d4c1084bb799129eedd3e08, type: 3}
+      propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7530940918131636973, guid: e26871ae0d4c1084bb799129eedd3e08, type: 3}

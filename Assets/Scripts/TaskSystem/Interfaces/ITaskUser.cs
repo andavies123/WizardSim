@@ -35,6 +35,6 @@ namespace TaskSystem.Interfaces
 		/// <summary>
 		/// Call to unassign the task and clean up any connections to the task
 		/// </summary>
-		void UnassignTask(T task);
+		void RemoveTask(T task);
 	}
 }

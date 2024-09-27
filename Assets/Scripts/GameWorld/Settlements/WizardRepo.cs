@@ -14,8 +14,8 @@ namespace GameWorld.Settlements
 		private readonly ConcurrentDictionary<Guid, Wizard> _wizards = new();
 		private readonly Transform _wizardContainer;
 
-		public event EventHandler<Wizard> WizardAdded;
-		public event EventHandler<Wizard> WizardRemoved;
+		public event Action<Wizard> WizardAdded;
+		public event Action<Wizard> WizardRemoved;
 
 		public WizardRepo(Transform wizardContainer)
 		{
@@ -34,7 +34,7 @@ namespace GameWorld.Settlements
 
 			wizard.Transform.parent = _wizardContainer;
 			wizard.Death.Died += OnWizardDied;
-			WizardAdded?.Invoke(this, wizard);
+			WizardAdded?.Invoke(wizard);
 			return true;
 		}
 
@@ -48,7 +48,7 @@ namespace GameWorld.Settlements
 
 			wizard.Transform.parent = null; // We don't want to keep the wizard in the container
 			wizard.Death.Died -= OnWizardDied;
-			WizardRemoved?.Invoke(this, wizard);
+			WizardRemoved?.Invoke(wizard);
 			return true;
 		}
 

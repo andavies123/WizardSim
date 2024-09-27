@@ -6,6 +6,7 @@ using GameObjectPools;
 using UI.TaskManagement.WizardEventArgs;
 using UnityEngine;
 using GameWorld.Characters.Wizards.Tasks;
+using TaskSystem.Interfaces;
 using TMPro;
 using Utilities.Attributes;
 
@@ -18,7 +19,7 @@ namespace UI.TaskManagement
 		[SerializeField, Required] private Transform inactiveTaskContainer;
 		[SerializeField, Required] private TMP_Dropdown sortByDropdown;
 
-		protected IGameObjectPool TaskUIObjectPool;
+		private IGameObjectPool _taskUIObjectPool;
 		private List<WizardTaskUI> _taskUIs = new();
 
 		internal event EventHandler<WizardTaskDeletedEventArgs> TaskDeleted;
@@ -37,7 +38,7 @@ namespace UI.TaskManagement
 				return;
 			
 			// Get task ui from object pool
-			WizardTaskUI taskUI = TaskUIObjectPool.GetFromPool(taskContainer).GetComponent<WizardTaskUI>();
+			WizardTaskUI taskUI = _taskUIObjectPool.GetFromPool(taskContainer).GetComponent<WizardTaskUI>();
 			taskUI.gameObject.name = $"Task UI #{_taskUIs.Count + 1}";
 			taskUI.TaskDeleted += OnTaskDeleted;
 			task.Completed += OnTaskCompleted;
@@ -82,12 +83,12 @@ namespace UI.TaskManagement
 			taskUI.TaskDeleted -= OnTaskDeleted;
 			taskUI.Task.Completed -= OnTaskCompleted;
 			taskUI.ClearTask();
-			TaskUIObjectPool.ReleaseToPool(taskUI.gameObject);
+			_taskUIObjectPool.ReleaseToPool(taskUI.gameObject);
 		}
 
 		private void Awake()
 		{
-			TaskUIObjectPool = new GameObjectPool(taskUIPrefab.gameObject, inactiveTaskContainer, 10, 20);
+			_taskUIObjectPool = new GameObjectPool(taskUIPrefab.gameObject, inactiveTaskContainer, 10, 20);
 		}
 
 		private void Start()
@@ -100,12 +101,12 @@ namespace UI.TaskManagement
 			sortByDropdown.onValueChanged.RemoveListener(OnSortByDropdownValueChanged);
 		}
 
-		private void OnTaskCompleted(object sender, EventArgs args)
+		private void OnTaskCompleted(ITask completedTask)
 		{
-			if (sender is IWizardTask task)
-			{
-				TryRemoveTask(task);
-			}
+			if (completedTask is not IWizardTask task)
+				return;
+			
+			TryRemoveTask(task);
 		}
 
 		private void OnTaskDeleted(object sender, WizardTaskUIEventArgs args)

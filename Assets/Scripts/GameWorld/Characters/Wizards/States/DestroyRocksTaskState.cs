@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Extensions;
 using GameWorld.WorldObjects.Rocks;
 using StateMachines;
-using UnityEngine;
 
 namespace GameWorld.Characters.Wizards.States
 {
@@ -65,7 +64,7 @@ namespace GameWorld.Characters.Wizards.States
 			
 			_stateMachine.AddStateTransition(
 				new StateTransitionKey(_destroyRockState, DestroyRockState.EXIT_REASON_ROCK_DESTROYED),
-				new StateTransitionValue(_moveToState, MoveToNextRock, () => true));
+				new StateTransitionValue(_moveToState, MoveToNextRock, () => _rocks.Count > 0));
 		}
 		
 		private void UpdateDisplayStatus()

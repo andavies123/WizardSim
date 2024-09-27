@@ -56,10 +56,10 @@ namespace GameWorld.Characters.Wizards
 			AssignNewCurrentTask();
 		}
 
-		public void UnassignTask(IWizardTask task)
+		public void RemoveTask(IWizardTask task)
 		{
 			if (CurrentTask == null && _assignedTasks.IsEmpty())
-				return; // No task to unassign
+				return; // No task to un-assign
 			
 			if (task == CurrentTask)
 			{

@@ -10,7 +10,7 @@ using Random = UnityEngine.Random;
 
 namespace GameWorld.Settlements
 {
-	public class WizardSpawner : MonoBehaviour, IWizardSpawner
+	public class WizardFactory : MonoBehaviour, IWizardFactory
 	{
 		[Header("External Components")]
 		[SerializeField] private GameWorldTimeBehaviour gameWorldTime;
@@ -36,7 +36,7 @@ namespace GameWorld.Settlements
 			_wizardRepo = wizardRepo.ThrowIfNull(nameof(wizardRepo));
 		}
 
-		public void SpawnWizard(Vector3 spawnPosition, WizardType wizardType)
+		public void CreateWizard(Vector3 spawnPosition, WizardType wizardType)
 		{
 			Wizard wizard = Instantiate(entityPrefab);
 			wizard.Transform.position = spawnPosition;
@@ -60,7 +60,7 @@ namespace GameWorld.Settlements
 		{
 			Vector2 randomSpawn = Random.insideUnitCircle * spawnRadius;
 			
-			SpawnWizard(
+			CreateWizard(
 				new Vector3((int)randomSpawn.x + spawnCenter.x + 0.5f, 1,(int)randomSpawn.y + spawnCenter.z + 0.5f),
 				GetRandomWizardType());
 		}

@@ -32,13 +32,12 @@ namespace Extensions
 		/// <returns>True if the object is null, otherwise false</returns>
 		public static bool IsNullThenLogWarning<T>(this T obj, string message, Object context) where T : class
 		{
-			if (obj == null)
-			{
-				Debug.LogWarning(message, context);
-				return true;
-			}
+			if (obj != null) 
+				return false;
+			
+			Debug.LogWarning(message, context);
+			return true;
 
-			return false;
 		}
 	}
 }

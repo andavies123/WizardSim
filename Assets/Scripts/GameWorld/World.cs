@@ -6,6 +6,7 @@ using UnityEngine;
 using Utilities.Attributes;
 using GameWorld.Settlements;
 using GameWorld.Settlements.Interfaces;
+using UnityEngine.Serialization;
 
 namespace GameWorld
 {
@@ -19,8 +20,9 @@ namespace GameWorld
 		[Header("Character Managers")]
 		[SerializeField, Required] private EntityManager enemyManager;
 
+		[FormerlySerializedAs("wizardSpawner")]
 		[Header("Required for Settlement")]
-		[SerializeField, Required] private WizardSpawner wizardSpawner;
+		[SerializeField, Required] private WizardFactory wizardFactory;
 		[SerializeField, Required] private Transform wizardContainer;
 		
 		private readonly Dictionary<Vector2Int, Chunk> _chunks = new();
@@ -153,7 +155,13 @@ namespace GameWorld
 			DetailsMap = GetComponent<WorldObjectDetailsMap>();
 			WorldObjectManager = new WorldObjectManager(worldObjectContainer);
 
-			Settlement = new Settlement(wizardSpawner, wizardContainer);
+			Settlement = new Settlement(wizardFactory, wizardContainer);
+			Settlement.Init();
+		}
+
+		private void OnDestroy()
+		{
+			Settlement.CleanUp();
 		}
 	}
 }
