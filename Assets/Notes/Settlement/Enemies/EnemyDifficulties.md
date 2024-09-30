@@ -1,4 +1,4 @@
-# Enemy Difficulty Types
+# Enemy Difficulties
 
 Enemies will be split up into multiple difficulty categories. Easier enemies will start getting spawned earlier in the game, while the harder enemies will get spawned after a good amount of time has passed, enough time that the player should have a good enough settlement established.
 
