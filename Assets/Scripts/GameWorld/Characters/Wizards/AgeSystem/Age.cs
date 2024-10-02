@@ -1,4 +1,4 @@
-﻿namespace GameWorld.Characters.Wizards
+﻿namespace GameWorld.Characters.Wizards.AgeSystem
 {
 	public class Age : IAge
 	{
