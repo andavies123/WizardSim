@@ -11,6 +11,7 @@ using GameWorld.Characters.GeneralComponents;
 
 namespace GameWorld.Characters
 {
+	[SelectionBase]
 	[DisallowMultipleComponent]
 	[RequireComponent(typeof(CharacterDeath))]
 	[RequireComponent(typeof(ContextMenuUser))]
