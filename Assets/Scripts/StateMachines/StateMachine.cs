@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace StateMachines
 {
 	public class StateMachine
 	{
-		private readonly HashSet<IState> _states = new();
-		private readonly Dictionary<StateTransitionKey, List<StateTransitionValue>> _stateTransitions = new();
+		private readonly Dictionary<StateTransitionFrom, List<StateTransitionTo>> _stateTransitions = new();
 		
 		public string CurrentStateDisplayName => CurrentState?.DisplayName ?? "N/A";
 		public string CurrentStateDisplayStatus => CurrentState?.DisplayStatus ?? "N/A";
@@ -19,9 +19,19 @@ namespace StateMachines
 		
 		public void SetCurrentState(IState newState)
 		{
-			CurrentState?.End();
+			if (CurrentState != null)
+			{
+				CurrentState.ExitRequested -= OnStateExitRequested;
+				CurrentState.End();
+			}
+
 			CurrentState = newState;
-			CurrentState?.Begin();
+
+			if (CurrentState != null)
+			{
+				CurrentState.ExitRequested += OnStateExitRequested;
+				CurrentState.Begin();
+			}
 		}
 
 		public void Update()
@@ -29,23 +39,11 @@ namespace StateMachines
 			CurrentState?.Update();
 		}
 		
-		public void AddStateTransition(StateTransitionKey transitionKey, params StateTransitionValue[] transitionValues)
+		public void AddStateTransition(StateTransitionFrom transitionFrom, params StateTransitionTo[] transitionTos)
 		{
-			if (transitionKey.FinishedState != null && _states.Add(transitionKey.FinishedState))
-				transitionKey.FinishedState.ExitRequested += OnStateExitRequested;
-			
-			if (!_stateTransitions.TryGetValue(transitionKey, out List<StateTransitionValue> transitions))
+			if (!_stateTransitions.TryGetValue(transitionFrom, out _))
 			{
-				transitions = new List<StateTransitionValue>();
-				_stateTransitions.Add(transitionKey, transitions);
-			}
-
-			foreach (StateTransitionValue transition in transitionValues)
-			{
-				if (transition.NextState != null && _states.Add(transition.NextState))
-					transition.NextState.ExitRequested += OnStateExitRequested;
-				
-				transitions.Add(transition);
+				_stateTransitions.Add(transitionFrom, transitionTos.ToList());
 			}
 		}
 
@@ -54,38 +52,36 @@ namespace StateMachines
 			if (sender is not IState finishedState)
 				return;
 
-			if (_stateTransitions.TryGetValue(new StateTransitionKey(finishedState, exitReason), out List<StateTransitionValue> transitions))
+			if (_stateTransitions.TryGetValue(new StateTransitionFrom(finishedState, exitReason), out List<StateTransitionTo> transitions))
 			{
 				// Loop through all transitions until we can transition to a new state
-				foreach (StateTransitionValue transition in transitions)
+				foreach (StateTransitionTo transition in transitions)
 				{
 					if (transition.TransitionValidation.Invoke())
 					{
 						transition.NextStateInit?.Invoke();
 						SetCurrentState(transition.NextState);
-						break;
+						return;
 					}
 				}
 			}
-			else
+			
+			if (DefaultState == null)
 			{
-				if (DefaultState == null)
-				{
-					Debug.LogWarning("Attempting to change state to the default state but the default state does not exist...");
-					return;
-				}
-				
-				SetCurrentState(DefaultState);
+				Debug.LogWarning("Attempting to change state to the default state but the default state does not exist...");
+				return;
 			}
+				
+			SetCurrentState(DefaultState);
 		}
 	}
 
-	public class StateTransitionKey
+	public class StateTransitionFrom
 	{
 		public IState FinishedState { get; }
 		public string ExitReason { get; }
 
-		public StateTransitionKey(IState finishedState, string exitReason)
+		public StateTransitionFrom(IState finishedState, string exitReason)
 		{
 			FinishedState = finishedState;
 			ExitReason = exitReason;
@@ -93,7 +89,7 @@ namespace StateMachines
 
 		public override bool Equals(object obj)
 		{
-			if (obj is not StateTransitionKey other)
+			if (obj is not StateTransitionFrom other)
 				return false;
 
 			return Equals(FinishedState, other.FinishedState) && string.Equals(ExitReason, other.ExitReason);
@@ -102,13 +98,13 @@ namespace StateMachines
 		public override int GetHashCode() => HashCode.Combine(FinishedState, ExitReason);
 	}
 
-	public class StateTransitionValue
+	public class StateTransitionTo
 	{
 		public IState NextState { get; }
 		public Action NextStateInit { get; }
 		public Func<bool> TransitionValidation { get; }
 
-		public StateTransitionValue(IState nextState, Action nextStateInit, Func<bool> transitionValidation)
+		public StateTransitionTo(IState nextState, Action nextStateInit, Func<bool> transitionValidation)
 		{
 			NextState = nextState;
 			NextStateInit = nextStateInit;

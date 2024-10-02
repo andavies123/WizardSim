@@ -1,5 +1,6 @@
 ﻿using System;
 using GameWorld.Characters;
+using GameWorld.Characters.States;
 using StateMachines;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -10,7 +11,7 @@ namespace GameWorld.Characters.Wizards.States
 	{
 		private readonly StateMachine _stateMachine = new();
 		private readonly WaitCharacterState _waitState;
-		private readonly WizardMoveToState _moveToState;
+		private readonly MoveToPositionCharacterState _moveToState;
 
 		private Vector3 _centerIdlePosition;
 		
@@ -19,7 +20,7 @@ namespace GameWorld.Characters.Wizards.States
 		public WizardIdleState(Wizard wizard) : base(wizard)
 		{
 			_waitState = new WaitCharacterState(wizard);
-			_moveToState = new WizardMoveToState(wizard);
+			_moveToState = new MoveToPositionCharacterState(wizard);
 			
 			_stateMachine.DefaultState = _waitState;
 			
@@ -47,12 +48,12 @@ namespace GameWorld.Characters.Wizards.States
 		private void InitializeStateTransitions()
 		{
 			_stateMachine.AddStateTransition(
-				new StateTransitionKey(_waitState, WaitCharacterState.EXIT_REASON_DONE_WAITING),
-				new StateTransitionValue(_moveToState, OnWaitTimerFinished, () => true));
+				new StateTransitionFrom(_waitState, WaitCharacterState.EXIT_REASON_DONE_WAITING),
+				new StateTransitionTo(_moveToState, OnWaitTimerFinished, () => true));
 			
 			_stateMachine.AddStateTransition(
-				new StateTransitionKey(_moveToState, WizardMoveToState.EXIT_REASON_ARRIVED_AT_POSITION),
-				new StateTransitionValue(_waitState, OnArrivedAtPosition, () => true));
+				new StateTransitionFrom(_moveToState, MoveToPositionCharacterState.EXIT_REASON_ARRIVED_AT_POSITION),
+				new StateTransitionTo(_waitState, OnArrivedAtPosition, () => true));
 		}
 
 		private void OnWaitTimerFinished() => _moveToState.Initialize(GetNextMoveToPosition(), .5f);

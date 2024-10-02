@@ -2,6 +2,7 @@
 using StateMachines;
 using GameWorld.Characters.Wizards;
 using UnityEngine;
+using GameWorld.Characters.States;
 
 namespace GameWorld.Characters.Enemies.States
 {
@@ -10,14 +11,14 @@ namespace GameWorld.Characters.Enemies.States
 		public const string EXIT_REASON_ATTACK_FINISHED = nameof(EXIT_REASON_ATTACK_FINISHED);
 
 		private readonly StateMachine _stateMachine = new();
-		private readonly EnemyMoveToState _moveToState;
+		private readonly MoveToPositionCharacterState _moveToState;
 		private readonly AttackEnemyState _attackEnemyState;
 
 		public override event EventHandler<string> ExitRequested;
 
 		public AttackWizardEnemyState(Enemy enemy) : base(enemy)
 		{
-			_moveToState = new EnemyMoveToState(enemy);
+			_moveToState = new MoveToPositionCharacterState(enemy);
 			_attackEnemyState = new AttackEnemyState(enemy);
 
 			AddStateTransitions();
@@ -32,8 +33,6 @@ namespace GameWorld.Characters.Enemies.States
 
 		public override void Begin()
 		{
-			_moveToState.MaxDistanceForArrival = AttackRadius;
-
 			_attackEnemyState.AttackRadius = AttackRadius;
 			_attackEnemyState.DamagePerHit = 5;
 			_attackEnemyState.SecondsBetweenAttacks = 0.5f;
@@ -55,7 +54,7 @@ namespace GameWorld.Characters.Enemies.States
 						return;
 					}
 
-					_moveToState.MoveToPosition = TargetWizard.Transform.position;
+					_moveToState.Initialize(TargetWizard.Transform.position, AttackRadius);
 				}
 			}
 			else
@@ -69,16 +68,16 @@ namespace GameWorld.Characters.Enemies.States
 		private void AddStateTransitions()
 		{
 			_stateMachine.AddStateTransition(
-				new StateTransitionKey(_moveToState, EnemyMoveToState.EXIT_REASON_ARRIVED),
-				new StateTransitionValue(_attackEnemyState, InitializeAttackEnemyState, () => true));
+				new StateTransitionFrom(_moveToState, MoveToPositionCharacterState.EXIT_REASON_ARRIVED_AT_POSITION),
+				new StateTransitionTo(_attackEnemyState, InitializeAttackEnemyState, () => true));
 
 			_stateMachine.AddStateTransition(
-				new StateTransitionKey(_attackEnemyState, AttackEnemyState.EXIT_REASON_TARGET_OUT_OF_RANGE),
-				new StateTransitionValue(_moveToState, null, () => true));
+				new StateTransitionFrom(_attackEnemyState, AttackEnemyState.EXIT_REASON_TARGET_OUT_OF_RANGE),
+				new StateTransitionTo(_moveToState, null, () => true));
 
 			_stateMachine.AddStateTransition(
-				new StateTransitionKey(_attackEnemyState, AttackEnemyState.EXIT_REASON_ATTACK_FINISHED),
-				new StateTransitionValue(null, OnFinishedAttacking, () => true));
+				new StateTransitionFrom(_attackEnemyState, AttackEnemyState.EXIT_REASON_ATTACK_FINISHED),
+				new StateTransitionTo(null, OnFinishedAttacking, () => true));
 		}
 
 		private void InitializeAttackEnemyState() => _attackEnemyState.Target = TargetWizard;

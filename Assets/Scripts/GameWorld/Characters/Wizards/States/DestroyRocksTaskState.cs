@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Extensions;
+using GameWorld.Characters.States;
+using GameWorld.WorldObjects;
 using GameWorld.WorldObjects.Rocks;
 using StateMachines;
 
@@ -12,20 +15,22 @@ namespace GameWorld.Characters.Wizards.States
 		private readonly StateMachine _stateMachine = new();
 		private readonly int _initialRockCount;
 		
-		private readonly WizardMoveToState _moveToState;
+		private readonly MoveToObjectCharacterState _moveToState;
 		private readonly DestroyRockState _destroyRockState;
-
-		public override event EventHandler<string> ExitRequested;
+		private readonly WaitCharacterState _waitState;
 		
 		public DestroyRocksTaskState(List<Rock> rocks)
 		{
-			_moveToState = new WizardMoveToState(Wizard);
+			_moveToState = new MoveToObjectCharacterState(Wizard);
 			_destroyRockState = new DestroyRockState(Wizard);
+			_waitState = new WaitCharacterState(Wizard);
 			
 			_rocks = rocks;
 			_initialRockCount = rocks.Count;
 			UpdateDisplayStatus();
 			AddStateTransitions();
+
+			rocks.ForEach(rock => rock.WorldObject.Destroyed += OnRockDestroyed);
 		}
 
 		public override string DisplayName => $"Destroying {_rocks.Count} Rocks";
@@ -33,23 +38,18 @@ namespace GameWorld.Characters.Wizards.States
 
 		public override void Begin()
 		{
-			_moveToState.SetWizard(Wizard);
-			_moveToState.Initialize(_rocks[0].transform.position, 2f);
+			_moveToState.Character = Wizard;
+			_moveToState.Initialize(_rocks[0].gameObject, 2f);
 			_stateMachine.SetCurrentState(_moveToState);
 		}
 
 		public override void Update()
 		{
-			_stateMachine.Update();
+			// TODO: WHEN THE TASK COMPLETES, THE STATE DOES NOT CHANGE...
+			if (IsComplete)
+				return;
 
-			if (_stateMachine.IsCurrentState(_moveToState))
-			{
-				if (!_rocks[0])
-				{
-					MoveToNextRock();
-					_stateMachine.SetCurrentState(_moveToState);
-				}
-			}
+			_stateMachine.Update();
 
 			DisplayStatus = $"Rocks Destroyed: {_initialRockCount - _rocks.Count} of {_initialRockCount} | {_stateMachine.CurrentStateDisplayStatus}";
 		}
@@ -58,13 +58,25 @@ namespace GameWorld.Characters.Wizards.States
 
 		private void AddStateTransitions()
 		{
+			_stateMachine.DefaultState = _waitState;
+
+			// Move to state transitions
 			_stateMachine.AddStateTransition(
-				new StateTransitionKey(_moveToState, WizardMoveToState.EXIT_REASON_ARRIVED_AT_POSITION),
-				new StateTransitionValue(_destroyRockState, InitializeDestroyRockState, () => true));
+				new StateTransitionFrom(_moveToState, MoveToObjectCharacterState.EXIT_REASON_ARRIVED_AT_POSITION),
+				new StateTransitionTo(_destroyRockState, DestroyNextRock, () => true));
+			_stateMachine.AddStateTransition(
+				new StateTransitionFrom(_moveToState, MoveToObjectCharacterState.EXIT_REASON_OBJECT_DOES_NOT_EXIST),
+				new StateTransitionTo(_destroyRockState, DestroyNextRock, () => true));
 			
+			// Destroy rocks state transitions
 			_stateMachine.AddStateTransition(
-				new StateTransitionKey(_destroyRockState, DestroyRockState.EXIT_REASON_ROCK_DESTROYED),
-				new StateTransitionValue(_moveToState, MoveToNextRock, () => _rocks.Count > 0));
+				new StateTransitionFrom(_destroyRockState, DestroyRockState.EXIT_REASON_ROCK_DESTROYED),
+				new StateTransitionTo(_moveToState, MoveToNextRock, RockExists));
+		}
+
+		private bool RockExists()
+		{
+			return _rocks.Count > 0;
 		}
 		
 		private void UpdateDisplayStatus()
@@ -72,14 +84,13 @@ namespace GameWorld.Characters.Wizards.States
 			DisplayStatus = $"Rocks Destroyed: {_initialRockCount - _rocks.Count}/{_initialRockCount}";
 		}
 		
-		private void InitializeDestroyRockState()
+		private void DestroyNextRock()
 		{
 			_destroyRockState.Initialize(_rocks[0]);
 		}
 
 		private void MoveToNextRock()
 		{
-			_rocks.RemoveAt(0);
 			UpdateDisplayStatus();
 			
 			if (_rocks.IsEmpty())
@@ -89,7 +100,23 @@ namespace GameWorld.Characters.Wizards.States
 			}
 
 			Rock rock = _rocks[0];
-			_moveToState.Initialize(rock.transform.position, 2f);
+			_moveToState.Initialize(rock.gameObject, 2f);
+		}
+
+		private void OnRockDestroyed(object sender, EventArgs args)
+		{
+			if (sender is not WorldObject removedWorldObject)
+				return; // Should always be a world object
+
+			removedWorldObject.Destroyed -= OnRockDestroyed;
+
+			Rock removedRock = _rocks.FirstOrDefault(rock => rock.WorldObject == removedWorldObject);
+			_rocks.Remove(removedRock);
+
+			if (_rocks.Count == 0)
+			{
+				CompleteTask();
+			}
 		}
 	}
 }

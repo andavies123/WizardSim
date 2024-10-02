@@ -69,8 +69,8 @@ namespace GameWorld.Characters.Enemies
 		private void InitializeStateTransitions()
 		{
 			StateMachine.AddStateTransition(
-				new StateTransitionKey(_attackWizardState, AttackWizardEnemyState.EXIT_REASON_ATTACK_FINISHED),
-				new StateTransitionValue(_idleState, null, () => true));
+				new StateTransitionFrom(_attackWizardState, AttackWizardEnemyState.EXIT_REASON_ATTACK_FINISHED),
+				new StateTransitionTo(_idleState, null, () => true));
 		}
 
 		private bool CheckForSurroundingWizards(out Wizard targetWizard)

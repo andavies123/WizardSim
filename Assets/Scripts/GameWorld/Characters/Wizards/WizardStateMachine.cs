@@ -3,6 +3,7 @@ using GeneralBehaviours.Damageable;
 using StateMachines;
 using UnityEngine;
 using GameWorld.Characters.Wizards.States;
+using GameWorld.Characters.States;
 
 namespace GameWorld.Characters.Wizards
 {
@@ -14,7 +15,7 @@ namespace GameWorld.Characters.Wizards
 		
 		private Wizard _wizard;
 		private WizardIdleState _idleState;
-		private WizardMoveToState _moveToState;
+		private MoveToPositionCharacterState _moveToState;
 		private RunAwayWizardState _runAwayState;
 		private AttackWizardState _attackState;
 
@@ -40,7 +41,7 @@ namespace GameWorld.Characters.Wizards
 			_wizard = GetComponent<Wizard>();
 
 			_idleState = new WizardIdleState(_wizard);
-			_moveToState = new WizardMoveToState(_wizard);
+			_moveToState = new MoveToPositionCharacterState(_wizard);
 			_runAwayState = new RunAwayWizardState(_wizard, 10f);
 			_attackState = new AttackWizardState(_wizard);
 
@@ -52,16 +53,16 @@ namespace GameWorld.Characters.Wizards
 			_wizard.Damageable.DamageReceived += OnWizardReceivedDamage;
 
 			StateMachine.AddStateTransition(
-				new StateTransitionKey(_runAwayState, RunAwayWizardState.EXIT_REASON_GOT_AWAY),
-				new StateTransitionValue(_idleState, null, () => true));
+				new StateTransitionFrom(_runAwayState, RunAwayWizardState.EXIT_REASON_GOT_AWAY),
+				new StateTransitionTo(_idleState, null, () => true));
 
 			StateMachine.AddStateTransition(
-				new StateTransitionKey(_attackState, AttackWizardState.EXIT_REASON_TARGET_DEAD),
-				new StateTransitionValue(_idleState, null, () => true));
+				new StateTransitionFrom(_attackState, AttackWizardState.EXIT_REASON_TARGET_DEAD),
+				new StateTransitionTo(_idleState, null, () => true));
 
 			StateMachine.AddStateTransition(
-				new StateTransitionKey(_attackState, AttackWizardState.EXIT_REASON_TARGET_OUT_OF_RANGE),
-				new StateTransitionValue(_idleState, null, () => true));
+				new StateTransitionFrom(_attackState, AttackWizardState.EXIT_REASON_TARGET_OUT_OF_RANGE),
+				new StateTransitionTo(_idleState, null, () => true));
 		}
 
 		private void OnDestroy()
