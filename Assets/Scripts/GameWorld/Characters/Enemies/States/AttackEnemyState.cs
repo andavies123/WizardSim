@@ -57,7 +57,7 @@ namespace GameWorld.Characters.Enemies.States
 			_secondsSinceLastAttack -= SecondsBetweenAttacks;
 			Target.Damageable.DealDamage(DamagePerHit, Enemy);
 
-			if (Target.Health.Health.IsAtMinHealth)
+			if (Target.Health.IsAtMinHealth)
 			{
 				ExitRequested?.Invoke(this, EXIT_REASON_ATTACK_FINISHED);
 			}

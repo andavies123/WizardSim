@@ -3,14 +3,15 @@ using GeneralClasses.Health.HealthEventArgs;
 using GeneralClasses.Health.Interfaces;
 using UnityEngine;
 using UnityEngine.UI;
+using Utilities.Attributes;
 
 namespace UI.HealthBars
 {
 	[RequireComponent(typeof(Canvas))]
 	public class WorldHealthBar : MonoBehaviour
 	{
-		[SerializeField] private Image fillImage;
-		[SerializeField] private Gradient colorGradient;
+		[SerializeField, Required] private Image fillImage;
+		[SerializeField, Required] private Gradient colorGradient;
 
 		private Canvas _canvas;
 		private Transform _transform;
@@ -71,9 +72,6 @@ namespace UI.HealthBars
 			_canvas = GetComponent<Canvas>();
 			_transform = transform;
 			_canvas.enabled = false;
-			
-			if (!fillImage)
-				Debug.Log($"{nameof(WorldHealthBar)}: {nameof(fillImage)} does not exist");
 		}
 
 		private void Update()

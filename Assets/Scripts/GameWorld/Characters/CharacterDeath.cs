@@ -19,12 +19,12 @@ namespace GameWorld.Characters
 
 		private void Start()
 		{
-			_character.Health.Health.ReachedMinHealth += OnReachedMinHealth;
+			_character.Health.ReachedMinHealth += OnReachedMinHealth;
 		}
 
 		private void OnDestroy()
 		{
-			_character.Health.Health.ReachedMinHealth -= OnReachedMinHealth;
+			_character.Health.ReachedMinHealth -= OnReachedMinHealth;
 		}
 
 		private void OnReachedMinHealth(object sender, ReachedMinHealthEventArgs args)

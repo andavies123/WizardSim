@@ -26,7 +26,7 @@ namespace GameWorld.Characters.Enemies
 
 			StateMachine = GetComponent<EnemyStateMachine>();
 
-			Health.Health.CurrentHealthChanged += OnCurrentHealthChanged;
+			Health.CurrentHealthChanged += OnCurrentHealthChanged;
 		}
 
 		protected override void Start()
@@ -41,7 +41,7 @@ namespace GameWorld.Characters.Enemies
 		{
 			base.OnDestroy();
 
-			Health.Health.CurrentHealthChanged -= OnCurrentHealthChanged;
+			Health.CurrentHealthChanged -= OnCurrentHealthChanged;
 		}
 
 		protected override void InitializeContextMenu()
@@ -58,7 +58,7 @@ namespace GameWorld.Characters.Enemies
 		private void UpdateInteractableInfoText()
 		{
 			Interactable.TitleText = CharacterType;
-			Interactable.InfoText = $"Enemy - {Health.Health.CurrentHealth:0}/{Health.Health.MaxHealth:0} ({Health.Health.CurrentHealth.PercentageOf(Health.Health.MaxHealth):0}%)";
+			Interactable.InfoText = $"Enemy - {Health.CurrentHealth:0}/{Health.MaxHealth:0} ({Health.CurrentHealth.PercentageOf(Health.MaxHealth):0}%)";
 		}
 
 		private void OnCurrentHealthChanged(object sender, CurrentHealthChangedEventArgs args) => UpdateInteractableInfoText();

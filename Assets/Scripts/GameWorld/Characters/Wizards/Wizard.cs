@@ -114,7 +114,7 @@ namespace GameWorld.Characters.Wizards
 			// Add/get components
 			StateMachine = GetComponent<WizardStateMachine>();
 
-			Health.Health.CurrentHealthChanged += OnCurrentHealthChanged;
+			Health.CurrentHealthChanged += OnCurrentHealthChanged;
 		}
 
 		protected override void Start()
@@ -132,7 +132,7 @@ namespace GameWorld.Characters.Wizards
 		{
 			base.OnDestroy();
 
-			Health.Health.CurrentHealthChanged -= OnCurrentHealthChanged;
+			Health.CurrentHealthChanged -= OnCurrentHealthChanged;
 		}
 
 		protected override void Update()
@@ -147,7 +147,7 @@ namespace GameWorld.Characters.Wizards
 		{
 			Interactable.TitleText = Name;
 			string ageInDays = $"{Math.Floor(Age.Days * 10) / 10:0.#}";
-			Interactable.InfoText = $"{ageInDays} days - {Health.Health.CurrentHealth:0}/{Health.Health.MaxHealth:0} ({Health.Health.CurrentHealth.PercentageOf(Health.Health.MaxHealth):0}%)";
+			Interactable.InfoText = $"{ageInDays} days - {Health.CurrentHealth:0}/{Health.MaxHealth:0} ({Health.CurrentHealth.PercentageOf(Health.MaxHealth):0}%)";
 		}
 
 		protected override void InitializeContextMenu()
@@ -166,7 +166,7 @@ namespace GameWorld.Characters.Wizards
 
 			ContextMenuUser.AddMenuItem(
 				ContextMenuBuilder.BuildPath("Kill"),
-				() => Health.Health.CurrentHealth -= Health.Health.CurrentHealth,
+				() => Health.CurrentHealth -= Health.CurrentHealth,
 				() => true,
 				() => true);
 

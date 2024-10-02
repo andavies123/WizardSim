@@ -44,10 +44,10 @@ namespace GameWorld.Characters.Wizards.States
 			if (_rock)
 			{
 				_attackTimer = 0;
-				_rock.WorldObject.Health.Health.CurrentHealth -= 0.5f;
+				_rock.WorldObject.Health.CurrentHealth -= 0.5f;
 				
 				// Todo: Update the way a rock gets destroyed
-				if (_rock.WorldObject.Health.Health.CurrentHealth <= 0)
+				if (_rock.WorldObject.Health.CurrentHealth <= 0)
 					_rock.gameObject.Destroy();
 
 				UpdateDisplayStatus();
@@ -62,7 +62,7 @@ namespace GameWorld.Characters.Wizards.States
 
 		private void UpdateDisplayStatus()
 		{
-			DisplayStatus = $"Breaking Rock - Health: {_rock.WorldObject.Health.Health.CurrentHealth:0.0} / {_rock.WorldObject.Health.Health.MaxHealth:0.0}";
+			DisplayStatus = $"Breaking Rock - Health: {_rock.WorldObject.Health.CurrentHealth:0.0} / {_rock.WorldObject.Health.MaxHealth:0.0}";
 		}
 
 		private void OnRockDestroyed(object sender, EventArgs args)

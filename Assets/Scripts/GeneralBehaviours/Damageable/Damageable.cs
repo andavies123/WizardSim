@@ -17,7 +17,7 @@ namespace GeneralBehaviours.Damageable
 
 		public void DealDamage(float damageAmount, Character damageDealer)
 		{
-			if (_health.Health == null)
+			if (!_health)
 			{
 				Debug.LogError("Health component has not been initialized yet");
 				return;
@@ -27,11 +27,11 @@ namespace GeneralBehaviours.Damageable
 			damageAmount = Mathf.Max(damageAmount, 0);
 
 			// Cache the health before hand so we can calculate the literal damage that was dealt
-			float beforeHealth = _health.Health.CurrentHealth;
-			_health.Health.CurrentHealth -= damageAmount;
+			float beforeHealth = _health.CurrentHealth;
+			_health.CurrentHealth -= damageAmount;
 
 			// Let subscribers know that damage was received if any was actually dealt
-			float damageReceived = beforeHealth - _health.Health.CurrentHealth;
+			float damageReceived = beforeHealth - _health.CurrentHealth;
 			if (damageReceived > 0)
 			{
 				DamageReceived?.Invoke(this, new DamageReceivedEventArgs(damageDealer, damageReceived));

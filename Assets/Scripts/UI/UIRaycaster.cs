@@ -46,7 +46,7 @@ namespace UI
 			if (raycastHit.transform && raycastHit.transform.TryGetComponent(out HealthComponent component))
 			{
 				// Update the health bar
-				worldHealthBar.SetHealth(component.Health, raycastHit.transform);
+				worldHealthBar.SetHealth(component, raycastHit.transform);
 			}
 			else
 			{
