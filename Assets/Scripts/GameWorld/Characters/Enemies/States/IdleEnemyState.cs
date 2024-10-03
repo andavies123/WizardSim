@@ -1,4 +1,5 @@
 ﻿using System;
+using GameWorld.Characters.States;
 using StateMachines;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -10,7 +11,7 @@ namespace GameWorld.Characters.Enemies.States
 		private readonly StateMachine _stateMachine = new();
 
 		private readonly WaitCharacterState _waitState;
-		private readonly EnemyMoveToState _moveToState;
+		private readonly MoveToPositionCharacterState _moveToState;
 
 		private Vector3 _centerIdlePosition;
 
@@ -19,10 +20,7 @@ namespace GameWorld.Characters.Enemies.States
 		public IdleEnemyState(Enemy enemy) : base(enemy)
 		{
 			_waitState = new WaitCharacterState(enemy);
-			_moveToState = new EnemyMoveToState(enemy)
-			{
-				MaxDistanceForArrival = .5f
-			};
+			_moveToState = new MoveToPositionCharacterState(enemy);
 
 			AddStateTransitions();
 		}
@@ -47,15 +45,15 @@ namespace GameWorld.Characters.Enemies.States
 		private void AddStateTransitions()
 		{
 			_stateMachine.AddStateTransition(
-				new StateTransitionKey(_waitState, WaitCharacterState.EXIT_REASON_DONE_WAITING),
-				new StateTransitionValue(_moveToState, OnDoneWaiting, () => true));
+				new StateTransitionFrom(_waitState, WaitCharacterState.EXIT_REASON_DONE_WAITING),
+				new StateTransitionTo(_moveToState, OnDoneWaiting, () => true));
 
 			_stateMachine.AddStateTransition(
-				new StateTransitionKey(_moveToState, EnemyMoveToState.EXIT_REASON_ARRIVED),
-				new StateTransitionValue(_waitState, OnDoneMoving, () => true));
+				new StateTransitionFrom(_moveToState, MoveToPositionCharacterState.EXIT_REASON_ARRIVED_AT_POSITION),
+				new StateTransitionTo(_waitState, OnDoneMoving, () => true));
 		}
 
-		private void OnDoneWaiting() => _moveToState.MoveToPosition = GetNextMoveToPosition();
+		private void OnDoneWaiting() => _moveToState.Initialize(GetNextMoveToPosition(), .5f);
 		private void OnDoneMoving() => _waitState.WaitTime = GetRandomWaitTime();
 
 		private Vector3 GetNextMoveToPosition()

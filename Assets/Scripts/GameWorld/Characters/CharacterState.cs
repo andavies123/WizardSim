@@ -9,7 +9,7 @@ namespace GameWorld.Characters
 
 		protected CharacterState(Character character) => Character = character;
 		
-		protected Character Character { get; }
+		public Character Character { get; set; }
 		public abstract string DisplayName { get; }
 		public abstract string DisplayStatus { get; protected set; }
 

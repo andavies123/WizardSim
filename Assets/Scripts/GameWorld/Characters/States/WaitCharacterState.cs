@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace GameWorld.Characters
+namespace GameWorld.Characters.States
 {
 	public class WaitCharacterState : CharacterState
 	{
@@ -15,8 +15,8 @@ namespace GameWorld.Characters
 		
 		public override string DisplayName => "Waiting";
 		public override string DisplayStatus { get; protected set; }
-		
-		public float WaitTime { get; set; }
+
+		public float WaitTime { get; set; } = -1;
 
 		public override void Begin()
 		{
@@ -25,6 +25,13 @@ namespace GameWorld.Characters
 
 		public override void Update()
 		{
+			// Unlimited wait time
+			if (WaitTime == -1f)
+			{
+				DisplayStatus = "Waiting Indefinitely";
+				return;
+			}
+
 			_currentWaitTime += Time.deltaTime;
 
 			if (_currentWaitTime > WaitTime)

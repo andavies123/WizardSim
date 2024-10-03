@@ -6,8 +6,6 @@ namespace GameWorld.Characters.Wizards.Tasks
 {
 	public class DestroyRocksTask : WizardTask
 	{
-		private readonly List<Rock> _rocks;
-
 		public DestroyRocksTask(List<Rock> rocks)
 		{
 			WizardTaskState = new DestroyRocksTaskState(rocks);
@@ -15,6 +13,6 @@ namespace GameWorld.Characters.Wizards.Tasks
 
 		public override WizardType[] AllowedWizardTypes { get; } = { WizardType.Earth };
 		public override bool AllowAllWizardTypes => false;
-		public override string DisplayName => "Destroy Rocks";
+		public override string DisplayName => "Destroying Rocks";
 	}
 }

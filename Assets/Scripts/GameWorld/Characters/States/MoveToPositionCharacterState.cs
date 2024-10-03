@@ -1,16 +1,16 @@
 ﻿using System;
 using UnityEngine;
 
-namespace GameWorld.Characters.Wizards.States
+namespace GameWorld.Characters.States
 {
-	public class WizardMoveToState : WizardState
+	public class MoveToPositionCharacterState : CharacterState
 	{
 		public const string EXIT_REASON_ARRIVED_AT_POSITION = nameof(EXIT_REASON_ARRIVED_AT_POSITION);
 		
 		private Vector3 _moveToPosition;
 		private float _maxDistanceForArrival;
 		
-		public WizardMoveToState(Wizard wizard) => SetWizard(wizard);
+		public MoveToPositionCharacterState(Character character) : base(character) { }
 
 		public override event EventHandler<string> ExitRequested;
 
@@ -25,25 +25,25 @@ namespace GameWorld.Characters.Wizards.States
 
 		public override void Begin()
 		{
-			Wizard.Movement.SetMoveToPosition(_moveToPosition, _maxDistanceForArrival);
+			Character.Movement.SetMoveToPosition(_moveToPosition, _maxDistanceForArrival);
 		}
 
 		public override void Update()
 		{
-			if (!Wizard)
+			if (!Character)
 			{
-				Debug.Log("Wizard is null???");
+				Debug.LogError("Character is dead?");
 				return;
 			}
             
-			if (!Wizard.Movement.IsMoving)
+			if (!Character.Movement.IsMoving)
 			{
 				DisplayStatus = "Arrived";
 				ExitRequested?.Invoke(this, EXIT_REASON_ARRIVED_AT_POSITION);
 			}
 			else
 			{
-				float currentDistance = Vector3.Distance(Wizard.transform.position, _moveToPosition);
+				float currentDistance = Vector3.Distance(Character.transform.position, _moveToPosition);
 				DisplayStatus = $"Moving: {currentDistance:F1} m away";
 			}
 		}
