@@ -1714,11 +1714,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7575635562821945125, guid: 953b31e6686fcf444900efb4550f5bc2, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 500
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 7575635562821945125, guid: 953b31e6686fcf444900efb4550f5bc2, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 500
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 7575635562821945125, guid: 953b31e6686fcf444900efb4550f5bc2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4057,7 +4057,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1000, y: 500}
+  m_SizeDelta: {x: 2000, y: 1000}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1733610060
 MonoBehaviour:
@@ -4137,10 +4137,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1834829556}
+  - component: {fileID: 1834829560}
   - component: {fileID: 1834829559}
   - component: {fileID: 1834829558}
   - component: {fileID: 1834829557}
-  - component: {fileID: 1834829560}
   m_Layer: 0
   m_Name: Task Management UI
   m_TagString: Untagged
@@ -4681,14 +4681,6 @@ PrefabInstance:
     - target: {fileID: 7575635562821945125, guid: 953b31e6686fcf444900efb4550f5bc2, type: 3}
       propertyPath: m_AnchorMin.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7575635562821945125, guid: 953b31e6686fcf444900efb4550f5bc2, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 500
-      objectReference: {fileID: 0}
-    - target: {fileID: 7575635562821945125, guid: 953b31e6686fcf444900efb4550f5bc2, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 7575635562821945125, guid: 953b31e6686fcf444900efb4550f5bc2, type: 3}
       propertyPath: m_LocalPosition.x
