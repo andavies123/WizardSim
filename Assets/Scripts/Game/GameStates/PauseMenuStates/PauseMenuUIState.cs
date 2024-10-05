@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 namespace Game.GameStates.PauseMenuStates
 {
+	[RequireComponent(typeof(Canvas))]
 	public class PauseMenuUIState : UIState
 	{
 		[Header("UI Elements")]
