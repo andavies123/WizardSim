@@ -1,28 +1,17 @@
 ﻿using GeneralBehaviours.HealthBehaviours;
 using UI.HealthBars;
 using UnityEngine;
+using Utilities.Attributes;
 
 namespace UI
 {
 	public class UIRaycaster : MonoBehaviour
 	{
 		[Header("Raycasting components")]
-		[SerializeField] private new Camera camera;
+		[SerializeField, Required] private new Camera camera;
 		
 		[Header("UI Components")]
-		[SerializeField] private WorldHealthBar worldHealthBar;
-
-		private void Awake()
-		{
-			if (!camera)
-			{
-				Debug.LogWarning($"{nameof(UIRaycaster)}: {nameof(camera)} does not exist. Setting component to inactive");
-				enabled = false;
-			}
-            
-			if (!worldHealthBar)
-				Debug.LogWarning($"{nameof(UIRaycaster)}: {nameof(worldHealthBar)} does not exist");
-		}
+		[SerializeField, Required] private HealthBarManager healthBarManager;
 
 		private void Update()
 		{
@@ -39,18 +28,17 @@ namespace UI
 		private void UpdateHealthBar(RaycastHit raycastHit)
 		{
 			// Check to make sure the necessary HealthBar Script exists
-			if (!worldHealthBar)
+			if (!healthBarManager)
 				return;
 			
 			// Check to see if the Health component exists
 			if (raycastHit.transform && raycastHit.transform.TryGetComponent(out HealthComponent component))
 			{
-				// Update the health bar
-				worldHealthBar.SetHealth(component, raycastHit.transform);
+				healthBarManager.SetHoverHealthBar(component, raycastHit.transform);
 			}
 			else
 			{
-				worldHealthBar.HideHealthBar();
+				healthBarManager.RemoveHoverHealthBar();
 			}
 		}
 	}
