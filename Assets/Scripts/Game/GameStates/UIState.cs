@@ -25,9 +25,6 @@ namespace Game.GameStates
 		protected virtual void Awake()
 		{
 			_canvas = GetComponent<Canvas>();
-			
-			if (!_canvas)
-				Debug.LogWarning("No canvas found on this UIManager");
 		}
 
 		protected abstract void OnStateEnabled();

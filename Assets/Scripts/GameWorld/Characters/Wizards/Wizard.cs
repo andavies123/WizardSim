@@ -45,7 +45,7 @@ namespace GameWorld.Characters.Wizards
 		public IWizardTask CurrentTask { get; private set; }
 		public IReadOnlyList<IWizardTask> AssignedTasks => _assignedTasks;
 		
-		public AgingStage Stage => Age.Years switch
+		public AgingStage AgeStage => Age.Years switch
 		{
 			<= 24 => AgingStage.Child,
 			<= 49 => AgingStage.Teen,
