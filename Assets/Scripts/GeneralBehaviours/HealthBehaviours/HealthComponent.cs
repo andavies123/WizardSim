@@ -12,6 +12,11 @@ namespace GeneralBehaviours.HealthBehaviours
 	{
 		private IHealth _health = new Health(1);
 
+		/// <summary>
+		/// Static event raised when any <see cref="HealthComponent"/>'s health changes 
+		/// </summary>
+		public static event EventHandler AnyHealthChanged;
+
 		public event EventHandler<ReachedMaxHealthEventArgs> ReachedMaxHealth
 		{
 			add => _health.ReachedMaxHealth += value;
@@ -60,6 +65,7 @@ namespace GeneralBehaviours.HealthBehaviours
 			}
 
 			_health = GlobalFactories.HealthFactory.CreateHealth(healthProperties);
+			_health.CurrentHealthChanged += OnCurrentHealthChanged;
 		}
 
 		public void InitializeWithProperties(HealthRelatedProperties healthRelatedProperties)
@@ -76,5 +82,7 @@ namespace GeneralBehaviours.HealthBehaviours
 
 		internal bool IsNotAtMaxHealth() => !_health.IsAtMaxHealth;
 		internal bool IsNotAtMinHealth() => !_health.IsAtMinHealth;
+
+		private void OnCurrentHealthChanged(object sender, CurrentHealthChangedEventArgs args) => AnyHealthChanged?.Invoke(this, args);
 	}
 }
