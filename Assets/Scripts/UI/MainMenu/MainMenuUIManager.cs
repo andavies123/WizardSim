@@ -8,14 +8,31 @@ namespace UI.MainMenu
 {
 	public class MainMenuUIManager : MonoBehaviour
 	{
-		[Header("UI States")]
+		[Header("Front Page")]
 		[SerializeField, Required] private MainMenuFrontPage frontPage;
+		
+		[Header("Play Pages")]
+		[SerializeField, Required] private MainMenuPlayPage playPage;
+		[SerializeField, Required] private MainMenuNewGamePage newGamePage;
+		
+		[Header("Option Pages")]
 		[SerializeField, Required] private MainMenuOptionsPage optionsPage;
+
+		private UIState _activeUI;
 		
 		private void Start()
 		{
 			// Front page events
+			frontPage.PlayButtonPressed += OnFrontPagePlayPressed;
 			frontPage.OptionsButtonPressed += OnFrontPageOptionsPressed;
+			
+			// Play page events
+			playPage.BackButtonPressed += OnPlayPageBackPressed;
+			playPage.NewGameButtonPressed += OnPlayPageNewGamePressed;
+			playPage.LoadGameButtonPressed += OnPlayPageLoadGamePressed;
+			
+			// New Game page events
+			newGamePage.BackButtonPressed += OnNewGamePageBackPressed;
 			
 			// Options page events
 			optionsPage.BackButtonPressed += OnOptionsPageBackPressed;
@@ -27,19 +44,48 @@ namespace UI.MainMenu
 			}
 			
 			// Enable the front page
-			frontPage.Enable();
+			ChangeUI(frontPage);
 		}
 
-		private void OnFrontPageOptionsPressed()
+		private void OnDestroy()
 		{
-			frontPage.Disable();
-			optionsPage.Enable();
+			// Front page events
+			frontPage.PlayButtonPressed -= OnFrontPagePlayPressed;
+			frontPage.OptionsButtonPressed -= OnFrontPageOptionsPressed;
+			
+			// Play page events
+			playPage.BackButtonPressed -= OnPlayPageBackPressed;
+			playPage.NewGameButtonPressed -= OnPlayPageNewGamePressed;
+			playPage.LoadGameButtonPressed -= OnPlayPageLoadGamePressed;
+			
+			// New Game page events
+			newGamePage.BackButtonPressed -= OnNewGamePageBackPressed;
+			
+			// Options page events
+			optionsPage.BackButtonPressed -= OnOptionsPageBackPressed;
 		}
 
-		private void OnOptionsPageBackPressed()
+		private void ChangeUI(UIState newState)
 		{
-			optionsPage.Disable();
-			frontPage.Enable();
+			if (_activeUI) _activeUI.Disable();
+			_activeUI = newState;
+			if (_activeUI) _activeUI.Enable();
 		}
+
+		// Front Page Callbacks
+		private void OnFrontPagePlayPressed() => ChangeUI(playPage);
+		private void OnFrontPageOptionsPressed() => ChangeUI(optionsPage);
+
+		// Play Page Callbacks
+		private void OnPlayPageBackPressed() => ChangeUI(frontPage);
+		//private void OnPlayPageNewGamePressed() => SceneManager.LoadScene("GameplayScene");
+		private void OnPlayPageNewGamePressed() => ChangeUI(newGamePage);
+		private void OnPlayPageLoadGamePressed() { }
+		
+		// New Game Page Callbacks
+		private void OnNewGamePageBackPressed() => ChangeUI(playPage);
+
+		// Options Page Callbacks
+		private void OnOptionsPageBackPressed() => ChangeUI(frontPage);
 	}
 }
