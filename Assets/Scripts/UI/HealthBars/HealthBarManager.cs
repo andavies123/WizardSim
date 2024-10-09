@@ -9,8 +9,8 @@ namespace UI.HealthBars
 	[RequireComponent(typeof(HealthBarFactory))]
 	public class HealthBarManager : MonoBehaviour
 	{
-		[SerializeField] private double healthBarTimeToLiveSeconds = 5f;
-		[SerializeField] private float healthBarTimeToFadeSeconds = 3f;
+		[SerializeField] private double damagedTimeToLiveSec = 5f;
+		[SerializeField] private float damagedTimeToFadeSec = 3f;
 
 		private readonly ConcurrentDictionary<HealthComponent, (HealthBar, Timer)> _healthChangedHealthBars = new();
 		private HealthBar _hoverHealthBar;
@@ -32,7 +32,7 @@ namespace UI.HealthBars
 			if (!_hoverHealthBar)
 				return;
 
-			_hoverHealthBar.BeginFadeToDestroy(0f);
+			_hoverHealthBar.BeginFading(0f);
 			_hoverHealthBar = null;
 		}
 
@@ -77,13 +77,13 @@ namespace UI.HealthBars
 			_healthChangedHealthBars.TryRemove(healthComponent, out (HealthBar, Timer) removed);
 			(HealthBar healthBar, Timer timer) = removed;
 			
-			healthBar.BeginFadeToDestroy(healthBarTimeToFadeSeconds);
+			healthBar.BeginFading(damagedTimeToFadeSec);
 			timer.Dispose();
 		}
 
 		private Timer CreateTimer()
 		{
-			Timer timer = new(healthBarTimeToLiveSeconds * 1000)
+			Timer timer = new(damagedTimeToLiveSec * 1000)
 			{
 				AutoReset = false,
 				Enabled = false

@@ -4,8 +4,7 @@ namespace GameObjectPools
 {
 	public interface IGameObjectPool
 	{
-		GameObject GetFromPool(Transform newParent);
-		
+		GameObject GetFromPool(Transform newParent);	
 		void ReleaseToPool(GameObject gameObject);
 	}
 }
