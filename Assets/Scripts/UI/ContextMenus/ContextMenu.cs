@@ -5,30 +5,34 @@ using System.Text;
 using Extensions;
 using TMPro;
 using UnityEngine;
+using Utilities.Attributes;
 
 namespace UI.ContextMenus
 {
 	public class ContextMenu : MonoBehaviour
 	{
 		[Header("UI Elements")]
-		[SerializeField] private TMP_Text pathText;
+		[SerializeField, Required] private TMP_Text pathText;
+		[SerializeField, Required] private RectTransform scaledTransform;
 		
 		[Header("Prefabs")]
-		[SerializeField] private ContextMenuItemGroupUI contextMenuItemGroupPrefab;
-		[SerializeField] private ContextMenuItemUI contextMenuItemPrefab;
+		[SerializeField, Required] private ContextMenuItemGroupUI contextMenuItemGroupPrefab;
+		[SerializeField, Required] private ContextMenuItemUI contextMenuItemPrefab;
 
 		[Header("Styles")]
-		[SerializeField] private ContextMenuStyling contextMenuStyling;
+		[SerializeField, Required] private ContextMenuStyling contextMenuStyling;
 		
 		private readonly List<ContextMenuItem> _menuItems = new();
 		private ContextMenuItemGroupUI _currentMenuItemGroup;
 		private ContextMenuUser _contextMenuUser;
 		
 		private Vector2 _mouseClickScreenPosition;
-		private float _groupWidth = 0;
-		private bool _isSubscribedToGroupEvents = false;
+		private float _groupWidth;
+		private bool _isSubscribedToGroupEvents;
 
 		public event EventHandler MenuClosed;
+
+		private Vector3 CanvasScale => scaledTransform.localScale;
 
 		public void Initialize(ContextMenuUser user, Vector2 screenPosition)
 		{
@@ -155,7 +159,11 @@ namespace UI.ContextMenus
 
 		private Vector3 CalculateMenuPosition()
 		{
-			bool buildRight = _mouseClickScreenPosition.x - _groupWidth <= 0;
+			/* Due to the canvas scaler, I found out that the _groupWidth value was not
+			 being scaled unlike the position values. So we need to apply the scaling
+			 to the width before continuing with our calculations */
+			float scaledGroupWidth = _groupWidth * CanvasScale.x;
+			bool buildRight = _mouseClickScreenPosition.x - scaledGroupWidth <= 0;
 			
 			// If I wanted to do the same thing for up/down I would need to know the height
 			// that the context menu would be, so I would build upwards instead of down.
@@ -163,10 +171,7 @@ namespace UI.ContextMenus
 			// One issue I can see stemming from this is when the initial menu is small enough to be built
 			// downwards, but if the next menu group is longer, it would go upwards and would confuse the player.
 			
-			// This would have to be something I would want to play around with when I don't have
-			// any changes, so I could revert easier.
-			
-			float xPosition = _mouseClickScreenPosition.x + (buildRight ? 0 : -_groupWidth);
+			float xPosition = _mouseClickScreenPosition.x - (buildRight ? 0 : scaledGroupWidth);
 			float yPosition = _mouseClickScreenPosition.y;
 			
 			return new Vector3(xPosition, yPosition, 0);
@@ -193,21 +198,22 @@ namespace UI.ContextMenus
 
 		private Vector3 CalculatePathTextPosition()
 		{
-			bool buildRight = _mouseClickScreenPosition.x - _groupWidth <= 0;
+			/* Due to the canvas scaler, I found out that the _groupWidth value was not
+			 being scaled unlike the position values. So we need to apply the scaling
+			 to the width before continuing with our calculations */
+			float scaledGroupWidth = _groupWidth * CanvasScale.x;
+			bool buildRight = _mouseClickScreenPosition.x - scaledGroupWidth <= 0;
 
-			float xPosition = _mouseClickScreenPosition.x + _groupWidth/2 + (buildRight ? 0 : -_groupWidth);
-			float yPosition = _mouseClickScreenPosition.y + 10;
-
+			float xPosition = _mouseClickScreenPosition.x + _groupWidth/2 - (buildRight ? 0 : scaledGroupWidth);
+			float yPosition = _mouseClickScreenPosition.y + 20; // Up 20
+			
 			return new Vector3(xPosition, yPosition, 0);
 		}
 
 		private void OnItemSelected(ContextMenuItemUI menuItemUI) => SelectItem(menuItemUI);
 
 		private void Awake()
-		{	
-			contextMenuItemPrefab.ThrowIfNull(nameof(contextMenuItemPrefab));
-			contextMenuItemGroupPrefab.ThrowIfNull(nameof(contextMenuItemGroupPrefab));
-
+		{
 			_groupWidth = ((RectTransform) contextMenuItemPrefab.transform).rect.width;
 		}
 	}
