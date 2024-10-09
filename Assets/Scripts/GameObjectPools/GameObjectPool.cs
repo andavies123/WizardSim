@@ -19,7 +19,7 @@ namespace GameObjectPools
 				OnGetFromPool,
 				OnReleaseToPool,
 				OnDestroyPooledObject,
-				true,
+				true, // Checks to see when I release an object, if its already been released
 				defaultSize,
 				maxSize);
 		}

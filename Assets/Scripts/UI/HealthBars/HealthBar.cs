@@ -1,6 +1,8 @@
 ﻿using Extensions;
+using GameObjectPools;
 using GeneralClasses.Health.HealthEventArgs;
 using GeneralClasses.Health.Interfaces;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +12,8 @@ using Utilities.Attributes;
 
 namespace UI.HealthBars
 {
-
 	[RequireComponent(typeof(Canvas))]
-	public class HealthBar : MonoBehaviour
+	public class HealthBar : MonoBehaviour, IGameObjectPoolItem
 	{
 		[SerializeField, Required] private Image fillImage;
 		[SerializeField, Required] private Gradient colorGradient;
@@ -27,7 +28,8 @@ namespace UI.HealthBars
 		private bool _startFading = false;
 		private bool _isFading = false;
 		private float _timeToFadeSeconds = 0f;
-		private float _timeFading = 0f;
+
+		public event EventHandler ReleaseRequested;
         
 		public void SetHealth(IHealth health, Transform followTransform)
 		{
@@ -53,13 +55,32 @@ namespace UI.HealthBars
 			_canvas.enabled = _health != null;
 		}
 
-		public void BeginFadeToDestroy(float timeToFadeSeconds)
+		public void BeginFading(float timeToFadeSeconds)
 		{
 			if (_startFading || _isFading)
 				return;
 
 			_startFading = true;
 			_timeToFadeSeconds = timeToFadeSeconds;
+		}
+
+		public void Initialize() { /* Use SetHealth to initialize */ }
+
+		public void CleanUp()
+		{
+			if (_health != null)
+			{
+				_health.CurrentHealthChanged -= OnHealthChanged;
+				_health = null;
+			}
+
+			_followTransform = null;
+			_requiresUpdate = false;
+			_canvas.enabled = false;
+			
+			// Reset fading values
+			_startFading = false;
+			_isFading = false;
 		}
 
 		private IEnumerator FadeOut()
@@ -87,17 +108,7 @@ namespace UI.HealthBars
 				yield return null;
 			}
 
-			Destroy();
-		}
-
-		private void Destroy()
-		{
-			if (_health != null)
-			{
-				_health.CurrentHealthChanged -= OnHealthChanged;
-			}
-
-			Destroy(gameObject);
+			ReleaseRequested?.Invoke(this, EventArgs.Empty);
 		}
 
 		private void UpdateImageFill(float currentHealth, float maxHealth)
@@ -134,7 +145,7 @@ namespace UI.HealthBars
 			// This is a check to see if the follow object still exists or not
 			if (!_followTransform)
 			{
-				Destroy();
+				ReleaseRequested?.Invoke(this, EventArgs.Empty);
 				return;
 			}
 			
