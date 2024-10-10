@@ -19,6 +19,7 @@ namespace UI.HealthBars
 		public HealthBar CreateHealthBar(Vector3 position)
 		{
 			HealthBar healthBar = _healthBarPool.GetFromPool(_activeHealthBarContainer).GetComponent<HealthBar>();
+			healthBar.Initialize();
 			healthBar.transform.SetPositionAndRotation(position, Quaternion.identity);
 			healthBar.ReleaseRequested += OnHealthBarReleaseRequested;
 			return healthBar;

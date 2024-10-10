@@ -44,15 +44,14 @@ namespace UI.HealthBars
 			// Set new health
 			_health = health;
 			_followTransform = followTransform;
-			if (_health != null)
-				_health.CurrentHealthChanged += OnHealthChanged;
-			
-			// Initialize the UI
-			if (_health != null)
-				_requiresUpdate = true;
-			
-			// Update the canvas
-			_canvas.enabled = _health != null;
+
+			if (_health == null)
+				return;
+
+			_health.CurrentHealthChanged += OnHealthChanged;
+			UpdatePosition(); // Update the position
+			_requiresUpdate = true; // Initialize the UI
+			_canvas.enabled = _health != null; // Update the canvas
 		}
 
 		public void BeginFading(float timeToFadeSeconds)
@@ -64,7 +63,10 @@ namespace UI.HealthBars
 			_timeToFadeSeconds = timeToFadeSeconds;
 		}
 
-		public void Initialize() { /* Use SetHealth to initialize */ }
+		public void Initialize()
+		{
+			_canvas.enabled = false; // Make sure the health bar can't be seen until necessary
+		}
 
 		public void CleanUp()
 		{
@@ -111,6 +113,14 @@ namespace UI.HealthBars
 			ReleaseRequested?.Invoke(this, EventArgs.Empty);
 		}
 
+		private void UpdatePosition()
+		{
+			if (!_followTransform)
+				return;
+
+			_transform.position = _followTransform.position + Vector3.up * 1.5f;
+		}
+
 		private void UpdateImageFill(float currentHealth, float maxHealth)
 		{
 			float healthPercentage = currentHealth.PercentageOf01(maxHealth);
@@ -148,10 +158,10 @@ namespace UI.HealthBars
 				ReleaseRequested?.Invoke(this, EventArgs.Empty);
 				return;
 			}
-			
+
 			// Update position to follow the health user
-			_transform.position = _followTransform.position + Vector3.up * 1.5f;
-			
+			UpdatePosition();
+
 			// Update the image if an update is required.
 			// This is used instead of updating when the value changes is due to the
 			// fact that UI can't be updated on a backup thread such as an elapsed timer.
