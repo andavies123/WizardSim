@@ -16,6 +16,7 @@ namespace UIStates
 		[SerializeField, Required] private Button optionsButton;
 		[SerializeField, Required] private Button quitButton;
 
+		public event Action PlayButtonPressed;
 		public event Action OptionsButtonPressed;
 
 		protected override void OnStateEnabled()
@@ -33,7 +34,8 @@ namespace UIStates
 		}
 
 		private void OnOptionsButtonPressed() => OptionsButtonPressed?.Invoke();
-		private void OnPlayButtonPressed() => SceneManager.LoadScene(gameplaySceneName);
+		private void OnPlayButtonPressed() => PlayButtonPressed?.Invoke();
+		//private void OnPlayButtonPressed() => SceneManager.LoadScene(gameplaySceneName);
 		
 		private static void OnQuitButtonPressed()
 		{
