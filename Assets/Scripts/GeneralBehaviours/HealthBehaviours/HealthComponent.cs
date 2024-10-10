@@ -4,12 +4,15 @@ using GeneralClasses.Health;
 using GeneralClasses.Health.HealthEventArgs;
 using GeneralClasses.Health.Interfaces;
 using System;
+using UI.HealthBars;
 using UnityEngine;
 
 namespace GeneralBehaviours.HealthBehaviours
 {
-	public class HealthComponent : MonoBehaviour, IHealth
+	public class HealthComponent : MonoBehaviour, IHealth, IHealthBarUser
 	{
+		[SerializeField] private Vector3 healthBarOffset = new(0, 1.5f, 0);
+
 		private IHealth _health = new Health(1);
 
 		/// <summary>
@@ -55,6 +58,8 @@ namespace GeneralBehaviours.HealthBehaviours
 			get => _health.CurrentHealth;
 			set => _health.CurrentHealth = value;
 		}
+
+		public Vector3 PositionOffset => healthBarOffset;
 
 		public void InitializeWithProperties(HealthProperties healthProperties)
 		{

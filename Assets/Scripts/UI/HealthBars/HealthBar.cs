@@ -15,14 +15,19 @@ namespace UI.HealthBars
 	[RequireComponent(typeof(Canvas))]
 	public class HealthBar : MonoBehaviour, IGameObjectPoolItem
 	{
+		private static readonly Vector3 DEFAULT_POSITION_OFFSET = new(0, 1.5f, 0);
+
 		[SerializeField, Required] private Image fillImage;
 		[SerializeField, Required] private Gradient colorGradient;
 
 		private Canvas _canvas;
 		private Transform _transform;
+		private bool _requiresUpdate = false;
+
+		// Health object variables
 		private IHealth _health;
 		private Transform _followTransform;
-		private bool _requiresUpdate = false;
+		private Vector3 _positionOffset;
 
 		// Fade to Destroy variables
 		private bool _startFading = false;
@@ -47,6 +52,11 @@ namespace UI.HealthBars
 
 			if (_health == null)
 				return;
+
+			if (_health is IHealthBarUser healthBarUser)
+				_positionOffset = healthBarUser.PositionOffset;
+			else
+				_positionOffset = DEFAULT_POSITION_OFFSET;
 
 			_health.CurrentHealthChanged += OnHealthChanged;
 			UpdatePosition(); // Update the position
@@ -118,7 +128,7 @@ namespace UI.HealthBars
 			if (!_followTransform)
 				return;
 
-			_transform.position = _followTransform.position + Vector3.up * 1.5f;
+			_transform.position = _followTransform.position + _positionOffset;
 		}
 
 		private void UpdateImageFill(float currentHealth, float maxHealth)
