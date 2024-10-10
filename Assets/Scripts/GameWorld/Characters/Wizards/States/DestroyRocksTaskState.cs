@@ -15,13 +15,13 @@ namespace GameWorld.Characters.Wizards.States
 		private readonly StateMachine _stateMachine = new();
 		private readonly int _initialRockCount;
 		
-		private readonly MoveToObjectCharacterState _moveToState;
+		private readonly MoveToWorldObjectCharacterState _moveToState;
 		private readonly DestroyRockState _destroyRockState;
 		private readonly WaitCharacterState _waitState;
 		
 		public DestroyRocksTaskState(List<Rock> rocks)
 		{
-			_moveToState = new MoveToObjectCharacterState(Wizard);
+			_moveToState = new MoveToWorldObjectCharacterState(Wizard);
 			_destroyRockState = new DestroyRockState(Wizard);
 			_waitState = new WaitCharacterState(Wizard);
 			
@@ -39,7 +39,7 @@ namespace GameWorld.Characters.Wizards.States
 		public override void Begin()
 		{
 			_moveToState.Character = Wizard;
-			_moveToState.Initialize(_rocks[0].gameObject, 2f);
+			_moveToState.Initialize(_rocks[0].WorldObject, 2f);
 			_stateMachine.SetCurrentState(_moveToState);
 		}
 
@@ -62,10 +62,10 @@ namespace GameWorld.Characters.Wizards.States
 
 			// Move to state transitions
 			_stateMachine.AddStateTransition(
-				new StateTransitionFrom(_moveToState, MoveToObjectCharacterState.EXIT_REASON_ARRIVED_AT_POSITION),
+				new StateTransitionFrom(_moveToState, MoveToWorldObjectCharacterState.EXIT_REASON_ARRIVED_AT_POSITION),
 				new StateTransitionTo(_destroyRockState, DestroyNextRock, () => true));
 			_stateMachine.AddStateTransition(
-				new StateTransitionFrom(_moveToState, MoveToObjectCharacterState.EXIT_REASON_OBJECT_DOES_NOT_EXIST),
+				new StateTransitionFrom(_moveToState, MoveToWorldObjectCharacterState.EXIT_REASON_OBJECT_DOES_NOT_EXIST),
 				new StateTransitionTo(_destroyRockState, DestroyNextRock, () => true));
 			
 			// Destroy rocks state transitions
@@ -100,7 +100,7 @@ namespace GameWorld.Characters.Wizards.States
 			}
 
 			Rock rock = _rocks[0];
-			_moveToState.Initialize(rock.gameObject, 2f);
+			_moveToState.Initialize(rock.WorldObject, 2f);
 		}
 
 		private void OnRockDestroyed(object sender, EventArgs args)

@@ -17,6 +17,7 @@ namespace GameWorld.WorldObjects
 		[SerializeField] private HealthProperties healthProperties;
         
 		public WorldObjectDetails Details { get; private set; }
+		public WorldObjectPositionDetails PositionDetails { get; private set; }
 		public ChunkPlacementData ChunkPlacementData { get; private set; }
 		public HealthComponent Health { get; private set; }
 		
@@ -28,6 +29,8 @@ namespace GameWorld.WorldObjects
 		{
 			Details = details;
 			ChunkPlacementData = chunkPlacementData;
+
+			PositionDetails = new WorldObjectPositionDetails(transform.position, details.PlacementProperties.Size);
 
 			gameObject.name = Details.Name;
 			
