@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 namespace UI.MainMenu
 {
+	[DisallowMultipleComponent]
 	[RequireComponent(typeof(Canvas))]
 	[RequireComponent(typeof(CanvasScaler))]
 	public class MainMenuUIPage : MonoBehaviour
@@ -25,19 +26,10 @@ namespace UI.MainMenu
 		private CanvasScaler _canvasScaler;
 		private MainMenuUIManager _uiManager;
 
+		public event Action PageEnabled;
+		public event Action PageDisabled;
+
 		public void Enable()
-		{
-			OnPageEnabled();
-			_canvas.enabled = true;
-		}
-
-		public void Disable()
-		{
-			_canvas.enabled = false;
-			OnPageDisabled();
-		}
-
-		protected virtual void OnPageEnabled()
 		{
 			if (backButtonPagePair.IsComplete)
 			{
@@ -51,10 +43,15 @@ namespace UI.MainMenu
 				
 				nextButtonPagePair.Button.onClick.AddListener(() => _uiManager.ChangePage(nextButtonPagePair.NextPage));
 			}
+			
+			PageEnabled?.Invoke();
+			_canvas.enabled = true;
 		}
 
-		protected virtual void OnPageDisabled()
+		public void Disable()
 		{
+			_canvas.enabled = false;
+			
 			if (backButtonPagePair.IsComplete)
 			{
 				backButtonPagePair.Button.onClick.RemoveAllListeners();
@@ -67,6 +64,8 @@ namespace UI.MainMenu
 				
 				nextButtonPagePair.Button.onClick.RemoveAllListeners();
 			}
+			
+			PageDisabled?.Invoke();
 		}
 
 		protected virtual void Awake()
@@ -75,8 +74,6 @@ namespace UI.MainMenu
 			InitializeCanvasObjects();
 			InitializeTitle();
 			InitializeBackButton();
-			
-			//_uiManager
 		}
 
 		protected void OnValidate()

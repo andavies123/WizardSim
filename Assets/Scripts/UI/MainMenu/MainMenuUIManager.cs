@@ -4,6 +4,9 @@ using Utilities.Attributes;
 
 namespace UI.MainMenu
 {
+	// Todo: Create a load world page
+	// Todo: Create Options page
+	
 	public class MainMenuUIManager : MonoBehaviour
 	{
 		[SerializeField, Required] private MainMenuUIPage startPage;
@@ -20,8 +23,9 @@ namespace UI.MainMenu
 		private void Start()
 		{
 			// Disable all pages that are children of this object
-			foreach (MainMenuUIPage uiPage in GetComponentsInChildren<MainMenuUIPage>().ToList())
+			foreach (MainMenuUIPage uiPage in GetComponentsInChildren<MainMenuUIPage>(true).ToList())
 			{
+				uiPage.gameObject.SetActive(true);
 				uiPage.Disable();
 			}
 			
