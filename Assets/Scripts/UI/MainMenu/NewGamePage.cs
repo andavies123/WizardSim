@@ -7,8 +7,7 @@ using Utilities.Attributes;
 
 namespace UI.MainMenu
 {
-	// Todo: Create the world
-	// Todo: Create a save folder for the new world
+	// Todo: Create the world based on the details from this page
 	
 	[DisallowMultipleComponent]
 	[RequireComponent(typeof(MainMenuUIPage))]
@@ -20,6 +19,8 @@ namespace UI.MainMenu
 
 		private MainMenuUIPage _uiPage;
 
+		private string WorldName => worldNameInput.text;
+		private string WorldSeed => worldSeedInput.text;
 		private bool IsWorldNameValid => worldNameInput.text.Length > 0;
 		private bool IsWorldSeedValid => worldSeedInput.text.Length > 0;
 		
@@ -46,8 +47,8 @@ namespace UI.MainMenu
 		private void OnCreateButtonClicked()
 		{
 			// Static class so its available while changing scenes
-			StartGameplayDetails.CreateWorld(worldNameInput.text, worldSeedInput.text);
-
+			StartGameplayDetails.CreateWorld(WorldName, WorldSeed);
+			WorldSaveUtility.CreateNewSaveFolder(WorldName);
 			SceneManager.LoadScene("GameplayScene");
 		}
 
