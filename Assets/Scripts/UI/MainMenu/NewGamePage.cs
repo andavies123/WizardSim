@@ -1,12 +1,12 @@
+using GameWorld;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Utilities.Attributes;
 
 namespace UI.MainMenu
 {
-	// Todo: Create an object to store all world creation variables in
-	// Todo: Start the gameplay scene
 	// Todo: Create the world
 	// Todo: Create a save folder for the new world
 	
@@ -31,16 +31,25 @@ namespace UI.MainMenu
 
 			worldNameInput.onValueChanged.AddListener(_ => ValidateAllInputs());
 			worldSeedInput.onValueChanged.AddListener(_ => ValidateAllInputs());
+			createButton.onClick.AddListener(OnCreateButtonClicked);
 		}
 
 		private void OnPageDisabled()
 		{
 			worldNameInput.onValueChanged.RemoveAllListeners();
 			worldSeedInput.onValueChanged.RemoveAllListeners();
+			createButton.onClick.RemoveAllListeners();
 		}
 
-		private void ValidateAllInputs() => 
-			createButton.interactable = IsWorldNameValid && IsWorldSeedValid;
+		private void ValidateAllInputs() => createButton.interactable = IsWorldNameValid && IsWorldSeedValid;
+
+		private void OnCreateButtonClicked()
+		{
+			// Static class so its available while changing scenes
+			StartGameplayDetails.CreateWorld(worldNameInput.text, worldSeedInput.text);
+
+			SceneManager.LoadScene("GameplayScene");
+		}
 
 		private void Awake()
 		{
