@@ -8,7 +8,6 @@ using Utilities.Attributes;
 namespace UI.MainMenu
 {
 	// Todo: Create the world based on the details from this page
-	
 	[DisallowMultipleComponent]
 	[RequireComponent(typeof(MainMenuUIPage))]
 	public class NewGamePage : MonoBehaviour
