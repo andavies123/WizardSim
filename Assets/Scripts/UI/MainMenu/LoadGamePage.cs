@@ -10,7 +10,6 @@ namespace UI.MainMenu
 	// Todo: Load World should show warning when deleting a world
 	// Todo: Load World should show the date the world was created
 	// Todo: Load World should show the date the world was last loaded
-	// Todo: Load World should have a refresh button to refresh the list of saves
 	// Todo: Load World button should be disabled until a world is selected
 	[DisallowMultipleComponent]
 	[RequireComponent(typeof(MainMenuUIPage))]
@@ -18,6 +17,7 @@ namespace UI.MainMenu
 	{
 		[SerializeField, Required] private Button loadButton;
 		[SerializeField, Required] private Button openFolderButton;
+		[SerializeField, Required] private Button refreshListButton;
 		
 		[Header("Save Items")]
 		[SerializeField, Required] private WorldSaveItemUI saveItemUIPrefab;
@@ -54,6 +54,7 @@ namespace UI.MainMenu
 		{
 			loadButton.onClick.AddListener(OnLoadButtonClicked);
 			openFolderButton.onClick.AddListener(OnOpenFolderButtonClicked);
+			refreshListButton.onClick.AddListener(OnRefreshListButtonClicked);
 
 			ClearSavedWorldUIs();
 			DisplaySavedWorlds();
@@ -63,6 +64,7 @@ namespace UI.MainMenu
 		{
 			loadButton.onClick.RemoveAllListeners();
 			openFolderButton.onClick.RemoveAllListeners();
+			refreshListButton.onClick.RemoveAllListeners();
 		}
 
 		private void OnLoadButtonClicked()
@@ -70,7 +72,16 @@ namespace UI.MainMenu
 			print("Loading World not setup");
 		}
 
-		private void OnOpenFolderButtonClicked() => WorldSaveUtility.OpenSaveFolder();
+		private void OnOpenFolderButtonClicked()
+		{
+			WorldSaveUtility.OpenSaveFolder();
+		}
+
+		private void OnRefreshListButtonClicked()
+		{
+			ClearSavedWorldUIs();
+			DisplaySavedWorlds();
+		}
 
 		private void OnSaveDeleted()
 		{
