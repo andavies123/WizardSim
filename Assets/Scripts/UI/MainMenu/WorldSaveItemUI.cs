@@ -10,22 +10,26 @@ namespace UI.MainMenu
 	public class WorldSaveItemUI : MonoBehaviour
 	{
 		[SerializeField, Required] private TMP_Text worldNameText;
+		[SerializeField, Required] private TMP_Text dateCreatedText;
+		[SerializeField, Required] private TMP_Text dateLastPlayedText;
 		[SerializeField, Required] private Button deleteButton;
 
-		private WorldSaveQuickDetails _saveDetails;
+		private WorldSaveDetails _saveDetails;
 
 		public event Action SaveDeleted;
 
-		public void Initialize(WorldSaveQuickDetails saveDetails)
+		public void Initialize(WorldSaveDetails saveDetails)
 		{
 			_saveDetails = saveDetails;
 			
-			worldNameText.SetText(_saveDetails.Name);
+			worldNameText.SetText(_saveDetails.name);
+			dateCreatedText.SetText($"Created: {_saveDetails.dateCreated}");
+			dateLastPlayedText.SetText($"Last Played: {_saveDetails.dateLastPlayed}");
 		}
 		
 		private void OnDeleteButtonClicked()
 		{
-			WorldSaveUtility.DeleteSaveFolder(_saveDetails.SaveId);
+			WorldSaveUtility.DeleteSaveFolder(_saveDetails.saveId);
 			SaveDeleted?.Invoke();
 		}
 		

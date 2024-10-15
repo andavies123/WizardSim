@@ -8,9 +8,8 @@ using Utilities.Attributes;
 namespace UI.MainMenu
 {
 	// Todo: Load World should show warning when deleting a world
-	// Todo: Load World should show the date the world was created
-	// Todo: Load World should show the date the world was last loaded
 	// Todo: Load World button should be disabled until a world is selected
+	// Todo: Load World should update the date last played in the save
 	[DisallowMultipleComponent]
 	[RequireComponent(typeof(MainMenuUIPage))]
 	public class LoadGamePage : MonoBehaviour
@@ -28,7 +27,7 @@ namespace UI.MainMenu
 
 		private void DisplaySavedWorlds()
 		{
-			List<WorldSaveQuickDetails> saveDetails = WorldSaveUtility.GetAllWorldSaves();
+			List<WorldSaveDetails> saveDetails = WorldSaveUtility.GetAllWorldSaves();
 			
 			saveDetails.ForEach(save =>
 			{
