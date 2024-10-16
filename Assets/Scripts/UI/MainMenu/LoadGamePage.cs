@@ -8,7 +8,6 @@ using Utilities.Attributes;
 namespace UI.MainMenu
 {
 	// Todo: Load World should show warning when deleting a world
-	// Todo: Load World button should be disabled until a world is selected
 	// Todo: Load World should update the date last played in the save
 	[DisallowMultipleComponent]
 	[RequireComponent(typeof(MainMenuUIPage))]
@@ -23,7 +22,10 @@ namespace UI.MainMenu
 		[SerializeField, Required] private Transform saveItemContainer;
         
 		private readonly List<WorldSaveItemUI> _saveItemUIs = new();
+		private WorldSaveItemUI _selectedSave;
 		private MainMenuUIPage _uiPage;
+
+		private bool IsSaveSelected => _selectedSave;
 
 		private void DisplaySavedWorlds()
 		{
@@ -32,6 +34,8 @@ namespace UI.MainMenu
 			saveDetails.ForEach(save =>
 			{
 				WorldSaveItemUI saveItemUI = Instantiate(saveItemUIPrefab, saveItemContainer);
+				saveItemUI.Selected += OnSaveSelected;
+				saveItemUI.Deselected += OnSaveDeselected;
 				saveItemUI.SaveDeleted += OnSaveDeleted;
 				saveItemUI.Initialize(save);
 				_saveItemUIs.Add(saveItemUI);
@@ -42,11 +46,18 @@ namespace UI.MainMenu
 		{
 			foreach (WorldSaveItemUI saveItem in _saveItemUIs)
 			{
+				saveItem.Selected -= OnSaveSelected;
+				saveItem.Deselected -= OnSaveDeselected;
 				saveItem.SaveDeleted -= OnSaveDeleted;
 				saveItem.gameObject.Destroy();
 			}
 
 			_saveItemUIs.Clear();
+		}
+
+		private void ValidateInputs()
+		{
+			loadButton.interactable = IsSaveSelected;
 		}
 
 		private void OnPageEnabled()
@@ -57,6 +68,7 @@ namespace UI.MainMenu
 
 			ClearSavedWorldUIs();
 			DisplaySavedWorlds();
+			ValidateInputs();
 		}
 
 		private void OnPageDisabled()
@@ -80,6 +92,29 @@ namespace UI.MainMenu
 		{
 			ClearSavedWorldUIs();
 			DisplaySavedWorlds();
+		}
+
+		private void OnSaveSelected(WorldSaveItemUI selectedSave)
+		{
+			if (_selectedSave)
+				_selectedSave.Deselect();
+			
+			_selectedSave = selectedSave;
+
+			if (_selectedSave)
+				_selectedSave.Select();
+			
+			ValidateInputs();
+		}
+
+		private void OnSaveDeselected(WorldSaveItemUI selectedSave)
+		{
+			if (_selectedSave != selectedSave)
+				return;
+
+			_selectedSave.Deselect();
+			_selectedSave = null;
+			ValidateInputs();
 		}
 
 		private void OnSaveDeleted()
