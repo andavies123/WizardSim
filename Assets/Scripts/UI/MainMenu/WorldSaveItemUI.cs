@@ -20,7 +20,6 @@ namespace UI.MainMenu
 		[SerializeField] private Color hoverTint;
 		[SerializeField] private Color selectedTint;
 
-		private WorldSaveDetails _saveDetails;
 		private Color _originalColor;
 		private bool _isSelected;
 		private bool _isHovered;
@@ -28,14 +27,16 @@ namespace UI.MainMenu
 		public event Action SaveDeleted;
 		public event Action<WorldSaveItemUI> Selected;
 		public event Action<WorldSaveItemUI> Deselected;
+		
+		public WorldSaveDetails SaveDetails { get; private set; }
 
 		public void Initialize(WorldSaveDetails saveDetails)
 		{
-			_saveDetails = saveDetails;
+			SaveDetails = saveDetails;
 			
-			worldNameText.SetText(_saveDetails.name);
-			dateCreatedText.SetText($"Created: {_saveDetails.dateCreated}");
-			dateLastPlayedText.SetText($"Last Played: {_saveDetails.dateLastPlayed}");
+			worldNameText.SetText(SaveDetails.name);
+			dateCreatedText.SetText($"Created: {SaveDetails.dateCreated}");
+			dateLastPlayedText.SetText($"Last Played: {SaveDetails.dateLastPlayed}");
 		}
 
 		public void Select()
@@ -87,7 +88,7 @@ namespace UI.MainMenu
 		
 		private void OnDeleteButtonClicked()
 		{
-			WorldSaveUtility.DeleteSaveFolder(_saveDetails.saveId);
+			WorldSaveUtility.DeleteSaveFolder(SaveDetails.saveId);
 			SaveDeleted?.Invoke();
 		}
 		

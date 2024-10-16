@@ -29,7 +29,12 @@ namespace GameWorld
 			Directory.CreateDirectory(worldSavePath);
 			
 			// Write the save details file
-			string detailsPath = Path.Combine(worldSavePath, SaveDetailsFileName);
+			UpdateSaveDetails(details);
+		}
+
+		public static void UpdateSaveDetails(WorldSaveDetails details)
+		{
+			string detailsPath = Path.Combine(SaveFolderPath, details.saveId, details.name, SaveDetailsFileName);
 			string detailsJson = JsonUtility.ToJson(details, true);
 			File.WriteAllText(detailsPath, detailsJson);
 		}

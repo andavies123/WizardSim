@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Extensions;
 using GameWorld;
 using UnityEngine;
@@ -8,7 +10,7 @@ using Utilities.Attributes;
 namespace UI.MainMenu
 {
 	// Todo: Load World should show warning when deleting a world
-	// Todo: Load World should update the date last played in the save
+	// Todo: Load World should load the world on the gameplay scene
 	[DisallowMultipleComponent]
 	[RequireComponent(typeof(MainMenuUIPage))]
 	public class LoadGamePage : MonoBehaviour
@@ -80,6 +82,10 @@ namespace UI.MainMenu
 
 		private void OnLoadButtonClicked()
 		{
+			// Update the last played date
+			_selectedSave.SaveDetails.dateLastPlayed = DateTime.Now.ToString(CultureInfo.CurrentCulture);
+			WorldSaveUtility.UpdateSaveDetails(_selectedSave.SaveDetails);
+			
 			print("Loading World not setup");
 		}
 
