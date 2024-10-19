@@ -9,7 +9,6 @@ using Utilities.Attributes;
 
 namespace UI.MainMenu
 {
-	// Todo: Load World should show warning when deleting a world
 	// Todo: Load World should load the world on the gameplay scene
 	[DisallowMultipleComponent]
 	[RequireComponent(typeof(MainMenuUIPage))]
@@ -22,6 +21,7 @@ namespace UI.MainMenu
 		[Header("Save Items")]
 		[SerializeField, Required] private WorldSaveItemUI saveItemUIPrefab;
 		[SerializeField, Required] private Transform saveItemContainer;
+		[SerializeField, Required] private PopupUI popupUI;
         
 		private readonly List<WorldSaveItemUI> _saveItemUIs = new();
 		private WorldSaveItemUI _selectedSave;
@@ -39,7 +39,7 @@ namespace UI.MainMenu
 				saveItemUI.Selected += OnSaveSelected;
 				saveItemUI.Deselected += OnSaveDeselected;
 				saveItemUI.SaveDeleted += OnSaveDeleted;
-				saveItemUI.Initialize(save);
+				saveItemUI.Initialize(save, popupUI);
 				_saveItemUIs.Add(saveItemUI);
 			});
 		}

@@ -5,11 +5,16 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Utilities.Attributes;
+using static UI.MainMenu.PopupToken;
 
 namespace UI.MainMenu
 {
 	public class WorldSaveItemUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 	{
+		private const string POPUP_MESSAGE = "Are you sure you want to delete this save?";
+		private const string POPUP_ACCEPT_TEXT = "Already made up my mind!";
+		private const string POPUP_REJECT_TEXT = "Maybe I'll hold on to it for now.";
+        
 		[SerializeField, Required] private TMP_Text worldNameText;
 		[SerializeField, Required] private TMP_Text dateCreatedText;
 		[SerializeField, Required] private TMP_Text dateLastPlayedText;
@@ -20,6 +25,8 @@ namespace UI.MainMenu
 		[SerializeField] private Color hoverTint;
 		[SerializeField] private Color selectedTint;
 
+		private readonly PopupToken _popupToken = new();
+		private PopupUI _popupUI;
 		private Color _originalColor;
 		private bool _isSelected;
 		private bool _isHovered;
@@ -30,9 +37,10 @@ namespace UI.MainMenu
 		
 		public WorldSaveDetails SaveDetails { get; private set; }
 
-		public void Initialize(WorldSaveDetails saveDetails)
+		public void Initialize(WorldSaveDetails saveDetails, PopupUI popupUI)
 		{
 			SaveDetails = saveDetails;
+			_popupUI = popupUI;
 			
 			worldNameText.SetText(SaveDetails.name);
 			dateCreatedText.SetText($"Created: {SaveDetails.dateCreated}");
@@ -51,6 +59,12 @@ namespace UI.MainMenu
 			_isSelected = false;
 			backgroundImage.color = _originalColor;
 			UpdateBackgroundColor();
+		}
+
+		private void DeleteSave()
+		{
+			WorldSaveUtility.DeleteSaveFolder(SaveDetails.saveId);
+			SaveDeleted?.Invoke();
 		}
 
 		public void OnPointerClick(PointerEventData eventData)
@@ -88,19 +102,30 @@ namespace UI.MainMenu
 		
 		private void OnDeleteButtonClicked()
 		{
-			WorldSaveUtility.DeleteSaveFolder(SaveDetails.saveId);
-			SaveDeleted?.Invoke();
+			_popupUI.Initialize(_popupToken, POPUP_MESSAGE, POPUP_ACCEPT_TEXT, POPUP_REJECT_TEXT);
+		}
+
+		private void OnPopupClosed(CloseType closeType)
+		{
+			if (closeType == CloseType.Accepted)
+				DeleteSave();
 		}
 		
 		private void Awake()
 		{
 			_originalColor = backgroundImage.color;
-			
+		}
+
+		private void OnEnable()
+		{
+			_popupToken.PopupClosed += OnPopupClosed;
 			deleteButton.onClick.AddListener(OnDeleteButtonClicked);
 		}
 
-		private void OnDestroy()
+		private void OnDisable()
 		{
+			_popupToken.PopupClosed -= OnPopupClosed;
+			print("Disable");
 			deleteButton.onClick.RemoveAllListeners();
 		}
 	}
