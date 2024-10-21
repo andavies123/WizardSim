@@ -15,7 +15,7 @@ namespace UI.HealthBars
 	[RequireComponent(typeof(Canvas))]
 	public class HealthBar : MonoBehaviour, IGameObjectPoolItem
 	{
-		private static readonly Vector3 DEFAULT_POSITION_OFFSET = new(0, 1.5f, 0);
+		private static readonly Vector3 DefaultPositionOffset = new(0, 1.5f, 0);
 
 		[SerializeField, Required] private Image fillImage;
 		[SerializeField, Required] private Gradient colorGradient;
@@ -56,7 +56,7 @@ namespace UI.HealthBars
 			if (_health is IHealthBarUser healthBarUser)
 				_positionOffset = healthBarUser.PositionOffset;
 			else
-				_positionOffset = DEFAULT_POSITION_OFFSET;
+				_positionOffset = DefaultPositionOffset;
 
 			_health.CurrentHealthChanged += OnHealthChanged;
 			UpdatePosition(); // Update the position
