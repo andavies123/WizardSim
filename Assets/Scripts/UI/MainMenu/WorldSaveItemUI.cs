@@ -125,7 +125,6 @@ namespace UI.MainMenu
 		private void OnDisable()
 		{
 			_popupToken.PopupClosed -= OnPopupClosed;
-			print("Disable");
 			deleteButton.onClick.RemoveAllListeners();
 		}
 	}

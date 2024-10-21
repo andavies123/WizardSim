@@ -13,6 +13,12 @@ namespace GameWorld
 		
 		private static string SaveFolderPath => Path.Combine(Application.persistentDataPath, "WorldSaves");
 		private static DirectoryInfo SaveFolderDirectory { get; } = new(SaveFolderPath);
+
+		static WorldSaveUtility()
+		{
+			if (!Directory.Exists(SaveFolderPath))
+				Directory.CreateDirectory(SaveFolderPath);
+		}
 		
 		public static void CreateNewSaveFolder(string worldName)
 		{

@@ -29,4 +29,20 @@ A slime can be considered as one of the most basic enemies in the game. It shoul
 - Can spawn in large groups
 - Will contain multiple variants to counter certain wizard types
 
+#### Todo
+
+- [ ] When a slime gets destroyed, it should divide into smaller slimes (should have min size)
+- [ ] Moves by hopping from tile to tile
+- [ ] Has a close range attack that hops at the wizard to deal damage
+
+#### Ideas
+
+- Divide and Conquer: When a slime is defeated, it splits into two smaller slimes, each with a portion of the original's health.
+- Acidic Touch: Deals damage over time to wizards upon contact, simulating a corrosive slime body.
+- Sticky Trap: Temporarily slows down or immobilizes a wizard by trapping them in sticky goo.
+- Absorption: Gains temporary resistance or health boost by absorbing other slimes.
+- Bounce Attack: Leaps towards wizards, causing impact damage and possibly knocking them back.
+- Camouflage: Blends into the environment, becoming invisible until attacked or moving.
+- Poison Cloud: Releases a poisonous mist upon defeat, causing damage over time to nearby wizards.
+
 ---
