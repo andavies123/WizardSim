@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using Extensions;
 using GameWorld;
+using PersistantManagers;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Utilities.Attributes;
 
@@ -14,6 +16,10 @@ namespace UI.MainMenu
 	[RequireComponent(typeof(MainMenuUIPage))]
 	public class LoadGamePage : MonoBehaviour
 	{
+		[Header("Other")]
+		[SerializeField, Required] private WorldLoadDetails worldLoadDetails;
+		
+		[Header("UI Elements")]
 		[SerializeField, Required] private Button loadButton;
 		[SerializeField, Required] private Button openFolderButton;
 		[SerializeField, Required] private Button refreshListButton;
@@ -85,8 +91,12 @@ namespace UI.MainMenu
 			// Update the last played date
 			_selectedSave.SaveDetails.dateLastPlayed = DateTime.Now.ToString(CultureInfo.CurrentCulture);
 			WorldSaveUtility.UpdateSaveDetails(_selectedSave.SaveDetails);
+
+			LoadWorldDetails details = new(_selectedSave.SaveDetails.name);
+			worldLoadDetails.InitializeAsLoadWorld(details);
 			
-			print("Loading World not setup");
+			// Todo: Use the proper channels to change scenes
+			SceneManager.LoadScene(SceneNames.GAMEPLAY_SCENE_NAME);
 		}
 
 		private void OnOpenFolderButtonClicked()

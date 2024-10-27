@@ -1,4 +1,4 @@
-namespace Game
+namespace PersistantManagers
 {
 	/// <summary>
 	/// Static class to hold all scene names for consistent access

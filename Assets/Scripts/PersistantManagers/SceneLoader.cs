@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Debug = UnityEngine.Debug;
 
-namespace Game
+namespace PersistantManagers
 {
 	public class SceneLoader : MonoBehaviour
 	{

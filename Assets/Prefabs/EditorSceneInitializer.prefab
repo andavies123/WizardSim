@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8397391234704056444
+--- !u!1 &7433067891510433048
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,42 +8,39 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6184113940883615555}
-  - component: {fileID: 8101746749326156175}
+  - component: {fileID: 4117962006551896615}
+  - component: {fileID: 6671674376809835872}
   m_Layer: 0
-  m_Name: Controller
+  m_Name: EditorSceneInitializer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6184113940883615555
+--- !u!4 &4117962006551896615
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8397391234704056444}
+  m_GameObject: {fileID: 7433067891510433048}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8101746749326156175
+--- !u!114 &6671674376809835872
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8397391234704056444}
+  m_GameObject: {fileID: 7433067891510433048}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f97ce29ce534a82bfd4c017cc22d367, type: 3}
+  m_Script: {fileID: 11500000, guid: a389c28392584a16839e774342119318, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainCamera: {fileID: 7058209914569038518, guid: 2f4350b02e88e405fb58b8d95ddf35c1, type: 3}
-  mainLight: {fileID: 301409952716639471, guid: d3560a86e14be4879acf60bd5c67123c, type: 3}
-  eventSystem: {fileID: 8898791416169663857, guid: 9d2fce32ccdd0450f9923ab6eb329057, type: 3}

@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using Game.EventChannels;
+using PersistantManagers;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utilities.Attributes;

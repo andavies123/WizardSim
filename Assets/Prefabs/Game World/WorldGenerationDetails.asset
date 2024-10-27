@@ -9,7 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: caaf2ae10bac411ba4d952c3708dc4fc, type: 3}
-  m_Name: WorldTime
+  m_Script: {fileID: 11500000, guid: aba6398cbb47418d8712567f6152a9e7, type: 3}
+  m_Name: WorldGenerationDetails
   m_EditorClassIdentifier: 
-  secondsPerWorldDay: 600

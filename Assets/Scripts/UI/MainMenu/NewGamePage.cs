@@ -1,4 +1,5 @@
 using GameWorld;
+using PersistantManagers;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,7 +8,6 @@ using Utilities.Attributes;
 
 namespace UI.MainMenu
 {
-	// Todo: Create the world based on the details from this page
 	[DisallowMultipleComponent]
 	[RequireComponent(typeof(MainMenuUIPage))]
 	public class NewGamePage : MonoBehaviour
@@ -15,6 +15,7 @@ namespace UI.MainMenu
 		[SerializeField, Required] private TMP_InputField worldNameInput;
 		[SerializeField, Required] private TMP_InputField worldSeedInput;
 		[SerializeField, Required] private Button createButton;
+		[SerializeField, Required] private WorldLoadDetails loadDetails;
 
 		private MainMenuUIPage _uiPage;
 
@@ -45,10 +46,14 @@ namespace UI.MainMenu
 
 		private void OnCreateButtonClicked()
 		{
-			// Static class so its available while changing scenes
-			StartGameplayDetails.CreateWorld(WorldName, WorldSeed);
-			WorldSaveUtility.CreateNewSaveFolder(WorldName);
-			SceneManager.LoadScene("GameplayScene");
+			NewWorldDetails details = new(WorldName, WorldSeed);
+			loadDetails.InitializeAsNewWorld(details);
+
+			WorldSaveUtility.CreateNewSaveFolder(WorldName);	
+			
+			// Todo: I should probably go down the event channel for changing scenes.
+			// Todo: I would have to make sure this scene gets unloaded as well
+			SceneManager.LoadScene(SceneNames.GAMEPLAY_SCENE_NAME);
 		}
 
 		private void Awake()
