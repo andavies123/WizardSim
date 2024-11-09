@@ -3,7 +3,7 @@ using Extensions;
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace Extensions_UnitTests
+namespace Unit_Tests.Extensions_UnitTests
 {
 	[TestFixture]
 	public class FloatExtensionsTests

@@ -9,6 +9,8 @@ namespace MessagingSystem
 	{
 		private readonly ConcurrentDictionary<Type, HashSet<ISubscription>> _subscriptions = new();
 
+		public IReadOnlyDictionary<Type, HashSet<ISubscription>> Subscriptions => _subscriptions;
+
 		public bool TryAddSubscription(ISubscription subscription)
 		{
 			if (subscription == null)
