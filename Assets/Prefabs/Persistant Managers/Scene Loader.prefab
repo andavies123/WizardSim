@@ -44,4 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 162858486b4248cab9ceafd6909166f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneChangeRequestChannel: {fileID: 11400000, guid: 26b59d1ea24ca4284bdb1c13ee022172, type: 2}
+  sceneLoadRequestChannel: {fileID: 11400000, guid: 26b59d1ea24ca4284bdb1c13ee022172, type: 2}
+  sceneUnloadRequestChannel: {fileID: 11400000, guid: d17c0334ac9ff4ce6a74635bc0a6603c, type: 2}

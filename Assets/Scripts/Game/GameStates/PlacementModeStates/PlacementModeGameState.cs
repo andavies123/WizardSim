@@ -42,52 +42,57 @@ namespace Game.GameStates.PlacementModeStates
 
 		protected override void OnEnabled()
 		{
-			GlobalMessenger.Publish(new WorldObjectPreviewSetDetailsMessage
+			MessageBroker.PublishSingle(new WorldObjectPreviewSetDetailsMessage
 			{
 				Sender = this,
 				Details = PlacementDetails
 			});
 		}
 
-		protected override void OnDisabled() =>
-			GlobalMessenger.Publish(new WorldObjectPreviewDeleteMessage
-			{
-				Sender = this
-			});
+		protected override void OnDisabled()
+		{
+			MessageBroker.PublishSingle(new WorldObjectPreviewDeleteMessage { Sender = this });
+		}
 
-		private void OnPreviewPositionUpdated(object sender, WorldPositionEventArgs args) =>
-			GlobalMessenger.Publish(new WorldObjectPreviewSetPositionMessage
+		private void OnPreviewPositionUpdated(object sender, WorldPositionEventArgs args)
+		{
+			MessageBroker.PublishSingle(new WorldObjectPreviewSetPositionMessage
 			{
 				Sender = this,
 				ChunkPosition = args.ChunkPosition,
 				TilePosition = args.TilePosition
 			});
+		}
 
-		private void OnPreviewVisibilityUpdated(object sender, bool visibility) =>
-			GlobalMessenger.Publish(new WorldObjectPreviewSetVisibilityMessage
+		private void OnPreviewVisibilityUpdated(object sender, bool visibility)
+		{
+			MessageBroker.PublishSingle(new WorldObjectPreviewSetVisibilityMessage
 			{
 				Sender = this,
 				Visibility = visibility
-			});
+			});	
+		}
 		
 		private void OnHotBarItemSelected(object sender, WorldObjectDetails details)
 		{
 			PlacementDetails = details;
 			
-			GlobalMessenger.Publish(new WorldObjectPreviewSetDetailsMessage
+			MessageBroker.PublishSingle(new WorldObjectPreviewSetDetailsMessage
 			{
 				Sender = this,
 				Details = details
 			});
 		}
-
-		private void OnPlacementRequested(object sender, WorldPositionEventArgs args) =>
-			GlobalMessenger.Publish(new WorldObjectPlacementRequest
+		
+		private void OnPlacementRequested(object sender, WorldPositionEventArgs args)
+		{
+			MessageBroker.PublishSingle(new WorldObjectPlacementRequest
 			{
 				Sender = this,
 				ChunkPosition = args.ChunkPosition,
 				TilePosition = args.TilePosition,
 				WorldObjectDetails = PlacementDetails
 			});
+		}
 	}
 }

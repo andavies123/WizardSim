@@ -1,18 +1,18 @@
 ﻿using System.Collections.Generic;
 using AndysTools.GameWorldTimeManagement.Runtime;
 using Extensions;
-using Game.MessengerSystem;
 using GameWorld.Tiles;
 using GeneralBehaviours.Utilities.ContextMenuBuilders;
 using GeneralClasses.Health.HealthEventArgs;
 using Stats;
 using TaskSystem.Interfaces;
-using UI.Messages;
 using UnityEngine;
 using GameWorld.Characters.Wizards.States;
 using GameWorld.Characters.Wizards.Tasks;
 using System;
+using Game.MessengerSystem;
 using GameWorld.Characters.Wizards.AgeSystem;
+using UI.Messages;
 
 namespace GameWorld.Characters.Wizards
 {
@@ -160,7 +160,12 @@ namespace GameWorld.Characters.Wizards
 			
 			ContextMenuUser.AddMenuItem(
 				ContextMenuBuilder.BuildPath("Action", "Move To"),
-				() => GlobalMessenger.Publish(new StartInteractionRequest{Sender = this, InteractionCallback = OnInteractionCallback}),
+				() => MessageBroker.PublishSingle(
+					new StartInteractionRequest
+					{
+						Sender = this,
+						InteractionCallback = OnInteractionCallback
+					}),
 				() => true,
 				() => true);
 
@@ -173,7 +178,7 @@ namespace GameWorld.Characters.Wizards
 			base.InitializeContextMenu();
 		}
 		
-		private void OnInteractionCallback(MonoBehaviour component)
+		private void OnInteractionCallback(Component component)
 		{
 			if (!component.TryGetComponent(out Tile tile))
 				return;
@@ -182,9 +187,12 @@ namespace GameWorld.Characters.Wizards
 			Vector3 moveToPosition = new(tilePosition.x, Transform.position.y, tilePosition.z);
 			StateMachine.MoveTo(moveToPosition);
             
-			GlobalMessenger.Publish(new EndInteractionRequest {Sender = this});
+			MessageBroker.PublishSingle(new EndInteractionRequest {Sender = this});
 		}
-		
-		private void OnCurrentHealthChanged(object sender, CurrentHealthChangedEventArgs args) => UpdateInteractableInfoText();
+
+		private void OnCurrentHealthChanged(object sender, CurrentHealthChangedEventArgs args)
+		{
+			UpdateInteractableInfoText();
+		}
 	}
 }

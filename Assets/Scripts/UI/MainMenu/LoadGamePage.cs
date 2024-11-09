@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using Extensions;
+using Game.EventChannels;
 using GameWorld;
 using PersistantManagers;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Utilities.Attributes;
 
@@ -18,6 +18,8 @@ namespace UI.MainMenu
 	{
 		[Header("Other")]
 		[SerializeField, Required] private WorldLoadDetails worldLoadDetails;
+		[SerializeField, Required] private StringEventChannel sceneLoadRequestChannel;
+		[SerializeField, Required] private StringEventChannel sceneUnloadRequestChannel;
 		
 		[Header("UI Elements")]
 		[SerializeField, Required] private Button loadButton;
@@ -95,8 +97,8 @@ namespace UI.MainMenu
 			LoadWorldDetails details = new(_selectedSave.SaveDetails.name);
 			worldLoadDetails.InitializeAsLoadWorld(details);
 			
-			// Todo: Use the proper channels to change scenes
-			SceneManager.LoadScene(SceneNames.GAMEPLAY_SCENE_NAME);
+			sceneUnloadRequestChannel.Raise(this, SceneNames.MAIN_MENU_SCENE_NAME);
+			sceneLoadRequestChannel.Raise(this, SceneNames.GAMEPLAY_SCENE_NAME);
 		}
 
 		private void OnOpenFolderButtonClicked()

@@ -7,7 +7,7 @@ namespace Game
 {
 	public class EditorSceneInitializer : MonoBehaviour
 	{
-		private void Awake()
+		private void Start()
 		{
 			LoadPersistantManagers();
 		}

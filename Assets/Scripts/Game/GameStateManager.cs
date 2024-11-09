@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using CameraComponents;
 using Game.GameStates;
 using Game.GameStates.ContextMenuStates;
@@ -28,6 +29,8 @@ namespace Game
 		[Header("External Components")]
 		[SerializeField, Required] private InteractableRaycaster interactableRaycaster;
 
+		private readonly List<ISubscription> _subscriptions = new();
+		
 		private GameState _currentGameState;
 
 		private GameplayGameState _gameplayGameState;
@@ -71,6 +74,20 @@ namespace Game
 			
 			_cameraInputState = new CameraInputState();
 			Dependencies.RegisterDependency(_cameraInputState);
+
+			SubscriptionBuilder subscriptionBuilder = new(this);
+			
+			_subscriptions.Add(subscriptionBuilder
+				.ResetAllButSubscriber()
+				.SetMessageType<StartInteractionRequest>()
+				.SetCallback(OnInteractionModeRequested)
+				.Build());
+			
+			_subscriptions.Add(subscriptionBuilder
+				.ResetAllButSubscriber()
+				.SetMessageType<EndInteractionRequest>()
+				.SetCallback(OnInteractionEndRequested)
+				.Build());
 		}
 
 		private void Start()
@@ -105,8 +122,7 @@ namespace Game
 
 			_taskManagementGameState.CloseMenu += OnCloseTaskManagementWindow;
 			
-			GlobalMessenger.Subscribe<StartInteractionRequest>(OnInteractionModeRequested);
-			GlobalMessenger.Subscribe<EndInteractionRequest>(OnInteractionEndRequested);
+			_subscriptions.ForEach(MessageBroker.Subscribe);
 		}
 
 		private void OnDisable()
@@ -127,8 +143,7 @@ namespace Game
 			
 			_taskManagementGameState.CloseMenu -= OnCloseTaskManagementWindow;
 			
-			GlobalMessenger.Unsubscribe<StartInteractionRequest>(OnInteractionModeRequested);
-			GlobalMessenger.Unsubscribe<EndInteractionRequest>(OnInteractionEndRequested);
+			_subscriptions.ForEach(MessageBroker.Unsubscribe);
 		}
 
 		// Pause Menu Related Events
@@ -159,12 +174,22 @@ namespace Game
 		private void OnPlacementModeEnded(object sender, EventArgs args) => UpdateCurrentState(_gameplayGameState);
 
 		// Interaction Mode Related Events
-		private void OnInteractionModeRequested(StartInteractionRequest request)
+		private void OnInteractionModeRequested(IMessage message)
 		{
-			_interactionGameState.SetInteractionCallback(request.InteractionCallback);
-			UpdateCurrentState(_interactionGameState);
+			if (message is StartInteractionRequest request)
+			{
+				_interactionGameState.SetInteractionCallback(request.InteractionCallback);
+				UpdateCurrentState(_interactionGameState);
+			}
 		}
-		private void OnInteractionEndRequested(EndInteractionRequest request) => UpdateCurrentState(_gameplayGameState);
+		private void OnInteractionEndRequested(IMessage message)
+		{
+			if (message is EndInteractionRequest)
+			{
+				UpdateCurrentState(_gameplayGameState);
+			}
+		}
+
 		private void OnInteractionModeCanceled(object sender, EventArgs args) => UpdateCurrentState(_gameplayGameState);
 		
 		// Task Management Menu Related Events

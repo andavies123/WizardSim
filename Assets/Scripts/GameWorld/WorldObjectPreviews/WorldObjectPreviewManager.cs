@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Extensions;
 using Game.MessengerSystem;
 using GameWorld.WorldObjectPreviews.Messages;
@@ -19,11 +20,38 @@ namespace GameWorld.WorldObjectPreviews
 
 		private readonly World _world;
 		private readonly Transform _previewParent;
+		private readonly List<ISubscription> _subscriptions = new();
 
 		public WorldObjectPreviewManager(World world, Transform previewParent)
 		{
 			_world = world;
 			_previewParent = previewParent;
+
+			SubscriptionBuilder subscriptionBuilder = new(this);
+			
+			_subscriptions.Add(subscriptionBuilder
+				.ResetAllButSubscriber()
+				.SetMessageType<WorldObjectPreviewSetDetailsMessage>()
+				.SetCallback(OnSetDetailsMessageReceived)
+				.Build());
+			
+			_subscriptions.Add(subscriptionBuilder
+				.ResetAllButSubscriber()
+				.SetMessageType<WorldObjectPreviewSetPositionMessage>()
+				.SetCallback(OnSetPositionMessageReceived)
+				.Build());
+			
+			_subscriptions.Add(subscriptionBuilder
+				.ResetAllButSubscriber()
+				.SetMessageType<WorldObjectPreviewSetVisibilityMessage>()
+				.SetCallback(OnSetVisibilityMessageReceived)
+				.Build());
+			
+			_subscriptions.Add(subscriptionBuilder
+				.ResetAllButSubscriber()
+				.SetMessageType<WorldObjectPreviewDeleteMessage>()
+				.SetCallback(OnDeletePreviewMessageReceived)
+				.Build());
 		}
 		
 		private WorldObject PreviewObject { get; set; }
@@ -33,10 +61,7 @@ namespace GameWorld.WorldObjectPreviews
 
 		public void SubscribeToMessages()
 		{
-			GlobalMessenger.Subscribe<WorldObjectPreviewSetDetailsMessage>(OnSetDetailsMessageReceived);
-			GlobalMessenger.Subscribe<WorldObjectPreviewSetPositionMessage>(OnSetPositionMessageReceived);
-			GlobalMessenger.Subscribe<WorldObjectPreviewSetVisibilityMessage>(OnSetVisibilityMessageReceived);
-			GlobalMessenger.Subscribe<WorldObjectPreviewDeleteMessage>(OnDeletePreviewMessageReceived);
+			_subscriptions.ForEach(MessageBroker.Subscribe);
 
 			_world.WorldObjectManager.WorldObjectAdded += OnWorldObjectCountChanged;
 			_world.WorldObjectManager.WorldObjectRemoved += OnWorldObjectCountChanged;
@@ -44,63 +69,60 @@ namespace GameWorld.WorldObjectPreviews
 
 		public void UnsubscribeFromMessages()
 		{
-			GlobalMessenger.Unsubscribe<WorldObjectPreviewSetDetailsMessage>(OnSetDetailsMessageReceived);
-			GlobalMessenger.Unsubscribe<WorldObjectPreviewSetPositionMessage>(OnSetPositionMessageReceived);
-			GlobalMessenger.Unsubscribe<WorldObjectPreviewSetVisibilityMessage>(OnSetVisibilityMessageReceived);
-			GlobalMessenger.Unsubscribe<WorldObjectPreviewDeleteMessage>(OnDeletePreviewMessageReceived);
+			_subscriptions.ForEach(MessageBroker.Unsubscribe);
 
 			_world.WorldObjectManager.WorldObjectAdded -= OnWorldObjectCountChanged;
 			_world.WorldObjectManager.WorldObjectRemoved -= OnWorldObjectCountChanged;
 		}
 
-		private void OnSetDetailsMessageReceived(WorldObjectPreviewSetDetailsMessage message)
+		private void OnSetDetailsMessageReceived(IMessage message)
 		{
-			if (!message?.Details)
+			if (message is not WorldObjectPreviewSetDetailsMessage setDetailsMessage || !setDetailsMessage.Details)
 			{
 				Debug.LogWarning($"Received invalid {nameof(WorldObjectPreviewSetDetailsMessage)}");
 				return;
 			}
 			
-			PreviewDetails = message.Details;
+			PreviewDetails = setDetailsMessage.Details;
 			
 			CreatePreview(PreviewDetails, _previewParent);
 			PreviewObject.transform.SetPositionAndRotation(PreviewWorldPosition, Quaternion.identity);
 			PreviewObject.gameObject.SetActive(PreviewVisibility);
 		}
 
-		private void OnSetPositionMessageReceived(WorldObjectPreviewSetPositionMessage message)
+		private void OnSetPositionMessageReceived(IMessage message)
 		{
-			if (message == null)
+			if (message is not WorldObjectPreviewSetPositionMessage setPositionMessage)
 			{
 				Debug.LogWarning($"Received invalid {nameof(WorldObjectPreviewSetPositionMessage)}");
 				return;
 			}
 			
 			PreviewWorldPosition = _world
-				.WorldPositionFromTilePosition(message.TilePosition, message.ChunkPosition, centerOfTile: false)
+				.WorldPositionFromTilePosition(setPositionMessage.TilePosition, setPositionMessage.ChunkPosition, centerOfTile: false)
 				.ToVector3(VectorSub.XSubY);
 			
 			if (PreviewObject)
 				PreviewObject.transform.SetPositionAndRotation(PreviewWorldPosition, Quaternion.identity);
 		}
 
-		private void OnSetVisibilityMessageReceived(WorldObjectPreviewSetVisibilityMessage message)
+		private void OnSetVisibilityMessageReceived(IMessage message)
 		{
-			if (message == null)
+			if (message is not WorldObjectPreviewSetVisibilityMessage setVisibilityMessage)
 			{
 				Debug.LogWarning($"Received invalid {nameof(WorldObjectPreviewSetVisibilityMessage)}");
 				return;
 			}
 
-			PreviewVisibility = message.Visibility;
+			PreviewVisibility = setVisibilityMessage.Visibility;
             
 			if (PreviewObject)
 				PreviewObject.gameObject.SetActive(PreviewVisibility);
 		}
 
-		private void OnDeletePreviewMessageReceived(WorldObjectPreviewDeleteMessage message)
+		private void OnDeletePreviewMessageReceived(IMessage message)
 		{
-			if (message == null)
+			if (message is not WorldObjectPreviewDeleteMessage)
 			{
 				Debug.LogWarning($"Received invalid {nameof(WorldObjectPreviewDeleteMessage)}");
 				return;

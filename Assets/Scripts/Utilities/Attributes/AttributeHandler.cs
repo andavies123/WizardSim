@@ -12,7 +12,7 @@ namespace Utilities.Attributes
 		[SerializeField] private bool revalidate;
 
 		[Header("Attribute Types")]
-		[SerializeField] private bool throwIfNull = true;
+		[SerializeField] private bool required = true;
 		
 		private void OnValidate()
 		{
@@ -32,7 +32,7 @@ namespace Utilities.Attributes
 
 		private void HandleThrowIfNull(FieldInfo fieldInfo, Object script)
 		{
-			if (!throwIfNull)
+			if (!required)
 				return;
 
 			if (fieldInfo.GetValue(script) == null)

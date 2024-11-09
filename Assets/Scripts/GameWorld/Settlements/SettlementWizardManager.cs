@@ -9,11 +9,18 @@ namespace GameWorld.Settlements
 {
 	public class SettlementWizardManager : ISettlementWizardManager
 	{
+		private readonly ISubscription _addWizardTaskSubscription;
+		
 		public SettlementWizardManager(IWizardFactory wizardFactory, Transform wizardContainer)
 		{
 			Factory = wizardFactory;
 			Repo = new WizardRepo(wizardContainer);
 			TaskManager = new WizardTaskManager();
+
+			_addWizardTaskSubscription = new SubscriptionBuilder(this)
+				.SetMessageType<AddWizardTaskRequest>()
+				.SetCallback(OnAddWizardTaskRequested)
+				.Build();
 		}
 		
 		public IWizardRepo Repo { get; }
@@ -29,7 +36,7 @@ namespace GameWorld.Settlements
 
 			TaskManager.TaskAdded += OnWizardTaskAdded;
 			
-			GlobalMessenger.Subscribe<AddWizardTaskRequest>(OnAddWizardTaskRequested);
+			MessageBroker.Subscribe(_addWizardTaskSubscription);
 		}
 
 		public void CleanUp()
@@ -39,7 +46,7 @@ namespace GameWorld.Settlements
 
 			TaskManager.TaskAdded -= OnWizardTaskAdded;
 			
-			GlobalMessenger.Unsubscribe<AddWizardTaskRequest>(OnAddWizardTaskRequested);
+			MessageBroker.Unsubscribe(_addWizardTaskSubscription);
 		}
 		
 		public bool TryGetClosestWizard(Vector3 worldPosition, out Wizard closestWizard, out float distance)
@@ -63,7 +70,14 @@ namespace GameWorld.Settlements
 
 		private void OnWizardAddedToRepo(Wizard addedWizard) => TaskManager.AssignTaskToWizard(addedWizard);
 		private void OnWizardRemovedFromRepo(Wizard removedWizard) => TaskManager.RemoveAllTasksFromWizard(removedWizard);
-		private void OnAddWizardTaskRequested(AddWizardTaskRequest request) => TaskManager.AddTask(request.Task);
+		
+		private void OnAddWizardTaskRequested(IMessage message)
+		{
+			if (message is AddWizardTaskRequest request)
+			{
+				TaskManager.AddTask(request.Task);
+			}
+		}
 
 		private void OnWizardTaskAdded(IWizardTask wizardTask)
 		{

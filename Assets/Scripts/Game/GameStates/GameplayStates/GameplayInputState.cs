@@ -1,11 +1,10 @@
 ﻿using System;
 using CameraComponents;
 using Game.MessengerSystem;
-using InputStates.InputEventArgs;
 using UI;
 using UI.ContextMenus;
-using UI.InfoWindows;
 using UI.Messages;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Game.GameStates.GameplayStates
@@ -14,13 +13,20 @@ namespace Game.GameStates.GameplayStates
 	{
 		private readonly PlayerInputActions _playerInputActions = new();
 		private readonly InteractableRaycaster _interactableRaycaster;
+		private readonly ISubscription _openContextMenuSubscription;
 		
 		private PlayerInputActions.GameplayActions _gameplay;
+
 		
 		public GameplayInputState(InteractableRaycaster interactableRaycaster)
 		{
 			_interactableRaycaster = interactableRaycaster;
 			_gameplay = _playerInputActions.Gameplay;
+
+			_openContextMenuSubscription = new SubscriptionBuilder(this)
+				.SetMessageType<OpenContextMenuRequest>()
+				.SetCallback(OnOpenContextMenuRequestReceived)
+				.Build();
 		}
 		
 		public event EventHandler PauseInputPerformed;
@@ -42,6 +48,8 @@ namespace Game.GameStates.GameplayStates
 			_interactableRaycaster.InteractableSelectedSecondary += OnInteractableSelectedSecondary;
 			_interactableRaycaster.NonInteractableSelectedPrimary += OnNonInteractablePrimaryActionSelected;
 
+			MessageBroker.Subscribe(_openContextMenuSubscription);
+			
 			_gameplay.Enable();
 		}
 
@@ -57,7 +65,7 @@ namespace Game.GameStates.GameplayStates
 			_interactableRaycaster.InteractableSelectedSecondary -= OnInteractableSelectedSecondary;
 			_interactableRaycaster.NonInteractableSelectedPrimary -= OnNonInteractablePrimaryActionSelected;
 			
-			GlobalMessenger.Unsubscribe<OpenContextMenuRequest>(OnOpenContextMenuRequestReceived);
+			MessageBroker.Unsubscribe(_openContextMenuSubscription);
 		}
 		
 		private void OnPauseActionPerformed(InputAction.CallbackContext callbackContext)
@@ -94,9 +102,15 @@ namespace Game.GameStates.GameplayStates
 			}
 		}
 
-		private void OnOpenContextMenuRequestReceived(OpenContextMenuRequest message)
+		private void OnOpenContextMenuRequestReceived(IMessage message)
 		{
-			OpenInfoWindowRequested?.Invoke(this, message.ContextMenuUser.Interactable);
+			if (message is not OpenContextMenuRequest request)
+			{
+				Debug.Log($"Message received is not {nameof(OpenContextMenuRequest)}");
+				return;
+			}
+			
+			OpenInfoWindowRequested?.Invoke(this, request.ContextMenuUser.Interactable);
 		}
 
 		private void OnOpenTaskManagementActionPerformed(InputAction.CallbackContext callbackContext)

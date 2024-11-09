@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Extensions;
 using Game.MessengerSystem;
 using GameWorld.Messages;
@@ -9,42 +10,55 @@ using GameWorld.WorldObjects;
 using UnityEngine;
 using Utilities;
 using GameWorld.Settlements;
-using UnityEngine.Serialization;
+using Utilities.Attributes;
 
 namespace GameWorld.Builders
 {
 	public class WorldBuilder : MonoBehaviour
 	{
-		[SerializeField] private World world;
-		[SerializeField] private Transform worldObjectParent;
+		[SerializeField, Required] private World world;
+		[SerializeField, Required] private Transform worldObjectParent;
 		
-		[FormerlySerializedAs("wizardSpawner")]
 		[Header("Spawners")]
-		[SerializeField] private WizardFactory wizardFactory;
-		[SerializeField] private EntitySpawner enemySpawner;
+		[SerializeField, Required] private WizardFactory wizardFactory;
+		[SerializeField, Required] private EntitySpawner enemySpawner;
 
 		[Header("Settings")]
-		[SerializeField] private int initialGenerationRadius = 5;
+		[SerializeField, Required] private int initialGenerationRadius = 5;
 
 		[Header("Rock Generation Settings")]
-		[SerializeField] private GameObject rockPrefab;
-		[SerializeField] private int rocksPerChunk;
+		[SerializeField, Required] private GameObject rockPrefab;
+		[SerializeField, Required] private int rocksPerChunk;
 
+		private readonly List<ISubscription> _subscriptions = new();
+		private SubscriptionBuilder _subBuilder;
 		private WorldObjectPreviewManager _worldObjectPreviewManager;
 
 		public RockObjectBuilder RockObjectBuilder { get; private set; }
-
+		
 		private void Awake()
 		{
 			RockObjectBuilder = new RockObjectBuilder(world, rockPrefab, worldObjectParent);
 			_worldObjectPreviewManager = new WorldObjectPreviewManager(world, transform);
-		}
 
+			_subBuilder = new SubscriptionBuilder(this);
+
+			_subscriptions.Add(_subBuilder.ResetAllButSubscriber()
+				.SetMessageType<WorldObjectPlacementRequest>()
+				.SetCallback(OnPlaceWorldObjectRequested).Build());
+			
+			_subscriptions.Add(_subBuilder.ResetAllButSubscriber()
+				.SetMessageType<WizardSpawnRequestMessage>()
+				.SetCallback(OnWizardSpawnRequested).Build());
+			
+			_subscriptions.Add(_subBuilder.ResetAllButSubscriber()
+				.SetMessageType<EnemySpawnRequestMessage>()
+				.SetCallback(OnEnemySpawnRequested).Build());
+		}
+		
 		private void Start()
 		{
-			GlobalMessenger.Subscribe<WorldObjectPlacementRequest>(OnPlaceWorldObjectRequested);
-			GlobalMessenger.Subscribe<WizardSpawnRequestMessage>(OnWizardSpawnRequested);
-			GlobalMessenger.Subscribe<EnemySpawnRequestMessage>(OnEnemySpawnRequested);
+			_subscriptions.ForEach(MessageBroker.Subscribe);
 			
 			_worldObjectPreviewManager.SubscribeToMessages();
 			
@@ -53,9 +67,7 @@ namespace GameWorld.Builders
 
 		private void OnDestroy()
 		{
-			GlobalMessenger.Unsubscribe<WorldObjectPlacementRequest>(OnPlaceWorldObjectRequested);
-			GlobalMessenger.Unsubscribe<WizardSpawnRequestMessage>(OnWizardSpawnRequested);
-			GlobalMessenger.Unsubscribe<EnemySpawnRequestMessage>(OnEnemySpawnRequested);
+			_subscriptions.ForEach(MessageBroker.Unsubscribe);
 			
 			_worldObjectPreviewManager.UnsubscribeFromMessages();
 		}
@@ -128,20 +140,39 @@ namespace GameWorld.Builders
 			}
 		}
 
-		private void OnWizardSpawnRequested(WizardSpawnRequestMessage message) => wizardFactory.CreateWizard(message.SpawnPosition, message.WizardType);
-		private void OnEnemySpawnRequested(EnemySpawnRequestMessage message) => enemySpawner.SpawnEntity(message.SpawnPosition);
-
-		private void OnPlaceWorldObjectRequested(WorldObjectPlacementRequest message)
+		private void OnWizardSpawnRequested(IMessage message)
 		{
-			if (message == null)
+			if (message is not WizardSpawnRequestMessage spawnRequest)
 			{
-				Debug.Log($"Received invalid {nameof(WorldObjectPlacementRequest)} message");
+				Debug.Log($"Received invalid {nameof(WizardSpawnRequestMessage)}");
 				return;
 			}
 			
-			if (!TrySpawnSingle(message.WorldObjectDetails, message.ChunkPosition, message.TilePosition, worldObjectParent))
+			wizardFactory.CreateWizard(spawnRequest.SpawnPosition, spawnRequest.WizardType);
+		}
+
+		private void OnEnemySpawnRequested(IMessage message)
+		{
+			if (message is not EnemySpawnRequestMessage spawnRequest)
 			{
-				Debug.LogWarning($"{message.WorldObjectDetails.Name} was not able to be spawned.", this);
+				Debug.Log($"Received invalid {nameof(EnemySpawnRequestMessage)}");
+				return;
+			}
+			
+			enemySpawner.SpawnEntity(spawnRequest.SpawnPosition);
+		}
+
+		private void OnPlaceWorldObjectRequested(IMessage message)
+		{
+			if (message is not WorldObjectPlacementRequest placementRequest)
+			{
+				Debug.Log($"Received invalid {nameof(WorldObjectPlacementRequest)}");
+				return;
+			}
+			
+			if (!TrySpawnSingle(placementRequest.WorldObjectDetails, placementRequest.ChunkPosition, placementRequest.TilePosition, worldObjectParent))
+			{
+				Debug.LogWarning($"{placementRequest.WorldObjectDetails.Name} was not able to be spawned.", this);
 			}
 		}
 

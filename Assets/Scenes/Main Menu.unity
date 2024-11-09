@@ -1657,6 +1657,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   worldLoadDetails: {fileID: 11400000, guid: a3170c7d846a4456891d64f5b0bc9d0d, type: 2}
+  sceneLoadRequestChannel: {fileID: 11400000, guid: 26b59d1ea24ca4284bdb1c13ee022172, type: 2}
+  sceneUnloadRequestChannel: {fileID: 11400000, guid: d17c0334ac9ff4ce6a74635bc0a6603c, type: 2}
   loadButton: {fileID: 205619220}
   openFolderButton: {fileID: 1474493647}
   refreshListButton: {fileID: 1927830157}
@@ -4871,7 +4873,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7433067891510433048, guid: b59584adf6b004ecf9a4a2c7468e8f1e, type: 3}
       propertyPath: m_Name
-      value: EditorSceneInitializer
+      value: Editor Scripts
+      objectReference: {fileID: 0}
+    - target: {fileID: 8134963186542751819, guid: b59584adf6b004ecf9a4a2c7468e8f1e, type: 3}
+      propertyPath: revalidate
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

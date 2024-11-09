@@ -82,7 +82,7 @@ namespace GameWorld.Tiles
 			Vector2 tileWorldPosition = ParentWorld.WorldPositionFromTile(this, centerOfTile: true);
 			Vector3 spawnPosition = new(tileWorldPosition.x, 1, tileWorldPosition.y);
 			
-			GlobalMessenger.Publish(new WizardSpawnRequestMessage
+			MessageBroker.PublishSingle(new WizardSpawnRequestMessage
 			{
 				Sender = this,
 				SpawnPosition = spawnPosition,
@@ -95,7 +95,7 @@ namespace GameWorld.Tiles
 			Vector2 tileWorldPosition = ParentWorld.WorldPositionFromTile(this, centerOfTile: true);
 			Vector3 spawnPosition = new(tileWorldPosition.x, 1, tileWorldPosition.y);
 			
-			GlobalMessenger.Publish(new EnemySpawnRequestMessage
+			MessageBroker.PublishSingle(new EnemySpawnRequestMessage
 			{
 				Sender = this,
 				SpawnPosition = spawnPosition

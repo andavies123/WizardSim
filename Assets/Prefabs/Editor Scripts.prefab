@@ -10,12 +10,13 @@ GameObject:
   m_Component:
   - component: {fileID: 4117962006551896615}
   - component: {fileID: 6671674376809835872}
+  - component: {fileID: 8134963186542751819}
   m_Layer: 0
-  m_Name: EditorSceneInitializer
-  m_TagString: Untagged
+  m_Name: Editor Scripts
+  m_TagString: EditorOnly
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &4117962006551896615
 Transform:
@@ -44,3 +45,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a389c28392584a16839e774342119318, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8134963186542751819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7433067891510433048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d76d489b42d4406bf0c0329bd4a1372, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  revalidate: 0
+  throwIfNull: 1

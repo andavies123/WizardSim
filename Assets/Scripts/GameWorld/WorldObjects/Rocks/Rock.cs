@@ -27,7 +27,7 @@ namespace GameWorld.WorldObjects.Rocks
 		{
 			ContextMenuUser.AddMenuItem(
 				ContextMenuBuilder.BuildPath("Destroy", "Single"),
-				() => GlobalMessenger.Publish(new AddWizardTaskRequest
+				() => MessageBroker.PublishSingle(new AddWizardTaskRequest
 				{
 					Sender = this,
 					Task = new DestroyRocksTask(new List<Rock> {this})
@@ -37,7 +37,7 @@ namespace GameWorld.WorldObjects.Rocks
 			
 			ContextMenuUser.AddMenuItem(
 				ContextMenuBuilder.BuildPath("Destroy", "Surrounding"),
-				() => GlobalMessenger.Publish(new AddWizardTaskRequest
+				() => MessageBroker.PublishSingle(new AddWizardTaskRequest
 				{
 					Sender = this,
 					Task = new DestroyRocksTask(GetSurroundingRocks())

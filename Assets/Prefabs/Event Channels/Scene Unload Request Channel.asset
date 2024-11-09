@@ -10,5 +10,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2f90fe32dd0e4629aafc53d2a9b96ea3, type: 3}
-  m_Name: Scene Change Request
+  m_Name: Scene Unload Request Channel
   m_EditorClassIdentifier: 
