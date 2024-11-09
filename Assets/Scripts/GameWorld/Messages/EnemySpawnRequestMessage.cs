@@ -1,4 +1,4 @@
-﻿using Game.MessengerSystem;
+﻿using MessagingSystem;
 using UnityEngine;
 
 namespace GameWorld.Messages

@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+
 // ReSharper disable Unity.PerformanceCriticalCodeInvocation
 
-namespace Game.MessengerSystem
+namespace MessagingSystem
 {
 	public static class MessageBroker
 	{

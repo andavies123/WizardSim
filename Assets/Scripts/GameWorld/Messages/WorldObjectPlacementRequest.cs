@@ -1,5 +1,5 @@
-﻿using Game.MessengerSystem;
-using GameWorld.WorldObjects;
+﻿using GameWorld.WorldObjects;
+using MessagingSystem;
 using UnityEngine;
 
 namespace GameWorld.Messages

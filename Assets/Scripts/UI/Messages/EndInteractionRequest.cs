@@ -1,4 +1,4 @@
-﻿using Game.MessengerSystem;
+﻿using MessagingSystem;
 
 namespace UI.Messages
 {

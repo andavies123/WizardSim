@@ -1,8 +1,8 @@
-using Game.MessengerSystem;
 using GameWorld.Characters.Wizards;
 using GameWorld.Characters.Wizards.Messages;
 using GameWorld.Characters.Wizards.Tasks;
 using GameWorld.Settlements.Interfaces;
+using MessagingSystem;
 using UnityEngine;
 
 namespace GameWorld.Settlements

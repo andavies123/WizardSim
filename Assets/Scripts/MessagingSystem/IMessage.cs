@@ -1,4 +1,4 @@
-﻿namespace Game.MessengerSystem
+﻿namespace MessagingSystem
 {
 	public interface IMessage
 	{

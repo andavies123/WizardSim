@@ -10,8 +10,8 @@ using UnityEngine;
 using GameWorld.Characters.Wizards.States;
 using GameWorld.Characters.Wizards.Tasks;
 using System;
-using Game.MessengerSystem;
 using GameWorld.Characters.Wizards.AgeSystem;
+using MessagingSystem;
 using UI.Messages;
 
 namespace GameWorld.Characters.Wizards

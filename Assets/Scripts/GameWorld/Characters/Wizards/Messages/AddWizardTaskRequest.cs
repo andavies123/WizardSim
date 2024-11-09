@@ -1,5 +1,5 @@
-﻿using Game.MessengerSystem;
-using GameWorld.Characters.Wizards.Tasks;
+﻿using GameWorld.Characters.Wizards.Tasks;
+using MessagingSystem;
 
 namespace GameWorld.Characters.Wizards.Messages
 {

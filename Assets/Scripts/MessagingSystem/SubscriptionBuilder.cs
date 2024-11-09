@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Game.MessengerSystem
+namespace MessagingSystem
 {
 	public class SubscriptionBuilder
 	{

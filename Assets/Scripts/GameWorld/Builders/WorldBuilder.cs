@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Extensions;
-using Game.MessengerSystem;
 using GameWorld.Messages;
 using GameWorld.Spawners;
 using GameWorld.Tiles;
@@ -10,6 +9,7 @@ using GameWorld.WorldObjects;
 using UnityEngine;
 using Utilities;
 using GameWorld.Settlements;
+using MessagingSystem;
 using Utilities.Attributes;
 
 namespace GameWorld.Builders

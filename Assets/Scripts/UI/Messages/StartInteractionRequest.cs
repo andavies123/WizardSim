@@ -1,5 +1,5 @@
 ﻿using System;
-using Game.MessengerSystem;
+using MessagingSystem;
 using UnityEngine;
 
 namespace UI.Messages

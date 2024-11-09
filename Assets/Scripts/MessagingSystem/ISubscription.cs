@@ -1,6 +1,6 @@
 using System;
 
-namespace Game.MessengerSystem
+namespace MessagingSystem
 {
 	public struct Subscription : ISubscription
 	{

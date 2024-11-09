@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Game.MessengerSystem
+namespace MessagingSystem
 {
 	internal sealed class SubscriptionStore
 	{

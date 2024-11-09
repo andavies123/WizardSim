@@ -1,6 +1,6 @@
 ﻿using System;
 using CameraComponents;
-using Game.MessengerSystem;
+using MessagingSystem;
 using UI;
 using UI.ContextMenus;
 using UI.Messages;
