@@ -265,7 +265,7 @@ namespace Unit_Tests.MessagingSystem_UnitTests
 
 			// Assert
 			foundSubscriptions.Should().BeFalse();
-			subscriptions.Should().BeEmpty();
+			subscriptions.Should().BeNull();
 		}
 		
 		#endregion

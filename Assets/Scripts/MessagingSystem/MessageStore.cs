@@ -15,6 +15,11 @@ namespace MessagingSystem
 		/// Value: Collection of Key/Value pairs
 		/// </summary>
 		private readonly ConcurrentDictionary<Type, HashSet<MessagePair>> _messages = new();
+
+		/// <summary>
+		/// Contains all messages currently held in the system
+		/// </summary>
+		internal IReadOnlyDictionary<Type, HashSet<MessagePair>> Messages => _messages;
 		
 		/// <summary>
 		/// Adds a message to the message store.
@@ -41,6 +46,25 @@ namespace MessagingSystem
 					
 					return existingMessages;
 				});
+		}
+
+		/// <summary>
+		/// Gets a message from the message store. Returns null if no such message exists
+		/// </summary>
+		/// <param name="key">The key used to find the message</param>
+		/// <param name="message">The found message from the message store</param>
+		/// <returns>True if a message was found. False if not</returns>
+		public bool TryGetMessage(IMessageKey key, out IMessage message)
+		{
+			message = null;
+
+			if (_messages.TryGetValue(key.GetType(), out HashSet<MessagePair> messagePairs))
+			{
+				message = messagePairs.FirstOrDefault(pair => pair.Key.CompareString == key.CompareString)?.Message;
+				return message != null;
+			}
+
+			return false;
 		}
 
 		/// <summary>
