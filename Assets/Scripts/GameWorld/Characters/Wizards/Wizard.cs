@@ -10,6 +10,7 @@ using UnityEngine;
 using GameWorld.Characters.Wizards.States;
 using GameWorld.Characters.Wizards.Tasks;
 using System;
+using Game;
 using GameWorld.Characters.Wizards.AgeSystem;
 using MessagingSystem;
 using UI.Messages;
@@ -19,7 +20,8 @@ namespace GameWorld.Characters.Wizards
 	public class Wizard : Character, ITaskUser<IWizardTask>
 	{
 		[SerializeField] private WizardStats stats;
-		
+
+		private MessageBroker _messageBroker;
 		private GameWorldTimeBehaviour _worldTime;
 
 		public string Name { get; set; }
@@ -111,8 +113,9 @@ namespace GameWorld.Characters.Wizards
 		{
 			base.Awake();
 
-			// Add/get components
+			// Add/get components/Dependencies
 			StateMachine = GetComponent<WizardStateMachine>();
+			Dependencies.GetDependency<MessageBroker>();
 
 			Health.CurrentHealthChanged += OnCurrentHealthChanged;
 		}
@@ -160,7 +163,7 @@ namespace GameWorld.Characters.Wizards
 			
 			ContextMenuUser.AddMenuItem(
 				ContextMenuBuilder.BuildPath("Action", "Move To"),
-				() => MessageBroker.PublishSingle(
+				() => _messageBroker.PublishSingle(
 					new StartInteractionRequest
 					{
 						Sender = this,
@@ -187,7 +190,7 @@ namespace GameWorld.Characters.Wizards
 			Vector3 moveToPosition = new(tilePosition.x, Transform.position.y, tilePosition.z);
 			StateMachine.MoveTo(moveToPosition);
             
-			MessageBroker.PublishSingle(new EndInteractionRequest {Sender = this});
+			_messageBroker.PublishSingle(new EndInteractionRequest {Sender = this});
 		}
 
 		private void OnCurrentHealthChanged(object sender, CurrentHealthChangedEventArgs args)

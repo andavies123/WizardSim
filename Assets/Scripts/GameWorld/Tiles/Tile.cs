@@ -1,4 +1,5 @@
-﻿using GameWorld.Messages;
+﻿using Game;
+using GameWorld.Messages;
 using GeneralBehaviours.Utilities.ContextMenuBuilders;
 using UI;
 using UI.ContextMenus;
@@ -13,6 +14,7 @@ namespace GameWorld.Tiles
 	{
 		private Interactable _interactable;
 		private ContextMenuUser _contextMenuUser;
+		private MessageBroker _messageBroker;
 		
 		public World ParentWorld { get; private set; }
 		public Chunk ParentChunk { get; private set; }
@@ -36,6 +38,7 @@ namespace GameWorld.Tiles
 			Transform = transform;
 			_interactable = GetComponent<Interactable>();
 			_contextMenuUser = GetComponent<ContextMenuUser>();
+			_messageBroker = Dependencies.GetDependency<MessageBroker>();
 		}
 
 		private void InitializeInteractable()
@@ -82,7 +85,7 @@ namespace GameWorld.Tiles
 			Vector2 tileWorldPosition = ParentWorld.WorldPositionFromTile(this, centerOfTile: true);
 			Vector3 spawnPosition = new(tileWorldPosition.x, 1, tileWorldPosition.y);
 			
-			MessageBroker.PublishSingle(new WizardSpawnRequestMessage
+			_messageBroker.PublishSingle(new WizardSpawnRequestMessage
 			{
 				Sender = this,
 				SpawnPosition = spawnPosition,
@@ -95,7 +98,7 @@ namespace GameWorld.Tiles
 			Vector2 tileWorldPosition = ParentWorld.WorldPositionFromTile(this, centerOfTile: true);
 			Vector3 spawnPosition = new(tileWorldPosition.x, 1, tileWorldPosition.y);
 			
-			MessageBroker.PublishSingle(new EnemySpawnRequestMessage
+			_messageBroker.PublishSingle(new EnemySpawnRequestMessage
 			{
 				Sender = this,
 				SpawnPosition = spawnPosition

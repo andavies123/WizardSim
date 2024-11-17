@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace MessagingSystem
 {
-	internal sealed class SubscriptionStore
+	internal sealed class SubscriptionStore : ISubscriptionStore
 	{
 		private readonly ConcurrentDictionary<Type, HashSet<ISubscription>> _subscriptions = new();
 

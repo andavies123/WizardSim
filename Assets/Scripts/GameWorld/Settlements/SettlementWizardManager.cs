@@ -1,3 +1,4 @@
+using Game;
 using GameWorld.Characters.Wizards;
 using GameWorld.Characters.Wizards.Messages;
 using GameWorld.Characters.Wizards.Tasks;
@@ -10,12 +11,14 @@ namespace GameWorld.Settlements
 	public class SettlementWizardManager : ISettlementWizardManager
 	{
 		private readonly ISubscription _addWizardTaskSubscription;
+		private readonly MessageBroker _messageBroker;
 		
 		public SettlementWizardManager(IWizardFactory wizardFactory, Transform wizardContainer)
 		{
 			Factory = wizardFactory;
 			Repo = new WizardRepo(wizardContainer);
 			TaskManager = new WizardTaskManager();
+			_messageBroker = Dependencies.GetDependency<MessageBroker>();
 
 			_addWizardTaskSubscription = new SubscriptionBuilder(this)
 				.SetMessageType<AddWizardTaskRequest>()
@@ -36,7 +39,7 @@ namespace GameWorld.Settlements
 
 			TaskManager.TaskAdded += OnWizardTaskAdded;
 			
-			MessageBroker.Subscribe(_addWizardTaskSubscription);
+			_messageBroker.Subscribe(_addWizardTaskSubscription);
 		}
 
 		public void CleanUp()
@@ -46,7 +49,7 @@ namespace GameWorld.Settlements
 
 			TaskManager.TaskAdded -= OnWizardTaskAdded;
 			
-			MessageBroker.Unsubscribe(_addWizardTaskSubscription);
+			_messageBroker.Unsubscribe(_addWizardTaskSubscription);
 		}
 		
 		public bool TryGetClosestWizard(Vector3 worldPosition, out Wizard closestWizard, out float distance)

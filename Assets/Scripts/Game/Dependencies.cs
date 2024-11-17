@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using MessagingSystem;
 
 namespace Game
 {
@@ -9,6 +10,12 @@ namespace Game
 	{
 		private static readonly ConcurrentDictionary<Type, object> DependencyStore = new();
 		private static readonly ConcurrentDictionary<Type, Dictionary<string, object>> KeyedDependencyStore = new();
+
+		static Dependencies()
+		{
+			// Registering non Mono-Behaviour Dependencies here
+			RegisterDependency(new MessageBroker());
+		}
 		
 		public static void RegisterDependency<T>(T dependency)
 		{

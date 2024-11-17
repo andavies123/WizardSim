@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Extensions;
+using Game;
 using GameWorld.WorldObjectPreviews.Messages;
 using GameWorld.WorldObjects;
 using GeneralBehaviours.ShaderManagers;
@@ -20,6 +21,7 @@ namespace GameWorld.WorldObjectPreviews
 
 		private readonly World _world;
 		private readonly Transform _previewParent;
+		private readonly MessageBroker _messageBroker;
 		private readonly List<ISubscription> _subscriptions = new();
 
 		public WorldObjectPreviewManager(World world, Transform previewParent)
@@ -27,6 +29,7 @@ namespace GameWorld.WorldObjectPreviews
 			_world = world;
 			_previewParent = previewParent;
 
+			_messageBroker = Dependencies.GetDependency<MessageBroker>();
 			SubscriptionBuilder subscriptionBuilder = new(this);
 			
 			_subscriptions.Add(subscriptionBuilder
@@ -61,7 +64,7 @@ namespace GameWorld.WorldObjectPreviews
 
 		public void SubscribeToMessages()
 		{
-			_subscriptions.ForEach(MessageBroker.Subscribe);
+			_subscriptions.ForEach(_messageBroker.Subscribe);
 
 			_world.WorldObjectManager.WorldObjectAdded += OnWorldObjectCountChanged;
 			_world.WorldObjectManager.WorldObjectRemoved += OnWorldObjectCountChanged;
@@ -69,7 +72,7 @@ namespace GameWorld.WorldObjectPreviews
 
 		public void UnsubscribeFromMessages()
 		{
-			_subscriptions.ForEach(MessageBroker.Unsubscribe);
+			_subscriptions.ForEach(_messageBroker.Unsubscribe);
 
 			_world.WorldObjectManager.WorldObjectAdded -= OnWorldObjectCountChanged;
 			_world.WorldObjectManager.WorldObjectRemoved -= OnWorldObjectCountChanged;

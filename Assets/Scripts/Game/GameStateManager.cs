@@ -30,7 +30,8 @@ namespace Game
 		[SerializeField, Required] private InteractableRaycaster interactableRaycaster;
 
 		private readonly List<ISubscription> _subscriptions = new();
-		
+
+		private MessageBroker _messageBroker;
 		private GameState _currentGameState;
 
 		private GameplayGameState _gameplayGameState;
@@ -74,6 +75,7 @@ namespace Game
 			
 			_cameraInputState = new CameraInputState();
 			Dependencies.RegisterDependency(_cameraInputState);
+			_messageBroker = Dependencies.GetDependency<MessageBroker>();
 
 			SubscriptionBuilder subscriptionBuilder = new(this);
 			
@@ -122,7 +124,7 @@ namespace Game
 
 			_taskManagementGameState.CloseMenu += OnCloseTaskManagementWindow;
 			
-			_subscriptions.ForEach(MessageBroker.Subscribe);
+			_subscriptions.ForEach(_messageBroker.Subscribe);
 		}
 
 		private void OnDisable()
@@ -143,7 +145,7 @@ namespace Game
 			
 			_taskManagementGameState.CloseMenu -= OnCloseTaskManagementWindow;
 			
-			_subscriptions.ForEach(MessageBroker.Unsubscribe);
+			_subscriptions.ForEach(_messageBroker.Unsubscribe);
 		}
 
 		// Pause Menu Related Events

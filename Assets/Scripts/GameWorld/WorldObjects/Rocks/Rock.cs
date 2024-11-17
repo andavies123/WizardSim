@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Game;
 using GeneralBehaviours.Utilities.ContextMenuBuilders;
 using UI.ContextMenus;
 using UnityEngine;
@@ -13,6 +14,8 @@ namespace GameWorld.WorldObjects.Rocks
 	[RequireComponent(typeof(ContextMenuUser))]
 	public class Rock : MonoBehaviour
 	{
+		private MessageBroker _messageBroker;
+		
 		public WorldObject WorldObject { get; private set; }
 		private ContextMenuUser ContextMenuUser { get; set; }
 
@@ -20,6 +23,7 @@ namespace GameWorld.WorldObjects.Rocks
 		{
 			WorldObject = GetComponent<WorldObject>();
 			ContextMenuUser = GetComponent<ContextMenuUser>();
+			_messageBroker = Dependencies.GetDependency<MessageBroker>();
 			InitializeContextMenu();
 		}
 
@@ -27,7 +31,7 @@ namespace GameWorld.WorldObjects.Rocks
 		{
 			ContextMenuUser.AddMenuItem(
 				ContextMenuBuilder.BuildPath("Destroy", "Single"),
-				() => MessageBroker.PublishSingle(new AddWizardTaskRequest
+				() => _messageBroker.PublishSingle(new AddWizardTaskRequest
 				{
 					Sender = this,
 					Task = new DestroyRocksTask(new List<Rock> {this})
@@ -37,7 +41,7 @@ namespace GameWorld.WorldObjects.Rocks
 			
 			ContextMenuUser.AddMenuItem(
 				ContextMenuBuilder.BuildPath("Destroy", "Surrounding"),
-				() => MessageBroker.PublishSingle(new AddWizardTaskRequest
+				() => _messageBroker.PublishSingle(new AddWizardTaskRequest
 				{
 					Sender = this,
 					Task = new DestroyRocksTask(GetSurroundingRocks())

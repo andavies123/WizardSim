@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Extensions;
+using Game;
 using GameWorld.Messages;
 using GameWorld.Spawners;
 using GameWorld.Tiles;
@@ -31,6 +32,8 @@ namespace GameWorld.Builders
 		[SerializeField, Required] private int rocksPerChunk;
 
 		private readonly List<ISubscription> _subscriptions = new();
+		
+		private MessageBroker _messageBroker;
 		private SubscriptionBuilder _subBuilder;
 		private WorldObjectPreviewManager _worldObjectPreviewManager;
 
@@ -41,6 +44,7 @@ namespace GameWorld.Builders
 			RockObjectBuilder = new RockObjectBuilder(world, rockPrefab, worldObjectParent);
 			_worldObjectPreviewManager = new WorldObjectPreviewManager(world, transform);
 
+			_messageBroker = Dependencies.GetDependency<MessageBroker>();
 			_subBuilder = new SubscriptionBuilder(this);
 
 			_subscriptions.Add(_subBuilder.ResetAllButSubscriber()
@@ -58,7 +62,7 @@ namespace GameWorld.Builders
 		
 		private void Start()
 		{
-			_subscriptions.ForEach(MessageBroker.Subscribe);
+			_subscriptions.ForEach(_messageBroker.Subscribe);
 			
 			_worldObjectPreviewManager.SubscribeToMessages();
 			
@@ -67,7 +71,7 @@ namespace GameWorld.Builders
 
 		private void OnDestroy()
 		{
-			_subscriptions.ForEach(MessageBroker.Unsubscribe);
+			_subscriptions.ForEach(_messageBroker.Unsubscribe);
 			
 			_worldObjectPreviewManager.UnsubscribeFromMessages();
 		}

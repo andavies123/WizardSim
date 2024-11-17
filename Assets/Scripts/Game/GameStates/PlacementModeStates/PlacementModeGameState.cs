@@ -13,6 +13,7 @@ namespace Game.GameStates.PlacementModeStates
 	{
 		private readonly PlacementModeInputState _placementModeInputState;
 		private readonly PlacementModeUIState _placementModeUIState;
+		private readonly MessageBroker _messageBroker;
 		
 		public event EventHandler PlacementModeEnded
 		{
@@ -24,6 +25,8 @@ namespace Game.GameStates.PlacementModeStates
 		{
 			_placementModeInputState = new PlacementModeInputState(interactableRaycaster);
 			_placementModeUIState = placementModeUIState.ThrowIfNull(nameof(placementModeUIState));
+
+			_messageBroker = Dependencies.GetDependency<MessageBroker>();
 
 			_placementModeInputState.PlacementRequested += OnPlacementRequested;
 			_placementModeInputState.PreviewPositionUpdated += OnPreviewPositionUpdated;
@@ -42,7 +45,7 @@ namespace Game.GameStates.PlacementModeStates
 
 		protected override void OnEnabled()
 		{
-			MessageBroker.PublishSingle(new WorldObjectPreviewSetDetailsMessage
+			_messageBroker.PublishSingle(new WorldObjectPreviewSetDetailsMessage
 			{
 				Sender = this,
 				Details = PlacementDetails
@@ -51,12 +54,12 @@ namespace Game.GameStates.PlacementModeStates
 
 		protected override void OnDisabled()
 		{
-			MessageBroker.PublishSingle(new WorldObjectPreviewDeleteMessage { Sender = this });
+			_messageBroker.PublishSingle(new WorldObjectPreviewDeleteMessage { Sender = this });
 		}
 
 		private void OnPreviewPositionUpdated(object sender, WorldPositionEventArgs args)
 		{
-			MessageBroker.PublishSingle(new WorldObjectPreviewSetPositionMessage
+			_messageBroker.PublishSingle(new WorldObjectPreviewSetPositionMessage
 			{
 				Sender = this,
 				ChunkPosition = args.ChunkPosition,
@@ -66,7 +69,7 @@ namespace Game.GameStates.PlacementModeStates
 
 		private void OnPreviewVisibilityUpdated(object sender, bool visibility)
 		{
-			MessageBroker.PublishSingle(new WorldObjectPreviewSetVisibilityMessage
+			_messageBroker.PublishSingle(new WorldObjectPreviewSetVisibilityMessage
 			{
 				Sender = this,
 				Visibility = visibility
@@ -77,7 +80,7 @@ namespace Game.GameStates.PlacementModeStates
 		{
 			PlacementDetails = details;
 			
-			MessageBroker.PublishSingle(new WorldObjectPreviewSetDetailsMessage
+			_messageBroker.PublishSingle(new WorldObjectPreviewSetDetailsMessage
 			{
 				Sender = this,
 				Details = details
@@ -86,7 +89,7 @@ namespace Game.GameStates.PlacementModeStates
 		
 		private void OnPlacementRequested(object sender, WorldPositionEventArgs args)
 		{
-			MessageBroker.PublishSingle(new WorldObjectPlacementRequest
+			_messageBroker.PublishSingle(new WorldObjectPlacementRequest
 			{
 				Sender = this,
 				ChunkPosition = args.ChunkPosition,

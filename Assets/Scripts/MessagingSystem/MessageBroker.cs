@@ -1,29 +1,39 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-// ReSharper disable Unity.PerformanceCriticalCodeInvocation
-
 namespace MessagingSystem
 {
-	public static class MessageBroker
+	public class MessageBroker : IMessageBroker
 	{
-		private static readonly SubscriptionStore SubscriptionStore = new();
-		private static readonly MessageStore MessageStore = new();
+		private readonly ISubscriptionStore _subscriptionStore;
+		private readonly IMessageStore _messageStore;
 
-		public static void Subscribe(ISubscription subscription)
+		public MessageBroker()
 		{
-			if (!SubscriptionStore.TryAddSubscription(subscription))
+			_subscriptionStore = new SubscriptionStore();
+			_messageStore = new MessageStore();
+		}
+		
+		internal MessageBroker(ISubscriptionStore subscriptionStore, IMessageStore messageStore)
+		{
+			_subscriptionStore = subscriptionStore;
+			_messageStore = messageStore;
+		}
+
+		public void Subscribe(ISubscription subscription)
+		{
+			if (!_subscriptionStore.TryAddSubscription(subscription))
 			{
 				Debug.LogWarning($"Subscription from {subscription.Subscriber} failed for message type: {subscription.MessageType}");
 			}
 		}
 
-		public static void Unsubscribe(ISubscription subscription)
+		public void Unsubscribe(ISubscription subscription)
 		{
-			SubscriptionStore.DeleteSubscription(subscription);
+			_subscriptionStore.DeleteSubscription(subscription);
 		}
 
-		public static void PublishSingle<TMessage>(TMessage message) where TMessage : IMessage
+		public void PublishSingle<TMessage>(TMessage message) where TMessage : IMessage
 		{
 			if (message == null) // Invalid message
 			{
@@ -31,7 +41,7 @@ namespace MessagingSystem
 				return;
 			}
 
-			if (SubscriptionStore.TryGetSubscriptions<TMessage>(out List<ISubscription> subscriptions))
+			if (_subscriptionStore.TryGetSubscriptions<TMessage>(out List<ISubscription> subscriptions))
 			{
 				foreach (ISubscription subscription in subscriptions)
 				{
@@ -43,22 +53,33 @@ namespace MessagingSystem
 			}
 		}
 		
-		public static void PublishPersistant<TKey, TMessage>(TKey key, TMessage message)
+		public void PublishPersistant<TKey, TMessage>(TKey key, TMessage message)
 			where TKey : IMessageKey where TMessage : IMessage
 		{
+			if (key == null || message == null)
+			{
+				Debug.LogWarning($"Unable to publish persistant message with a null key: {typeof(TKey)} or message: {typeof(TMessage)}");
+				return;
+			}
+			
 			// Add to the message store
-			MessageStore.AddMessage(key, message);
+			_messageStore.AddMessage(key, message);
 			
 			// Same as publishing to everyone right now
 			PublishSingle(message);
 		}
 
-		public static void DeletePersistant<TKey>(TKey key) where TKey : IMessageKey
+		public bool TryGetPersistantMessage(IMessageKey key, out IMessage message)
+		{
+			return _messageStore.TryGetMessage(key, out message);
+		}
+
+		public void DeletePersistant<TKey>(TKey key) where TKey : IMessageKey
 		{
 			if (key == null)
 				return;
 
-			MessageStore.TryDeleteMessage(key);
+			_messageStore.TryDeleteMessage(key);
 		}
 	}
 }

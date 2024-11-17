@@ -14,7 +14,8 @@ namespace Game.GameStates.GameplayStates
 		private readonly PlayerInputActions _playerInputActions = new();
 		private readonly InteractableRaycaster _interactableRaycaster;
 		private readonly ISubscription _openContextMenuSubscription;
-		
+		private readonly MessageBroker _messageBroker;
+
 		private PlayerInputActions.GameplayActions _gameplay;
 
 		
@@ -22,6 +23,7 @@ namespace Game.GameStates.GameplayStates
 		{
 			_interactableRaycaster = interactableRaycaster;
 			_gameplay = _playerInputActions.Gameplay;
+			_messageBroker = Dependencies.GetDependency<MessageBroker>();
 
 			_openContextMenuSubscription = new SubscriptionBuilder(this)
 				.SetMessageType<OpenContextMenuRequest>()
@@ -48,7 +50,7 @@ namespace Game.GameStates.GameplayStates
 			_interactableRaycaster.InteractableSelectedSecondary += OnInteractableSelectedSecondary;
 			_interactableRaycaster.NonInteractableSelectedPrimary += OnNonInteractablePrimaryActionSelected;
 
-			MessageBroker.Subscribe(_openContextMenuSubscription);
+			_messageBroker.Subscribe(_openContextMenuSubscription);
 			
 			_gameplay.Enable();
 		}
@@ -65,7 +67,7 @@ namespace Game.GameStates.GameplayStates
 			_interactableRaycaster.InteractableSelectedSecondary -= OnInteractableSelectedSecondary;
 			_interactableRaycaster.NonInteractableSelectedPrimary -= OnNonInteractablePrimaryActionSelected;
 			
-			MessageBroker.Unsubscribe(_openContextMenuSubscription);
+			_messageBroker.Unsubscribe(_openContextMenuSubscription);
 		}
 		
 		private void OnPauseActionPerformed(InputAction.CallbackContext callbackContext)
