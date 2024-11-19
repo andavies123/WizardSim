@@ -18,7 +18,7 @@ namespace Game
 			_pauseMenuUIState = pauseMenuUIState;
 			pauseMenuInputState = new PauseMenuInputState();
 			
-			Dependencies.RegisterDependency(pauseMenuInputState);
+			Dependencies.Register(pauseMenuInputState);
 		}
 
 		public void Enable()

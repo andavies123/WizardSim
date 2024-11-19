@@ -38,7 +38,7 @@ namespace GameWorld.Tiles
 			Transform = transform;
 			_interactable = GetComponent<Interactable>();
 			_contextMenuUser = GetComponent<ContextMenuUser>();
-			_messageBroker = Dependencies.GetDependency<MessageBroker>();
+			_messageBroker = Dependencies.Get<MessageBroker>();
 		}
 
 		private void InitializeInteractable()

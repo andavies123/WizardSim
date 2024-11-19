@@ -26,9 +26,19 @@
                 "currentVersion": "1.6.5"
               }
             }
+          },
+          {
+            "id": "b6eb71f8dcbb4e7f",
+            "type": "leaf",
+            "state": {
+              "type": "release-notes",
+              "state": {
+                "currentVersion": "1.6.7"
+              }
+            }
           }
         ],
-        "currentTab": 1
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -155,7 +165,7 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "9d1eeddbc061d6fb",
+  "active": "b6eb71f8dcbb4e7f",
   "lastOpenFiles": [
     "font color= cyan Health Bar UI font.md",
     "Tasks.md",

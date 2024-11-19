@@ -31,13 +31,13 @@ namespace CameraComponents
 
 		private void Awake()
 		{
-			Dependencies.RegisterDependency(playerCamera);
+			Dependencies.Register(playerCamera);
 			_cameraTransform = playerCamera.GetComponent<Transform>();
 		}
 
 		private void Start()
 		{
-			cameraInputState = Dependencies.GetDependency<CameraInputState>();
+			cameraInputState = Dependencies.Get<CameraInputState>();
 			cameraInputState.CameraZoomInputPerformed += OnCameraZoomInputStatePerformed;
 			
 			ClampCameraPosition();

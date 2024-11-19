@@ -23,7 +23,7 @@ namespace GameWorld.WorldObjects.Rocks
 		{
 			WorldObject = GetComponent<WorldObject>();
 			ContextMenuUser = GetComponent<ContextMenuUser>();
-			_messageBroker = Dependencies.GetDependency<MessageBroker>();
+			_messageBroker = Dependencies.Get<MessageBroker>();
 			InitializeContextMenu();
 		}
 

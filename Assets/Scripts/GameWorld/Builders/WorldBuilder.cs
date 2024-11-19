@@ -44,7 +44,7 @@ namespace GameWorld.Builders
 			RockObjectBuilder = new RockObjectBuilder(world, rockPrefab, worldObjectParent);
 			_worldObjectPreviewManager = new WorldObjectPreviewManager(world, transform);
 
-			_messageBroker = Dependencies.GetDependency<MessageBroker>();
+			_messageBroker = Dependencies.Get<MessageBroker>();
 			_subBuilder = new SubscriptionBuilder(this);
 
 			_subscriptions.Add(_subBuilder.ResetAllButSubscriber()

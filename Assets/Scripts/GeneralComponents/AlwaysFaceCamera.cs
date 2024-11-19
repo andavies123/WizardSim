@@ -15,7 +15,7 @@ namespace GeneralComponents
 
 		private void Start()
 		{
-			_camera = Dependencies.GetDependency<Camera>();
+			_camera = Dependencies.Get<Camera>();
 		}
 
 		private void Update()

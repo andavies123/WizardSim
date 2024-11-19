@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using CameraComponents;
 using Extensions;
 using GameWorld.WorldObjects;
+using Messages.UI;
+using MessagingSystem;
 using UI;
 using UI.ContextMenus;
 using UnityEngine;
@@ -12,15 +15,19 @@ namespace Game.GameStates.GameplayStates
 	{
 		private readonly GameplayUIState _gameplayUIState;
 		private readonly GameplayInputState _gameplayInputState;
+		private readonly List<ISubscription> _subscriptions = new();
+		private MessageBroker _messageBroker;
 
 		public event EventHandler PauseGameRequested;
 		public event EventHandler<(ContextMenuUser, Vector2)> OpenContextMenuRequested;
 		public event EventHandler<BeginPlacementModeEventArgs> BeginPlacementModeRequested;
+		public event EventHandler OpenTownManagementWindow;
 		public event EventHandler OpenTaskManagementWindow
 		{
 			add => _gameplayInputState.OpenTaskManagementRequested += value;
 			remove => _gameplayInputState.OpenTaskManagementRequested -= value;
 		}
+
 		
 		public GameplayGameState(GameplayUIState gameplayUIState, InteractableRaycaster interactableRaycaster)
 		{
@@ -47,6 +54,14 @@ namespace Game.GameStates.GameplayStates
 			// UI
 			_gameplayUIState.PauseButtonPressed += OnPauseButtonPressed;
 			_gameplayUIState.HotBarItemSelected += OnPlacementModeRequested;
+
+			SubscriptionBuilder subscriptionBuilder = new(this);
+
+			_subscriptions.Add(subscriptionBuilder
+				.ResetAllButSubscriber()
+				.SetMessageType<OpenUIRequest>()
+				.SetCallback(OnOpenUIRequested)
+				.Build());
 		}
 
 		protected override void OnDisabled()
@@ -82,5 +97,13 @@ namespace Game.GameStates.GameplayStates
 
 		private void OnCloseInfoWindowRequested(object sender, EventArgs args) =>
 			_gameplayUIState.InfoWindow.CloseWindow();
+
+		private void OnOpenUIRequested(IMessage message)
+		{
+			if (message is OpenUIRequest openUIRequest)
+			{
+				Debug.Log("Open UI Requested");
+			}
+		}
 	}
 }

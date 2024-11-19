@@ -709,6 +709,45 @@
             ]
         },
         {
+            "name": "Town Management",
+            "id": "d17499fa-76af-47a9-807f-519b4358002b",
+            "actions": [
+                {
+                    "name": "Close Window",
+                    "type": "Button",
+                    "id": "d3eacdc5-7163-497e-be1b-f855379adffb",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "dc025d1f-1349-4b24-90d2-7610cca3fd48",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Close Window",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ad16c8f5-9328-4075-b390-c977f7b21ddc",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Close Window",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
             "name": "Context Menu",
             "id": "5579946f-d318-43f1-85a4-aacfee7f2f95",
             "actions": [

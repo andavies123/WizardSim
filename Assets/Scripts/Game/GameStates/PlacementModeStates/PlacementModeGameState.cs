@@ -26,7 +26,7 @@ namespace Game.GameStates.PlacementModeStates
 			_placementModeInputState = new PlacementModeInputState(interactableRaycaster);
 			_placementModeUIState = placementModeUIState.ThrowIfNull(nameof(placementModeUIState));
 
-			_messageBroker = Dependencies.GetDependency<MessageBroker>();
+			_messageBroker = Dependencies.Get<MessageBroker>();
 
 			_placementModeInputState.PlacementRequested += OnPlacementRequested;
 			_placementModeInputState.PreviewPositionUpdated += OnPreviewPositionUpdated;

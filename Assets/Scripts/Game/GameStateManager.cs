@@ -8,6 +8,7 @@ using Game.GameStates.InteractionStates;
 using Game.GameStates.PauseMenuStates;
 using Game.GameStates.PlacementModeStates;
 using Game.GameStates.TaskManagementGameStates;
+using Game.GameStates.TownManagementStates;
 using MessagingSystem;
 using UI.ContextMenus;
 using UI.Messages;
@@ -25,6 +26,7 @@ namespace Game
 		[SerializeField, Required] private ContextMenuUIState contextMenuUIState;
 		[SerializeField, Required] private PlacementModeUIState placementModeUIState;
 		[SerializeField, Required] private TaskManagementUIState taskManagementUIState;
+		[SerializeField, Required] private TownManagementUIState townManagementUIState;
 
 		[Header("External Components")]
 		[SerializeField, Required] private InteractableRaycaster interactableRaycaster;
@@ -40,6 +42,7 @@ namespace Game
 		private ContextMenuGameState _contextMenuGameState;
 		private PlacementModeGameState _placementModeGameState;
 		private TaskManagementGameState _taskManagementGameState;
+		private TownManagementGameState _townManagementGameState;
 
 		private CameraInputState _cameraInputState;
 
@@ -72,10 +75,11 @@ namespace Game
 			_contextMenuGameState = new ContextMenuGameState(contextMenuUIState, interactableRaycaster);
 			_placementModeGameState = new PlacementModeGameState(placementModeUIState, interactableRaycaster);
 			_taskManagementGameState = new TaskManagementGameState(taskManagementUIState);
+			_townManagementGameState = new TownManagementGameState(townManagementUIState);
 			
 			_cameraInputState = new CameraInputState();
-			Dependencies.RegisterDependency(_cameraInputState);
-			_messageBroker = Dependencies.GetDependency<MessageBroker>();
+			Dependencies.Register(_cameraInputState);
+			_messageBroker = Dependencies.Get<MessageBroker>();
 
 			SubscriptionBuilder subscriptionBuilder = new(this);
 			
@@ -101,6 +105,7 @@ namespace Game
 			_contextMenuGameState.Disable();
 			_placementModeGameState.Disable();
 			_taskManagementGameState.Disable();
+			_townManagementGameState.Disable();
 			
 			// Set the initial game state
 			UpdateCurrentState(_gameplayGameState);
@@ -112,6 +117,7 @@ namespace Game
 			_gameplayGameState.OpenContextMenuRequested += OnOpenContextMenuRequested;
 			_gameplayGameState.BeginPlacementModeRequested += OnBeginPlacementModeRequested;
 			_gameplayGameState.OpenTaskManagementWindow += OnOpenTaskManagementWindow;
+			_gameplayGameState.OpenTownManagementWindow += OnOpenTownManagementWindow;
 
 			_pauseMenuGameState.ResumeGameRequested += OnResumeGameRequested;
 			_pauseMenuGameState.QuitGameRequested += OnQuitGameRequested;
@@ -123,6 +129,8 @@ namespace Game
 			_placementModeGameState.PlacementModeEnded += OnPlacementModeEnded;
 
 			_taskManagementGameState.CloseMenu += OnCloseTaskManagementWindow;
+
+			_townManagementGameState.CloseMenu += OnCloseTownManagementWindow;
 			
 			_subscriptions.ForEach(_messageBroker.Subscribe);
 		}
@@ -133,6 +141,7 @@ namespace Game
 			_gameplayGameState.OpenContextMenuRequested -= OnOpenContextMenuRequested;
 			_gameplayGameState.BeginPlacementModeRequested -= OnBeginPlacementModeRequested;
 			_gameplayGameState.OpenTaskManagementWindow -= OnOpenTaskManagementWindow;
+			_gameplayGameState.OpenTownManagementWindow -= OnOpenTownManagementWindow;
 
 			_pauseMenuGameState.ResumeGameRequested -= OnResumeGameRequested;
 			_pauseMenuGameState.QuitGameRequested -= OnQuitGameRequested;
@@ -144,6 +153,8 @@ namespace Game
 			_placementModeGameState.PlacementModeEnded -= OnPlacementModeEnded;
 			
 			_taskManagementGameState.CloseMenu -= OnCloseTaskManagementWindow;
+
+			_townManagementGameState.CloseMenu -= OnCloseTownManagementWindow;
 			
 			_subscriptions.ForEach(_messageBroker.Unsubscribe);
 		}
@@ -197,5 +208,9 @@ namespace Game
 		// Task Management Menu Related Events
 		private void OnOpenTaskManagementWindow(object sender, EventArgs args) => UpdateCurrentState(_taskManagementGameState);
 		private void OnCloseTaskManagementWindow(object sender, EventArgs args) => UpdateCurrentState(_gameplayGameState);
+
+		// Town Management Menu Related Events
+		private void OnOpenTownManagementWindow(object sender, EventArgs args) => UpdateCurrentState(_townManagementGameState);
+		private void OnCloseTownManagementWindow(object sender, EventArgs args) => UpdateCurrentState(_gameplayGameState);
 	}
 }

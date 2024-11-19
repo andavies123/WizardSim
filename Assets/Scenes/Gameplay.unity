@@ -244,6 +244,121 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6181420583714759637, guid: e26871ae0d4c1084bb799129eedd3e08, type: 3}
   m_PrefabInstance: {fileID: 6104882088377253236}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &134541378
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 134541379}
+  - component: {fileID: 134541380}
+  - component: {fileID: 134541381}
+  - component: {fileID: 134541383}
+  - component: {fileID: 134541382}
+  m_Layer: 0
+  m_Name: Town Management UI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &134541379
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 134541378}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1614439690}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0}
+--- !u!114 &134541380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 134541378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d718e4250a5afc54099552bb318242ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  taskManagementUI: {fileID: 0}
+--- !u!223 &134541381
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 134541378}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 0
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
+--- !u!114 &134541382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 134541378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+--- !u!114 &134541383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 134541378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 1
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 2560, y: 1440}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0.5
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
 --- !u!1 &147671580
 GameObject:
   m_ObjectHideFlags: 0
@@ -431,6 +546,7 @@ MonoBehaviour:
   contextMenuUIState: {fileID: 583746065}
   placementModeUIState: {fileID: 664519175}
   taskManagementUIState: {fileID: 1834829560}
+  townManagementUIState: {fileID: 134541380}
   interactableRaycaster: {fileID: 391488598}
 --- !u!114 &276745019
 MonoBehaviour:
@@ -445,7 +561,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   revalidate: 1
-  throwIfNull: 1
+  required: 1
 --- !u!1 &305748071
 GameObject:
   m_ObjectHideFlags: 0
@@ -2071,8 +2187,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de6aba03274f5da49b1a4fdcaf9197f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthBarTimeToLiveSeconds: 5
-  healthBarTimeToFadeSeconds: 3
+  damagedTimeToLiveSec: 5
+  damagedTimeToFadeSec: 3
 --- !u!114 &1145572431
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2085,7 +2201,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e891de00f9f7ef341a1d182eb9e123a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthBarParent: {fileID: 1145572429}
   healthBarPrefab: {fileID: 4310551293728300817, guid: 4c1cd736a38e814468d61c781226b0fc, type: 3}
 --- !u!1 &1197091944
 GameObject:
@@ -3004,6 +3119,7 @@ Transform:
   - {fileID: 583746061}
   - {fileID: 1834829556}
   - {fileID: 1145572429}
+  - {fileID: 134541379}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1614439692

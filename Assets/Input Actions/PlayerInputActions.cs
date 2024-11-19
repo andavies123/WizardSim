@@ -733,6 +733,45 @@ namespace UnityEngine.InputSystem
             ]
         },
         {
+            ""name"": ""Town Management"",
+            ""id"": ""d17499fa-76af-47a9-807f-519b4358002b"",
+            ""actions"": [
+                {
+                    ""name"": ""Close Window"",
+                    ""type"": ""Button"",
+                    ""id"": ""d3eacdc5-7163-497e-be1b-f855379adffb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""dc025d1f-1349-4b24-90d2-7610cca3fd48"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Close Window"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ad16c8f5-9328-4075-b390-c977f7b21ddc"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Close Window"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
             ""name"": ""Context Menu"",
             ""id"": ""5579946f-d318-43f1-85a4-aacfee7f2f95"",
             ""actions"": [
@@ -1243,6 +1282,9 @@ namespace UnityEngine.InputSystem
             // Task Management
             m_TaskManagement = asset.FindActionMap("Task Management", throwIfNotFound: true);
             m_TaskManagement_CloseWindow = m_TaskManagement.FindAction("Close Window", throwIfNotFound: true);
+            // Town Management
+            m_TownManagement = asset.FindActionMap("Town Management", throwIfNotFound: true);
+            m_TownManagement_CloseWindow = m_TownManagement.FindAction("Close Window", throwIfNotFound: true);
             // Context Menu
             m_ContextMenu = asset.FindActionMap("Context Menu", throwIfNotFound: true);
             m_ContextMenu_Select = m_ContextMenu.FindAction("Select", throwIfNotFound: true);
@@ -1677,6 +1719,52 @@ namespace UnityEngine.InputSystem
         }
         public TaskManagementActions @TaskManagement => new TaskManagementActions(this);
 
+        // Town Management
+        private readonly InputActionMap m_TownManagement;
+        private List<ITownManagementActions> m_TownManagementActionsCallbackInterfaces = new List<ITownManagementActions>();
+        private readonly InputAction m_TownManagement_CloseWindow;
+        public struct TownManagementActions
+        {
+            private @PlayerInputActions m_Wrapper;
+            public TownManagementActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+            public InputAction @CloseWindow => m_Wrapper.m_TownManagement_CloseWindow;
+            public InputActionMap Get() { return m_Wrapper.m_TownManagement; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(TownManagementActions set) { return set.Get(); }
+            public void AddCallbacks(ITownManagementActions instance)
+            {
+                if (instance == null || m_Wrapper.m_TownManagementActionsCallbackInterfaces.Contains(instance)) return;
+                m_Wrapper.m_TownManagementActionsCallbackInterfaces.Add(instance);
+                @CloseWindow.started += instance.OnCloseWindow;
+                @CloseWindow.performed += instance.OnCloseWindow;
+                @CloseWindow.canceled += instance.OnCloseWindow;
+            }
+
+            private void UnregisterCallbacks(ITownManagementActions instance)
+            {
+                @CloseWindow.started -= instance.OnCloseWindow;
+                @CloseWindow.performed -= instance.OnCloseWindow;
+                @CloseWindow.canceled -= instance.OnCloseWindow;
+            }
+
+            public void RemoveCallbacks(ITownManagementActions instance)
+            {
+                if (m_Wrapper.m_TownManagementActionsCallbackInterfaces.Remove(instance))
+                    UnregisterCallbacks(instance);
+            }
+
+            public void SetCallbacks(ITownManagementActions instance)
+            {
+                foreach (var item in m_Wrapper.m_TownManagementActionsCallbackInterfaces)
+                    UnregisterCallbacks(item);
+                m_Wrapper.m_TownManagementActionsCallbackInterfaces.Clear();
+                AddCallbacks(instance);
+            }
+        }
+        public TownManagementActions @TownManagement => new TownManagementActions(this);
+
         // Context Menu
         private readonly InputActionMap m_ContextMenu;
         private List<IContextMenuActions> m_ContextMenuActionsCallbackInterfaces = new List<IContextMenuActions>();
@@ -1893,6 +1981,10 @@ namespace UnityEngine.InputSystem
             void OnEndPlacementMode(InputAction.CallbackContext context);
         }
         public interface ITaskManagementActions
+        {
+            void OnCloseWindow(InputAction.CallbackContext context);
+        }
+        public interface ITownManagementActions
         {
             void OnCloseWindow(InputAction.CallbackContext context);
         }

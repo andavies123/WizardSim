@@ -115,7 +115,7 @@ namespace GameWorld.Characters.Wizards
 
 			// Add/get components/Dependencies
 			StateMachine = GetComponent<WizardStateMachine>();
-			Dependencies.GetDependency<MessageBroker>();
+			Dependencies.Get<MessageBroker>();
 
 			Health.CurrentHealthChanged += OnCurrentHealthChanged;
 		}

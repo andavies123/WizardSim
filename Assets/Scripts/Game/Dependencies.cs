@@ -13,17 +13,17 @@ namespace Game
 
 		static Dependencies()
 		{
-			// Registering non Mono-Behaviour Dependencies here
-			RegisterDependency(new MessageBroker());
+			// Registering non singletons
+			Register(new MessageBroker());
 		}
 		
-		public static void RegisterDependency<T>(T dependency)
+		public static void Register<T>(T dependency)
 		{
 			if (!DependencyStore.TryAdd(dependency.GetType(), dependency))
 				throw new InvalidDataException($"{typeof(T)} dependency already exists");
 		}
 
-		public static void RegisterDependency<T>(T dependency, string key)
+		public static void Register<T>(T dependency, string key)
 		{
 			if (!KeyedDependencyStore.TryGetValue(dependency.GetType(), out Dictionary<string, object> dependencyByKey))
 			{
@@ -35,7 +35,7 @@ namespace Game
 				throw new InvalidDataException($"{typeof(T)} dependency already exists with key: {key}");
 		}
 
-		public static T GetDependency<T>()
+		public static T Get<T>()
 		{
 			if (!DependencyStore.TryGetValue(typeof(T), out object value))
 				throw new InvalidDataException($"{typeof(T)} dependency does not exist");
@@ -43,7 +43,7 @@ namespace Game
 			return (T)value;
 		}
 
-		public static T GetDependency<T>(string key)
+		public static T Get<T>(string key)
 		{
 			if (!KeyedDependencyStore.TryGetValue(typeof(T), out Dictionary<string, object> dependencyByKey) ||
 			    !dependencyByKey.TryGetValue(key, out object value))

@@ -29,7 +29,7 @@ namespace GameWorld.WorldObjectPreviews
 			_world = world;
 			_previewParent = previewParent;
 
-			_messageBroker = Dependencies.GetDependency<MessageBroker>();
+			_messageBroker = Dependencies.Get<MessageBroker>();
 			SubscriptionBuilder subscriptionBuilder = new(this);
 			
 			_subscriptions.Add(subscriptionBuilder

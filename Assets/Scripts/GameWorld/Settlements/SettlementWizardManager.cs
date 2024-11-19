@@ -18,7 +18,7 @@ namespace GameWorld.Settlements
 			Factory = wizardFactory;
 			Repo = new WizardRepo(wizardContainer);
 			TaskManager = new WizardTaskManager();
-			_messageBroker = Dependencies.GetDependency<MessageBroker>();
+			_messageBroker = Dependencies.Get<MessageBroker>();
 
 			_addWizardTaskSubscription = new SubscriptionBuilder(this)
 				.SetMessageType<AddWizardTaskRequest>()

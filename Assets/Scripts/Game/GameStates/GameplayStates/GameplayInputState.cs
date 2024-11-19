@@ -23,7 +23,7 @@ namespace Game.GameStates.GameplayStates
 		{
 			_interactableRaycaster = interactableRaycaster;
 			_gameplay = _playerInputActions.Gameplay;
-			_messageBroker = Dependencies.GetDependency<MessageBroker>();
+			_messageBroker = Dependencies.Get<MessageBroker>();
 
 			_openContextMenuSubscription = new SubscriptionBuilder(this)
 				.SetMessageType<OpenContextMenuRequest>()
