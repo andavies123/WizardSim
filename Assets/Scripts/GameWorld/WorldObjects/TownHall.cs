@@ -42,6 +42,7 @@ namespace GameWorld.WorldObjects
 
 		private void OpenTownHallMenu()
 		{
+			print("Request Opening Town Hall");
 			_messageBroker.PublishSingle(new OpenUIRequest
 			{
 				Sender = this,

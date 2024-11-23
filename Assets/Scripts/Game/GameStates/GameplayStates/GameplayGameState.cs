@@ -4,6 +4,7 @@ using CameraComponents;
 using Extensions;
 using GameWorld.WorldObjects;
 using Messages.UI;
+using Messages.UI.Enums;
 using MessagingSystem;
 using UI;
 using UI.ContextMenus;
@@ -57,6 +58,8 @@ namespace Game.GameStates.GameplayStates
 
 			SubscriptionBuilder subscriptionBuilder = new(this);
 
+			// Todo: This keeps getting unsubscribed everytime the context menu opens
+			// I believe I shouldn't be unsubscribing in on disabled and instead check if the state is active
 			_subscriptions.Add(subscriptionBuilder
 				.ResetAllButSubscriber()
 				.SetMessageType<OpenUIRequest>()
@@ -100,9 +103,15 @@ namespace Game.GameStates.GameplayStates
 
 		private void OnOpenUIRequested(IMessage message)
 		{
+			Debug.Log("Message Received");
 			if (message is OpenUIRequest openUIRequest)
 			{
-				Debug.Log("Open UI Requested");
+				Debug.Log("UI Requested");
+				if (openUIRequest.Window == UIWindow.TownHallWindow)
+				{
+					Debug.Log("Town hall window");
+					OpenTownManagementWindow?.Invoke(this, EventArgs.Empty);
+				}
 			}
 		}
 	}
