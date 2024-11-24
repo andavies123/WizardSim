@@ -27,7 +27,7 @@ namespace Game.GameStates.TownManagementStates
 		protected override IInputState InputState => _townManagementInputState;
 		protected override UIState UIState => _townManagementUIState;
 		
-		protected override void OnEnabled() { Debug.Log("Test"); }
+		protected override void OnEnabled() { }
 		protected override void OnDisabled() { }
 	}
 }

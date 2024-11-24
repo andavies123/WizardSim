@@ -17,7 +17,7 @@ namespace Game.GameStates.GameplayStates
 		private readonly GameplayUIState _gameplayUIState;
 		private readonly GameplayInputState _gameplayInputState;
 		private readonly List<ISubscription> _subscriptions = new();
-		private MessageBroker _messageBroker;
+		private readonly MessageBroker _messageBroker;
 
 		public event EventHandler PauseGameRequested;
 		public event EventHandler<(ContextMenuUser, Vector2)> OpenContextMenuRequested;
@@ -29,13 +29,23 @@ namespace Game.GameStates.GameplayStates
 			remove => _gameplayInputState.OpenTaskManagementRequested -= value;
 		}
 
-		
 		public GameplayGameState(GameplayUIState gameplayUIState, InteractableRaycaster interactableRaycaster)
 		{
 			_gameplayUIState = gameplayUIState.ThrowIfNull(nameof(gameplayUIState));
 			interactableRaycaster.ThrowIfNull(nameof(interactableRaycaster));
+			_messageBroker = Dependencies.Get<MessageBroker>();
             
 			_gameplayInputState = new GameplayInputState(interactableRaycaster);
+			
+			SubscriptionBuilder subscriptionBuilder = new(this);
+
+			// Todo: This keeps getting unsubscribed everytime the context menu opens
+			// I believe I shouldn't be unsubscribing in on disabled and instead check if the state is active
+			_subscriptions.Add(subscriptionBuilder
+				.ResetAllButSubscriber()
+				.SetMessageType<OpenUIRequest>()
+				.SetCallback(OnOpenUIRequested)
+				.Build());
 		}
 
 		public override bool AllowCameraInputs => true;
@@ -56,15 +66,7 @@ namespace Game.GameStates.GameplayStates
 			_gameplayUIState.PauseButtonPressed += OnPauseButtonPressed;
 			_gameplayUIState.HotBarItemSelected += OnPlacementModeRequested;
 
-			SubscriptionBuilder subscriptionBuilder = new(this);
-
-			// Todo: This keeps getting unsubscribed everytime the context menu opens
-			// I believe I shouldn't be unsubscribing in on disabled and instead check if the state is active
-			_subscriptions.Add(subscriptionBuilder
-				.ResetAllButSubscriber()
-				.SetMessageType<OpenUIRequest>()
-				.SetCallback(OnOpenUIRequested)
-				.Build());
+			_subscriptions.ForEach(sub => _messageBroker.Subscribe(sub));
 		}
 
 		protected override void OnDisabled()
@@ -78,6 +80,8 @@ namespace Game.GameStates.GameplayStates
 			// UI
 			_gameplayUIState.PauseButtonPressed -= OnPauseButtonPressed;
 			_gameplayUIState.HotBarItemSelected -= OnPlacementModeRequested;
+
+			_subscriptions.ForEach(sub => _messageBroker.Unsubscribe(sub));
 		}
 
 		private void OnPauseInputPerformed(object sender, EventArgs args)
@@ -103,13 +107,10 @@ namespace Game.GameStates.GameplayStates
 
 		private void OnOpenUIRequested(IMessage message)
 		{
-			Debug.Log("Message Received");
 			if (message is OpenUIRequest openUIRequest)
 			{
-				Debug.Log("UI Requested");
 				if (openUIRequest.Window == UIWindow.TownHallWindow)
 				{
-					Debug.Log("Town hall window");
 					OpenTownManagementWindow?.Invoke(this, EventArgs.Empty);
 				}
 			}

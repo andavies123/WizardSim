@@ -11,8 +11,11 @@
 		protected abstract void OnEnabled();
 		protected abstract void OnDisabled();
 
+		public bool IsEnabled { get; private set; }
+
 		public void Enable()
 		{
+			IsEnabled = true;
 			UIState.Enable();
 			InputState.Enable();
 			OnEnabled();
@@ -20,6 +23,7 @@
 
 		public void Disable()
 		{
+			IsEnabled = false;
 			UIState.Disable();
 			InputState.Disable();
 			OnDisabled();

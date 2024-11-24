@@ -185,8 +185,8 @@ namespace UI.ContextMenus
 					GoBackOneMenu();
 					break;
 				case ContextMenuItemType.Leaf:
-					menuItemUI.ContextMenuItem.MenuClickCallback?.Invoke();
 					CloseMenu();
+					menuItemUI.ContextMenuItem.MenuClickCallback?.Invoke();
 					break;
 				case ContextMenuItemType.Group:
 					GoForwardOneMenu(menuItemUI.ContextMenuItem);
