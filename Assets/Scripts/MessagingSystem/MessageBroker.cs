@@ -5,24 +5,24 @@ namespace MessagingSystem
 {
 	public class MessageBroker : IMessageBroker
 	{
-		private readonly ISubscriptionStore _subscriptionStore;
-		private readonly IMessageStore _messageStore;
+		internal ISubscriptionStore SubscriptionStore { get; }
+		internal IMessageStore MessageStore { get; }
 
 		public MessageBroker()
 		{
-			_subscriptionStore = new SubscriptionStore();
-			_messageStore = new MessageStore();
+			SubscriptionStore = new SubscriptionStore();
+			MessageStore = new MessageStore();
 		}
 		
 		internal MessageBroker(ISubscriptionStore subscriptionStore, IMessageStore messageStore)
 		{
-			_subscriptionStore = subscriptionStore;
-			_messageStore = messageStore;
+			SubscriptionStore = subscriptionStore;
+			MessageStore = messageStore;
 		}
 
 		public void Subscribe(ISubscription subscription)
 		{
-			if (!_subscriptionStore.TryAddSubscription(subscription))
+			if (!SubscriptionStore.TryAddSubscription(subscription))
 			{
 				Debug.LogWarning($"Subscription from {subscription.Subscriber} failed for message type: {subscription.MessageType}");
 			}
@@ -30,7 +30,7 @@ namespace MessagingSystem
 
 		public void Unsubscribe(ISubscription subscription)
 		{
-			_subscriptionStore.DeleteSubscription(subscription);
+			SubscriptionStore.DeleteSubscription(subscription);
 		}
 
 		public void PublishSingle<TMessage>(TMessage message) where TMessage : IMessage
@@ -41,9 +41,20 @@ namespace MessagingSystem
 				return;
 			}
 
-			if (_subscriptionStore.TryGetSubscriptions<TMessage>(out List<ISubscription> subscriptions))
+			if (SubscriptionStore.TryGetSubscriptions<IMessage>(out List<ISubscription> generalSubscriptions))
 			{
-				foreach (ISubscription subscription in subscriptions)
+				foreach (ISubscription subscription in generalSubscriptions)
+				{
+					if (subscription.MessageFilter?.Invoke(message) ?? true) // Null filter counts as no filter
+					{
+						subscription.Callback?.Invoke(message);
+					}
+				}
+			}
+			
+			if (SubscriptionStore.TryGetSubscriptions<TMessage>(out List<ISubscription> specificSubscriptions))
+			{
+				foreach (ISubscription subscription in specificSubscriptions)
 				{
 					if (subscription.MessageFilter?.Invoke(message) ?? true) // Null filter counts as no filter
 					{
@@ -63,7 +74,7 @@ namespace MessagingSystem
 			}
 			
 			// Add to the message store
-			_messageStore.AddMessage(key, message);
+			MessageStore.AddMessage(key, message);
 			
 			// Same as publishing to everyone right now
 			PublishSingle(message);
@@ -71,7 +82,7 @@ namespace MessagingSystem
 
 		public bool TryGetPersistantMessage(IMessageKey key, out IMessage message)
 		{
-			return _messageStore.TryGetMessage(key, out message);
+			return MessageStore.TryGetMessage(key, out message);
 		}
 
 		public void DeletePersistant<TKey>(TKey key) where TKey : IMessageKey
@@ -79,7 +90,7 @@ namespace MessagingSystem
 			if (key == null)
 				return;
 
-			_messageStore.TryDeleteMessage(key);
+			MessageStore.TryDeleteMessage(key);
 		}
 	}
 }
