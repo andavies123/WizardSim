@@ -2,48 +2,27 @@ using System.Collections.Generic;
 using System.Linq;
 using Extensions;
 using UnityEditor;
-using UnityEngine;
 
 namespace Editor.MessagingSystem
 {
-	public abstract class SortedMessageList
-	{
-		protected readonly Dictionary<string, bool> FoldoutStates = new();
-		protected GUIStyle FoldoutHeaderFontStyle;
-		
-		public abstract void Draw(List<MessageInfo> messages);
-
-		public void CreateStyles()
-		{
-			FoldoutHeaderFontStyle = new GUIStyle(EditorStyles.foldout)
-			{
-				fontSize = 15,
-				fontStyle = FontStyle.Bold,
-				normal = { textColor = Color.yellow },
-				onNormal = {textColor = Color.green }
-			};
-		}
-
-		protected static void DrawHorizontalSeparator(int lineWidth)
-		{
-			GUILayout.Box(GUIContent.none, GUILayout.Height(lineWidth), GUILayout.ExpandWidth(true));
-		}
-	}
+	public abstract class SortedMessageList : SortedBrokerList<MessageListItem> { }
 
 	public class SenderSortedMessageList : SortedMessageList
 	{
-		public override void Draw(List<MessageInfo> messages)
+		public override string SortTypeName => "Sender";
+		
+		public override void Draw(List<MessageListItem> messages)
 		{
 			if (messages == null || messages.IsEmpty())
 				return;
 
-			Dictionary<string, List<MessageInfo>> sortedMessages = messages
+			Dictionary<string, List<MessageListItem>> sortedMessages = messages
 				.OrderBy(messageInfo => messageInfo.Message.Sender.GetType().Name)
 				.ThenByDescending(messageInfo => messageInfo.TimeReceived)
 				.GroupBy(messageInfo => messageInfo.Message.Sender.GetType().Name)
 				.ToDictionary(group => group.Key, group => group.ToList());
 
-			foreach ((string sender, List<MessageInfo> messageBySender) in sortedMessages)
+			foreach ((string sender, List<MessageListItem> messageBySender) in sortedMessages)
 			{
 				if (!FoldoutStates.ContainsKey(sender))
 				{
@@ -51,11 +30,11 @@ namespace Editor.MessagingSystem
 				}
 				
 				FoldoutStates[sender] = EditorGUILayout.Foldout(FoldoutStates[sender], sender, FoldoutHeaderFontStyle);
-				DrawHorizontalSeparator(2);
+				EditorExtensions.DrawHorizontalSeparator();
 				
 				if (FoldoutStates[sender])
 				{
-					foreach (MessageInfo messageInfo in messageBySender)
+					foreach (MessageListItem messageInfo in messageBySender)
 					{
 						messageInfo.Draw();
 					}
@@ -66,18 +45,20 @@ namespace Editor.MessagingSystem
 
 	public class MessageTypeSortedMessageList : SortedMessageList
 	{
-		public override void Draw(List<MessageInfo> messages)
+		public override string SortTypeName => "Message Type";
+		
+		public override void Draw(List<MessageListItem> messages)
 		{
 			if (messages == null || messages.IsEmpty())
 				return;
 
-			Dictionary<string, List<MessageInfo>> sortedMessages = messages
+			Dictionary<string, List<MessageListItem>> sortedMessages = messages
 				.OrderBy(messageInfo => messageInfo.Message.GetType().Name)
 				.ThenByDescending(messageInfo => messageInfo.TimeReceived)
 				.GroupBy(messageInfo => messageInfo.Message.GetType().Name)
 				.ToDictionary(group => group.Key, group => group.ToList());
 
-			foreach ((string messageType, List<MessageInfo> messageByType) in sortedMessages)
+			foreach ((string messageType, List<MessageListItem> messageByType) in sortedMessages)
 			{
 				if (!FoldoutStates.ContainsKey(messageType))
 				{
@@ -85,11 +66,11 @@ namespace Editor.MessagingSystem
 				}
 				
 				FoldoutStates[messageType] = EditorGUILayout.Foldout(FoldoutStates[messageType], messageType, FoldoutHeaderFontStyle);
-				DrawHorizontalSeparator(2);
+				EditorExtensions.DrawHorizontalSeparator();
 				
 				if (FoldoutStates[messageType])
 				{
-					foreach (MessageInfo messageInfo in messageByType)
+					foreach (MessageListItem messageInfo in messageByType)
 					{
 						messageInfo.Draw();
 					}
@@ -100,16 +81,18 @@ namespace Editor.MessagingSystem
 
 	public class LatestMessageSortedMessageList : SortedMessageList
 	{
-		public override void Draw(List<MessageInfo> messages)
+		public override string SortTypeName => "Latest";
+		
+		public override void Draw(List<MessageListItem> messages)
 		{
 			if (messages == null || messages.IsEmpty())
 				return;
 			
-			List<MessageInfo> sortedMessages = messages
+			List<MessageListItem> sortedMessages = messages
 				.OrderByDescending(messageInfo => messageInfo.TimeReceived)
 				.ToList();
 			
-			foreach (MessageInfo messageInfo in sortedMessages)
+			foreach (MessageListItem messageInfo in sortedMessages)
 			{
 				messageInfo.Draw();
 			}
@@ -118,16 +101,18 @@ namespace Editor.MessagingSystem
 
 	public class OldestMessageSortedMessageList : SortedMessageList
 	{
-		public override void Draw(List<MessageInfo> messages)
+		public override string SortTypeName => "Oldest";
+		
+		public override void Draw(List<MessageListItem> messages)
 		{
 			if (messages == null || messages.IsEmpty())
 				return;
 			
-			List<MessageInfo> sortedMessages = messages
+			List<MessageListItem> sortedMessages = messages
 				.OrderBy(messageInfo => messageInfo.TimeReceived)
 				.ToList();
 			
-			foreach (MessageInfo messageInfo in sortedMessages)
+			foreach (MessageListItem messageInfo in sortedMessages)
 			{
 				messageInfo.Draw();
 			}
