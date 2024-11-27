@@ -14,10 +14,12 @@ namespace Editor.MessagingSystem
 		private const string LISTENING_MODE_STOPPED = "Stopped";
 		
 		private readonly List<MessageListItem> _allMessages = new();
+		private readonly List<PersistantMessageListItem> _allPersistantMessages = new();
 		private readonly List<SubscriptionListItem> _allSubscriptions = new();
 		private readonly List<BrokerPage> _pages = new()
 		{
-			new SingleMessagePage(),
+			new AllMessagesPage(),
+			new PersistantMessagesPage(),
 			new SubscriptionPage()
 		};
 		
@@ -61,6 +63,19 @@ namespace Editor.MessagingSystem
 						});
 					}
 				}
+
+				_allPersistantMessages.Clear();
+				foreach (KeyValuePair<Type, HashSet<MessagePair>> kvp in _messageBroker.MessageStore.Messages)
+				{
+					foreach (MessagePair messagePair in kvp.Value)
+					{
+						_allPersistantMessages.Add(new PersistantMessageListItem
+						{
+							Key = messagePair.Key,
+							Message = messagePair.Message
+						});
+					}
+				}
 			}
 			
 			EditorGUILayout.BeginVertical();
@@ -69,8 +84,11 @@ namespace Editor.MessagingSystem
 
 			switch (CurrentPage)
 			{
-				case SingleMessagePage singleMessagePage:
+				case AllMessagesPage singleMessagePage:
 					singleMessagePage.DrawPage(_allMessages);
+					break;
+				case PersistantMessagesPage persistantMessagesPage:
+					persistantMessagesPage.DrawPage(_allPersistantMessages);
 					break;
 				case SubscriptionPage subscriptionPage:
 					subscriptionPage.DrawPage(_allSubscriptions);

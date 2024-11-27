@@ -34,6 +34,31 @@ namespace Editor.MessagingSystem
 		}
 	}
 
+	public class PersistantMessageListItem : BrokerListItem
+	{
+		public IMessageKey Key { get; set; }
+		public IMessage Message { get; set; }
+
+		public override bool MatchesSearch(string searchString) =>
+			searchString.IsNullOrEmpty() ||
+			Message.GetType().Name.Contains(searchString, StringComparison.InvariantCultureIgnoreCase) ||
+			Message.Sender.GetType().Name.Contains(searchString, StringComparison.InvariantCultureIgnoreCase) ||
+			Key.GetType().Name.Contains(searchString, StringComparison.InvariantCultureIgnoreCase) ||
+			Key.Sender.GetType().Name.Contains(searchString, StringComparison.InvariantCultureIgnoreCase);
+
+		public override void Draw()
+		{
+			EditorGUILayout.BeginVertical();
+			
+			GUILayout.Label($"\tMessage: {Message.GetType().Name}", EditorStyles.boldLabel);
+			GUILayout.Label($"\tKey: {Message.GetType().Name}");
+			GUILayout.Label($"\t\tSender: {Message.Sender.GetType().Name}");
+			EditorExtensions.DrawHorizontalSeparator();
+			
+			EditorGUILayout.EndVertical();
+		}
+	}
+
 	public class SubscriptionListItem : BrokerListItem
 	{
 		public ISubscription Subscription { get; set; }

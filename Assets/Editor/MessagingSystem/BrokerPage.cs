@@ -55,7 +55,7 @@ namespace Editor.MessagingSystem
 		protected abstract void DrawContent();
 	}
 
-	public class SingleMessagePage : BrokerPage
+	public class AllMessagesPage : BrokerPage
 	{
 		private static readonly List<SortedMessageList> SortedMessageLists = new()
 		{
@@ -66,7 +66,7 @@ namespace Editor.MessagingSystem
 		};
 
 		public override SortedBrokerList CurrentSortedList => SortedMessageLists[SortModeDropdownIndex];
-		public override string PageName => "Messages";
+		public override string PageName => "All Messages";
 		
 		protected override string[] SortOptions { get; } =
 			SortedMessageLists.Select(list => list.SortTypeName).ToArray();
@@ -76,6 +76,29 @@ namespace Editor.MessagingSystem
 			// Apparently these have to be called in "OnGUI" or else it throws an error
 			SortedMessageLists.ForEach(list => list.CreateStyles());
 			SortedMessageLists[SortModeDropdownIndex].Draw(FilteredListItems.Cast<MessageListItem>().ToList());
+		}
+	}
+
+	public class PersistantMessagesPage : BrokerPage
+	{
+		private static readonly List<SortedPersistantMessageList> SortedMessageLists = new()
+		{
+			new MessageTypeSortedPersistantMessageList(),
+			new KeyTypeSortedPersistantMessageList(),
+			new SenderSortedPersistantMessageList(),
+		};
+		
+		public override SortedBrokerList CurrentSortedList => SortedMessageLists[SortModeDropdownIndex];
+		public override string PageName => "Persistant Messages";
+		
+		protected override string[] SortOptions { get; } =
+			SortedMessageLists.Select(list => list.SortTypeName).ToArray();
+		
+		protected override void DrawContent()
+		{
+			// Apparently these have to be called in "OnGUI" or else it throws an error
+			SortedMessageLists.ForEach(list => list.CreateStyles());
+			SortedMessageLists[SortModeDropdownIndex].Draw(FilteredListItems.Cast<PersistantMessageListItem>().ToList());
 		}
 	}
 
