@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using FluentAssertions;
 using MessagingSystem;
 using NSubstitute;
@@ -393,9 +394,18 @@ namespace Unit_Tests.MessagingSystem_UnitTests
 
 		private static IMessageKey MockMessageKey => Substitute.For<IMessageKey>();
 		private static IMessage MockMessage => Substitute.For<IMessage>();
-		
-		private class TestMessage : IMessage { public object Sender => null; }
-		private class TestMessage2 : IMessage { public object Sender => null; }
+
+		private class TestMessage : IMessage
+		{
+			public object Sender => null;
+			public StringBuilder GetDisplayText() => new();
+		}
+
+		private class TestMessage2 : IMessage
+		{
+			public object Sender => null;
+			public StringBuilder GetDisplayText() => new();
+		}
 
 		#endregion
 	}

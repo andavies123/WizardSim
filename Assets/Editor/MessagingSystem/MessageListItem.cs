@@ -26,8 +26,8 @@ namespace Editor.MessagingSystem
 		{
 			EditorGUILayout.BeginVertical();
 			
-			GUILayout.Label($"[{TimeReceived.ToLongTimeString()}]:\t{Message.GetType().Name}", EditorStyles.boldLabel);
-			GUILayout.Label($"\t\tSender: {Message.Sender.GetType().Name}");
+			GUILayout.Label($"[{TimeReceived.ToLongTimeString()}]");
+			GUILayout.Label(Message.GetDisplayText().ToString().Trim());
 			EditorExtensions.DrawHorizontalSeparator();
 			
 			EditorGUILayout.EndVertical();
@@ -50,9 +50,8 @@ namespace Editor.MessagingSystem
 		{
 			EditorGUILayout.BeginVertical();
 			
-			GUILayout.Label($"\tMessage: {Message.GetType().Name}", EditorStyles.boldLabel);
-			GUILayout.Label($"\tKey: {Message.GetType().Name}");
-			GUILayout.Label($"\t\tSender: {Message.Sender.GetType().Name}");
+			GUILayout.Label($"Key: {Key.GetType().Name} ({Key.CompareString})");
+			GUILayout.Label(Message.GetDisplayText().ToString().Trim());
 			EditorExtensions.DrawHorizontalSeparator();
 			
 			EditorGUILayout.EndVertical();

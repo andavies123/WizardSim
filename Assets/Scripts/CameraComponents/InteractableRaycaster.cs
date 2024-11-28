@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Game;
+using Messages.Selection;
+using MessagingSystem;
+using System;
 using UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -11,6 +14,7 @@ namespace CameraComponents
 		[SerializeField] private new Camera camera;
 		[SerializeField] private float maxRaycastDistance = 1000;
 
+		private MessageBroker _messageBroker;
 		private Interactable _currentHover;
 		private Interactable _currentSelected;
 		private bool _isPointerOverUI = false;
@@ -26,6 +30,11 @@ namespace CameraComponents
         public event EventHandler UIHoverEnd;
 
         public bool IsInteractableCurrentlyHovered => _currentHover;
+
+		private void Awake()
+		{
+			_messageBroker = Dependencies.Get<MessageBroker>();
+		}
 
 		private void Update()
 		{
@@ -61,12 +70,27 @@ namespace CameraComponents
 			BeginNewHover(interactable);
 
 			if (Input.GetMouseButtonDown(InputUtilities.LeftMouseButton))
+			{
 				BeginNewSelection(interactable);
+			}
 
 			if (Input.GetMouseButtonDown(InputUtilities.RightMouseButton))
 			{
 				interactable.SelectSecondaryAction();
 				InteractableSelectedSecondary?.Invoke(this, new InteractableRaycasterEventArgs(interactable));
+
+				_messageBroker.PublishPersistant(
+					new CurrentSelectedInteractableKey
+					{
+						InteractionType = InteractionType.SecondarySelection,
+						Sender = this,
+					},
+					new CurrentSelectedInteractable
+					{
+						InteractionType = InteractionType.SecondarySelection,
+						SelectedInteractable = interactable,
+						Sender = this
+					});
 			}
 		}
 
@@ -96,6 +120,19 @@ namespace CameraComponents
 				_currentSelected.IsSelected = true;
 				_currentSelected.SelectPrimaryAction();
 				InteractableSelectedPrimary?.Invoke(this, new InteractableRaycasterEventArgs(_currentSelected));
+
+				_messageBroker.PublishPersistant(
+					new CurrentSelectedInteractableKey
+					{
+						InteractionType = InteractionType.PrimarySelection,
+						Sender = this,
+					},
+					new CurrentSelectedInteractable
+					{
+						InteractionType = InteractionType.PrimarySelection,
+						SelectedInteractable = _currentSelected,
+						Sender = this
+					});
 			}
 		}
 

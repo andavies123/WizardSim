@@ -41,25 +41,22 @@ namespace MessagingSystem
 				return;
 			}
 
+			List<ISubscription> subscriptions = new();
+
 			if (SubscriptionStore.TryGetSubscriptions<IMessage>(out List<ISubscription> generalSubscriptions))
 			{
-				foreach (ISubscription subscription in generalSubscriptions)
-				{
-					if (subscription.MessageFilter?.Invoke(message) ?? true) // Null filter counts as no filter
-					{
-						subscription.Callback?.Invoke(message);
-					}
-				}
+				subscriptions.AddRange(generalSubscriptions);
 			}
-			
 			if (SubscriptionStore.TryGetSubscriptions<TMessage>(out List<ISubscription> specificSubscriptions))
 			{
-				foreach (ISubscription subscription in specificSubscriptions)
+				subscriptions.AddRange(specificSubscriptions);
+			}
+
+			foreach (ISubscription subscription in subscriptions)
+			{
+				if (subscription.MessageFilter?.Invoke(message) ?? true) // Null filter counts as no filter
 				{
-					if (subscription.MessageFilter?.Invoke(message) ?? true) // Null filter counts as no filter
-					{
-						subscription.Callback?.Invoke(message);
-					}
+					subscription.Callback?.Invoke(message);
 				}
 			}
 		}

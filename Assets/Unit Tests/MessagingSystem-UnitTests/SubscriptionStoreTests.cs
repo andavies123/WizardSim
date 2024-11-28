@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text;
 using FluentAssertions;
 using MessagingSystem;
 using NSubstitute;
@@ -279,8 +280,17 @@ namespace Unit_Tests.MessagingSystem_UnitTests
 			return subscription;
 		}
 		
-		private class TestMessage : IMessage { public object Sender => null; }
-		private class TestMessage2 : IMessage { public object Sender => null; }
+		private class TestMessage : IMessage
+		{
+			public object Sender => null;
+			public StringBuilder GetDisplayText() => new();
+		}
+
+		private class TestMessage2 : IMessage
+		{
+			public object Sender => null;
+			public StringBuilder GetDisplayText() => new();
+		}
 		
 		#endregion
 	}

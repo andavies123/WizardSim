@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using CameraComponents;
+using Codice.CM.Client.Differences.Merge;
 using Extensions;
 using GameWorld.WorldObjects;
+using Messages.Selection;
 using Messages.UI;
 using Messages.UI.Enums;
 using MessagingSystem;
 using UI;
 using UI.ContextMenus;
+using UI.Messages;
 using UnityEngine;
 
 namespace Game.GameStates.GameplayStates
@@ -46,6 +49,19 @@ namespace Game.GameStates.GameplayStates
 				.SetMessageType<OpenUIRequest>()
 				.SetCallback(OnOpenUIRequested)
 				.Build());
+
+			_subscriptions.Add(subscriptionBuilder
+				.ResetAllButSubscriber()
+				.SetMessageType<CurrentSelectedInteractable>()
+				.SetCallback(OnPrimarySelectedInteractableReceived)
+				.AddFilter(message => (message as CurrentSelectedInteractable).InteractionType == InteractionType.PrimarySelection)
+				.Build());
+
+			_subscriptions.Add(subscriptionBuilder
+				.ResetAllButSubscriber()
+				.SetMessageType<OpenContextMenuRequest>()
+				.SetCallback(OnOpenContextMenuRequestReceived)
+				.Build());
 		}
 
 		public override bool AllowCameraInputs => true;
@@ -58,7 +74,6 @@ namespace Game.GameStates.GameplayStates
 		{
 			// Inputs
 			_gameplayInputState.PauseInputPerformed += OnPauseInputPerformed;
-			_gameplayInputState.OpenContextMenuRequested += OnOpenContextMenuRequested;
 			_gameplayInputState.OpenInfoWindowRequested += OnOpenInfoWindowRequested;
 			_gameplayInputState.CloseInfoWindowRequested += OnCloseInfoWindowRequested;
 			
@@ -73,7 +88,6 @@ namespace Game.GameStates.GameplayStates
 		{
 			// Inputs
 			_gameplayInputState.PauseInputPerformed -= OnPauseInputPerformed;
-			_gameplayInputState.OpenContextMenuRequested -= OnOpenContextMenuRequested;
 			_gameplayInputState.OpenInfoWindowRequested -= OnOpenInfoWindowRequested;
 			_gameplayInputState.CloseInfoWindowRequested -= OnCloseInfoWindowRequested;
 
@@ -92,9 +106,6 @@ namespace Game.GameStates.GameplayStates
 		
 		private void OnPauseButtonPressed(object sender, EventArgs args) => 
 			PauseGameRequested?.Invoke(sender, args);
-
-		private void OnOpenContextMenuRequested(object sender, ContextMenuUser contextMenuUser) => 
-			OpenContextMenuRequested?.Invoke(sender, (contextMenuUser, Input.mousePosition));
 		
 		private void OnPlacementModeRequested(object sender, WorldObjectDetails details) =>
 			BeginPlacementModeRequested?.Invoke(this, new BeginPlacementModeEventArgs(details));
@@ -113,6 +124,23 @@ namespace Game.GameStates.GameplayStates
 				{
 					OpenTownManagementWindow?.Invoke(this, EventArgs.Empty);
 				}
+			}
+		}
+
+		private void OnPrimarySelectedInteractableReceived(IMessage message)
+		{
+			if (message is CurrentSelectedInteractable selectedInteractableMessage)
+			{
+				// Close context menu first
+				_gameplayUIState.InfoWindow.OpenWindow(selectedInteractableMessage.SelectedInteractable);
+			}
+		}
+
+		private void OnOpenContextMenuRequestReceived(IMessage message)
+		{
+			if (message is OpenContextMenuRequest request)
+			{
+				OpenContextMenuRequested?.Invoke(this, (request.ContextMenuUser, request.ScreenPosition));
 			}
 		}
 	}

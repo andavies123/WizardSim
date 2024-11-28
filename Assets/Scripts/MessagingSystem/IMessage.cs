@@ -1,8 +1,11 @@
-﻿namespace MessagingSystem
+﻿using System.Text;
+
+namespace MessagingSystem
 {
 	public interface IMessage
 	{
 		object Sender { get; }
+		StringBuilder GetDisplayText();
 	}
 
 	public interface IMessageKey
