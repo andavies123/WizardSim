@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using CameraComponents;
-using Codice.CM.Client.Differences.Merge;
 using Extensions;
 using GameWorld.WorldObjects;
 using Messages.Selection;
@@ -10,7 +9,6 @@ using Messages.UI.Enums;
 using MessagingSystem;
 using UI;
 using UI.ContextMenus;
-using UI.Messages;
 using UnityEngine;
 
 namespace Game.GameStates.GameplayStates
@@ -19,6 +17,7 @@ namespace Game.GameStates.GameplayStates
 	{
 		private readonly GameplayUIState _gameplayUIState;
 		private readonly GameplayInputState _gameplayInputState;
+		private readonly InteractableRaycaster _interactableRaycaster;
 		private readonly List<ISubscription> _subscriptions = new();
 		private readonly MessageBroker _messageBroker;
 
@@ -35,15 +34,13 @@ namespace Game.GameStates.GameplayStates
 		public GameplayGameState(GameplayUIState gameplayUIState, InteractableRaycaster interactableRaycaster)
 		{
 			_gameplayUIState = gameplayUIState.ThrowIfNull(nameof(gameplayUIState));
-			interactableRaycaster.ThrowIfNull(nameof(interactableRaycaster));
+			_interactableRaycaster = interactableRaycaster.ThrowIfNull(nameof(interactableRaycaster));
+			
 			_messageBroker = Dependencies.Get<MessageBroker>();
-            
-			_gameplayInputState = new GameplayInputState(interactableRaycaster);
+			_gameplayInputState = new GameplayInputState();
 			
 			SubscriptionBuilder subscriptionBuilder = new(this);
 
-			// Todo: This keeps getting unsubscribed everytime the context menu opens
-			// I believe I shouldn't be unsubscribing in on disabled and instead check if the state is active
 			_subscriptions.Add(subscriptionBuilder
 				.ResetAllButSubscriber()
 				.SetMessageType<OpenUIRequest>()
@@ -54,13 +51,14 @@ namespace Game.GameStates.GameplayStates
 				.ResetAllButSubscriber()
 				.SetMessageType<CurrentSelectedInteractable>()
 				.SetCallback(OnPrimarySelectedInteractableReceived)
-				.AddFilter(message => (message as CurrentSelectedInteractable).InteractionType == InteractionType.PrimarySelection)
+				.AddFilter(message => ((CurrentSelectedInteractable)message).InteractionType == InteractionType.PrimarySelection)
 				.Build());
-
+			
 			_subscriptions.Add(subscriptionBuilder
 				.ResetAllButSubscriber()
-				.SetMessageType<OpenContextMenuRequest>()
-				.SetCallback(OnOpenContextMenuRequestReceived)
+				.SetMessageType<CurrentSelectedInteractable>()
+				.SetCallback(OnSecondarySelectedInteractableReceived)
+				.AddFilter(message => ((CurrentSelectedInteractable)message).InteractionType == InteractionType.SecondarySelection)
 				.Build());
 		}
 
@@ -80,6 +78,9 @@ namespace Game.GameStates.GameplayStates
 			// UI
 			_gameplayUIState.PauseButtonPressed += OnPauseButtonPressed;
 			_gameplayUIState.HotBarItemSelected += OnPlacementModeRequested;
+			
+			// Interactable Raycaster
+			_interactableRaycaster.NonInteractableSelectedPrimary += OnNonInteractablePrimaryActionSelected;
 
 			_subscriptions.ForEach(sub => _messageBroker.Subscribe(sub));
 		}
@@ -94,6 +95,9 @@ namespace Game.GameStates.GameplayStates
 			// UI
 			_gameplayUIState.PauseButtonPressed -= OnPauseButtonPressed;
 			_gameplayUIState.HotBarItemSelected -= OnPlacementModeRequested;
+			
+			// Interactable Raycaster
+			_interactableRaycaster.NonInteractableSelectedPrimary += OnNonInteractablePrimaryActionSelected;
 
 			_subscriptions.ForEach(sub => _messageBroker.Unsubscribe(sub));
 		}
@@ -120,27 +124,40 @@ namespace Game.GameStates.GameplayStates
 		{
 			if (message is OpenUIRequest openUIRequest)
 			{
-				if (openUIRequest.Window == UIWindow.TownHallWindow)
+				switch (openUIRequest.Window)
 				{
-					OpenTownManagementWindow?.Invoke(this, EventArgs.Empty);
+					case UIWindow.TownHallWindow:
+						OpenTownManagementWindow?.Invoke(this, EventArgs.Empty);
+						break;
 				}
 			}
 		}
 
 		private void OnPrimarySelectedInteractableReceived(IMessage message)
 		{
-			if (message is CurrentSelectedInteractable selectedInteractableMessage)
+			if (message is CurrentSelectedInteractable selectedMessage)
 			{
-				// Close context menu first
-				_gameplayUIState.InfoWindow.OpenWindow(selectedInteractableMessage.SelectedInteractable);
+				_gameplayUIState.InfoWindow.OpenWindow(selectedMessage.SelectedInteractable);
 			}
 		}
 
-		private void OnOpenContextMenuRequestReceived(IMessage message)
+		private void OnSecondarySelectedInteractableReceived(IMessage message)
 		{
-			if (message is OpenContextMenuRequest request)
+			if (message is CurrentSelectedInteractable selectedMessage)
 			{
-				OpenContextMenuRequested?.Invoke(this, (request.ContextMenuUser, request.ScreenPosition));
+				if (selectedMessage.SelectedInteractable.TryGetComponent(out ContextMenuUser contextMenuUser))
+				{
+					_gameplayUIState.InfoWindow.OpenWindow(selectedMessage.SelectedInteractable);
+					OpenContextMenuRequested?.Invoke(this, (contextMenuUser, Input.mousePosition));
+				}
+			}
+		}
+		
+		private void OnNonInteractablePrimaryActionSelected(object sender, EventArgs args)
+		{
+			if (!UIState.IsMouseOverGameObject)
+			{
+				_gameplayUIState.InfoWindow.CloseWindow();
 			}
 		}
 	}

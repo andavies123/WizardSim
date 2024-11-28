@@ -167,6 +167,7 @@ namespace Game
 		// Context Menu Related Events
 		private void OnOpenContextMenuRequested(object sender, (ContextMenuUser contextMenuUser, Vector2 screenPosition) args)
 		{
+			print("OPENING CONTEXT MENU");
 			_contextMenuGameState.Initialize(args.contextMenuUser, args.screenPosition);
 			UpdateCurrentState(_contextMenuGameState);
 		}
