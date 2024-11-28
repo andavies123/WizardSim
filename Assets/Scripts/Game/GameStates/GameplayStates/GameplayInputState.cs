@@ -1,5 +1,4 @@
 ﻿using System;
-using UI;
 using UnityEngine.InputSystem;
 
 namespace Game.GameStates.GameplayStates
@@ -16,7 +15,6 @@ namespace Game.GameStates.GameplayStates
 		}
 		
 		public event EventHandler PauseInputPerformed;
-		public event EventHandler<Interactable> OpenInfoWindowRequested;
 		public event EventHandler CloseInfoWindowRequested;
 		public event EventHandler OpenTaskManagementRequested;
 		

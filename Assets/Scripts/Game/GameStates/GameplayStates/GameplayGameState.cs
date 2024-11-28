@@ -72,7 +72,6 @@ namespace Game.GameStates.GameplayStates
 		{
 			// Inputs
 			_gameplayInputState.PauseInputPerformed += OnPauseInputPerformed;
-			_gameplayInputState.OpenInfoWindowRequested += OnOpenInfoWindowRequested;
 			_gameplayInputState.CloseInfoWindowRequested += OnCloseInfoWindowRequested;
 			
 			// UI
@@ -89,7 +88,6 @@ namespace Game.GameStates.GameplayStates
 		{
 			// Inputs
 			_gameplayInputState.PauseInputPerformed -= OnPauseInputPerformed;
-			_gameplayInputState.OpenInfoWindowRequested -= OnOpenInfoWindowRequested;
 			_gameplayInputState.CloseInfoWindowRequested -= OnCloseInfoWindowRequested;
 
 			// UI
@@ -113,9 +111,6 @@ namespace Game.GameStates.GameplayStates
 		
 		private void OnPlacementModeRequested(object sender, WorldObjectDetails details) =>
 			BeginPlacementModeRequested?.Invoke(this, new BeginPlacementModeEventArgs(details));
-
-		private void OnOpenInfoWindowRequested(object sender, Interactable interactable) =>
-			_gameplayUIState.InfoWindow.OpenWindow(interactable);
 
 		private void OnCloseInfoWindowRequested(object sender, EventArgs args) =>
 			_gameplayUIState.InfoWindow.CloseWindow();
