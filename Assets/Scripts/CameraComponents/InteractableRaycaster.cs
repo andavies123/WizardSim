@@ -13,7 +13,7 @@ namespace CameraComponents
 	{
 		[SerializeField] private new Camera camera;
 		[SerializeField] private float maxRaycastDistance = 1000;
-
+		
 		private MessageBroker _messageBroker;
 		private Interactable _currentHover;
 		private Interactable _currentSelected;
@@ -79,18 +79,7 @@ namespace CameraComponents
 				interactable.SelectSecondaryAction();
 				InteractableSelectedSecondary?.Invoke(this, new InteractableRaycasterEventArgs(interactable));
 
-				_messageBroker.PublishPersistant(
-					new CurrentSelectedInteractableKey
-					{
-						InteractionType = InteractionType.SecondarySelection,
-						Sender = this,
-					},
-					new CurrentSelectedInteractable
-					{
-						InteractionType = InteractionType.SecondarySelection,
-						SelectedInteractable = interactable,
-						Sender = this
-					});
+				SendSelectedMessage(InteractionType.SecondarySelection, interactable);
 			}
 		}
 
@@ -100,12 +89,18 @@ namespace CameraComponents
 				EndCurrentHover();
 			else
 				NonInteractableHoverBegin?.Invoke(this, EventArgs.Empty);
-			
+
 			if (Input.GetMouseButtonDown(InputUtilities.LeftMouseButton))
+			{
 				NonInteractableSelectedPrimary?.Invoke(this, EventArgs.Empty);
+				SendSelectedMessage(InteractionType.PrimarySelection, null);
+			}
 
 			if (Input.GetMouseButtonDown(InputUtilities.RightMouseButton))
+			{
 				NonInteractableSelectedSecondary?.Invoke(this, EventArgs.Empty);
+				SendSelectedMessage(InteractionType.SecondarySelection, null);
+			}
 		}
 
 		private void BeginNewSelection(Interactable newSelection)
@@ -121,18 +116,7 @@ namespace CameraComponents
 				_currentSelected.SelectPrimaryAction();
 				InteractableSelectedPrimary?.Invoke(this, new InteractableRaycasterEventArgs(_currentSelected));
 
-				_messageBroker.PublishPersistant(
-					new CurrentSelectedInteractableKey
-					{
-						InteractionType = InteractionType.PrimarySelection,
-						Sender = this,
-					},
-					new CurrentSelectedInteractable
-					{
-						InteractionType = InteractionType.PrimarySelection,
-						SelectedInteractable = _currentSelected,
-						Sender = this
-					});
+				SendSelectedMessage(InteractionType.PrimarySelection, _currentSelected);
 			}
 		}
 
@@ -160,6 +144,22 @@ namespace CameraComponents
 			_currentHover.IsHovered = false;
 			InteractableHoverEnd?.Invoke(this, new InteractableRaycasterEventArgs(_currentHover));
 			_currentHover = null;
+		}
+
+		private void SendSelectedMessage(InteractionType interactionType, Interactable selected)
+		{
+			_messageBroker.PublishPersistant(
+				new CurrentSelectedInteractableKey
+				{
+					InteractionType = interactionType,
+					Sender = this,
+				},
+				new CurrentSelectedInteractable
+				{
+					InteractionType = interactionType,
+					SelectedInteractable = selected,
+					Sender = this
+				});
 		}
 	}
 }

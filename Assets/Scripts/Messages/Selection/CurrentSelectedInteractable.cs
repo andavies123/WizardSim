@@ -11,9 +11,11 @@ namespace Messages.Selection
 
 		public override StringBuilder GetDisplayText()
 		{
+			string selectedInteractableName = SelectedInteractable ? SelectedInteractable.name : "(None)";
+			
 			StringBuilder stringBuilder = base.GetDisplayText();
 			stringBuilder.AppendLine($"Interaction Type: {InteractionType}");
-			stringBuilder.AppendLine($"Selected Interactable: {SelectedInteractable.name}");
+			stringBuilder.AppendLine($"Selected Interactable: {selectedInteractableName}");
 			return stringBuilder;
 		}
 	}

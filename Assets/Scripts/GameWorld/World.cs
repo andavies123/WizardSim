@@ -6,6 +6,7 @@ using UnityEngine;
 using Utilities.Attributes;
 using GameWorld.Settlements;
 using GameWorld.Settlements.Interfaces;
+using GameWorld.WorldResources;
 
 namespace GameWorld
 {
@@ -22,6 +23,7 @@ namespace GameWorld
 		[Header("Required for Settlement")]
 		[SerializeField, Required] private WizardFactory wizardFactory;
 		[SerializeField, Required] private Transform wizardContainer;
+		[SerializeField, Required] private TownResourceStockpile townResourceStockpile;
 		
 		private readonly Dictionary<Vector2Int, Chunk> _chunks = new();
 		private GameWorldTimeBehaviour _gameWorldTime;
@@ -153,7 +155,7 @@ namespace GameWorld
 			DetailsMap = GetComponent<WorldObjectDetailsMap>();
 			WorldObjectManager = new WorldObjectManager(worldObjectContainer);
 
-			Settlement = new Settlement(wizardFactory, wizardContainer);
+			Settlement = new Settlement(wizardFactory, wizardContainer, townResourceStockpile);
 			Settlement.Init();
 		}
 

@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using GameWorld.WorldResources;
 using MessagingSystem;
 
 namespace Game
@@ -13,8 +14,12 @@ namespace Game
 
 		static Dependencies()
 		{
+			TownResourceRepo townResourceRepo = new();
+			townResourceRepo.LoadAllTownResources();
+			
 			// Registering non singletons
 			Register(new MessageBroker());
+			Register(townResourceRepo);
 		}
 		
 		public static void Register<T>(T dependency)
