@@ -1,6 +1,6 @@
 ﻿namespace GameWorld.Settlements.Interfaces
 {
-	public interface ISettlement : IInit, ICleanUp
+	public interface ISettlement
 	{
 		/// <summary>
 		/// The name of the settlement given by the player

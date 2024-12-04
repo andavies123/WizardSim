@@ -6,10 +6,10 @@ using UnityEngine;
 using Utilities.Attributes;
 using GameWorld.Settlements;
 using GameWorld.Settlements.Interfaces;
-using GameWorld.WorldResources;
 
 namespace GameWorld
 {
+	// Todo: Add trees to the world
 	[RequireComponent(typeof(GameWorldTimeBehaviour))]
 	[RequireComponent(typeof(WorldObjectDetailsMap))]
 	public class World : MonoBehaviour
@@ -21,15 +21,13 @@ namespace GameWorld
 		[SerializeField, Required] private EntityManager enemyManager;
 
 		[Header("Required for Settlement")]
-		[SerializeField, Required] private WizardFactory wizardFactory;
-		[SerializeField, Required] private Transform wizardContainer;
-		[SerializeField, Required] private TownResourceStockpile townResourceStockpile;
+		[SerializeField, Required] private Settlement settlement;
 		
 		private readonly Dictionary<Vector2Int, Chunk> _chunks = new();
 		private GameWorldTimeBehaviour _gameWorldTime;
 
 		public IGameWorldTime GameTime => _gameWorldTime;
-		public ISettlement Settlement { get; private set; }
+		public ISettlement Settlement => settlement;
 		public WorldDetails WorldDetails => worldDetails;
 		public IReadOnlyDictionary<Vector2Int, Chunk> Chunks => _chunks;
 		public IWorldObjectManager WorldObjectManager { get; private set; }
@@ -154,14 +152,6 @@ namespace GameWorld
 			_gameWorldTime = GetComponent<GameWorldTimeBehaviour>();
 			DetailsMap = GetComponent<WorldObjectDetailsMap>();
 			WorldObjectManager = new WorldObjectManager(worldObjectContainer);
-
-			Settlement = new Settlement(wizardFactory, wizardContainer, townResourceStockpile);
-			Settlement.Init();
-		}
-
-		private void OnDestroy()
-		{
-			Settlement.CleanUp();
 		}
 	}
 }

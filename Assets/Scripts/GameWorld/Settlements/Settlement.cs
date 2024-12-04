@@ -1,34 +1,31 @@
 ﻿using GameWorld.Settlements.Interfaces;
 using GameWorld.WorldResources;
 using UnityEngine;
+using Utilities.Attributes;
 
 namespace GameWorld.Settlements
 {
-	// Todo: Change this back to a MonoBehaviour
 	// Todo: Should have reference to the town hall as there should be one per settlement
 	// Todo: Should have reference to all settlement buildings
-	public class Settlement : ISettlement
+	public class Settlement : MonoBehaviour, ISettlement
 	{
-		public TownResourceStockpile ResourceStockpile;
+		[Header("Resource Objects")]
+		[SerializeField, Required] private TownResourceStockpile resourceStockpile;
 		
-		public Settlement(
-			IWizardFactory wizardFactory,
-			Transform wizardContainer, 
-			TownResourceStockpile resourceStockpile)
+		[Header("Wizard Objects")]
+		[SerializeField, Required] private WizardFactory wizardFactory;
+		[SerializeField, Required] private Transform wizardContainer;
+
+		public ISettlementWizardManager WizardManager { get; private set; }
+		public string SettlementName { get; set; } = "Un-named Settlement";
+		
+		private void Awake()
 		{
 			WizardManager = new SettlementWizardManager(wizardFactory, wizardContainer);
-			ResourceStockpile = resourceStockpile;
-		}
-
-		public ISettlementWizardManager WizardManager { get; }
-		public string SettlementName { get; set; } = "Un-named Settlement";
-
-		public void Init()
-		{
 			WizardManager.Init();
 		}
 
-		public void CleanUp()
+		private void OnDestroy()
 		{
 			WizardManager.CleanUp();
 		}
