@@ -6,6 +6,7 @@ using GameWorld.Settlements.Interfaces;
 using GeneralBehaviours.ShaderManagers;
 using UnityEngine;
 using Utilities;
+using Utilities.Attributes;
 using Random = UnityEngine.Random;
 
 namespace GameWorld.Settlements
@@ -13,6 +14,7 @@ namespace GameWorld.Settlements
 	public class WizardFactory : MonoBehaviour, IWizardFactory
 	{
 		[Header("External Components")]
+		[SerializeField, Required] private Settlement settlement;
 		[SerializeField] private GameWorldTimeBehaviour gameWorldTime;
 
 		[Header("Prefabs")]
@@ -41,7 +43,7 @@ namespace GameWorld.Settlements
 			Wizard wizard = Instantiate(entityPrefab);
 			wizard.Transform.position = spawnPosition;
 
-			wizard.InitializeWizard(NameGenerator.GetNewName(), wizardType, gameWorldTime);
+			wizard.InitializeWizard(NameGenerator.GetNewName(), wizardType, settlement, gameWorldTime);
 			wizard.GetComponent<InteractionShaderManager>().OverrideBaseColor(GetColorFromWizardType(wizardType));
 
 			if (!_wizardRepo.TryAddWizard(wizard))

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using GameWorld.WorldResources;
 using UnityEngine;
 
 namespace GameWorld.WorldObjects
@@ -21,6 +23,9 @@ namespace GameWorld.WorldObjects
 		
 		[Tooltip("Health related properties for this world object")]
 		[field: SerializeField] public HealthRelatedProperties HealthProperties { get; private set; }
+		
+		[Tooltip("What type of town resources will increase when deleted")]
+		[field: SerializeField] public List<TownResource> ResourcesWhenDestroyed { get; private set; }
 	}
 
 	[Serializable]

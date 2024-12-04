@@ -12,6 +12,7 @@ using GameWorld.Characters.Wizards.Tasks;
 using System;
 using Game;
 using GameWorld.Characters.Wizards.AgeSystem;
+using GameWorld.Settlements;
 using MessagingSystem;
 using UI.Messages;
 
@@ -29,6 +30,9 @@ namespace GameWorld.Characters.Wizards
 		
 		// Components
 		public WizardStateMachine StateMachine { get; private set; }
+		
+		// External References
+		public Settlement Settlement { get; private set; }
 
 		public IAge Age { get; } = new Age();
 		public WizardStats Stats => stats;
@@ -100,10 +104,12 @@ namespace GameWorld.Characters.Wizards
 
 		#endregion
 		
-		public void InitializeWizard(string wizardName, WizardType wizardType, GameWorldTimeBehaviour worldTime)
+		public void InitializeWizard(string wizardName, WizardType wizardType, 
+			Settlement settlement, GameWorldTimeBehaviour worldTime)
 		{
 			Name = wizardName;
 			WizardType = wizardType;
+			Settlement = settlement;
 			_worldTime = worldTime;
 			
 			gameObject.name = $"Wizard - {Name} - {wizardType}";

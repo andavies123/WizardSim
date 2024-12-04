@@ -1,6 +1,8 @@
 ﻿using System;
 using Extensions;
+using GameWorld.WorldObjects;
 using GameWorld.WorldObjects.Rocks;
+using GameWorld.WorldResources;
 using UnityEngine;
 
 namespace GameWorld.Characters.Wizards.States
@@ -65,8 +67,14 @@ namespace GameWorld.Characters.Wizards.States
 			DisplayStatus = $"Breaking Rock - Health: {_rock.WorldObject.Health.CurrentHealth:0.0} / {_rock.WorldObject.Health.MaxHealth:0.0}";
 		}
 
-		private void OnRockDestroyed(object sender, EventArgs args)
+		private void OnRockDestroyed(WorldObject worldObject)
 		{
+			foreach (TownResource townResource in worldObject.Details.ResourcesWhenDestroyed)
+			{
+				// Bug: This is throwing an exception because the world object is being destroyed probably by the time this is getting reached
+				Wizard.Settlement.ResourceStockpile.AddResources(townResource, 1);
+			}
+			
 			ExitRequested?.Invoke(this, EXIT_REASON_ROCK_DESTROYED);
 		}
 	}

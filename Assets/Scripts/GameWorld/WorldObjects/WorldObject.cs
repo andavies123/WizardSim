@@ -23,7 +23,7 @@ namespace GameWorld.WorldObjects
 		
 		public Interactable Interactable { get; private set; }
 		
-		public event EventHandler Destroyed;
+		public event Action<WorldObject> Destroyed;
 
 		public void Init(WorldObjectDetails details, ChunkPlacementData chunkPlacementData)
 		{
@@ -46,7 +46,7 @@ namespace GameWorld.WorldObjects
 
 		private void OnDestroy()
 		{
-			Destroyed?.Invoke(this, EventArgs.Empty);
+			Destroyed?.Invoke(this);
 		}
 	}
 }

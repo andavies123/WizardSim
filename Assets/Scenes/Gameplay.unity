@@ -2515,6 +2515,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 608a50db2fc94295b12bf0dbc68eea29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  settlement: {fileID: 1256163101}
   gameWorldTime: {fileID: 2007172222}
   entityPrefab: {fileID: 5741234536930111, guid: 4bfb0bac7ec87bb4ca8c5e6e14993c85, type: 3}
   initialSpawns: 0

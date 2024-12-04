@@ -17,6 +17,7 @@ namespace GameWorld.Settlements
 		[SerializeField, Required] private Transform wizardContainer;
 
 		public ISettlementWizardManager WizardManager { get; private set; }
+		public TownResourceStockpile ResourceStockpile => resourceStockpile;
 		public string SettlementName { get; set; } = "Un-named Settlement";
 		
 		private void Awake()

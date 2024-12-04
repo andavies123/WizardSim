@@ -29,8 +29,6 @@ namespace GameWorld.Characters.States
 		{
 			Character.Movement.SetMoveToPosition(_moveToObject.PositionDetails.Center, _maxDistanceForArrival);
 
-			Debug.Log(_moveToObject.PositionDetails.Center);
-
 			if (!_moveToObject)
 			{
 				ExitRequested?.Invoke(this, EXIT_REASON_OBJECT_DOES_NOT_EXIST);
