@@ -1,4 +1,7 @@
 ﻿using System;
+using Game;
+using GameWorld.WorldResources;
+using GeneralBehaviours.Damageable;
 using GeneralBehaviours.HealthBehaviours;
 using GeneralBehaviours.ShaderManagers;
 using GeneralClasses.Health;
@@ -9,6 +12,7 @@ namespace GameWorld.WorldObjects
 {
 	[SelectionBase]
 	[DisallowMultipleComponent]
+	[RequireComponent(typeof(Damageable))]
 	[RequireComponent(typeof(HealthComponent))]
 	[RequireComponent(typeof(Interactable))]
 	[RequireComponent(typeof(InteractionShaderManager))]
@@ -20,6 +24,7 @@ namespace GameWorld.WorldObjects
 		public WorldObjectPositionDetails PositionDetails { get; private set; }
 		public ChunkPlacementData ChunkPlacementData { get; private set; }
 		public HealthComponent Health { get; private set; }
+		public Damageable Damageable { get; private set; }
 		
 		public Interactable Interactable { get; private set; }
 		
@@ -40,13 +45,27 @@ namespace GameWorld.WorldObjects
 		
 		private void Awake()
 		{
+			Damageable = GetComponent<Damageable>();
 			Health = GetComponent<HealthComponent>();
 			Interactable = GetComponent<Interactable>();
+			
+			Damageable.Destroyed += OnDamageableDestroyed;
 		}
 
 		private void OnDestroy()
 		{
 			Destroyed?.Invoke(this);
+		}
+
+		private void OnDamageableDestroyed(object sender, DamageableDestroyedEventArgs eventArgs)
+		{
+			TownResourceStockpile stockpile = Dependencies.Get<World>().Settlement.ResourceStockpile;
+			Details.ResourcesWhenDestroyed.ForEach(resource =>
+			{
+				stockpile.AddResources(resource, 1);
+			});
+			
+			Destroy(gameObject);
 		}
 	}
 }

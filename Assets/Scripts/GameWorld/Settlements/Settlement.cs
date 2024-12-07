@@ -1,5 +1,4 @@
-﻿using GameWorld.Settlements.Interfaces;
-using GameWorld.WorldResources;
+﻿using GameWorld.WorldResources;
 using UnityEngine;
 using Utilities.Attributes;
 
@@ -7,7 +6,7 @@ namespace GameWorld.Settlements
 {
 	// Todo: Should have reference to the town hall as there should be one per settlement
 	// Todo: Should have reference to all settlement buildings
-	public class Settlement : MonoBehaviour, ISettlement
+	public class Settlement : MonoBehaviour
 	{
 		[Header("Resource Objects")]
 		[SerializeField, Required] private TownResourceStockpile resourceStockpile;

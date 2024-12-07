@@ -14,27 +14,33 @@ namespace GeneralBehaviours.Damageable
 		/// Raised when this object received damage greater than 0
 		/// </summary>
 		public event EventHandler<DamageReceivedEventArgs> DamageReceived;
+		public event EventHandler<DamageableDestroyedEventArgs> Destroyed;
 
 		public void DealDamage(float damageAmount, Character damageDealer)
 		{
-			if (!_health)
+			lock (_health)
 			{
-				Debug.LogError("Health component has not been initialized yet");
-				return;
-			}
+				if (_health.IsAtMinHealth || damageAmount <= 0f)
+				{
+					// We don't need to progress further if any of the above cases are true
+					return;
+				}
 
-			// Make sure we aren't dealing negative damage
-			damageAmount = Mathf.Max(damageAmount, 0);
+				// Cache the health before hand so we can calculate the literal damage that was dealt
+				float beforeHealth = _health.CurrentHealth;
+				_health.CurrentHealth -= damageAmount;
+				float damageReceived = beforeHealth - _health.CurrentHealth;
 
-			// Cache the health before hand so we can calculate the literal damage that was dealt
-			float beforeHealth = _health.CurrentHealth;
-			_health.CurrentHealth -= damageAmount;
+				// Raise any necessary events
+				if (damageReceived > 0)
+				{
+					DamageReceived?.Invoke(this, new DamageReceivedEventArgs(damageDealer, damageReceived));
+				}
 
-			// Let subscribers know that damage was received if any was actually dealt
-			float damageReceived = beforeHealth - _health.CurrentHealth;
-			if (damageReceived > 0)
-			{
-				DamageReceived?.Invoke(this, new DamageReceivedEventArgs(damageDealer, damageReceived));
+				if (_health.IsAtMinHealth)
+				{
+					Destroyed?.Invoke(this, new DamageableDestroyedEventArgs(damageDealer));
+				}
 			}
 		}
 
@@ -60,6 +66,16 @@ namespace GeneralBehaviours.Damageable
 		{
 			DamageDealer = damageDealer;
 			DamageReceived = damageReceived;
+		}
+	}
+
+	public class DamageableDestroyedEventArgs : EventArgs
+	{
+		public Character Destroyer { get; }
+
+		public DamageableDestroyedEventArgs(Character destroyer)
+		{
+			Destroyer = destroyer;
 		}
 	}
 }

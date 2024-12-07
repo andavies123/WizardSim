@@ -109,14 +109,6 @@ namespace GameWorld.Characters.Wizards.States
 
 			Rock removedRock = _rocks.FirstOrDefault(rock => rock.WorldObject == worldObject);
 			_rocks.Remove(removedRock);
-			
-			foreach (TownResource townResource in worldObject.Details.ResourcesWhenDestroyed)
-			{
-				// Todo: This might not be the best place to do this. Its possible multiple classes
-				// Todo: would be listening to if it got destroyed. I have to figure out a new way
-				// Todo: to add drops. Possibly the one who does destroy it?
-				Wizard.Settlement.ResourceStockpile.AddResources(townResource, 1);
-			}
 
 			if (_rocks.Count == 0)
 			{

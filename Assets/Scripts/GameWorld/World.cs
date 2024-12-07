@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using AndysTools.GameWorldTimeManagement.Runtime;
+using Game;
 using GameWorld.Tiles;
 using GameWorld.WorldObjects;
 using UnityEngine;
@@ -27,7 +28,7 @@ namespace GameWorld
 		private GameWorldTimeBehaviour _gameWorldTime;
 
 		public IGameWorldTime GameTime => _gameWorldTime;
-		public ISettlement Settlement => settlement;
+		public Settlement Settlement => settlement;
 		public WorldDetails WorldDetails => worldDetails;
 		public IReadOnlyDictionary<Vector2Int, Chunk> Chunks => _chunks;
 		public IWorldObjectManager WorldObjectManager { get; private set; }
@@ -149,6 +150,7 @@ namespace GameWorld
 
 		private void Awake()
 		{
+			Dependencies.Register(this);
 			_gameWorldTime = GetComponent<GameWorldTimeBehaviour>();
 			DetailsMap = GetComponent<WorldObjectDetailsMap>();
 			WorldObjectManager = new WorldObjectManager(worldObjectContainer);

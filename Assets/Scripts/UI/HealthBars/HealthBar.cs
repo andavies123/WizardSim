@@ -12,6 +12,9 @@ using Utilities.Attributes;
 
 namespace UI.HealthBars
 {
+	// BUG: Health bar sometimes seems to fade away even while taking damage
+	// BUG: Health bar doesn't always appear when taking damage
+	// Bug: Health bar doesn't always have black background
 	[RequireComponent(typeof(Canvas))]
 	public class HealthBar : MonoBehaviour, IGameObjectPoolItem
 	{

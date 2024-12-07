@@ -46,7 +46,7 @@ namespace GameWorld.Characters.Wizards.States
 			if (_rock)
 			{
 				_attackTimer = 0;
-				_rock.WorldObject.Health.CurrentHealth -= 0.5f;
+				_rock.WorldObject.Damageable.DealDamage(0.5f, Wizard);
 				
 				// Todo: Update the way a rock gets destroyed
 				if (_rock.WorldObject.Health.CurrentHealth <= 0)
@@ -69,12 +69,6 @@ namespace GameWorld.Characters.Wizards.States
 
 		private void OnRockDestroyed(WorldObject worldObject)
 		{
-			foreach (TownResource townResource in worldObject.Details.ResourcesWhenDestroyed)
-			{
-				// Bug: This is throwing an exception because the world object is being destroyed probably by the time this is getting reached
-				Wizard.Settlement.ResourceStockpile.AddResources(townResource, 1);
-			}
-			
 			ExitRequested?.Invoke(this, EXIT_REASON_ROCK_DESTROYED);
 		}
 	}
