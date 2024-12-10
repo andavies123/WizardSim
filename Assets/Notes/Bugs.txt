@@ -1,11 +1,13 @@
 HealthBar
 ----------
-// BUG: Health bar sometimes seems to fade away even while taking damage
-// BUG: Health bar doesn't always appear when taking damage
-// BUG: Health bar doesn't always have black background
+// BUG: Health Bar sometimes seems to fade away even while taking damage
+// BUG: Health Bar turns white when fade starts
+// FXD: Health Bar doesn't always appear when taking damage
+// FXD: Health Bar doesn't always have black background
 // FXD: Health Bar seems to be drawn before its ready (not at correct fill, not facing proper direction)
-// BUG: Hover Health bar shouldn't appear if one is already active for that object
-// BUG: Hover Health bar seems malformed at beginning of hover
+// FXD: Hover Health Bar shouldn't appear if one is already active for that object
+// FXD: Hover Health Bar seems malformed at beginning of hover
+// FXD: Hover Health Bar seems to stay after object is dead
 
 Selection
 ---------

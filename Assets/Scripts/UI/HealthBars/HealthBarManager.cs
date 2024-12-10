@@ -59,6 +59,9 @@ namespace UI.HealthBars
 			if (sender is not HealthComponent health)
 				return;
 
+			if (_hoverHealthBar && _hoverHealthBar.Health == health)
+				return;
+			
 			if (_healthChangedHealthBars.TryGetValue(health, out HealthBarTimerPair hbtPair))
 			{
 				hbtPair.FadeStartTimer.Stop();
