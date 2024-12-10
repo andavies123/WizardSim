@@ -25,6 +25,7 @@ namespace UI.HealthBars
 		private Canvas _canvas;
 		private Transform _transform;
 		private bool _requiresUpdate;
+		private bool _enableCanvasFlag;
 
 		// Health object variables
 		private Transform _followTransform;
@@ -66,7 +67,7 @@ namespace UI.HealthBars
 			UpdateImageFill(Health.CurrentHealth, Health.MaxHealth);
 			UpdatePosition(); // Update the position
 			_requiresUpdate = false;
-			_canvas.enabled = true; // Update the canvas
+			_enableCanvasFlag = true; // Enables the canvas next frame
 			Health.CurrentHealthChanged += OnHealthChanged;
 		}
 
@@ -164,6 +165,12 @@ namespace UI.HealthBars
 			{
 				ReleaseRequested?.Invoke(this, EventArgs.Empty);
 				return;
+			}
+
+			if (_enableCanvasFlag)
+			{
+				_enableCanvasFlag = false;
+				_canvas.enabled = true;
 			}
 			
 			if (_startFading)

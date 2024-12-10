@@ -26,7 +26,7 @@ namespace UI.HealthBars
 			
 			if (!_hoverHealthBar)
 			{
-				_hoverHealthBar = _healthBarFactory.GetHealthBar(Vector3.zero);
+				_hoverHealthBar = _healthBarFactory.GetHealthBar(health.transform.position);
 				_hoverHealthBar.gameObject.name = "Hover Health Bar";
 			}
 
@@ -56,10 +56,10 @@ namespace UI.HealthBars
 
 		private void OnAnyHealthChanged(object sender, EventArgs args)
 		{
-			if (sender is not HealthComponent healthComponent)
+			if (sender is not HealthComponent health)
 				return;
 
-			if (_healthChangedHealthBars.TryGetValue(healthComponent, out HealthBarTimerPair hbtPair))
+			if (_healthChangedHealthBars.TryGetValue(health, out HealthBarTimerPair hbtPair))
 			{
 				hbtPair.FadeStartTimer.Stop();
 			}
@@ -67,16 +67,16 @@ namespace UI.HealthBars
 			{
 				hbtPair = new HealthBarTimerPair
 				{
-					HealthBar = _healthBarFactory.GetHealthBar(healthComponent.transform.position),
+					HealthBar = _healthBarFactory.GetHealthBar(health.transform.position),
 					FadeStartTimer = CreateTimer()
 				};
 				
-				hbtPair.HealthBar.gameObject.name = $"Health Bar - {healthComponent.gameObject.name}";
-				hbtPair.HealthBar.SetHealth(healthComponent, healthComponent.transform);
+				hbtPair.HealthBar.gameObject.name = $"Health Bar - {health.gameObject.name}";
+				hbtPair.HealthBar.SetHealth(health, health.transform);
 				hbtPair.HealthBar.ReleaseRequested += OnHealthBarReleaseRequested;
 				hbtPair.FadeStartTimer.Elapsed += (_, _) => OnHealthBarTimerElapsed(hbtPair);
 
-				if (!_healthChangedHealthBars.TryAdd(healthComponent, hbtPair))
+				if (!_healthChangedHealthBars.TryAdd(health, hbtPair))
 					Debug.LogError("Unable to add health bar...");
 			}
 
