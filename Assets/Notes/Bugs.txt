@@ -1,0 +1,17 @@
+HealthBar
+----------
+// BUG: Health bar sometimes seems to fade away even while taking damage
+// BUG: Health bar doesn't always appear when taking damage
+// BUG: Health bar doesn't always have black background
+// FXD: Health Bar seems to be drawn before its ready (not at correct fill, not facing proper direction)
+// BUG: Hover Health bar shouldn't appear if one is already active for that object
+// BUG: Hover Health bar seems malformed at beginning of hover
+
+Selection
+---------
+// BUG: When an object was previously selected and deselected, when selecting empty space the info box shows as the previously selected item
+// BUG: When selecting empty space the selection message does not show as null
+
+Wizard Tasks
+------------
+// BUG: The wizard does not go to the nearest rock when destroying surrounding

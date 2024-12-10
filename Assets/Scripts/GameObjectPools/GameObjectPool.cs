@@ -33,7 +33,10 @@ namespace GameObjectPools
             return gameObject;
 		}
         
-		public void ReleaseToPool(GameObject gameObject) => _objectPool.Release(gameObject);
+		public void ReleaseToPool(GameObject gameObject)
+		{
+			_objectPool.Release(gameObject);
+		}
 
 		private GameObject CreateGameObject()
 		{

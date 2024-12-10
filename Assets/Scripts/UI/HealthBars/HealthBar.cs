@@ -1,20 +1,19 @@
 ﻿using Extensions;
 using GameObjectPools;
 using GeneralClasses.Health.HealthEventArgs;
-using GeneralClasses.Health.Interfaces;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using GeneralBehaviours.HealthBehaviours;
+using GeneralComponents;
 using UnityEngine;
 using UnityEngine.UI;
 using Utilities.Attributes;
 
 namespace UI.HealthBars
 {
-	// BUG: Health bar sometimes seems to fade away even while taking damage
-	// BUG: Health bar doesn't always appear when taking damage
-	// Bug: Health bar doesn't always have black background
+	[RequireComponent(typeof(AlwaysFaceCamera))]
 	[RequireComponent(typeof(Canvas))]
 	public class HealthBar : MonoBehaviour, IGameObjectPoolItem
 	{
@@ -25,46 +24,50 @@ namespace UI.HealthBars
 
 		private Canvas _canvas;
 		private Transform _transform;
-		private bool _requiresUpdate = false;
+		private bool _requiresUpdate;
 
 		// Health object variables
-		private IHealth _health;
 		private Transform _followTransform;
 		private Vector3 _positionOffset;
 
 		// Fade to Destroy variables
-		private bool _startFading = false;
-		private bool _isFading = false;
-		private float _timeToFadeSeconds = 0f;
+		private readonly List<Color> _originalColors = new();
+		private List<Image> _imagesToFade;
+		private bool _startFading;
+		private bool _isFading;
+		private float _timeToFadeSeconds;
 
 		public event EventHandler ReleaseRequested;
-        
-		public void SetHealth(IHealth health, Transform followTransform)
+
+		public HealthComponent Health { get; private set; }
+
+		public void SetHealth(HealthComponent health, Transform followTransform)
 		{
 			// Check if the health object is the same
-			if (_health == health)
+			if (Health == health)
 				return;
 			
 			// Clean up old health
-			if (_health != null)
-				_health.CurrentHealthChanged -= OnHealthChanged;
+			if (Health)
+				Health.CurrentHealthChanged -= OnHealthChanged;
 			
 			// Set new health
-			_health = health;
+			Health = health;
 			_followTransform = followTransform;
 
-			if (_health == null)
+			if (!Health)
 				return;
 
-			if (_health is IHealthBarUser healthBarUser)
+			if (Health is IHealthBarUser healthBarUser)
 				_positionOffset = healthBarUser.PositionOffset;
 			else
 				_positionOffset = DefaultPositionOffset;
 
-			_health.CurrentHealthChanged += OnHealthChanged;
+			UpdateImageFill(Health.CurrentHealth, Health.MaxHealth);
 			UpdatePosition(); // Update the position
-			_requiresUpdate = true; // Initialize the UI
-			_canvas.enabled = _health != null; // Update the canvas
+			_requiresUpdate = false;
+			_canvas.enabled = true; // Update the canvas
+			Health.CurrentHealthChanged += OnHealthChanged;
 		}
 
 		public void BeginFading(float timeToFadeSeconds)
@@ -79,14 +82,19 @@ namespace UI.HealthBars
 		public void Initialize()
 		{
 			_canvas.enabled = false; // Make sure the health bar can't be seen until necessary
+
+			for (int imageIndex = 0; imageIndex < _imagesToFade.Count; imageIndex++)
+			{
+				_imagesToFade[imageIndex].color = _originalColors[imageIndex];
+			}
 		}
 
 		public void CleanUp()
 		{
-			if (_health != null)
+			if (Health)
 			{
-				_health.CurrentHealthChanged -= OnHealthChanged;
-				_health = null;
+				Health.CurrentHealthChanged -= OnHealthChanged;
+				Health = null;
 			}
 
 			_followTransform = null;
@@ -101,23 +109,17 @@ namespace UI.HealthBars
 		private IEnumerator FadeOut()
 		{
 			_isFading = true;
-			List<Image> imagesToFade = GetComponentsInChildren<Image>().ToList();
-			List<Color> originalColors = new();
-
-			foreach (Image image in imagesToFade)
-			{
-				originalColors.Add(image.color);
-			}
 
 			for (float t = 0f; t < _timeToFadeSeconds; t += Time.deltaTime)
 			{
-				for (int imageIndex = 0; imageIndex < imagesToFade.Count; imageIndex++)
+				for (int imageIndex = 0; imageIndex < _imagesToFade.Count; imageIndex++)
 				{
-					imagesToFade[imageIndex].color = new Color(
-						originalColors[imageIndex].r,
-						originalColors[imageIndex].g,
-						originalColors[imageIndex].b,
-						Mathf.Lerp(originalColors[imageIndex].a, 0, Mathf.Min(1, t / _timeToFadeSeconds)));
+					Color originalColor = _originalColors[imageIndex];
+					_imagesToFade[imageIndex].color = new Color(
+						originalColor.r,
+						originalColor.g,
+						originalColor.b,
+						Mathf.Lerp(originalColor.a, 0, Mathf.Min(1, t / _timeToFadeSeconds)));
 				}
 
 				yield return null;
@@ -151,24 +153,23 @@ namespace UI.HealthBars
 			_canvas = GetComponent<Canvas>();
 			_transform = transform;
 			_canvas.enabled = false;
+			
+			_imagesToFade = GetComponentsInChildren<Image>().ToList();
+			_imagesToFade.ForEach(image => _originalColors.Add(image.color));
 		}
 
 		private void Update()
 		{
+			if (!Health)
+			{
+				ReleaseRequested?.Invoke(this, EventArgs.Empty);
+				return;
+			}
+			
 			if (_startFading)
 			{
 				_startFading = false;
 				StartCoroutine(FadeOut());
-				return;
-			}
-
-			if (_health == null)
-				return;
-
-			// This is a check to see if the follow object still exists or not
-			if (!_followTransform)
-			{
-				ReleaseRequested?.Invoke(this, EventArgs.Empty);
 				return;
 			}
 
@@ -180,8 +181,8 @@ namespace UI.HealthBars
 			// fact that UI can't be updated on a backup thread such as an elapsed timer.
 			if (_requiresUpdate)
 			{
-				UpdateImageFill(_health.CurrentHealth, _health.MaxHealth);
 				_requiresUpdate = false;
+				UpdateImageFill(Health.CurrentHealth, Health.MaxHealth);
 			}
 		}
 	}

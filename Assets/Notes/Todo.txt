@@ -1,0 +1,16 @@
+Trees
+-----
+// TODO: Add a temp tree 3d model
+// TODO: Add trees as a world object
+// TODO: Create a world object prefab
+// TODO: Add trees to the generation
+// TODO: Trees should be breakable
+// TODO: Trees should add wood to the town stockpile
+// TODO: Add wood as a Town Resource
+// TODO: Add wizard task to chop wood
+
+Selection System
+----------------
+// TODO: When a wizard is selected, opening up a context menu and selecting an action should create and assign the task to that wizard
+// TODO: Opening a context menu when something is selected should only show context menu items that are active for that selection type
+// TODO: Add a object type to the selection message

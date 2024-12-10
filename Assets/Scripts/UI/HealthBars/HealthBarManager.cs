@@ -12,15 +12,21 @@ namespace UI.HealthBars
 		[SerializeField] private double damagedTimeToLiveSec = 5f;
 		[SerializeField] private float damagedTimeToFadeSec = 3f;
 
-		private readonly ConcurrentDictionary<HealthComponent, (HealthBar, Timer)> _healthChangedHealthBars = new();
+		private readonly ConcurrentDictionary<HealthComponent, HealthBarTimerPair> _healthChangedHealthBars = new();
 		private HealthBar _hoverHealthBar;
 		private HealthBarFactory _healthBarFactory;
 
 		public void SetHoverHealthBar(HealthComponent health, Transform followTransform)
 		{
+			if (_healthChangedHealthBars.TryGetValue(health, out HealthBarTimerPair hbtPair))
+			{
+				_hoverHealthBar = hbtPair.HealthBar;
+				return;
+			}
+			
 			if (!_hoverHealthBar)
 			{
-				_hoverHealthBar = _healthBarFactory.CreateHealthBar(Vector3.zero);
+				_hoverHealthBar = _healthBarFactory.GetHealthBar(Vector3.zero);
 				_hoverHealthBar.gameObject.name = "Hover Health Bar";
 			}
 
@@ -32,7 +38,9 @@ namespace UI.HealthBars
 			if (!_hoverHealthBar)
 				return;
 
-			_hoverHealthBar.BeginFading(0f);
+			if (!_healthChangedHealthBars.TryGetValue(_hoverHealthBar.Health, out HealthBarTimerPair _))
+				_healthBarFactory.ReleaseHealthBar(_hoverHealthBar);
+
 			_hoverHealthBar = null;
 		}
 
@@ -43,53 +51,72 @@ namespace UI.HealthBars
 
 		private void Start()
 		{
-			// Raised when any health object gets changed
 			HealthComponent.AnyHealthChanged += OnAnyHealthChanged;
 		}
 
 		private void OnAnyHealthChanged(object sender, EventArgs args)
 		{
 			if (sender is not HealthComponent healthComponent)
-				return; // Should always be a HealthComponent
+				return;
 
-			if (_healthChangedHealthBars.TryGetValue(healthComponent, out (HealthBar healthBar, Timer timer) value))
+			if (_healthChangedHealthBars.TryGetValue(healthComponent, out HealthBarTimerPair hbtPair))
 			{
-				value.timer.Stop();
+				hbtPair.FadeStartTimer.Stop();
 			}
 			else
 			{
-				value.healthBar = _healthBarFactory.CreateHealthBar(healthComponent.transform.position);
-				value.healthBar.gameObject.name = $"Health Bar - {healthComponent.gameObject.name}";
-				value.healthBar.SetHealth(healthComponent, healthComponent.transform);
+				hbtPair = new HealthBarTimerPair
+				{
+					HealthBar = _healthBarFactory.GetHealthBar(healthComponent.transform.position),
+					FadeStartTimer = CreateTimer()
+				};
+				
+				hbtPair.HealthBar.gameObject.name = $"Health Bar - {healthComponent.gameObject.name}";
+				hbtPair.HealthBar.SetHealth(healthComponent, healthComponent.transform);
+				hbtPair.HealthBar.ReleaseRequested += OnHealthBarReleaseRequested;
+				hbtPair.FadeStartTimer.Elapsed += (_, _) => OnHealthBarTimerElapsed(hbtPair);
 
-				value.timer = CreateTimer();
-				value.timer.Elapsed += (sender, _) => OnHealthBarTimerElapsed(healthComponent);
-
-				if (!_healthChangedHealthBars.TryAdd(healthComponent, (value.healthBar, value.timer)))
+				if (!_healthChangedHealthBars.TryAdd(healthComponent, hbtPair))
 					Debug.LogError("Unable to add health bar...");
 			}
 
-			value.timer.Start();
+			hbtPair.FadeStartTimer.Start();
 		}
 
-		private void OnHealthBarTimerElapsed(HealthComponent healthComponent)
+		private void OnHealthBarTimerElapsed(HealthBarTimerPair hbtPair)
 		{
-			_healthChangedHealthBars.TryRemove(healthComponent, out (HealthBar, Timer) removed);
-			(HealthBar healthBar, Timer timer) = removed;
+			hbtPair.HealthBar.BeginFading(damagedTimeToFadeSec);
+		}
+
+		private void OnHealthBarReleaseRequested(object sender, EventArgs _)
+		{
+			RemoveHealthBar(sender as HealthBar);
+		}
+
+		private void RemoveHealthBar(HealthBar healthBar)
+		{
+			if (!_healthChangedHealthBars.TryRemove(healthBar.Health, out HealthBarTimerPair removedHbtPair))
+				return;
 			
-			healthBar.BeginFading(damagedTimeToFadeSec);
-			timer.Dispose();
+			removedHbtPair.FadeStartTimer.Dispose();
+			
+			if (healthBar != _hoverHealthBar)
+				_healthBarFactory.ReleaseHealthBar(removedHbtPair.HealthBar);
 		}
 
 		private Timer CreateTimer()
 		{
-			Timer timer = new(damagedTimeToLiveSec * 1000)
+			return new Timer(damagedTimeToLiveSec * 1000)
 			{
 				AutoReset = false,
 				Enabled = false
 			};
+		}
 
-			return timer;
+		private class HealthBarTimerPair
+		{
+			public HealthBar HealthBar { get; set;  }
+			public Timer FadeStartTimer { get; set; }
 		}
 	}
 }
