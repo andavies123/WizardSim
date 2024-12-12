@@ -1,7 +1,7 @@
 HealthBar
 ----------
 // BUG: Health Bar sometimes seems to fade away even while taking damage
-// BUG: Health Bar turns white when fade starts
+// FXD: Health Bar turns white when fade starts
 // FXD: Health Bar doesn't always appear when taking damage
 // FXD: Health Bar doesn't always have black background
 // FXD: Health Bar seems to be drawn before its ready (not at correct fill, not facing proper direction)

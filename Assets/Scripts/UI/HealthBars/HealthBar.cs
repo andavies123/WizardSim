@@ -63,7 +63,7 @@ namespace UI.HealthBars
 				_positionOffset = healthBarUser.PositionOffset;
 			else
 				_positionOffset = DefaultPositionOffset;
-
+			
 			UpdateImageFill(Health.CurrentHealth, Health.MaxHealth);
 			UpdatePosition(); // Update the position
 			_requiresUpdate = false;
@@ -84,9 +84,12 @@ namespace UI.HealthBars
 		{
 			_canvas.enabled = false; // Make sure the health bar can't be seen until necessary
 
-			for (int imageIndex = 0; imageIndex < _imagesToFade.Count; imageIndex++)
+			if (_originalColors.Count > 0)
 			{
-				_imagesToFade[imageIndex].color = _originalColors[imageIndex];
+				for (int imageIndex = 0; imageIndex < _imagesToFade.Count; imageIndex++)
+				{
+					_imagesToFade[imageIndex].color = _originalColors[imageIndex];
+				}	
 			}
 		}
 
@@ -154,8 +157,13 @@ namespace UI.HealthBars
 			_canvas = GetComponent<Canvas>();
 			_transform = transform;
 			_canvas.enabled = false;
-			
 			_imagesToFade = GetComponentsInChildren<Image>().ToList();
+		}
+
+		private IEnumerator Start()
+		{
+			yield return new WaitForEndOfFrame(); // Image colors aren't set until rendering
+			
 			_imagesToFade.ForEach(image => _originalColors.Add(image.color));
 		}
 
