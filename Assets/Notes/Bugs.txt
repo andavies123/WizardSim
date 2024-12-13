@@ -12,9 +12,15 @@ HealthBar
 
 Selection
 ---------
-// BUG: When an object was previously selected and deselected, when selecting empty space the info box shows as the previously selected item
-// BUG: When selecting empty space the selection message does not show as null
+// FXD: When an object was previously selected and deselected, when selecting empty space the info box shows as the previously selected item
+// BUG: When an object is selected then deselected by clicking it, it doesn't seem to be able to be selected again
+// BUG: When secondary selecting empty space, an error is thrown
+
+Context Menu
+------------
+// BUG: When a context menu is open, selecting empty space outside of the menu doesn't close, only if I click on an interactable object
 
 Wizard Tasks
 ------------
 // BUG: The wizard does not go to the nearest rock when destroying surrounding
+// BUG: When a wizard finishes a task, and a new task is started, they don't take on that new task

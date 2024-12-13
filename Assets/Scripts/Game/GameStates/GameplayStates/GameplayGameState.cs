@@ -132,7 +132,10 @@ namespace Game.GameStates.GameplayStates
 		{
 			if (message is CurrentSelectedInteractable selectedMessage)
 			{
-				_gameplayUIState.InfoWindow.OpenWindow(selectedMessage.SelectedInteractable);
+				if (selectedMessage.SelectedInteractable != null)
+					_gameplayUIState.InfoWindow.OpenWindow(selectedMessage.SelectedInteractable);
+				else
+					_gameplayUIState.InfoWindow.CloseWindow();
 			}
 		}
 

@@ -11,6 +11,9 @@ Trees
 
 Selection System
 ----------------
+// TODO: Split up the selection classes.
+    1st class: Direct access to the mouse and says which object was pressed by the mouse. Only pressed, not selected
+    2nd class: Listens to the first class and handles the selection/deselection management
 // TODO: When a wizard is selected, opening up a context menu and selecting an action should create and assign the task to that wizard
 // TODO: Opening a context menu when something is selected should only show context menu items that are active for that selection type
-// TODO: Add a object type to the selection message
+// TODO: Add an object type to the selection message
