@@ -2,7 +2,6 @@
 using Extensions;
 using GameWorld.WorldObjects;
 using GameWorld.WorldObjects.Rocks;
-using GameWorld.WorldResources;
 using UnityEngine;
 
 namespace GameWorld.Characters.Wizards.States

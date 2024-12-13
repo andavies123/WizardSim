@@ -1,45 +1,47 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Extensions;
 using GameWorld.Characters.States;
 using GameWorld.WorldObjects;
 using GameWorld.WorldObjects.Rocks;
-using GameWorld.WorldResources;
 using StateMachines;
+using UnityEngine;
 
 namespace GameWorld.Characters.Wizards.States
 {
 	public class DestroyRocksTaskState : WizardTaskState
 	{
-		private readonly List<Rock> _rocks;
+		private readonly List<Rock> _rocksLeftToDestroy;
 		private readonly StateMachine _stateMachine = new();
 		private readonly int _initialRockCount;
 		
 		private readonly MoveToWorldObjectCharacterState _moveToState;
 		private readonly DestroyRockState _destroyRockState;
 		private readonly WaitCharacterState _waitState;
+
+		private Rock _targetedRock;
 		
-		public DestroyRocksTaskState(List<Rock> rocks)
+		public DestroyRocksTaskState(List<Rock> rocksToDestroy)
 		{
 			_moveToState = new MoveToWorldObjectCharacterState(Wizard);
 			_destroyRockState = new DestroyRockState(Wizard);
 			_waitState = new WaitCharacterState(Wizard);
 			
-			_rocks = rocks;
-			_initialRockCount = rocks.Count;
+			_rocksLeftToDestroy = rocksToDestroy;
+			_initialRockCount = rocksToDestroy.Count;
 			UpdateDisplayStatus();
 			AddStateTransitions();
 
-			rocks.ForEach(rock => rock.WorldObject.Destroyed += OnRockDestroyed);
+			rocksToDestroy.ForEach(rock => rock.WorldObject.Destroyed += OnRockDestroyed);
 		}
 
-		public override string DisplayName => $"Destroying {_rocks.Count} Rocks";
+		public override string DisplayName => $"Destroying {_rocksLeftToDestroy.Count} Rocks";
 		public override string DisplayStatus { get; protected set; }
 
 		public override void Begin()
 		{
+			_targetedRock = GetClosestRock();
 			_moveToState.Character = Wizard;
-			_moveToState.Initialize(_rocks[0].WorldObject, 2f);
+			_moveToState.Initialize(_targetedRock.WorldObject, 2f);
 			_stateMachine.SetCurrentState(_moveToState);
 		}
 
@@ -51,7 +53,7 @@ namespace GameWorld.Characters.Wizards.States
 
 			_stateMachine.Update();
 
-			DisplayStatus = $"Rocks Destroyed: {_initialRockCount - _rocks.Count} of {_initialRockCount} | {_stateMachine.CurrentStateDisplayStatus}";
+			DisplayStatus = $"Rocks Destroyed: {_initialRockCount - _rocksLeftToDestroy.Count} of {_initialRockCount} | {_stateMachine.CurrentStateDisplayStatus}";
 		}
 
 		public override void End() { }
@@ -71,46 +73,52 @@ namespace GameWorld.Characters.Wizards.States
 			// Destroy rocks state transitions
 			_stateMachine.AddStateTransition(
 				new StateTransitionFrom(_destroyRockState, DestroyRockState.EXIT_REASON_ROCK_DESTROYED),
-				new StateTransitionTo(_moveToState, MoveToNextRock, RockExists));
+				new StateTransitionTo(_moveToState, InitMoveToState, RockExists));
 		}
 
 		private bool RockExists()
 		{
-			return _rocks.Count > 0;
+			return _rocksLeftToDestroy.Count > 0;
 		}
 		
 		private void UpdateDisplayStatus()
 		{
-			DisplayStatus = $"Rocks Destroyed: {_initialRockCount - _rocks.Count}/{_initialRockCount}";
+			DisplayStatus = $"Rocks Destroyed: {_initialRockCount - _rocksLeftToDestroy.Count}/{_initialRockCount}";
 		}
 		
 		private void DestroyNextRock()
 		{
-			_destroyRockState.Initialize(_rocks[0]);
+			_destroyRockState.Initialize(_targetedRock);
 		}
 
-		private void MoveToNextRock()
+		private void InitMoveToState()
 		{
 			UpdateDisplayStatus();
-			
-			if (_rocks.IsEmpty())
+
+			_targetedRock = GetClosestRock();
+			if (!_targetedRock)
 			{
 				CompleteTask();
 				return;
 			}
 
-			Rock rock = _rocks[0];
-			_moveToState.Initialize(rock.WorldObject, 2f);
+			_moveToState.Initialize(_targetedRock.WorldObject, 2f);
+		}
+
+		private Rock GetClosestRock()
+		{
+			return _rocksLeftToDestroy.OrderBy(rock => Vector3.Distance(Wizard.Position, rock.transform.position))
+				.FirstOrDefault();
 		}
 
 		private void OnRockDestroyed(WorldObject worldObject)
 		{
 			worldObject.Destroyed -= OnRockDestroyed;
 
-			Rock removedRock = _rocks.FirstOrDefault(rock => rock.WorldObject == worldObject);
-			_rocks.Remove(removedRock);
+			Rock removedRock = _rocksLeftToDestroy.FirstOrDefault(rock => rock.WorldObject == worldObject);
+			_rocksLeftToDestroy.Remove(removedRock);
 
-			if (_rocks.Count == 0)
+			if (_rocksLeftToDestroy.Count == 0)
 			{
 				CompleteTask();
 			}
