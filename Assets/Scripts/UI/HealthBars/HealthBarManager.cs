@@ -65,6 +65,7 @@ namespace UI.HealthBars
 			if (_healthChangedHealthBars.TryGetValue(health, out HealthBarTimerPair hbtPair))
 			{
 				hbtPair.FadeStartTimer.Stop();
+				hbtPair.HealthBar.StopFading();
 			}
 			else
 			{
@@ -88,7 +89,7 @@ namespace UI.HealthBars
 
 		private void OnHealthBarTimerElapsed(HealthBarTimerPair hbtPair)
 		{
-			hbtPair.HealthBar.BeginFading(damagedTimeToFadeSec);
+			hbtPair.HealthBar.StartFading(damagedTimeToFadeSec);
 		}
 
 		private void OnHealthBarReleaseRequested(object sender, EventArgs _)

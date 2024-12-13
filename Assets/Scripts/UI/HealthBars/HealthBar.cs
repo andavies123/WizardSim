@@ -34,7 +34,7 @@ namespace UI.HealthBars
 		// Fade to Destroy variables
 		private readonly List<Color> _originalColors = new();
 		private List<Image> _imagesToFade;
-		private bool _startFading;
+		private bool _startFadingFlag;
 		private bool _isFading;
 		private float _timeToFadeSeconds;
 
@@ -71,26 +71,27 @@ namespace UI.HealthBars
 			Health.CurrentHealthChanged += OnHealthChanged;
 		}
 
-		public void BeginFading(float timeToFadeSeconds)
+		public void StartFading(float timeToFadeSeconds)
 		{
-			if (_startFading || _isFading)
+			if (_startFadingFlag || _isFading)
 				return;
 
-			_startFading = true;
+			_startFadingFlag = true;
 			_timeToFadeSeconds = timeToFadeSeconds;
+		}
+
+		public void StopFading()
+		{
+			StopCoroutine(nameof(FadeOut));
+			_isFading = false;
+			_startFadingFlag = false;
+			ResetImages();
 		}
 
 		public void Initialize()
 		{
 			_canvas.enabled = false; // Make sure the health bar can't be seen until necessary
-
-			if (_originalColors.Count > 0)
-			{
-				for (int imageIndex = 0; imageIndex < _imagesToFade.Count; imageIndex++)
-				{
-					_imagesToFade[imageIndex].color = _originalColors[imageIndex];
-				}	
-			}
+			ResetImages();
 		}
 
 		public void CleanUp()
@@ -106,7 +107,7 @@ namespace UI.HealthBars
 			_canvas.enabled = false;
 			
 			// Reset fading values
-			_startFading = false;
+			_startFadingFlag = false;
 			_isFading = false;
 		}
 
@@ -118,18 +119,31 @@ namespace UI.HealthBars
 			{
 				for (int imageIndex = 0; imageIndex < _imagesToFade.Count; imageIndex++)
 				{
+					Color currentColor = _imagesToFade[imageIndex].color;
 					Color originalColor = _originalColors[imageIndex];
 					_imagesToFade[imageIndex].color = new Color(
-						originalColor.r,
-						originalColor.g,
-						originalColor.b,
+						currentColor.r,
+						currentColor.g,
+						currentColor.b,
 						Mathf.Lerp(originalColor.a, 0, Mathf.Min(1, t / _timeToFadeSeconds)));
 				}
 
 				yield return null;
 			}
 
+			_isFading = false;
 			ReleaseRequested?.Invoke(this, EventArgs.Empty);
+		}
+		
+		private void ResetImages()
+		{
+			if (_originalColors.Count > 0)
+			{
+				for (int imageIndex = 0; imageIndex < _imagesToFade.Count; imageIndex++)
+				{
+					_imagesToFade[imageIndex].color = _originalColors[imageIndex];
+				}
+			}
 		}
 
 		private void UpdatePosition()
@@ -181,10 +195,10 @@ namespace UI.HealthBars
 				_canvas.enabled = true;
 			}
 			
-			if (_startFading)
+			if (_startFadingFlag)
 			{
-				_startFading = false;
-				StartCoroutine(FadeOut());
+				_startFadingFlag = false;
+				StartCoroutine(nameof(FadeOut));
 				return;
 			}
 
