@@ -132,7 +132,7 @@ namespace Game.GameStates.GameplayStates
 		{
 			if (message is CurrentSelectedInteractable selectedMessage)
 			{
-				if (selectedMessage.SelectedInteractable != null)
+				if (selectedMessage.SelectedInteractable)
 					_gameplayUIState.InfoWindow.OpenWindow(selectedMessage.SelectedInteractable);
 				else
 					_gameplayUIState.InfoWindow.CloseWindow();
@@ -143,10 +143,17 @@ namespace Game.GameStates.GameplayStates
 		{
 			if (message is CurrentSelectedInteractable selectedMessage)
 			{
-				if (selectedMessage.SelectedInteractable.TryGetComponent(out ContextMenuUser contextMenuUser))
+				if (selectedMessage.SelectedInteractable)
 				{
-					_gameplayUIState.InfoWindow.OpenWindow(selectedMessage.SelectedInteractable);
-					OpenContextMenuRequested?.Invoke(this, (contextMenuUser, Input.mousePosition));
+					if (selectedMessage.SelectedInteractable.TryGetComponent(out ContextMenuUser contextMenuUser))
+					{
+						_gameplayUIState.InfoWindow.OpenWindow(selectedMessage.SelectedInteractable);
+						OpenContextMenuRequested?.Invoke(this, (contextMenuUser, Input.mousePosition));
+					}	
+				}
+				else
+				{
+					// Todo: Possible close context menu?
 				}
 			}
 		}
