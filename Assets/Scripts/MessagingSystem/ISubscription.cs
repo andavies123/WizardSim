@@ -16,6 +16,14 @@ namespace MessagingSystem
 		public Type MessageType { get; }
 		public Predicate<IMessage> MessageFilter { get; }
 		public Action<IMessage> Callback { get; }
+
+		public static ISubscription CreateSubscription<TMessage>(
+			object subscriber,
+			Action<IMessage> callback,
+			Predicate<IMessage> filter = null) where TMessage : IMessage
+		{
+			return new Subscription(subscriber, typeof(TMessage), filter, callback);
+		}
 	}
 
 	public interface ISubscription

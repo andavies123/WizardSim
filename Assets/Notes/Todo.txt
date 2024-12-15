@@ -1,3 +1,7 @@
+Message Broker UI
+-----------------
+// TODO: Add a message count after the title group. Ex. InteractableSelected (2)
+
 Trees
 -----
 // TODO: Add a temp tree 3d model
@@ -11,7 +15,7 @@ Trees
 
 Selection System
 ----------------
-// TODO: Split up the selection classes.
+// DONE: Split up the selection classes.
     1st class: Direct access to the mouse and says which object was pressed by the mouse. Only pressed, not selected
     2nd class: Listens to the first class and handles the selection/deselection management
 // TODO: When a wizard is selected, opening up a context menu and selecting an action should create and assign the task to that wizard

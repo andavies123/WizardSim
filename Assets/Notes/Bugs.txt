@@ -13,7 +13,7 @@ HealthBar
 Selection
 ---------
 // FXD: When an object was previously selected and deselected, when selecting empty space the info box shows as the previously selected item
-// BUG: When an object is selected then deselected by clicking it, it doesn't seem to be able to be selected again
+// FXD: When an object is selected then deselected by clicking it, it doesn't seem to be able to be selected again
 // FXD: When secondary selecting empty space, an error is thrown
 
 Context Menu

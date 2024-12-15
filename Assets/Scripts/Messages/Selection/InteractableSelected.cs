@@ -1,14 +1,14 @@
-﻿using MessagingSystem;
 using System.Text;
+using MessagingSystem;
 using UI;
 
 namespace Messages.Selection
 {
 	/// <summary>
-	/// Contains the current selected interactable in the system
-	/// This message only gets raised when the systems current selection changes
+	/// Raised everytime an interactable gets selected
+	/// This doesn't show the current selection in the system, just the latest interactable that was selected 
 	/// </summary>
-	public class CurrentSelectedInteractable : Message
+	public class InteractableSelected : Message
 	{
 		public Interactable SelectedInteractable { get; set; }
 		public InteractionType InteractionType { get; set; }
@@ -22,18 +22,5 @@ namespace Messages.Selection
 			stringBuilder.AppendLine($"Selected Interactable: {selectedInteractableName}");
 			return stringBuilder;
 		}
-	}
-
-	public class CurrentSelectedInteractableKey : IMessageKey
-	{
-		public InteractionType InteractionType { get; set; }
-		public string CompareString => InteractionType.ToString();
-		public object Sender { get; set; }
-	}
-
-	public enum InteractionType
-	{
-		PrimarySelection,
-		SecondarySelection
 	}
 }

@@ -1,7 +1,7 @@
-﻿using Game;
+﻿using System;
+using Game;
 using Messages.Selection;
 using MessagingSystem;
-using System;
 using UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -9,11 +9,11 @@ using Utilities;
 
 namespace CameraComponents
 {
-	public class   InteractableRaycaster : MonoBehaviour
+	public class InteractableRaycaster : MonoBehaviour
 	{
 		[SerializeField] private new Camera camera;
 		[SerializeField] private float maxRaycastDistance = 1000;
-		
+
 		private MessageBroker _messageBroker;
 		private Interactable _currentHover;
 		private Interactable _currentSelected;
@@ -31,11 +31,11 @@ namespace CameraComponents
 
         public bool IsInteractableCurrentlyHovered => _currentHover;
 
-		private void Awake()
-		{
-			_messageBroker = Dependencies.Get<MessageBroker>();
-		}
-
+        private void Awake()
+        {
+	        _messageBroker = Dependencies.Get<MessageBroker>();
+        }
+        
 		private void Update()
 		{
 			bool isPointerOverGameObject = EventSystem.current.IsPointerOverGameObject();
@@ -146,20 +146,14 @@ namespace CameraComponents
 			_currentHover = null;
 		}
 
-		private void SendSelectedMessage(InteractionType interactionType, Interactable selected)
+		private void SendSelectedMessage(InteractionType interactionType, Interactable selectedInteractable)
 		{
-			_messageBroker.PublishPersistant(
-				new CurrentSelectedInteractableKey
-				{
-					InteractionType = interactionType,
-					Sender = this,
-				},
-				new CurrentSelectedInteractable
-				{
-					InteractionType = interactionType,
-					SelectedInteractable = selected,
-					Sender = this
-				});
+			_messageBroker.PublishSingle(new InteractableSelected
+			{
+				InteractionType = interactionType,
+				SelectedInteractable = selectedInteractable,
+				Sender = this
+			});
 		}
 	}
 }
