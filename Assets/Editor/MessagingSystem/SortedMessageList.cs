@@ -29,7 +29,8 @@ namespace Editor.MessagingSystem
 					FoldoutStates.TryAdd(sender, false);
 				}
 				
-				FoldoutStates[sender] = EditorGUILayout.Foldout(FoldoutStates[sender], sender, FoldoutHeaderFontStyle);
+				string foldoutTitle = $"{sender} ({messageBySender.Count})";
+				FoldoutStates[sender] = EditorGUILayout.Foldout(FoldoutStates[sender], foldoutTitle, FoldoutHeaderFontStyle);
 				EditorExtensions.DrawHorizontalSeparator();
 				
 				if (FoldoutStates[sender])
@@ -64,8 +65,9 @@ namespace Editor.MessagingSystem
 				{
 					FoldoutStates.TryAdd(messageType, false);
 				}
-				
-				FoldoutStates[messageType] = EditorGUILayout.Foldout(FoldoutStates[messageType], messageType, FoldoutHeaderFontStyle);
+
+				string foldoutTitle = $"{messageType} ({messageByType.Count})";
+				FoldoutStates[messageType] = EditorGUILayout.Foldout(FoldoutStates[messageType], foldoutTitle, FoldoutHeaderFontStyle);
 				EditorExtensions.DrawHorizontalSeparator();
 				
 				if (FoldoutStates[messageType])

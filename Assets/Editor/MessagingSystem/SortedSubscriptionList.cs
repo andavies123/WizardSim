@@ -29,7 +29,8 @@ namespace Editor.MessagingSystem
 					FoldoutStates.TryAdd(subscriber, false);
 				}
 				
-				FoldoutStates[subscriber] = EditorGUILayout.Foldout(FoldoutStates[subscriber], subscriber, FoldoutHeaderFontStyle);
+				string foldoutTitle = $"{subscriber} ({subscriptionBySubscriber.Count})";
+				FoldoutStates[subscriber] = EditorGUILayout.Foldout(FoldoutStates[subscriber], foldoutTitle, FoldoutHeaderFontStyle);
 				EditorExtensions.DrawHorizontalSeparator();
 				
 				if (FoldoutStates[subscriber])
@@ -65,7 +66,8 @@ namespace Editor.MessagingSystem
 					FoldoutStates.TryAdd(subscription, false);
 				}
 				
-				FoldoutStates[subscription] = EditorGUILayout.Foldout(FoldoutStates[subscription], subscription, FoldoutHeaderFontStyle);
+				string foldoutTitle = $"{subscription} ({subscriptionBySubscription.Count})";
+				FoldoutStates[subscription] = EditorGUILayout.Foldout(FoldoutStates[subscription], foldoutTitle, FoldoutHeaderFontStyle);
 				EditorExtensions.DrawHorizontalSeparator();
 				
 				if (FoldoutStates[subscription])

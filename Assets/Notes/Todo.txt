@@ -1,6 +1,6 @@
 Message Broker UI
 -----------------
-// TODO: Add a message count after the title group. Ex. InteractableSelected (2)
+// DONE: Add a message count after the title group. Ex. InteractableSelected (2)
 
 Trees
 -----
