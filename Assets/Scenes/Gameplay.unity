@@ -2534,6 +2534,7 @@ MonoBehaviour:
   initialSpawns: 0
   spawnCenter: {x: 0, y: 0, z: 0}
   spawnRadius: 10
+  undecidedWizardColor: {r: 0.5188679, g: 0.5188679, b: 0.5188679, a: 1}
   fireWizardColor: {r: 0.6603774, g: 0.2614009, b: 0.04049486, a: 1}
   earthWizardColor: {r: 0.2830189, g: 0.12974739, b: 0, a: 1}
   waterWizardColor: {r: 0.11173906, g: 0.47570392, b: 0.8773585, a: 1}

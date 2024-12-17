@@ -2,6 +2,7 @@
 {
 	public enum WizardType
 	{
+		Undecided,
 		Earth,
 		Water,
 		Fire,

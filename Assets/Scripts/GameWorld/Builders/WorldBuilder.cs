@@ -152,7 +152,7 @@ namespace GameWorld.Builders
 				return;
 			}
 			
-			wizardFactory.CreateWizard(spawnRequest.SpawnPosition, spawnRequest.WizardType);
+			wizardFactory.CreateNewWizard(spawnRequest.SpawnPosition, spawnRequest.WizardType);
 		}
 
 		private void OnEnemySpawnRequested(IMessage message)

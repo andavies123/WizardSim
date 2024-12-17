@@ -15,6 +15,7 @@ using GameWorld.Characters.Wizards.AgeSystem;
 using GameWorld.Settlements;
 using MessagingSystem;
 using UI.Messages;
+using Component = UnityEngine.Component;
 
 namespace GameWorld.Characters.Wizards
 {
@@ -26,7 +27,8 @@ namespace GameWorld.Characters.Wizards
 		private GameWorldTimeBehaviour _worldTime;
 
 		public string Name { get; set; }
-		public WizardType WizardType { get; set; } = WizardType.Earth;
+		public WizardType WizardType { get; set; } = WizardType.Undecided;
+		public WizardAttributes Attributes { get; set; }
 		
 		// Components
 		public WizardStateMachine StateMachine { get; private set; }
@@ -104,24 +106,39 @@ namespace GameWorld.Characters.Wizards
 
 		#endregion
 		
-		public void InitializeWizard(string wizardName, WizardType wizardType, 
-			Settlement settlement, GameWorldTimeBehaviour worldTime)
+		public void InitializeWizard(string wizardName, Settlement settlement, GameWorldTimeBehaviour worldTime)
 		{
 			Name = wizardName;
-			WizardType = wizardType;
 			Settlement = settlement;
 			_worldTime = worldTime;
+
+			Attributes = new WizardAttributes
+			{
+				Strength = { CurrentLevel = 1 },
+				Endurance = { CurrentLevel = 1 },
+				Vitality = { CurrentLevel = 1 },
+				Magic = { CurrentLevel = 1 },
+				Mana = { CurrentLevel = 1 },
+				Intelligence = { CurrentLevel = 1 },
+				Courage = { CurrentLevel = 1 }
+			};
+
+			Attributes.LeveledUp += OnAttributeLeveledUp;
 			
-			gameObject.name = $"Wizard - {Name} - {wizardType}";
+			gameObject.name = $"Wizard - {Name} - {WizardType}";
 		}
-		
+
+		private void OnAttributeLeveledUp(CharacterAttribute leveledUpAttribute)
+		{
+			// Todo: Recalculate stats
+		}
+
 		protected override void Awake()
 		{
 			base.Awake();
 
-			// Add/get components/Dependencies
-			StateMachine = GetComponent<WizardStateMachine>();
 			Dependencies.Get<MessageBroker>();
+			StateMachine = GetComponent<WizardStateMachine>();
 
 			Health.CurrentHealthChanged += OnCurrentHealthChanged;
 		}

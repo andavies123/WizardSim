@@ -12,6 +12,6 @@ namespace GameWorld.Settlements.Interfaces
 		/// </summary>
 		/// <param name="worldPosition">The position in the world that this wizard will be created at</param>
 		/// <param name="wizardType">The type of wizard to create</param>
-		void CreateWizard(Vector3 worldPosition, WizardType wizardType);
+		void CreateNewWizard(Vector3 worldPosition, WizardType wizardType);
 	}
 }

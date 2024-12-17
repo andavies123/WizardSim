@@ -1,23 +1,62 @@
+Wizard Stats UI
+---------------
+Todo: The info box for wizards should have a small button that would enlarge to display more info
+Todo: Enlarged box should display stats of the wizard
+Todo: Enlarged box should display health of the wizard
+Todo: Enlarged box should display what the wizard is currently doing
+Todo: Enlarged box should display age of the wizard
+
+Stockpile UI
+------------
+Todo: There should be a UI at the top of the screen that displays stockpile levels
+Todo: The UI should expand when clicked on to show all stockpile levels and more details
+Todo: The UI should show the very basic amounts of stockpile levels
+Todo: The UI should automatically update when a stockpile is updated
+
+Attribute System
+-----------
+Done: Wizards should contain a general set of attributes
+Todo: Attributes should use experience points to increase levels
+Todo: Attributes should get harder to level up the higher the level
+Todo: Attributes should be directly related to how well wizards can work
+Todo: Working on certain tasks should work towards upgrading these Attributes
+
+General Enemies
+---------------
+Todo: Enemies of same type should spawn with different stats but very similar to each other
+
+General Wizard
+--------------
+Todo: A new wizard should start out as an undecided wizard
+Todo: The player should be able to assign a wizard a profession
+Todo: A new wizard should have a starting set of stats that the player can use to decide where to place them
+
+Guard Wizard
+------------
+Todo: Create a wizard type that represents a guard for the village
+Todo: Guard wizard should be able to detect a nearby enemy
+Todo: Once the guard wizard detects an enemy, they should charge toward and attack the the enemy til death
+
 Message Broker UI
 -----------------
-// DONE: Add a message count after the title group. Ex. InteractableSelected (2)
+Done: Add a message count after the title group. Ex. InteractableSelected (2)
 
 Trees
 -----
-// TODO: Add a temp tree 3d model
-// TODO: Add trees as a world object
-// TODO: Create a world object prefab
-// TODO: Add trees to the generation
-// TODO: Trees should be breakable
-// TODO: Trees should add wood to the town stockpile
-// TODO: Add wood as a Town Resource
-// TODO: Add wizard task to chop wood
+Todo: Add a temp tree 3d model
+Todo: Add trees as a world object
+Todo: Create a world object prefab
+Todo: Add trees to the generation
+Todo: Trees should be breakable
+Todo: Trees should add wood to the town stockpile
+Todo: Add wood as a Town Resource
+Todo: Add wizard task to chop wood
 
 Selection System
 ----------------
-// DONE: Split up the selection classes.
+Done: Split up the selection classes.
     1st class: Direct access to the mouse and says which object was pressed by the mouse. Only pressed, not selected
     2nd class: Listens to the first class and handles the selection/deselection management
-// TODO: When a wizard is selected, opening up a context menu and selecting an action should create and assign the task to that wizard
-// TODO: Opening a context menu when something is selected should only show context menu items that are active for that selection type
-// TODO: Add an object type to the selection message
+Todo: When a wizard is selected, opening up a context menu and selecting an action should create and assign the task to that wizard
+Todo: Opening a context menu when something is selected should only show context menu items that are active for that selection type
+Todo: Add an object type to the selection message
