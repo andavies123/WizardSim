@@ -1,21 +1,3 @@
-HealthBar
-----------
-// FXD: Health Bar sometimes seems to fade away even while taking damage
-// FXD: Health Bar turns white when fade starts
-// FXD: Health Bar doesn't always appear when taking damage
-// FXD: Health Bar doesn't always have black background
-// FXD: Health Bar seems to be drawn before its ready (not at correct fill, not facing proper direction)
-// FXD: Hover Health Bar shouldn't appear if one is already active for that object
-// FXD: Hover Health Bar seems malformed at beginning of hover
-// FXD: Hover Health Bar seems to stay after object is dead
-// FXD: During Fade, the color gets set to the original color rather than the hurt color
-
-Selection
----------
-// FXD: When an object was previously selected and deselected, when selecting empty space the info box shows as the previously selected item
-// FXD: When an object is selected then deselected by clicking it, it doesn't seem to be able to be selected again
-// FXD: When secondary selecting empty space, an error is thrown
-
 Context Menu
 ------------
 // BUG: When a context menu is open, selecting empty space outside of the menu doesn't close, only if I click on an interactable object

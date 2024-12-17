@@ -1,3 +1,15 @@
+Settlement
+----------
+Todo: Settlement should have a button hat brings the settlement back into the view of the camera
+
+General World
+-------------
+Todo: The world should generate more chunks as the camera moves
+
+World Objects
+-------------
+Todo: World Objects should contain how much experience is gained on destruction
+
 Wizard Stats UI
 ---------------
 Todo: The info box for wizards should have a small button that would enlarge to display more info
@@ -16,8 +28,8 @@ Todo: The UI should automatically update when a stockpile is updated
 Attribute System
 -----------
 Done: Wizards should contain a general set of attributes
-Todo: Attributes should use experience points to increase levels
-Todo: Attributes should get harder to level up the higher the level
+Done: Attributes should use experience points to increase levels
+Done: Attributes should get harder to level up the higher the level
 Todo: Attributes should be directly related to how well wizards can work
 Todo: Working on certain tasks should work towards upgrading these Attributes
 
@@ -36,10 +48,6 @@ Guard Wizard
 Todo: Create a wizard type that represents a guard for the village
 Todo: Guard wizard should be able to detect a nearby enemy
 Todo: Once the guard wizard detects an enemy, they should charge toward and attack the the enemy til death
-
-Message Broker UI
------------------
-Done: Add a message count after the title group. Ex. InteractableSelected (2)
 
 Trees
 -----
