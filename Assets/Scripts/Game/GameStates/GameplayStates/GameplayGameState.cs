@@ -7,7 +7,6 @@ using Messages.Selection;
 using Messages.UI;
 using Messages.UI.Enums;
 using MessagingSystem;
-using UI;
 using UI.ContextMenus;
 using UnityEngine;
 
@@ -150,10 +149,6 @@ namespace Game.GameStates.GameplayStates
 						_gameplayUIState.InfoWindow.OpenWindow(selectedMessage.SelectedInteractable);
 						OpenContextMenuRequested?.Invoke(this, (contextMenuUser, Input.mousePosition));
 					}	
-				}
-				else
-				{
-					// Todo: Possible close context menu?
 				}
 			}
 		}
