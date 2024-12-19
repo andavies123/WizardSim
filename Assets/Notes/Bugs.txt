@@ -1,7 +1,3 @@
-Context Menu
-------------
-// BUG: When a context menu is open, selecting empty space outside of the menu doesn't close, only if I click on an interactable object
-
 Task UI
 -------
 // BUG: The scaling in the task manager is all messed up
