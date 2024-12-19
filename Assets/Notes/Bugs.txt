@@ -2,7 +2,6 @@ Context Menu
 ------------
 // BUG: When a context menu is open, selecting empty space outside of the menu doesn't close, only if I click on an interactable object
 
-Wizard Tasks
-------------
-// FXD: The wizard does not go to the nearest rock when destroying surrounding
-// BUG: When a wizard finishes a task, and a new task is started, they don't take on that new task
+Task UI
+-------
+// BUG: The scaling in the task manager is all messed up

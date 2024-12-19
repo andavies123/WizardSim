@@ -27,7 +27,7 @@ namespace GameWorld.Characters.Wizards.Tasks
 		public Wizard AssignedWizard
 		{
 			get => _assignedWizard;
-			set
+			private set
 			{
 				if (_assignedWizard != value)
 				{
@@ -45,6 +45,18 @@ namespace GameWorld.Characters.Wizards.Tasks
 				_wizardTaskState = value;
 				_wizardTaskState.Completed += OnTaskCompleted;
 			}
+		}
+
+		public void AssignWizard(Wizard wizard)
+		{
+			AssignedWizard = wizard;
+			WizardTaskState.SetWizard(wizard);
+		}
+
+		public void RemoveWizardAssignment()
+		{
+			AssignedWizard = null;
+			WizardTaskState.SetWizard(null);
 		}
 
 		protected void OnTaskCompleted(object sender, EventArgs args)

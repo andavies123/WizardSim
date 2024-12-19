@@ -1,14 +1,11 @@
-﻿using System.Collections.Generic;
-using AndysTools.GameWorldTimeManagement.Runtime;
+﻿using AndysTools.GameWorldTimeManagement.Runtime;
 using Extensions;
 using GameWorld.Tiles;
 using GeneralBehaviours.Utilities.ContextMenuBuilders;
 using GeneralClasses.Health.HealthEventArgs;
 using Stats;
-using TaskSystem.Interfaces;
 using UnityEngine;
 using GameWorld.Characters.Wizards.States;
-using GameWorld.Characters.Wizards.Tasks;
 using System;
 using Game;
 using GameWorld.Characters.Wizards.AgeSystem;
@@ -19,7 +16,9 @@ using Component = UnityEngine.Component;
 
 namespace GameWorld.Characters.Wizards
 {
-	public class Wizard : Character, ITaskUser<IWizardTask>
+	[RequireComponent(typeof(WizardStateMachine))]
+	[RequireComponent(typeof(WizardTaskHandler))]
+	public class Wizard : Character
 	{
 		[SerializeField] private WizardStats stats;
 
@@ -27,31 +26,22 @@ namespace GameWorld.Characters.Wizards
 		private GameWorldTimeBehaviour _worldTime;
 
 		public string Name { get; set; }
+		public IAge Age { get; } = new Age();
 		public WizardType WizardType { get; set; } = WizardType.Undecided;
 		public WizardAttributes Attributes { get; set; }
+		public WizardStats Stats => stats;
+		public bool IsIdling => StateMachine.CurrentState is WizardIdleState;
 		
 		// Components
 		public WizardStateMachine StateMachine { get; private set; }
+		public WizardTaskHandler TaskHandler { get; private set; }
 		
 		// External References
 		public Settlement Settlement { get; private set; }
 
-		public IAge Age { get; } = new Age();
-		public WizardStats Stats => stats;
-		public bool IsIdling => StateMachine.CurrentState is WizardIdleState;
-
 		// Overrides
 		public override MovementStats MovementStats => Stats.MovementStats;
 		protected override string CharacterType => "Wizard";
-
-		#region ITaskUser Implementation
-
-		private readonly List<IWizardTask> _assignedTasks = new();
-
-		public bool IsAssignedTask => CurrentTask != null;
-		public bool CanBeAssignedTask => !IsAssignedTask;
-		public IWizardTask CurrentTask { get; private set; }
-		public IReadOnlyList<IWizardTask> AssignedTasks => _assignedTasks;
 		
 		public AgingStage AgeStage => Age.Years switch
 		{
@@ -60,51 +50,6 @@ namespace GameWorld.Characters.Wizards
 			<= 999 => AgingStage.Adult,
 			_ => AgingStage.Elderly
 		};
-
-		public void AssignTask(IWizardTask task)
-		{
-			if (task == null)
-				return;
-			
-			task.AssignedWizard = this;
-			_assignedTasks.Add(task);
-			task.WizardTaskState.SetWizard(this);
-			
-			AssignNewCurrentTask();
-		}
-
-		public void RemoveTask(IWizardTask task)
-		{
-			if (CurrentTask == null && _assignedTasks.IsEmpty())
-				return; // No task to un-assign
-			
-			if (task == CurrentTask)
-			{
-				CurrentTask = null;
-				AssignNewCurrentTask();
-				if (!IsAssignedTask)
-				{
-					StateMachine.Idle();
-				}
-			}
-			else
-			{
-				_assignedTasks.Remove(task);
-			}
-		}
-
-		private void AssignNewCurrentTask()
-		{
-			if (CurrentTask != null || _assignedTasks.IsEmpty())
-				return; // Current task already exists or there are no tasks to be assigned
-
-			IWizardTask newCurrentTask = _assignedTasks[0];
-			_assignedTasks.RemoveAt(0);
-			CurrentTask = newCurrentTask;
-			StateMachine.OverrideCurrentState(CurrentTask.WizardTaskState);
-		}
-
-		#endregion
 		
 		public void InitializeWizard(string wizardName, Settlement settlement, GameWorldTimeBehaviour worldTime)
 		{
@@ -139,6 +84,7 @@ namespace GameWorld.Characters.Wizards
 
 			Dependencies.Get<MessageBroker>();
 			StateMachine = GetComponent<WizardStateMachine>();
+			TaskHandler = GetComponent<WizardTaskHandler>();
 
 			Health.CurrentHealthChanged += OnCurrentHealthChanged;
 		}
@@ -150,8 +96,7 @@ namespace GameWorld.Characters.Wizards
 			UpdateInteractableInfoText();
 			InitializeContextMenu();
 			
-			if (!IsAssignedTask)
-				StateMachine.Idle();
+			StateMachine.Idle();
 		}
 
 		protected override void OnDestroy()

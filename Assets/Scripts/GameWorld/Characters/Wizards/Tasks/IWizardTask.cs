@@ -26,6 +26,17 @@ namespace GameWorld.Characters.Wizards.Tasks
 		/// The wizard that has been assigned to this task.
 		/// Null if no wizards have been assigned
 		/// </summary>
-		public Wizard AssignedWizard { get; set; }
+		public Wizard AssignedWizard { get; }
+
+		/// <summary>
+		/// Handles the internals of assigning a wizard to this task
+		/// </summary>
+		/// <param name="wizard"></param>
+		public void AssignWizard(Wizard wizard);
+		
+		/// <summary>
+		/// Removes any existing wizard assignments
+		/// </summary>
+		public void RemoveWizardAssignment();
 	}
 }

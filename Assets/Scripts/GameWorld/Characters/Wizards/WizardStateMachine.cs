@@ -21,6 +21,7 @@ namespace GameWorld.Characters.Wizards
 
 		public void OverrideCurrentState(WizardState state)
 		{
+			print($"Setting state: {state.DisplayName}");
 			StateMachine.SetCurrentState(state);
 		}
 		

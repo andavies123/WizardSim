@@ -56,34 +56,36 @@ namespace GameWorld.Settlements
 			if (!wizard || taskToRemove == null)
 				return;
 
-			wizard.RemoveTask(taskToRemove);
+			wizard.TaskHandler.RemoveTask(taskToRemove);
 		}
 
 		public void RemoveAllTasksFromWizard(Wizard wizard)
 		{
-			if (!wizard || (!wizard.IsAssignedTask && wizard.AssignedTasks.Count == 0))
+			if (!wizard)
 				return;
-
-			// Remove all assigned tasks
-			foreach (IWizardTask wizardTask in wizard.AssignedTasks)
+			
+			// Remove Active Task
+			if (wizard.TaskHandler.HasActiveTask)
 			{
-				wizard.RemoveTask(wizardTask);
+				wizard.TaskHandler.RemoveTask(wizard.TaskHandler.ActiveTask);
 			}
 			
-			// Remove the current task if it exists since CurrentTask isn't held under AssignedTasks
-			if (wizard.CurrentTask != null)
-				wizard.RemoveTask(wizard.CurrentTask);
+			// Remove all Assigned Tasks
+			foreach (IWizardTask backlogTask in wizard.TaskHandler.TaskBacklog)
+			{
+				wizard.TaskHandler.RemoveTask(backlogTask);
+			}
 		}
 		
 		public bool TryAssignTask(IWizardTask wizardTask, Wizard wizard)
 		{
 			if (!wizard || wizardTask == null || wizardTask.IsAssigned)
 				return false;
-
+			
 			if (!IsValidWizardType(wizard, wizardTask))
 				return false;
 			
-			wizard.AssignTask(wizardTask);
+			wizard.TaskHandler.TryAddTaskToBacklog(wizardTask);
 			
 			return wizardTask.IsAssigned;
 		}

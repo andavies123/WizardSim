@@ -5,10 +5,17 @@ namespace Extensions
 {
 	public static class CollectionExtensions
 	{
+		public static bool IsEmpty<T>(this List<T> list) => list.Count == 0;
+		public static bool IsNotEmpty<T>(this List<T> list) => list.Count > 0;
+		public static bool IsNullOrEmpty<T>(this List<T> list) => list == null || list.Count == 0;
+		
 		public static bool IsEmpty(this ICollection collection) => collection.Count == 0;
 		public static bool IsNotEmpty(this ICollection collection) => collection.Count > 0;
-
 		public static bool IsNullOrEmpty(this ICollection collection) => collection == null || collection.Count == 0;
+		
+		public static bool IsEmpty<T>(this ICollection<T> collection) => collection.Count == 0;
+		public static bool IsNotEmpty<T>(this ICollection<T> collection) => collection.Count > 0;
+		public static bool IsNullOrEmpty<T>(this ICollection<T> collection) => collection == null || collection.Count == 0;
 
 		/// <summary>
 		/// Tries to get the last element of this collection.
@@ -47,6 +54,19 @@ namespace Extensions
 
 			last = collection[^1];
 			collection.RemoveAt(collection.Count - 1);
+			return true;
+		}
+
+		public static bool TryRemoveFirst<T>(this IList<T> collection, out T first)
+		{
+			if (collection.IsEmpty())
+			{
+				first = default;
+				return false;
+			}
+
+			first = collection[0];
+			collection.RemoveAt(0);
 			return true;
 		}
 
