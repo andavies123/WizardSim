@@ -26,10 +26,7 @@ Todo: Enlarged box should display age of the wizard
 
 Stockpile UI
 ------------
-Todo: There should be a UI at the top of the screen that displays stockpile levels
-Todo: The UI should expand when clicked on to show all stockpile levels and more details
-Todo: The UI should show the very basic amounts of stockpile levels
-Todo: The UI should automatically update when a stockpile is updated
+Todo: The UI should dynamically expand to the correct size based on how many elements there are in it
 
 Attribute System
 ----------------
@@ -76,3 +73,8 @@ Todo: I need to have a way for wizards to actually arrive at the settlement
 Game Flow
 ---------
 Todo: When creating a new world, the first thing the player should do is place the town hall
+
+Resource Icons
+--------------
+Todo: Create icon for wood
+Todo: Create icon for stone
