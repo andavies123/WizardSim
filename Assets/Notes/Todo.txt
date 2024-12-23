@@ -24,10 +24,6 @@ Todo: Enlarged box should display health of the wizard
 Todo: Enlarged box should display what the wizard is currently doing
 Todo: Enlarged box should display age of the wizard
 
-Stockpile UI
-------------
-Todo: The UI should dynamically expand to the correct size based on how many elements there are in it
-
 Attribute System
 ----------------
 Todo: Attributes should be directly related to how well wizards can work
