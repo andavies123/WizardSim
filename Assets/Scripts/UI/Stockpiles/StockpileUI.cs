@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using GameWorld.WorldResources;
 using UnityEngine;
@@ -17,13 +18,11 @@ namespace UI.Stockpiles
 		[SerializeField, Required] private TownResourceLabel resourceLabelPrefab;
 
 		[Header("Small UI")]
-		[SerializeField] private Vector2 smallSize;
-		[SerializeField, Required] private Transform smallLabelContainer;
+		[SerializeField, Required] private RectTransform smallLabelContainer;
 		[SerializeField, Required] private List<TownResource> townResourcesToDisplaySmall = new();
 
 		[Header("Large UI")]
-		[SerializeField] private Vector2 largeSize;
-		[SerializeField, Required] private Transform largeLabelContainer;
+		[SerializeField, Required] private RectTransform largeLabelContainer;
 		[SerializeField, Required] private List<TownResource> townResourcesToDisplayLarge = new();
 
 		private HorizontalLayoutGroup _parentLayoutGroup;
@@ -35,15 +34,17 @@ namespace UI.Stockpiles
 			_parentLayoutGroup = GetComponentInParent<HorizontalLayoutGroup>();
 		}
 		
-		private void Start()
+		private IEnumerator Start()
 		{
 			_rectTransform = transform as RectTransform;
 			
 			BuildLabels(townResourcesToDisplaySmall, smallLabelContainer);
 			BuildLabels(townResourcesToDisplayLarge, largeLabelContainer);
+
+			yield return new WaitForEndOfFrame();
 			
 			UpdateUI();
-			return;
+			yield break;
 
 			void BuildLabels(List<TownResource> townResources, Transform container)
 			{
@@ -78,14 +79,13 @@ namespace UI.Stockpiles
 
 		private void UpdateUISize()
 		{
-			Vector2 size = _uiSize switch
+			_rectTransform.sizeDelta = _uiSize switch
 			{
-				UISize.Small => smallSize,
-				UISize.Large => largeSize,
-				_ => throw new IndexOutOfRangeException(_uiSize.ToString())
+				UISize.Small => new Vector2(300, smallLabelContainer.sizeDelta.y),
+				UISize.Large => new Vector2(300, largeLabelContainer.sizeDelta.y),
+				_ => throw new ArgumentOutOfRangeException(_uiSize.ToString())
 			};
 			
-			_rectTransform.sizeDelta = size;
 			if (_parentLayoutGroup)
 			{
 				_parentLayoutGroup.SetLayoutVertical();
