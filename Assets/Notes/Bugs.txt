@@ -1,8 +1,8 @@
-Task UI
--------
-// BUG: The scaling in the task manager is all messed up
-
 Wizard Tasks
 ------------
-// BUG: When creating a task before a wizard exists, it gets assigned to the wizard but the wizard doesn't do it
-// BUG: One wizard is constantly given the newest task while another wizard is doing nothing
+Bug: When creating a task before a wizard exists, it gets assigned to the wizard but the wizard doesn't do it
+Bug: One wizard is constantly given the newest task while another wizard is doing nothing
+
+Stockpile UI
+------------
+Bug: Stockpile UI shows the large part at startup but it disappears quickly
