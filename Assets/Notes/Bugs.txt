@@ -6,3 +6,7 @@ Bug: One wizard is constantly given the newest task while another wizard is doin
 Stockpile UI
 ------------
 Bug: Stockpile UI shows the large part at startup but it disappears quickly
+
+HealthBar Manager
+-----------------
+Bug: Suddenly through a consistent "Argument Null Exception": Value cannot be null (Remove Hover HealthBar)

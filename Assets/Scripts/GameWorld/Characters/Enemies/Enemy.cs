@@ -1,4 +1,5 @@
-﻿using Extensions;
+﻿using System.Collections.Generic;
+using Extensions;
 using GeneralBehaviours.Utilities.ContextMenuBuilders;
 using GeneralClasses.Health.HealthEventArgs;
 using Stats;
@@ -58,7 +59,11 @@ namespace GameWorld.Characters.Enemies
 		private void UpdateInteractableInfoText()
 		{
 			Interactable.TitleText = CharacterType;
-			Interactable.InfoText = $"Enemy - {Health.CurrentHealth:0}/{Health.MaxHealth:0} ({Health.CurrentHealth.PercentageOf(Health.MaxHealth):0}%)";
+			Interactable.InfoText = new List<string>
+			{
+				"Enemy",
+				$"{Health.CurrentHealth:0}/{Health.MaxHealth:0} ({Health.CurrentHealth.PercentageOf(Health.MaxHealth):0}%)"
+			};
 		}
 
 		private void OnCurrentHealthChanged(object sender, CurrentHealthChangedEventArgs args) => UpdateInteractableInfoText();

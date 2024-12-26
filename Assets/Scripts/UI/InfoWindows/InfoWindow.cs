@@ -1,14 +1,20 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using Extensions;
 using TMPro;
 using UnityEngine;
+using Utilities.Attributes;
 
 namespace UI.InfoWindows
 {
 	public class InfoWindow : MonoBehaviour
 	{
 		[Header("UI Components")]
-		[SerializeField] private TMP_Text titleText;
-		[SerializeField] private TMP_Text infoText;
+		[SerializeField, Required] private TMP_Text titleText;
+		[SerializeField, Required] private TMP_Text infoText;
+
+		[Header("Display Settings")]
+		[SerializeField] private float infoTextLineHeight = 30f;
 
 		private Interactable _currentInteractable;
 		
@@ -51,7 +57,11 @@ namespace UI.InfoWindows
 		}
 
 		private void SetTitleText(string text) => titleText.SetText(text);
-		private void SetInfoText(string text) => infoText.SetText(text);
+		private void SetInfoText(IReadOnlyCollection<string> text)
+		{
+			infoText.SetText(string.Join('\n', text));
+			infoText.rectTransform.SetHeight(text.Count * infoTextLineHeight);
+		}
 
 		private void OnCurrentInteractablePropertyChanged(object sender, PropertyChangedEventArgs args)
 		{

@@ -10,10 +10,10 @@ namespace UI
 	[RequireComponent(typeof(Rigidbody))]
 	public class Interactable : MonoBehaviour, INotifyPropertyChanged
 	{
-		private bool _isHovered = false;
-		private bool _isSelected = false;
+		private bool _isHovered;
+		private bool _isSelected;
 		private string _titleText = string.Empty;
-		private string _infoText = string.Empty;
+		private List<string> _infoText = new();
 
 		public event EventHandler PrimaryActionSelected;
 		public event EventHandler SecondaryActionSelected;
@@ -36,7 +36,7 @@ namespace UI
 			set => SetValue(ref _titleText, value);
 		}
 
-		public string InfoText
+		public List<string> InfoText
 		{
 			get => _infoText;
 			set => SetValue(ref _infoText, value);
@@ -48,25 +48,25 @@ namespace UI
 		public void InitializeWithProperties(InteractableProperties properties)
 		{
 			TitleText = properties.Title;
-			InfoText = properties.Description;
+			InfoText = new List<string> {properties.Description};
 		}
 
 		public void InitializeWithProperties(InteractableRelatedProperties properties)
 		{
 			TitleText = properties.Title;
-			InfoText = properties.Description;
+			InfoText = new List<string> {properties.Description};
 		}
 
 		#region INotifyPropertyChanged Implementation
 
 		public event PropertyChangedEventHandler PropertyChanged;
 		
-		protected void OnPropertyChanged([CallerMemberName]string propertyName = null)
+		private void OnPropertyChanged([CallerMemberName]string propertyName = null)
 		{
 			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 
-		protected void SetValue<T>(ref T field, T value, [CallerMemberName]string propertyName = null)
+		private void SetValue<T>(ref T field, T value, [CallerMemberName]string propertyName = null)
 		{
 			if (EqualityComparer<T>.Default.Equals(field, value)) 
 				return;

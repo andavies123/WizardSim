@@ -1,4 +1,5 @@
-﻿using Game;
+﻿using System.Collections.Generic;
+using Game;
 using GameWorld.Messages;
 using GeneralBehaviours.Utilities.ContextMenuBuilders;
 using UI;
@@ -44,7 +45,11 @@ namespace GameWorld.Tiles
 		private void InitializeInteractable()
 		{
 			_interactable.TitleText = "Ground";
-			_interactable.InfoText = $"{TilePosition}";
+			_interactable.InfoText = new List<string>
+			{
+				"Tile",
+				$"{TilePosition}"
+			};
 		}
 		
 		private void InitializeContextMenu()

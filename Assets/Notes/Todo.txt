@@ -1,6 +1,5 @@
 Wizard Info UI
 --------------
-Todo: When a wizard is selected, the info window should show basic stats (name, age, type, health, basic stats)
 Todo: Quick Info should have a button to expand to show all stats about a certain wizard
 
 Settlement
@@ -74,3 +73,8 @@ Resource Icons
 --------------
 Todo: Create icon for wood
 Todo: Create icon for stone
+
+3D Models
+---------
+Todo: Add a custom model for rocks
+Todo: Add a custom model for trees

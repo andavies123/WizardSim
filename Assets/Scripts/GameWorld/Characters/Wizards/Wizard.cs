@@ -7,6 +7,7 @@ using Stats;
 using UnityEngine;
 using GameWorld.Characters.Wizards.States;
 using System;
+using System.Collections.Generic;
 using Game;
 using GameWorld.Characters.Wizards.AgeSystem;
 using GameWorld.Settlements;
@@ -117,8 +118,13 @@ namespace GameWorld.Characters.Wizards
 		private void UpdateInteractableInfoText()
 		{
 			Interactable.TitleText = Name;
-			string ageInDays = $"{Math.Floor(Age.Days * 10) / 10:0.#}";
-			Interactable.InfoText = $"{ageInDays} days - {Health.CurrentHealth:0}/{Health.MaxHealth:0} ({Health.CurrentHealth.PercentageOf(Health.MaxHealth):0}%)";
+			Interactable.InfoText = new List<string>
+			{
+				$"{WizardType} Wizard",
+				$"{Math.Floor(Age.Days * 10) / 10:0.#} days",
+				$"{Health.CurrentHealth:0}/{Health.MaxHealth:0} ({Health.CurrentHealth.PercentageOf(Health.MaxHealth):0}%)",
+				$"Speed: {Stats.MovementStats.Speed}"
+			};
 		}
 
 		protected override void InitializeContextMenu()
