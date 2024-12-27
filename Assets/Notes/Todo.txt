@@ -1,8 +1,3 @@
-Wizard Info UI
---------------
-Todo: Quick Info should have a button to expand to show all stats about a certain wizard
-Todo: This extended info button should not be displayed if there is no extended info
-
 Settlement
 ----------
 Todo: Settlement should have a button that brings the settlement back into the view of the camera
@@ -18,11 +13,7 @@ Todo: World Objects should contain which attributes should get experience or som
 
 Wizard Stats UI
 ---------------
-Todo: The info box for wizards should have a small button that would enlarge to display more info
-Todo: Enlarged box should display stats of the wizard
-Todo: Enlarged box should display health of the wizard
 Todo: Enlarged box should display what the wizard is currently doing
-Todo: Enlarged box should display age of the wizard
 
 Attribute System
 ----------------

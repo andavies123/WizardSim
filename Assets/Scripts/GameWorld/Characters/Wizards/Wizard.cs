@@ -122,8 +122,12 @@ namespace GameWorld.Characters.Wizards
 			{
 				$"{WizardType} Wizard",
 				$"{Math.Floor(Age.Days * 10) / 10:0.#} days",
-				$"{Health.CurrentHealth:0}/{Health.MaxHealth:0} ({Health.CurrentHealth.PercentageOf(Health.MaxHealth):0}%)",
-				$"Speed: {Stats.MovementStats.Speed}"
+				$"{Health.CurrentHealth:0}/{Health.MaxHealth:0} ({Health.CurrentHealth.PercentageOf(Health.MaxHealth):0}%)"
+			};
+			Interactable.ExtendedInfoText = new List<string>
+			{
+				$"Speed: {Stats.MovementStats.Speed}",
+				$"Rotation Speed: {Stats.MovementStats.RotationSpeed}"
 			};
 		}
 

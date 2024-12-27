@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Text;
 using Extensions;
 using TMPro;
 using UnityEngine;
@@ -72,24 +73,37 @@ namespace UI.InfoWindows
 			_currentInteractable = interactable;
 			_currentInteractable.PropertyChanged += OnCurrentInteractablePropertyChanged;
 			SetTitleText(_currentInteractable.TitleText);
-			SetInfoText(_currentInteractable.InfoText);
+			UpdateInfo();
+			SetMoreInfoButtonVisibility(_currentInteractable.ExtendedInfoText.Count > 0);
 		}
 
 		private void SetTitleText(string text) => titleText.SetText(text);
-		private void SetInfoText(IReadOnlyCollection<string> text)
+		private void SetInfoText(params IReadOnlyCollection<string>[] texts)
 		{
-			infoText.SetText(string.Join('\n', text));
-			infoText.rectTransform.SetHeight(text.Count * infoTextLineHeight);
-		}
-		private void SetMoreInfoButtonText(string text) => _moreInfoButtonText.SetText(text);
-
-		private void OnMoreInfoButtonPressed()
-		{
-			_isShowingMoreInfo = !_isShowingMoreInfo;
+			StringBuilder infoTextBuilder = new();
+			int totalLines = 0;
 			
+			foreach (IReadOnlyCollection<string> text in texts)
+			{
+				totalLines += text.Count;
+				foreach (string line in text)
+				{
+					infoTextBuilder.AppendLine(line);
+				}
+			}
+			
+			infoText.SetText(infoTextBuilder);
+			infoText.rectTransform.SetHeight(infoTextLineHeight * totalLines);
+		}
+		
+		private void SetMoreInfoButtonText(string text) => _moreInfoButtonText.SetText(text);
+		private void SetMoreInfoButtonVisibility(bool visibility) => moreInfoButton.gameObject.SetActive(visibility);
+
+		private void UpdateInfo()
+		{
 			if (_isShowingMoreInfo)
 			{
-				SetInfoText(_currentInteractable.ExtendedInfoText);
+				SetInfoText(_currentInteractable.InfoText, _currentInteractable.ExtendedInfoText);
 				SetMoreInfoButtonText("^");
 			}
 			else
@@ -97,6 +111,12 @@ namespace UI.InfoWindows
 				SetInfoText(_currentInteractable.InfoText);
 				SetMoreInfoButtonText("v");
 			}
+		}
+        
+		private void OnMoreInfoButtonPressed()
+		{
+			_isShowingMoreInfo = !_isShowingMoreInfo;
+			UpdateInfo();
 		}
 
 		private void OnCurrentInteractablePropertyChanged(object sender, PropertyChangedEventArgs args)
@@ -107,7 +127,11 @@ namespace UI.InfoWindows
 					SetTitleText(_currentInteractable.TitleText);
 					break;
 				case nameof(Interactable.InfoText):
-					SetInfoText(_currentInteractable.InfoText);
+					UpdateInfo();
+					break;
+				case nameof(Interactable.ExtendedInfoText):
+					if (_isShowingMoreInfo)
+						UpdateInfo();
 					break;
 			}
 		}
