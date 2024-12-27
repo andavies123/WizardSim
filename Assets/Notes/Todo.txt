@@ -1,6 +1,6 @@
 Settlement
 ----------
-Todo: Settlement should have a button that brings the settlement back into the view of the camera
+Todo: Settlement center button should be disabled if no town hall exists
 
 General World
 -------------

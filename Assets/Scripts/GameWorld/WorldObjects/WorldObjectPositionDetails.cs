@@ -13,6 +13,6 @@ namespace GameWorld.WorldObjects
 		public Vector3 Position { get; }
 		public Vector3 Size { get; }
 
-		public readonly Vector3 Center => Position + (Size / 2f);
+		public Vector3 Center => Position + (Size / 2f);
 	}
 }

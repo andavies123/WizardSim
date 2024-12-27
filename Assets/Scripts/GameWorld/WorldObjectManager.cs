@@ -38,6 +38,7 @@ namespace GameWorld
 			worldObject.transform.parent = _worldObjectParent;
 			WorldObjectAdded?.Invoke(this, new WorldObjectManagerEventArgs
 			{
+				AddedWorldObject = worldObject,
 				Details = worldObject.Details,
 				Count = GetObjectCount(worldObject.Details)
 			});
@@ -59,6 +60,7 @@ namespace GameWorld
 
 			WorldObjectRemoved?.Invoke(this, new WorldObjectManagerEventArgs
 			{
+				RemovedWorldObject = worldObject,
 				Details = worldObject.Details,
 				Count = GetObjectCount(worldObject.Details)
 			});

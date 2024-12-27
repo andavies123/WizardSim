@@ -1,5 +1,6 @@
 ﻿using System;
 using GameWorld.WorldObjects;
+using UnityEngine;
 
 namespace GameWorld
 {
@@ -44,6 +45,8 @@ namespace GameWorld
 	
 	public class WorldObjectManagerEventArgs : EventArgs
 	{
+		public WorldObject AddedWorldObject { get; set; }
+		public WorldObject RemovedWorldObject { get; set; }
 		public WorldObjectDetails Details { get; set; }
 		public int Count { get; set; }
 	}

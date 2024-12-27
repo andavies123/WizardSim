@@ -19,3 +19,7 @@ Bug: Wizard info boxes should not be updated every update frame. Find a better w
 Info Box UI
 -----------
 Bug: When the info box size changes, it should keep the same position and extend downward
+
+Hover Square
+------------
+Bug: The hover selection square should disappear when hovering over a UI

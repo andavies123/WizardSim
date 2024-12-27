@@ -6,7 +6,6 @@ using GameWorld.WorldObjects;
 using UnityEngine;
 using Utilities.Attributes;
 using GameWorld.Settlements;
-using GameWorld.Settlements.Interfaces;
 
 namespace GameWorld
 {
@@ -154,6 +153,24 @@ namespace GameWorld
 			_gameWorldTime = GetComponent<GameWorldTimeBehaviour>();
 			DetailsMap = GetComponent<WorldObjectDetailsMap>();
 			WorldObjectManager = new WorldObjectManager(worldObjectContainer);
+		}
+
+		private void Start()
+		{
+			WorldObjectManager.WorldObjectAdded += OnWorldObjectAdded;
+		}
+
+		private void OnDestroy()
+		{
+			WorldObjectManager.WorldObjectAdded -= OnWorldObjectAdded;
+		}
+
+		private void OnWorldObjectAdded(object sender, WorldObjectManagerEventArgs args)
+		{
+			if (args.AddedWorldObject.TryGetComponent(out TownHall townHall))
+			{
+				Settlement.TownHall = townHall;
+			}
 		}
 	}
 }
