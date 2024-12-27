@@ -3,6 +3,7 @@ using System.ComponentModel;
 using Extensions;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using Utilities.Attributes;
 
 namespace UI.InfoWindows
@@ -12,13 +13,31 @@ namespace UI.InfoWindows
 		[Header("UI Components")]
 		[SerializeField, Required] private TMP_Text titleText;
 		[SerializeField, Required] private TMP_Text infoText;
+		[SerializeField, Required] private Button moreInfoButton;
 
 		[Header("Display Settings")]
 		[SerializeField] private float infoTextLineHeight = 30f;
 
 		private Interactable _currentInteractable;
+		private TMP_Text _moreInfoButtonText;
+		private bool _isShowingMoreInfo;
 		
 		public bool IsOpen { get; private set; }
+
+		private void Awake()
+		{
+			_moreInfoButtonText = moreInfoButton.GetComponentInChildren<TMP_Text>();
+		}
+
+		private void OnEnable()
+		{
+			moreInfoButton.onClick.AddListener(OnMoreInfoButtonPressed);
+		}
+
+		private void OnDisable()
+		{
+			moreInfoButton.onClick.RemoveListener(OnMoreInfoButtonPressed);
+		}
 
 		public void OpenWindow(Interactable interactable)
 		{
@@ -61,6 +80,23 @@ namespace UI.InfoWindows
 		{
 			infoText.SetText(string.Join('\n', text));
 			infoText.rectTransform.SetHeight(text.Count * infoTextLineHeight);
+		}
+		private void SetMoreInfoButtonText(string text) => _moreInfoButtonText.SetText(text);
+
+		private void OnMoreInfoButtonPressed()
+		{
+			_isShowingMoreInfo = !_isShowingMoreInfo;
+			
+			if (_isShowingMoreInfo)
+			{
+				SetInfoText(_currentInteractable.ExtendedInfoText);
+				SetMoreInfoButtonText("^");
+			}
+			else
+			{
+				SetInfoText(_currentInteractable.InfoText);
+				SetMoreInfoButtonText("v");
+			}
 		}
 
 		private void OnCurrentInteractablePropertyChanged(object sender, PropertyChangedEventArgs args)

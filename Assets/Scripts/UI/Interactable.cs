@@ -14,6 +14,7 @@ namespace UI
 		private bool _isSelected;
 		private string _titleText = string.Empty;
 		private List<string> _infoText = new();
+		private List<string> _extendedInfoText = new();
 
 		public event EventHandler PrimaryActionSelected;
 		public event EventHandler SecondaryActionSelected;
@@ -40,6 +41,12 @@ namespace UI
 		{
 			get => _infoText;
 			set => SetValue(ref _infoText, value);
+		}
+
+		public List<string> ExtendedInfoText
+		{
+			get => _extendedInfoText;
+			set => SetValue(ref _extendedInfoText, value);
 		}
 
 		public void SelectPrimaryAction() => PrimaryActionSelected?.Invoke(this, EventArgs.Empty);

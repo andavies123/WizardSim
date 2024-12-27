@@ -1,6 +1,7 @@
 Wizard Info UI
 --------------
 Todo: Quick Info should have a button to expand to show all stats about a certain wizard
+Todo: This extended info button should not be displayed if there is no extended info
 
 Settlement
 ----------

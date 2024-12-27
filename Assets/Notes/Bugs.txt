@@ -7,6 +7,7 @@ Stockpile UI
 ------------
 Bug: Stockpile UI shows the large part at startup but it disappears quickly
 
-HealthBar Manager
+Health Bars
 -----------------
 Bug: Suddenly through a consistent "Argument Null Exception": Value cannot be null (Remove Hover HealthBar)
+Bug: Hover health bars shouldn't show when the mouse is hovering over a UI that happens to be over an object
