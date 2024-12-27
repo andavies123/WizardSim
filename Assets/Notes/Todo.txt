@@ -1,6 +1,6 @@
-Settlement
-----------
-Todo: Settlement center button should be disabled if no town hall exists
+Settlement Center Button
+------------------------
+Todo: The button should have a specific height that the camera is set at so that it doesn't just zoom in to the TH
 
 General World
 -------------

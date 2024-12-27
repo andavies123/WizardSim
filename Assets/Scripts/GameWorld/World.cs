@@ -9,7 +9,6 @@ using GameWorld.Settlements;
 
 namespace GameWorld
 {
-	// Todo: Add trees to the world
 	[RequireComponent(typeof(GameWorldTimeBehaviour))]
 	[RequireComponent(typeof(WorldObjectDetailsMap))]
 	public class World : MonoBehaviour

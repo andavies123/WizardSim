@@ -1,4 +1,5 @@
 using GameWorld.Settlements;
+using GameWorld.WorldObjects;
 using UnityEngine;
 using UnityEngine.UI;
 using Utilities.Attributes;
@@ -13,6 +14,7 @@ namespace UI.TownHallWindows
 		
 		private Button _button;
 		private Transform _cameraTransform;
+		private TownHall _townHall;
 
 		private void Awake()
 		{
@@ -20,22 +22,37 @@ namespace UI.TownHallWindows
 			_cameraTransform = mainCamera.transform;
 		}
 
-		private void OnEnable()
+		private void Start()
 		{
+			_townHall = settlement.TownHall; // Could be null
+			settlement.TownHallUpdated += OnTownHallUpdated;
 			_button.onClick.AddListener(OnButtonClicked);
+			UpdateButtonState();
 		}
 
-		private void OnDisable()
+		private void OnDestroy()
 		{
+			settlement.TownHallUpdated -= OnTownHallUpdated;
 			_button.onClick.RemoveAllListeners();
+		}
+
+		private void UpdateButtonState()
+		{
+			_button.interactable = (bool)_townHall;
+		}
+
+		private void OnTownHallUpdated(TownHall townHall)
+		{
+			_townHall = townHall;
+			UpdateButtonState();
 		}
 
 		private void OnButtonClicked()
 		{
-			if (!settlement.TownHall)
+			if (!_townHall)
 				return;
 
-			Vector3 townHallCenter = settlement.TownHall.WorldObject.PositionDetails.Center;
+			Vector3 townHallCenter = _townHall.WorldObject.PositionDetails.Center;
 			Vector3 cameraForward = _cameraTransform.forward;
 
 			// Using SohCahToa to do this calculation (Cah)
