@@ -11,10 +11,6 @@ World Objects
 Todo: World Objects should contain how much experience is gained on destruction
 Todo: World Objects should contain which attributes should get experience or something like that
 
-Wizard Stats UI
----------------
-Todo: Enlarged box should display what the wizard is currently doing
-
 Attribute System
 ----------------
 Todo: Attributes should be directly related to how well wizards can work

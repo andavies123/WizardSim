@@ -126,6 +126,7 @@ namespace GameWorld.Characters.Wizards
 			};
 			Interactable.ExtendedInfoText = new List<string>
 			{
+				$"{StateMachine.CurrentStateDisplayName} - {StateMachine.CurrentStateDisplayStatus}",
 				$"Speed: {Stats.MovementStats.Speed}",
 				$"Rotation Speed: {Stats.MovementStats.RotationSpeed}"
 			};
