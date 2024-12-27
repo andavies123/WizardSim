@@ -11,6 +11,7 @@ namespace UI.TownHallWindows
 	{
 		[SerializeField, Required] private Camera mainCamera;
 		[SerializeField, Required] private Settlement settlement;
+		[SerializeField] private float cameraHeight = 30;
 		
 		private Button _button;
 		private Transform _cameraTransform;
@@ -57,7 +58,7 @@ namespace UI.TownHallWindows
 
 			// Using SohCahToa to do this calculation (Cah)
 			float angleUpRads = Vector3.Angle(cameraForward, Vector3.down) * Mathf.Deg2Rad;
-			float height = _cameraTransform.position.y - townHallCenter.y;
+			float height = cameraHeight - townHallCenter.y;
 			float distance = height / Mathf.Cos(angleUpRads);
 
 			_cameraTransform.position = townHallCenter - (cameraForward * distance);

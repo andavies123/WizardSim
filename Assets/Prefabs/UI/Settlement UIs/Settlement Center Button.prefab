@@ -54,6 +54,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 0}
   settlement: {fileID: 0}
+  cameraHeight: 30
 --- !u!222 &7475625490464396403
 CanvasRenderer:
   m_ObjectHideFlags: 0
