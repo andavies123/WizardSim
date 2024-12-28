@@ -38,15 +38,16 @@ namespace UI.Stockpiles
 		{
 			_rectTransform = transform as RectTransform;
 			
-			BuildLabels(townResourcesToDisplaySmall, smallLabelContainer);
-			BuildLabels(townResourcesToDisplayLarge, largeLabelContainer);
+			BuildLabels(townResourcesToDisplaySmall, smallLabelContainer, true);
+			BuildLabels(townResourcesToDisplayLarge, largeLabelContainer, false);
 
 			yield return new WaitForEndOfFrame();
 			
 			UpdateUI();
+			
 			yield break;
 
-			void BuildLabels(List<TownResource> townResources, Transform container)
+			void BuildLabels(List<TownResource> townResources, Transform container, bool containerVisibility)
 			{
 				townResources.ForEach(townResource =>
 				{
@@ -56,6 +57,7 @@ namespace UI.Stockpiles
 						label.Initialize(townResource, stockpileData);
 					}
 				});
+				container.gameObject.SetActive(containerVisibility);
 			}
 		}
 		

@@ -3,10 +3,6 @@ Wizard Tasks
 Bug: When creating a task before a wizard exists, it gets assigned to the wizard but the wizard doesn't do it
 Bug: One wizard is constantly given the newest task while another wizard is doing nothing
 
-Stockpile UI
-------------
-Bug: Stockpile UI shows the large part at startup but it disappears quickly
-
 Health Bars
 -----------
 Bug: Suddenly through a consistent "Argument Null Exception": Value cannot be null (Remove Hover HealthBar)
@@ -23,7 +19,3 @@ Bug: When the info box size changes, it should keep the same position and extend
 Hover Square
 ------------
 Bug: The hover selection square should disappear when hovering over a UI
-
-Message Broker UI
------------------
-Bug: When opening up the TownHallPlaced message, an exception is thrown
