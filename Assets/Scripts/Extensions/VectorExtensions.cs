@@ -52,6 +52,32 @@ namespace Extensions
 		};
 	}
 
+	public static class Vector2Extensions
+	{
+		public static Vector2 SubX(this Vector2 vector, float xSub) => new(xSub, vector.y);
+		public static Vector2 SubY(this Vector2 vector, float ySub) => new(vector.x, ySub);
+	}
+
+	public static class Vector2IntExtensions
+	{
+		public static Vector2Int SubX(this Vector2Int vector, int xSub) => new(xSub, vector.y);
+		public static Vector2Int SubY(this Vector2Int vector, int ySub) => new(vector.x, ySub);
+	}
+
+	public static class Vector3Extensions
+	{
+		public static Vector3 SubX(this Vector3 vector, float xSub) => new(xSub, vector.y, vector.z);
+		public static Vector3 SubY(this Vector3 vector, float ySub) => new(vector.x, ySub, vector.z);
+		public static Vector3 SubZ(this Vector3 vector, float zSub) => new(vector.x, vector.y, zSub);
+	}
+
+	public static class Vector3IntExtensions
+	{
+		public static Vector3Int SubX(this Vector3Int vector, int xSub) => new(xSub, vector.y, vector.z);
+		public static Vector3Int SubY(this Vector3Int vector, int ySub) => new(vector.x, ySub, vector.z);
+		public static Vector3Int SubZ(this Vector3Int vector, int zSub) => new(vector.x, vector.y, zSub);
+	}
+
 	/// <summary>
 	/// Enum to describe the position/order the Vector2 values will be
 	/// inserted into the Vector3.

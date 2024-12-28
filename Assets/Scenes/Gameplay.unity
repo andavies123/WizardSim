@@ -495,6 +495,7 @@ GameObject:
   - component: {fileID: 276745018}
   - component: {fileID: 276745019}
   - component: {fileID: 276745020}
+  - component: {fileID: 276745021}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -575,6 +576,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 653f737e9de743a9a0f03c8fca549856, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &276745021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 276745012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecd79aa0412242c9b1ce9fe7e8041d20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  world: {fileID: 2007172221}
+  wizardFactory: {fileID: 1202947230}
+  initialWizardSpawns: 3
+  spawnDistanceFromTownHall: 5
 --- !u!1 &305748071
 GameObject:
   m_ObjectHideFlags: 0

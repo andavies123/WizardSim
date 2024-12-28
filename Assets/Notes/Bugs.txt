@@ -23,3 +23,7 @@ Bug: When the info box size changes, it should keep the same position and extend
 Hover Square
 ------------
 Bug: The hover selection square should disappear when hovering over a UI
+
+Message Broker UI
+-----------------
+Bug: When opening up the TownHallPlaced message, an exception is thrown

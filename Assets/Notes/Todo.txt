@@ -45,10 +45,6 @@ Todo: When a wizard is selected, opening up a context menu and selecting an acti
 Todo: Opening a context menu when something is selected should only show context menu items that are active for that selection type
 Todo: Add an object type to the selection message
 
-Wizard Spawning
----------------
-Todo: I need to have a way for wizards to actually arrive at the settlement
-
 Game Flow
 ---------
 Todo: When creating a new world, the first thing the player should do is place the town hall
