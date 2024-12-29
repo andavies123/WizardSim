@@ -64,3 +64,11 @@ Message to the Player UI
 Todo: Add a Popup UI that is designed to display a message to the player
 Todo: This UI should have the option to stay until closed or have a timer to disappear
 Todo: This UI should have the ability to queue messages so they appear one at a time
+
+Audio
+-----
+Todo: Button click sound
+Todo: Breaking rock sound
+Todo: Breaking wood sound
+Todo: Wizard taking damage sound
+Todo: Place item sound
