@@ -5,7 +5,7 @@ Bug: One wizard is constantly given the newest task while another wizard is doin
 
 Health Bars
 -----------
-Bug: Suddenly through a consistent "Argument Null Exception": Value cannot be null (Remove Hover HealthBar)
+Bug: Suddenly a consistent "Argument Null Exception": Value cannot be null (Remove Hover HealthBar)
 Bug: Hover health bars shouldn't show when the mouse is hovering over a UI that happens to be over an object
 
 Wizard Info

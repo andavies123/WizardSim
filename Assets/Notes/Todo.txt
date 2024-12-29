@@ -12,6 +12,11 @@ Attribute System
 Todo: Attributes should be directly related to how well wizards can work
 Todo: Working on certain tasks should work towards upgrading these Attributes
 
+Stat System
+-----------
+Todo: Different wizards should have different stats
+Todo: Stats should be generated based on attributes
+
 General Enemies
 ---------------
 Todo: Enemies of same type should spawn with different stats but very similar to each other
@@ -21,6 +26,10 @@ General Wizard
 Todo: A new wizard should start out as an undecided wizard
 Todo: The player should be able to assign a wizard a profession
 Todo: A new wizard should have a starting set of stats that the player can use to decide where to place them
+
+General Wizard Tasks
+====================
+Todo: Certain wizard tasks should have a max stat level in order to be worked on
 
 Guard Wizard
 ------------
