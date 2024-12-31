@@ -13,6 +13,7 @@ using GameWorld.Settlements;
 using MessagingSystem;
 using UI.Messages;
 using Component = UnityEngine.Component;
+using Random = UnityEngine.Random;
 
 namespace GameWorld.Characters.Wizards
 {
@@ -57,13 +58,13 @@ namespace GameWorld.Characters.Wizards
 
 			Attributes = new WizardAttributes
 			{
-				Strength = { CurrentLevel = 1 },
-				Endurance = { CurrentLevel = 1 },
-				Vitality = { CurrentLevel = 1 },
-				Magic = { CurrentLevel = 1 },
-				Mana = { CurrentLevel = 1 },
-				Intelligence = { CurrentLevel = 1 },
-				Courage = { CurrentLevel = 1 }
+				Strength = { CurrentLevel = Random.Range(1, 4) },
+				Endurance = { CurrentLevel = Random.Range(1, 4) },
+				Vitality = { CurrentLevel = Random.Range(1, 4) },
+				Magic = { CurrentLevel = Random.Range(1, 4) },
+				Mana = { CurrentLevel = Random.Range(1, 4) },
+				Intelligence = { CurrentLevel = Random.Range(1, 4) },
+				Courage = { CurrentLevel = Random.Range(1, 4) }
 			};
 
 			CharacterStats = new CharacterStats(
@@ -129,7 +130,14 @@ namespace GameWorld.Characters.Wizards
 			Interactable.ExtendedInfoText = new List<string>
 			{
 				$"{StateMachine.CurrentStateDisplayName} - {StateMachine.CurrentStateDisplayStatus}",
-				CharacterStats.Speed.ToString()
+				"-- Attributes --",
+				$"Strength: {Attributes.Strength.CurrentLevel}",
+				$"Endurance: {Attributes.Endurance.CurrentLevel}",
+				$"Vitality: {Attributes.Vitality.CurrentLevel}",
+				$"Magic: {Attributes.Magic.CurrentLevel}",
+				$"Mana: {Attributes.Mana.CurrentLevel}",
+				$"Intelligence: {Attributes.Intelligence.CurrentLevel}",
+				$"Courage: {Attributes.Courage.CurrentLevel}"
 			};
 		}
 
