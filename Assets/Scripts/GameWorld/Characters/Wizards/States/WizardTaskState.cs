@@ -9,6 +9,8 @@ namespace GameWorld.Characters.Wizards.States
 
 		public bool IsComplete { get; private set; } = false;
 
+		protected abstract override void OnWizardSet();
+		
 		protected void CompleteTask()
 		{
 			IsComplete = true;

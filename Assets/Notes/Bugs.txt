@@ -11,6 +11,7 @@ Bug: Hover health bars shouldn't show when the mouse is hovering over a UI that 
 Wizard Info
 -----------
 Bug: Wizard info boxes should not be updated every update frame. Find a better way to do that
+Bug: When a wizard is breaking surrounding rocks, the status text gets really large
 
 Hover Square
 ------------

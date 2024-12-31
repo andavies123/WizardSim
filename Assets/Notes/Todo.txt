@@ -12,10 +12,9 @@ Attribute System
 Todo: Attributes should be directly related to how well wizards can work
 Todo: Working on certain tasks should work towards upgrading these Attributes
 
-Stat System
+Stat System (Current Task)
 -----------
 Todo: Different wizards should have different stats
-Todo: Stats should be generated based on attributes
 
 General Enemies
 ---------------

@@ -47,6 +47,8 @@ namespace StateMachines
 			}
 		}
 
+		public void ClearStateTransitions() => _stateTransitions.Clear();
+
 		private void OnStateExitRequested(object sender, string exitReason)
 		{
 			if (sender is not IState finishedState)

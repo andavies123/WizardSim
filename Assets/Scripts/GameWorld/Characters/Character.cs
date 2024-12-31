@@ -3,11 +3,11 @@ using GeneralBehaviours.Damageable;
 using Extensions;
 using GeneralBehaviours.HealthBehaviours;
 using GeneralBehaviours.Utilities.ContextMenuBuilders;
-using Stats;
 using UI;
 using UI.ContextMenus;
 using UnityEngine;
 using GameWorld.Characters.GeneralComponents;
+using GameWorld.Characters.Wizards;
 
 namespace GameWorld.Characters
 {
@@ -23,8 +23,8 @@ namespace GameWorld.Characters
 	{
 		private CharacterProperties _characterProperties;
 
-		public abstract MovementStats MovementStats { get; }
 		protected abstract string CharacterType { get; }
+		public abstract CharacterStats CharacterStats { get; protected set; }
 		
 		public Guid Id { get; } = Guid.NewGuid();
 		public World ParentWorld { get; private set; }

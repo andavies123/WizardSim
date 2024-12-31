@@ -3,7 +3,6 @@ using Extensions;
 using GameWorld.Tiles;
 using GeneralBehaviours.Utilities.ContextMenuBuilders;
 using GeneralClasses.Health.HealthEventArgs;
-using Stats;
 using UnityEngine;
 using GameWorld.Characters.Wizards.States;
 using System;
@@ -21,8 +20,6 @@ namespace GameWorld.Characters.Wizards
 	[RequireComponent(typeof(WizardTaskHandler))]
 	public class Wizard : Character
 	{
-		[SerializeField] private WizardStats stats;
-
 		private MessageBroker _messageBroker;
 		private GameWorldTimeBehaviour _worldTime;
 
@@ -30,7 +27,7 @@ namespace GameWorld.Characters.Wizards
 		public IAge Age { get; } = new Age();
 		public WizardType WizardType { get; set; } = WizardType.Undecided;
 		public WizardAttributes Attributes { get; set; }
-		public WizardStats Stats => stats;
+		public WizardStats WizardStats { get; private set; }
 		public bool IsIdling => StateMachine.CurrentState is WizardIdleState;
 		
 		// Components
@@ -41,7 +38,7 @@ namespace GameWorld.Characters.Wizards
 		public Settlement Settlement { get; private set; }
 
 		// Overrides
-		public override MovementStats MovementStats => Stats.MovementStats;
+		public override CharacterStats CharacterStats { get; protected set; }
 		protected override string CharacterType => "Wizard";
 		
 		public AgingStage AgeStage => Age.Years switch
@@ -68,6 +65,11 @@ namespace GameWorld.Characters.Wizards
 				Intelligence = { CurrentLevel = 1 },
 				Courage = { CurrentLevel = 1 }
 			};
+
+			CharacterStats = new CharacterStats(
+				speedValueFormula: () => 5 + (Attributes.Endurance.CurrentLevel - 1) * 0.1f);
+			
+			WizardStats = new WizardStats(Attributes);
 
 			Attributes.LeveledUp += OnAttributeLeveledUp;
 			
@@ -127,8 +129,7 @@ namespace GameWorld.Characters.Wizards
 			Interactable.ExtendedInfoText = new List<string>
 			{
 				$"{StateMachine.CurrentStateDisplayName} - {StateMachine.CurrentStateDisplayStatus}",
-				$"Speed: {Stats.MovementStats.Speed}",
-				$"Rotation Speed: {Stats.MovementStats.RotationSpeed}"
+				CharacterStats.Speed.ToString()
 			};
 		}
 

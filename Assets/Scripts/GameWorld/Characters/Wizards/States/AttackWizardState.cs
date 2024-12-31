@@ -1,5 +1,4 @@
-﻿using GameWorld.Characters;
-using System;
+﻿using System;
 using UnityEngine;
 
 namespace GameWorld.Characters.Wizards.States

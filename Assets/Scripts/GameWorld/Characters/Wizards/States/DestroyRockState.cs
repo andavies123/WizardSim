@@ -31,12 +31,12 @@ namespace GameWorld.Characters.Wizards.States
 			UpdateDisplayStatus();
 		}
 
-		private const float TimeBetweenAttacks = 0.1f;
 		private float _attackTimer = 0.0f;
 
 		public override void Update()
 		{
-			if (_attackTimer < TimeBetweenAttacks)
+			float timeBetweenAttacks = 1f / Wizard.WizardStats.RockAttackSpeed.Value;
+			if (_attackTimer < timeBetweenAttacks)
 			{
 				_attackTimer += Time.deltaTime;
 				return;
@@ -45,7 +45,7 @@ namespace GameWorld.Characters.Wizards.States
 			if (_rock)
 			{
 				_attackTimer = 0;
-				_rock.WorldObject.Damageable.DealDamage(0.5f, Wizard);
+				_rock.WorldObject.Damageable.DealDamage(Wizard.WizardStats.RockAttackDamage.Value, Wizard);
 				
 				// Todo: Update the way a rock gets destroyed
 				if (_rock.WorldObject.Health.CurrentHealth <= 0)

@@ -1,24 +1,18 @@
 ﻿using System.Collections.Generic;
 using Extensions;
+using GameWorld.Characters.Wizards;
 using GeneralBehaviours.Utilities.ContextMenuBuilders;
 using GeneralClasses.Health.HealthEventArgs;
-using Stats;
-using UnityEngine;
-using Utilities.Attributes;
 
 namespace GameWorld.Characters.Enemies
 {
 	public class Enemy : Character
 	{
-		[SerializeField, Required] private EnemyStats stats;
-
 		// Components
 		public EnemyStateMachine StateMachine { get; private set; }
 
-		public EnemyStats Stats => stats;
-
 		// Overrides
-		public override MovementStats MovementStats => Stats.MovementStats;
+		public override CharacterStats CharacterStats { get; protected set; }
 		protected override string CharacterType => "Enemy";
 
 		protected override void Awake()
@@ -28,6 +22,8 @@ namespace GameWorld.Characters.Enemies
 			StateMachine = GetComponent<EnemyStateMachine>();
 
 			Health.CurrentHealthChanged += OnCurrentHealthChanged;
+
+			CharacterStats = new CharacterStats(() => 4);
 		}
 
 		protected override void Start()

@@ -14,22 +14,17 @@ namespace GameWorld.Characters.Wizards.States
 		private readonly StateMachine _stateMachine = new();
 		private readonly int _initialRockCount;
 		
-		private readonly MoveToWorldObjectCharacterState _moveToState;
-		private readonly DestroyRockState _destroyRockState;
-		private readonly WaitCharacterState _waitState;
+		private MoveToWorldObjectCharacterState _moveToState;
+		private DestroyRockState _destroyRockState;
+		private WaitCharacterState _waitState;
 
 		private Rock _targetedRock;
 		
 		public DestroyRocksTaskState(List<Rock> rocksToDestroy)
 		{
-			_moveToState = new MoveToWorldObjectCharacterState(Wizard);
-			_destroyRockState = new DestroyRockState(Wizard);
-			_waitState = new WaitCharacterState(Wizard);
-			
 			_rocksLeftToDestroy = rocksToDestroy;
 			_initialRockCount = rocksToDestroy.Count;
 			UpdateDisplayStatus();
-			AddStateTransitions();
 
 			rocksToDestroy.ForEach(rock => rock.WorldObject.Destroyed += OnRockDestroyed);
 		}
@@ -57,6 +52,16 @@ namespace GameWorld.Characters.Wizards.States
 		}
 
 		public override void End() { }
+		
+		protected override void OnWizardSet()
+		{			
+			_moveToState = new MoveToWorldObjectCharacterState(Wizard);
+			_destroyRockState = new DestroyRockState(Wizard);
+			_waitState = new WaitCharacterState(Wizard);
+
+			_stateMachine.ClearStateTransitions();
+			AddStateTransitions();
+		}
 
 		private void AddStateTransitions()
 		{

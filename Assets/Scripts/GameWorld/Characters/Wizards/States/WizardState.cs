@@ -19,12 +19,19 @@ namespace GameWorld.Characters.Wizards.States
 		public abstract string DisplayStatus { get; protected set; }
 		
 		// Initialize Methods
-		public void SetWizard(Wizard wizard) => Wizard = wizard;
-		
+		public void SetWizard(Wizard wizard)
+		{
+			Wizard = wizard;
+			if (Wizard)
+				OnWizardSet();
+		}
+
 		// State Flow Methods
 		public abstract void Begin();
 		public abstract void Update();
 		public abstract void End();
+
+		protected virtual void OnWizardSet() { }
 	}
 
 	public class StateExitEventArgs

@@ -84,7 +84,7 @@ namespace GameWorld.Characters.GeneralComponents
 
 			Vector3 currentPosition = _transform.position;
 			Vector3 direction = (_targetPosition.Value - currentPosition).normalized;
-			Vector3 newPosition = currentPosition + direction * (_character.MovementStats.Speed * Time.fixedDeltaTime);
+			Vector3 newPosition = currentPosition + direction * (_character.CharacterStats.Speed.Value * Time.fixedDeltaTime);
 			_rigidbody.MovePosition(newPosition);
 
 			if (_pathLine)
@@ -108,7 +108,7 @@ namespace GameWorld.Characters.GeneralComponents
 				return;
 
 			Vector3 currentPosition = _transform.position;
-			Vector3 newPosition = currentPosition + _moveDirection.Value * (_character.MovementStats.Speed * Time.fixedDeltaTime);
+			Vector3 newPosition = currentPosition + _moveDirection.Value * (_character.CharacterStats.Speed.Value * Time.fixedDeltaTime);
 			_rigidbody.MovePosition(newPosition);
 
 			if (_pathLine)
