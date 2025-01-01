@@ -1,13 +1,20 @@
-﻿using Stats;
-using UnityEngine;
-
 namespace GameWorld.Characters.Enemies
 {
-	[CreateAssetMenu(menuName = "Stats/Enemy", fileName = "EnemyStats", order = 0)]
-	public class EnemyStats : ScriptableObject
+	/// <summary>
+	/// Describes general stats related to enemies
+	/// </summary>
+	public class EnemyStats
 	{
-		[SerializeField] private MovementStats movementStats;
-
-		public MovementStats MovementStats => movementStats;
+		public EnemyStats(EnemyAttributes attributes)
+		{
+			AttackSpeed = new CharacterStat("Atk Spd",
+				() => 0.5f + (attributes.Endurance.CurrentLevel - 1) * 0.1f);
+			AttackDamage = new CharacterStat("Atk Dmg",
+				() => 2 + (attributes.Strength.CurrentLevel - 1) * 2f);
+		}
+		
+		// Attack Stats
+		public CharacterStat AttackSpeed { get; } // Attacks per second
+		public CharacterStat AttackDamage { get; } // Damage dealt per attack
 	}
 }

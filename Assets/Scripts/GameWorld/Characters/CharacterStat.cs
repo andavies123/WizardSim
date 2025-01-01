@@ -1,6 +1,6 @@
 using System;
 
-namespace GameWorld.Characters.Wizards
+namespace GameWorld.Characters
 {
 	public class CharacterStat
 	{

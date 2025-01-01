@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace GameWorld.Characters.Wizards
+namespace GameWorld.Characters
 {
 	public class CharacterAttribute : INotifyPropertyChanged
 	{

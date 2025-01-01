@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using Extensions;
-using GameWorld.Characters.Wizards;
 using GeneralBehaviours.Utilities.ContextMenuBuilders;
 using GeneralClasses.Health.HealthEventArgs;
+using UnityEngine;
 
 namespace GameWorld.Characters.Enemies
 {
@@ -10,6 +10,10 @@ namespace GameWorld.Characters.Enemies
 	{
 		// Components
 		public EnemyStateMachine StateMachine { get; private set; }
+		
+		// Non-Components
+		public EnemyAttributes Attributes { get; private set; }
+		public EnemyStats EnemyStats { get; private set; }
 
 		// Overrides
 		public override CharacterStats CharacterStats { get; protected set; }
@@ -23,7 +27,16 @@ namespace GameWorld.Characters.Enemies
 
 			Health.CurrentHealthChanged += OnCurrentHealthChanged;
 
+			Attributes = new EnemyAttributes
+			{
+				Strength = { CurrentLevel = Random.Range(1, 4) },
+				Endurance = { CurrentLevel = Random.Range(1, 4) },
+				Vitality = { CurrentLevel = Random.Range(1, 4) },
+				Magic = { CurrentLevel = Random.Range(1, 4) },
+				Mana = { CurrentLevel = Random.Range(1, 4) }
+			};
 			CharacterStats = new CharacterStats(() => 4);
+			EnemyStats = new EnemyStats(Attributes);
 		}
 
 		protected override void Start()
