@@ -1,23 +1,23 @@
 General World
--------------
+=============
 Todo: The world should generate more chunks as the camera moves
 
 World Objects
--------------
+=============
 Todo: World Objects should contain how much experience is gained on destruction
 Todo: World Objects should contain which attributes should get experience or something like that
 
 Attribute System
-----------------
+================
 Todo: Attributes should be directly related to how well wizards can work
 Todo: Working on certain tasks should work towards upgrading these Attributes
 
 General Enemies
----------------
+===============
 Todo: Enemies of same type should spawn with different stats but very similar to each other
 
 General Wizard
---------------
+==============
 Todo: A new wizard should start out as an undecided wizard
 Todo: The player should be able to assign a wizard a profession
 
@@ -26,13 +26,13 @@ General Wizard Tasks
 Todo: Certain wizard tasks should have a max stat level in order to be worked on
 
 Guard Wizard
-------------
+============
 Todo: Create a wizard type that represents a guard for the village
 Todo: Guard wizard should be able to detect a nearby enemy
 Todo: Once the guard wizard detects an enemy, they should charge toward and attack the the enemy til death
 
 Trees
------
+=====
 Todo: Add a temp tree 3d model
 Todo: Add trees as a world object
 Todo: Create a world object prefab
@@ -43,33 +43,33 @@ Todo: Add wood as a Town Resource
 Todo: Add wizard task to chop wood
 
 Selection System
-----------------
+================
 Todo: When a wizard is selected, opening up a context menu and selecting an action should create and assign the task to that wizard
 Todo: Opening a context menu when something is selected should only show context menu items that are active for that selection type
 Todo: Add an object type to the selection message
 
 Game Flow
----------
+=========
 Todo: When creating a new world, the first thing the player should do is place the town hall
 
 Resource Icons
---------------
+==============
 Todo: Create icon for wood
 Todo: Create icon for stone
 
 3D Models
----------
+=========
 Todo: Add a custom model for rocks
 Todo: Add a custom model for trees
 
 Message to the Player UI
-------------------------
+========================
 Todo: Add a Popup UI that is designed to display a message to the player
 Todo: This UI should have the option to stay until closed or have a timer to disappear
 Todo: This UI should have the ability to queue messages so they appear one at a time
 
 Audio
------
+=====
 Todo: Button click sound
 Todo: Breaking rock sound
 Todo: Breaking wood sound

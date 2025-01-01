@@ -1,18 +1,18 @@
 Wizard Tasks
-------------
+============
 Bug: When creating a task before a wizard exists, it gets assigned to the wizard but the wizard doesn't do it
 Bug: One wizard is constantly given the newest task while another wizard is doing nothing
 
 Health Bars
------------
+===========
 Bug: Suddenly a consistent "Argument Null Exception": Value cannot be null (Remove Hover HealthBar)
 Bug: Hover health bars shouldn't show when the mouse is hovering over a UI that happens to be over an object
 
 Wizard Info
------------
+===========
 Bug: Wizard info boxes should not be updated every update frame. Find a better way to do that
 Bug: When a wizard is breaking surrounding rocks, the status text gets really large
 
 Hover Square
-------------
+============
 Bug: The hover selection square should disappear when hovering over a UI
