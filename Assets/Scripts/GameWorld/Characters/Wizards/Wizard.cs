@@ -100,7 +100,8 @@ namespace GameWorld.Characters.Wizards
 			UpdateInteractableInfoText();
 			InitializeContextMenu();
 			
-			StateMachine.Idle();
+			if (StateMachine.CurrentState == null)
+				StateMachine.Idle();
 		}
 
 		protected override void OnDestroy()

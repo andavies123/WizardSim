@@ -1,6 +1,5 @@
 Wizard Tasks
 ============
-Bug: When creating a task before a wizard exists, it gets assigned to the wizard but the wizard doesn't do it
 Bug: One wizard is constantly given the newest task while another wizard is doing nothing
 
 Health Bars
