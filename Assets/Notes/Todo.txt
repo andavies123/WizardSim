@@ -75,3 +75,9 @@ Todo: Breaking rock sound
 Todo: Breaking wood sound
 Todo: Wizard taking damage sound
 Todo: Place item sound
+
+Healer Wizard
+=============
+Todo: Add a healer wizard
+Todo: The healer wizard should be able to heal wizards
+Todo: The healer wizard should have healing attributes/stats
