@@ -51,7 +51,10 @@ namespace CameraComponents
 			}
 
 			if (_isPointerOverUI)
+			{
+				EndCurrentHover();
 				return; // We don't want to continue if we are over UI
+			}
 			
 			Ray ray = camera.ScreenPointToRay(Input.mousePosition);
 			Interactable interactable = null;

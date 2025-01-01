@@ -12,7 +12,3 @@ Wizard Info
 ===========
 Bug: Wizard info boxes should not be updated every update frame. Find a better way to do that
 Bug: When a wizard is breaking surrounding rocks, the status text gets really large
-
-Hover Square
-============
-Bug: The hover selection square should disappear when hovering over a UI
