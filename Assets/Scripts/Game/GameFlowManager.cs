@@ -5,6 +5,7 @@ using GameWorld.Settlements;
 using GameWorld.WorldObjects;
 using Unity.Plastic.Newtonsoft.Json;
 using UnityEngine;
+using Utilities;
 using Utilities.Attributes;
 using Random = UnityEngine.Random;
 
@@ -46,7 +47,7 @@ namespace Game
 				{
 					Vector3 randomPosition = Random.insideUnitCircle.ToVector3(VectorSub.XSubY);
 					Vector3 spawnPosition = randomPosition * spawnDistanceFromTownHall + townHallCenter;
-					wizardFactory.CreateNewWizard(spawnPosition + Vector3.up, WizardType.Undecided);
+					wizardFactory.CreateNewWizard(spawnPosition + Vector3.up, RandomExt.RandomEnumValue<WizardType>());
 				}
 			}
 		}
