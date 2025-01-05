@@ -77,3 +77,34 @@ Healer Wizard
 Todo: Add a healer wizard
 Todo: The healer wizard should be able to heal wizards
 Todo: The healer wizard should have healing attributes/stats
+
+Damage Numbers
+==============
+Todo: Add damage numbers
+Todo: Damage numbers should pop up when health is damaged
+Todo: Damage numbers should pop up when health is healed
+Todo: Damage numbers should have different colors based on damage vs heal
+Todo: Damage numbers should have different colors for each damage type (fire, lightning, water, etc...)
+
+Damage Types
+============
+Todo: Damage Types should be its own class with specific properties
+Todo: Damage Types should contain a list of what kind of objects it deals extra damage against
+Todo: Damage Types should contain a list of what kind of objects it deals less damage against
+
+Todo/Bug Editor Window
+======================
+Todo: Create a new editor window to display Todo/Bug
+Todo: Window should display Todo tasks from this file
+Todo: Window should display Bug tasks from this file
+Todo: Window should continue to group tasks
+Todo: Window should edit and read from these files
+Todo: Window should have a refresh button
+Todo: Window should allow user to add new tasks
+Todo: Window should allow user to mark tasks as done
+Todo: Window should allow user to remove tasks
+Todo: Window should allow user to remove all tasks of group
+
+Rogue Like Additions
+====================
+Todo: Wizards should be randomly assigned jobs (this will make each run-through random)

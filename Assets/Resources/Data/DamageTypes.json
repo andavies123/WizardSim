@@ -1,0 +1,44 @@
+[
+  {
+    "Name": "Fire",
+    "StrongAgainst": [ "Earth", "Ice", "Wind" ],
+    "WeakAgainst": [ "Water", "Lava" ],
+    "DamageTextRGBA": [ 1, 0.27, 0, 1 ]
+  },
+  {
+    "Name": "Lava",
+    "StrongAgainst": [ "Earth", "Ice" ],
+    "WeakAgainst": [ "Water", "Wind" ],
+    "DamageTextRGBA": [ 0.82, 0.22, 0.13, 1 ]
+  },
+  {
+    "Name": "Water",
+    "StrongAgainst": [ "Fire", "Lava" ],
+    "WeakAgainst": [ "Lightning", "Wind" ],
+    "DamageTextRGBA": [ 0, 0.53, 0.74, 1 ]
+  },
+  {
+    "Name": "Ice",
+    "StrongAgainst": [ "Fire", "Wind" ],
+    "WeakAgainst": [ "Lava", "Earth" ],
+    "DamageTextRGBA": [ 0.53, 0.81, 0.92, 1 ]
+  },
+  {
+    "Name": "Lightning",
+    "StrongAgainst": [ "Water", "Wind" ],
+    "WeakAgainst": [ "Earth" ],
+    "DamageTextRGBA": [ 0.98, 0.91, 0.12, 1 ]
+  },
+  {
+    "Name": "Wind",
+    "StrongAgainst": [ "Fire", "Lava", "Earth" ],
+    "WeakAgainst": [ "Ice", "Lightning" ],
+    "DamageTextRGBA": [ 0.74, 0.96, 0.56, 1 ]
+  },
+  {
+    "Name": "Earth",
+    "StrongAgainst": [ "Water", "Lightning" ],
+    "WeakAgainst": [ "Fire", "Lava", "Wind" ],
+    "DamageTextRGBA": [ 0.54, 0.27, 0.07, 1 ]
+  }
+]

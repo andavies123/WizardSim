@@ -1,0 +1,22 @@
+[
+  {
+    "Name": "Earth",
+    "DamageType": "Earth"
+  },
+  {
+    "Name": "Fire",
+    "DamageType": "Fire"
+  },
+  {
+    "Name": "Lightning",
+    "DamageType": "Lightning"
+  },
+  {
+    "Name": "Water",
+    "DamageType": "Water"
+  },
+  {
+    "Name": "Wind",
+    "DamageType": "Wind"
+  }
+]

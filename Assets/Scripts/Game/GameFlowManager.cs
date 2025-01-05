@@ -3,8 +3,10 @@ using GameWorld;
 using GameWorld.Characters.Wizards;
 using GameWorld.Settlements;
 using GameWorld.WorldObjects;
+using Unity.Plastic.Newtonsoft.Json;
 using UnityEngine;
 using Utilities.Attributes;
+using Random = UnityEngine.Random;
 
 namespace Game
 {
@@ -17,7 +19,14 @@ namespace Game
 		[Header("On Town Hall Placed")]
 		[SerializeField] private int initialWizardSpawns = 3;
 		[SerializeField] private float spawnDistanceFromTownHall = 5;
-		
+
+		private readonly ResourceLoader _resourceLoader = new();
+
+		private void Awake()
+		{
+			_resourceLoader.LoadAllResources();
+		}
+
 		private void Start()
 		{
 			world.Settlement.TownHallUpdated += OnTownHallUpdated;
