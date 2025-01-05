@@ -108,3 +108,7 @@ Todo: Window should allow user to remove all tasks of group
 Rogue Like Additions
 ====================
 Todo: Wizards should be randomly assigned jobs (this will make each run-through random)
+
+Other
+=====
+Todo: Try and update the other loading resources to use the updated ResourceRepo
