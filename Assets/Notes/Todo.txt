@@ -100,7 +100,7 @@ Todo: Window should continue to group tasks
 Todo: Window should edit and read from these files
 Todo: Window should have a refresh button
 Todo: Window should allow user to add new tasks
-Todo: Window should allow user to mark tasks as done
+Todo: Window should allow user to mark tasks as complete
 Todo: Window should allow user to remove tasks
 Todo: Window should allow user to remove all tasks of group
 
@@ -112,3 +112,4 @@ Todo: The state machine should reset certain game states when it is time to chan
 Other
 =====
 Todo: Try and update the other loading resources to use the updated ResourceRepo
+Todo: Create a requirements document
