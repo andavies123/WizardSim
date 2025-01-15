@@ -1,4 +1,5 @@
 ﻿using System;
+using Game;
 using UnityEngine;
 using Time = UnityEngine.Time;
 
@@ -10,6 +11,7 @@ namespace GameWorld.Characters.Enemies.States
 		public const string EXIT_REASON_TARGET_OUT_OF_RANGE = nameof(EXIT_REASON_TARGET_OUT_OF_RANGE);
 
 		private float _secondsSinceLastAttack = 0f;
+		private DamageType _attackDamageType;
 
 		public override event EventHandler<string> ExitRequested;
 
@@ -27,6 +29,7 @@ namespace GameWorld.Characters.Enemies.States
 		{
 			// They should be able to attack as soon as they reach the target
 			_secondsSinceLastAttack = SecondsBetweenAttacks;
+			_attackDamageType = Dependencies.Get<ResourceRepo<DamageType>>().Repo["Fire"];
 		}
 
 		public override void Update()
@@ -55,7 +58,7 @@ namespace GameWorld.Characters.Enemies.States
 			// Not setting attack timer back to zero.
 			// Depending on the timing, we could lose a lot of attacks over time
 			_secondsSinceLastAttack -= SecondsBetweenAttacks;
-			Target.Damageable.DealDamage(DamagePerHit, Enemy);
+			Target.Damageable.DealDamage(DamagePerHit, _attackDamageType, Enemy);
 
 			if (Target.Health.IsAtMinHealth)
 			{

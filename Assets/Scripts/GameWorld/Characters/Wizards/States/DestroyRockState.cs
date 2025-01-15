@@ -1,5 +1,6 @@
 ﻿using System;
 using Extensions;
+using Game;
 using GameWorld.WorldObjects;
 using GameWorld.WorldObjects.Rocks;
 using UnityEngine;
@@ -11,6 +12,7 @@ namespace GameWorld.Characters.Wizards.States
 		public const string EXIT_REASON_ROCK_DESTROYED = nameof(EXIT_REASON_ROCK_DESTROYED);
 		
 		private Rock _rock;
+		private DamageType _earthDamageType;
 		
 		public DestroyRockState(Wizard wizard) : base(wizard) { }
 
@@ -22,6 +24,7 @@ namespace GameWorld.Characters.Wizards.States
 		public void Initialize(Rock rock)
 		{
 			_rock = rock;
+			_earthDamageType = Dependencies.Get<ResourceRepo<DamageType>>().Repo["Earth"];
 			_rock.WorldObject.Destroyed += OnRockDestroyed;
 		}
 		
@@ -45,7 +48,7 @@ namespace GameWorld.Characters.Wizards.States
 			if (_rock)
 			{
 				_attackTimer = 0;
-				_rock.WorldObject.Damageable.DealDamage(Wizard.WizardStats.RockAttackDamage.Value, Wizard);
+				_rock.WorldObject.Damageable.DealDamage(Wizard.WizardStats.RockAttackDamage.Value, _earthDamageType, Wizard);
 				
 				// Todo: Update the way a rock gets destroyed
 				if (_rock.WorldObject.Health.CurrentHealth <= 0)

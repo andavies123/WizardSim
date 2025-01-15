@@ -1,6 +1,7 @@
-General World
-=============
+World Generation
+================
 Todo: The world should generate more chunks as the camera moves
+Todo: Certain world objects should be generated with a random rotation (rocks, trees, etc...)
 
 World Objects
 =============
@@ -80,11 +81,9 @@ Todo: The healer wizard should have healing attributes/stats
 
 Damage Numbers
 ==============
-Todo: Add damage numbers
-Todo: Damage numbers should pop up when health is damaged
 Todo: Damage numbers should pop up when health is healed
 Todo: Damage numbers should have different colors based on damage vs heal
-Todo: Damage numbers should have different colors for each damage type (fire, lightning, water, etc...)
+Todo: Damage numbers should pop up with a bit of an offset
 
 Damage Types
 ============
@@ -105,9 +104,10 @@ Todo: Window should allow user to mark tasks as done
 Todo: Window should allow user to remove tasks
 Todo: Window should allow user to remove all tasks of group
 
-Rogue Like Additions
-====================
-Todo: Wizards should be randomly assigned jobs (this will make each run-through random)
+Game Flow
+=========
+Todo: Turn the game flow manager into a state machine
+Todo: The state machine should reset certain game states when it is time to change states
 
 Other
 =====

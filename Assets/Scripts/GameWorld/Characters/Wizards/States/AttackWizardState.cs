@@ -1,4 +1,5 @@
 ﻿using System;
+using Game;
 using UnityEngine;
 
 namespace GameWorld.Characters.Wizards.States
@@ -9,6 +10,7 @@ namespace GameWorld.Characters.Wizards.States
 		public const string EXIT_REASON_TARGET_OUT_OF_RANGE = nameof(EXIT_REASON_TARGET_OUT_OF_RANGE);
 
 		private float _attackTimer = 0f;
+		private DamageType _attackDamageType = Dependencies.Get<ResourceRepo<DamageType>>().Repo["Water"];
 
 		public override event EventHandler<string> ExitRequested;
 
@@ -55,7 +57,7 @@ namespace GameWorld.Characters.Wizards.States
 
 			if (CanAttack)
 			{
-				Target.Damageable.DealDamage(AttackDamage, Wizard);
+				Target.Damageable.DealDamage(AttackDamage, _attackDamageType, Wizard);
 				_attackTimer -= TimeBetweenAttacks;
 			}
 		}

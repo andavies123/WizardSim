@@ -1,6 +1,7 @@
 ﻿using GameWorld.Characters;
 using GeneralBehaviours.HealthBehaviours;
 using System;
+using Game;
 using UnityEngine;
 
 namespace GeneralBehaviours.Damageable
@@ -16,7 +17,7 @@ namespace GeneralBehaviours.Damageable
 		public event EventHandler<DamageReceivedEventArgs> DamageReceived;
 		public event EventHandler<DamageableDestroyedEventArgs> Destroyed;
 
-		public void DealDamage(float damageAmount, Character damageDealer)
+		public void DealDamage(float damageAmount, DamageType damageType, Character damageDealer)
 		{
 			lock (_health)
 			{
@@ -34,6 +35,7 @@ namespace GeneralBehaviours.Damageable
 				// Raise any necessary events
 				if (damageReceived > 0)
 				{
+					Managers.DamageTextManager.ShowDamageText(transform.position + new Vector3(.5f, 2.5f, .5f), damageType, damageReceived);
 					DamageReceived?.Invoke(this, new DamageReceivedEventArgs(damageDealer, damageReceived));
 				}
 
