@@ -26,7 +26,8 @@ namespace UI.DamageTexts
 
 		public void ShowDamageText(Vector3 position, DamageType damageType, float damageAmount)
 		{
-			DamageText damageText = _damageTextFactory.CreateDamageText(position, damageType, damageAmount);
+			Vector3 randomizedPosition = new(position.x + Random.Range(-0.5f, 0.5f), position.y + Random.Range(-0.5f, 0.5f), position.z + Random.Range(-0.5f, 0.5f));
+			DamageText damageText = _damageTextFactory.CreateDamageText(randomizedPosition, damageType, damageAmount);
 			_damageTexts.Enqueue((damageText, Time.time));
 		}
 

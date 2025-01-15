@@ -17,7 +17,7 @@ namespace GeneralComponents
 			Vector3 directionToCamera = _camera.transform.position - _transform.position;
 
 			// Face the object towards the camera
-			_transform.rotation = Quaternion.LookRotation(directionToCamera);
+			_transform.rotation = Quaternion.LookRotation(-directionToCamera);
 		}
 
 		private void Awake()

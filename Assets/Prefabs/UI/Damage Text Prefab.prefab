@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8913224248326641033}
   - component: {fileID: 1606727855284267879}
-  - component: {fileID: 3664158084472710499}
   m_Layer: 0
   m_Name: Damage Text Prefab
   m_TagString: Untagged
@@ -52,18 +51,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   text: {fileID: 3947662098441049443}
   lifeTimeSeconds: 5
---- !u!114 &3664158084472710499
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2060904707369796802}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36c41fa9fbb645e09061e95474c2d605, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &5960775454854659698
 GameObject:
   m_ObjectHideFlags: 0
@@ -75,6 +62,7 @@ GameObject:
   - component: {fileID: 2536341856987240681}
   - component: {fileID: 282999898446880201}
   - component: {fileID: 3947662098441049443}
+  - component: {fileID: 2292328524076859211}
   m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
@@ -198,3 +186,15 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &2292328524076859211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5960775454854659698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36c41fa9fbb645e09061e95474c2d605, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

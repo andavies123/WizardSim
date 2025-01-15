@@ -83,7 +83,9 @@ Damage Numbers
 ==============
 Todo: Damage numbers should pop up when health is healed
 Todo: Damage numbers should have different colors based on damage vs heal
-Todo: Damage numbers should pop up with a bit of an offset
+Done: Damage numbers should pop up with a bit of an offset
+Todo: Damage numbers should move upwards once created
+Todo: Damage numbers should shrink gradually
 
 Damage Types
 ============
