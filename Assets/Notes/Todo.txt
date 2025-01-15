@@ -84,8 +84,9 @@ Damage Numbers
 Todo: Damage numbers should pop up when health is healed
 Todo: Damage numbers should have different colors based on damage vs heal
 Done: Damage numbers should pop up with a bit of an offset
-Todo: Damage numbers should move upwards once created
-Todo: Damage numbers should shrink gradually
+Done: Damage numbers should move upwards once created
+Done: Damage numbers should shrink gradually
+Todo: Damage numbers should shrink using a parabola formula so its not constant but faster near the end
 
 Damage Types
 ============
@@ -110,6 +111,10 @@ Game Flow
 =========
 Todo: Turn the game flow manager into a state machine
 Todo: The state machine should reset certain game states when it is time to change states
+
+General UI
+==========
+Todo: UI Buttons should all come from the same button prefab to make styling easier
 
 Other
 =====
