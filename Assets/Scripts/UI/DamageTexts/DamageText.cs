@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using Extensions;
 using TMPro;
 using UnityEngine;
 using Utilities.Attributes;
@@ -10,17 +9,17 @@ namespace UI.DamageTexts
 	public class DamageText : MonoBehaviour
 	{
 		[SerializeField, Required] private TMP_Text text;
-		[SerializeField] private float lifeTimeSeconds = 5f;
 
 		private Transform _transform;
 		private float _timeCreated;
+		private float _timeToLive;
 
 		private void Awake()
 		{
 			_transform = transform;
 		}
 
-		public void Init(DamageType damageType, float damageAmount)
+		public void Init(DamageType damageType, float damageAmount, float timeToLive)
 		{
 			// Transform
 			_transform.localScale = Vector3.one;
@@ -31,16 +30,33 @@ namespace UI.DamageTexts
 			
 			// Other
 			_timeCreated = Time.time;
+			_timeToLive = timeToLive;
 		}
 
 		public void Update()
 		{
-			if (Time.time - _timeCreated > lifeTimeSeconds)
-				Destroy(gameObject);
+			UpdatePosition();
+			UpdateScale(Time.time - _timeCreated);
+		}
 
-			_transform.position = _transform.position.SubY(_transform.position.y + 0.25f * Time.deltaTime);
-			_transform.position += 0.15f * Time.deltaTime * Vector3.up;
-			_transform.localScale -= 0.2f * Time.deltaTime * Vector3.one;
+		private void UpdatePosition()
+		{
+			_transform.position += 0.25f * Time.deltaTime * Vector3.up;
+		}
+
+		private void UpdateScale(float time)
+		{
+			// Formula used:
+			// y = a * -tan((pi/2b)x) + c
+			// a -> controls the sharpness of the downwards angle
+			// b -> controls the width (x intercept)
+			// c -> controls the height (y intercept)
+			// y -> scale
+			// x -> time
+			
+			const float sharpness = 0.2f;
+			float scale = Mathf.Max(sharpness * -Mathf.Tan((Mathf.PI * time)/(2 * _timeToLive)) + 1, 0);
+			_transform.localScale = new Vector3(scale, scale, scale);
 		}
 	}
 }
