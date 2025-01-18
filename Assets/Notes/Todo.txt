@@ -86,7 +86,7 @@ Todo: Damage numbers should have different colors based on damage vs heal
 Done: Damage numbers should pop up with a bit of an offset
 Done: Damage numbers should move upwards once created
 Done: Damage numbers should shrink gradually
-Todo: Damage numbers should shrink using a parabola formula so its not constant but faster near the end
+Done: Damage numbers should shrink using a parabola formula so its not constant but faster near the end
 
 Damage Types
 ============

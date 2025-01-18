@@ -27,7 +27,7 @@ namespace UI.DamageTexts
 		public void ShowDamageText(Vector3 position, DamageType damageType, float damageAmount)
 		{
 			Vector3 randomizedPosition = new(position.x + Random.Range(-0.5f, 0.5f), position.y, position.z + Random.Range(-0.5f, 0.5f));
-			DamageText damageText = _damageTextFactory.CreateDamageText(randomizedPosition, damageType, damageAmount, damageTextTimeToLive);
+			DamageText damageText = _damageTextFactory.CreateDamageText(randomizedPosition, damageType, damageAmount);
 			_damageTexts.Enqueue((damageText, Time.time));
 		}
 
@@ -40,6 +40,11 @@ namespace UI.DamageTexts
 			{
 				DamageText damageTextToRelease = _damageTexts.Dequeue().damageText;
 				_damageTextFactory.ReleaseDamageText(damageTextToRelease);
+			}
+
+			foreach ((DamageText damageText, float timeCreated) in _damageTexts)
+			{
+				damageText.UpdateWithTime((Time.time - timeCreated)/damageTextTimeToLive);
 			}
 		}
 
