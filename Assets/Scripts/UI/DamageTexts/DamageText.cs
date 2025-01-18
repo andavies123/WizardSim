@@ -17,13 +17,13 @@ namespace UI.DamageTexts
 			_transform = transform;
 		}
 
-		public void Init(DamageType damageType, float damageAmount)
+		public void Init(Color textColor, float damageAmount)
 		{
 			// Transform
 			_transform.localScale = Vector3.one;
 			
 			// Text
-			text.color = damageType.DamageTextColor;
+			text.color = textColor;
 			text.SetText(damageAmount.ToString(CultureInfo.InvariantCulture));
 		}
 
