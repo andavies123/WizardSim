@@ -2394,7 +2394,10 @@ MonoBehaviour:
   wizardFactory: {fileID: 1202947230}
   enemySpawner: {fileID: 262803724}
   initialGenerationRadius: 4
-  rockPrefab: {fileID: 9090978207146980024, guid: 70ca3cc2895272241a88451b6498dfe8, type: 3}
+  rockPrefabs:
+  - {fileID: 9090978207146980024, guid: 70ca3cc2895272241a88451b6498dfe8, type: 3}
+  - {fileID: 9090978207146980024, guid: 0d5f9ec3c2a80f24ebbf63f29e051e0a, type: 3}
+  - {fileID: 9090978207146980024, guid: 3a57f1db7ef31d1438057480cfd91900, type: 3}
   rocksPerChunk: 1
 --- !u!1 &1145572428
 GameObject:
@@ -2506,6 +2509,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageTextPrefab: {fileID: 1606727855284267879, guid: 242f80c3065ac874fb1bcdb7d5b719c3, type: 3}
+  damageTextTimeToLive: 5
 --- !u!223 &1180853483
 Canvas:
   m_ObjectHideFlags: 0

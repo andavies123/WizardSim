@@ -1,4 +1,5 @@
-﻿using Extensions;
+﻿using System.Collections.Generic;
+using Extensions;
 using GameWorld.WorldObjects;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -8,15 +9,15 @@ namespace GameWorld.Builders
 	public class RockObjectBuilder : IWorldObjectBuilder
 	{
 		private const string ROCK_DETAILS_NAME = "Rock";
-		
+
+		private readonly List<GameObject> _rockPrefabs;
 		private readonly World _world;
-		private readonly GameObject _rockPrefab;
 		private readonly Transform _rockContainer;
 		
-		public RockObjectBuilder(World world, GameObject rockPrefab, Transform rockContainer)
+		public RockObjectBuilder(World world, List<GameObject> rockPrefabs, Transform rockContainer)
 		{
 			_world = world;
-			_rockPrefab = rockPrefab;
+			_rockPrefabs = rockPrefabs;
 
 			_rockContainer = new GameObject("Rock Container").transform;
 			_rockContainer.SetParent(rockContainer);
@@ -35,7 +36,7 @@ namespace GameWorld.Builders
 				.ToVector3(VectorSub.XSubY);
 			
 			// Instantiate and set position
-			WorldObject rock = Object.Instantiate(_rockPrefab, _rockContainer).GetComponent<WorldObject>();
+			WorldObject rock = Object.Instantiate(GetRandomRockPrefab(), _rockContainer).GetComponent<WorldObject>();
 			rock.transform.SetPositionAndRotation(worldPosition, Quaternion.identity);
 
 			// Get the details of the world object
@@ -55,5 +56,7 @@ namespace GameWorld.Builders
 
 			return true;
 		}
+
+		private GameObject GetRandomRockPrefab() => _rockPrefabs[Random.Range(0, _rockPrefabs.Count)];
 	}
 }

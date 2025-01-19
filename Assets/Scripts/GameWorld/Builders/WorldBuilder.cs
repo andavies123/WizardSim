@@ -28,7 +28,7 @@ namespace GameWorld.Builders
 		[SerializeField, Required] private int initialGenerationRadius = 5;
 
 		[Header("Rock Generation Settings")]
-		[SerializeField, Required] private GameObject rockPrefab;
+		[SerializeField, Required] private List<GameObject> rockPrefabs;
 		[SerializeField, Required] private int rocksPerChunk;
 
 		private readonly List<ISubscription> _subscriptions = new();
@@ -41,7 +41,7 @@ namespace GameWorld.Builders
 		
 		private void Awake()
 		{
-			RockObjectBuilder = new RockObjectBuilder(world, rockPrefab, worldObjectParent);
+			RockObjectBuilder = new RockObjectBuilder(world, rockPrefabs, worldObjectParent);
 			_worldObjectPreviewManager = new WorldObjectPreviewManager(world, transform);
 
 			_messageBroker = Dependencies.Get<MessageBroker>();

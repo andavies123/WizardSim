@@ -58,4 +58,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   revalidate: 0
-  throwIfNull: 1
+  required: 1
