@@ -88,25 +88,6 @@ Done: Damage numbers should move upwards once created
 Done: Damage numbers should shrink gradually
 Done: Damage numbers should shrink using a parabola formula so its not constant but faster near the end
 
-Damage Types
-============
-Todo: Damage Types should be its own class with specific properties
-Todo: Damage Types should contain a list of what kind of objects it deals extra damage against
-Todo: Damage Types should contain a list of what kind of objects it deals less damage against
-
-Todo/Bug Editor Window
-======================
-Todo: Create a new editor window to display Todo/Bug
-Todo: Window should display Todo tasks from this file
-Todo: Window should display Bug tasks from this file
-Todo: Window should continue to group tasks
-Todo: Window should edit and read from these files
-Todo: Window should have a refresh button
-Todo: Window should allow user to add new tasks
-Todo: Window should allow user to mark tasks as complete
-Todo: Window should allow user to remove tasks
-Todo: Window should allow user to remove all tasks of group
-
 Game Flow
 =========
 Todo: Turn the game flow manager into a state machine
@@ -119,4 +100,3 @@ Todo: UI Buttons should all come from the same button prefab to make styling eas
 Other
 =====
 Todo: Try and update the other loading resources to use the updated ResourceRepo
-Todo: Create a requirements document
