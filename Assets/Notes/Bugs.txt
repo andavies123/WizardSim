@@ -13,3 +13,7 @@ Wizard Info
 ===========
 Bug: Wizard info boxes should not be updated every update frame. Find a better way to do that
 Bug: When a wizard is breaking surrounding rocks, the status text gets really large
+
+Hover Highlight
+===============
+Bug: The highlight isn't working when hovering over rocks
