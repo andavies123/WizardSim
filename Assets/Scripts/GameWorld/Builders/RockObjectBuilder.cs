@@ -37,7 +37,7 @@ namespace GameWorld.Builders
 			
 			// Instantiate and set position
 			WorldObject rock = Object.Instantiate(GetRandomRockPrefab(), _rockContainer).GetComponent<WorldObject>();
-			rock.transform.SetPositionAndRotation(worldPosition, Quaternion.identity);
+			rock.transform.SetPositionAndRotation(worldPosition, Quaternion.Euler(0, Random.Range(0, 360), 0));
 
 			// Get the details of the world object
 			if (!_world.DetailsMap.TryGetDetails(ROCK_DETAILS_NAME, out WorldObjectDetails worldObjectDetails))
