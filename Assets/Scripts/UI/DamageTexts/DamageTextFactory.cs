@@ -19,11 +19,11 @@ namespace UI.DamageTexts
 			_gameObjectPool = new GameObjectPool(prefab, inactiveContainer, 10, 30);
 		}
 		
-		public DamageText CreateDamageText(Vector3 startingPoint, DamageType damageType, float damageAmount)
+		public DamageText CreateDamageText(Vector3 startingPoint, Color textColor, float damageAmount)
 		{
 			DamageText damageText = _gameObjectPool.GetFromPool(_activeContainer).GetComponent<DamageText>();
 			damageText.transform.SetPositionAndRotation(startingPoint, Quaternion.identity);
-			damageText.Init(damageType, damageAmount);
+			damageText.Init(textColor, damageAmount);
 			return damageText;
 		}
 
