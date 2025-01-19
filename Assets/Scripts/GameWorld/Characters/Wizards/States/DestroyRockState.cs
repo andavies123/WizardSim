@@ -1,4 +1,5 @@
 ﻿using System;
+using DamageTypes;
 using Extensions;
 using Game;
 using GameWorld.WorldObjects;

@@ -1,15 +1,17 @@
-﻿using Extensions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Extensions;
 using UnityEngine;
 
-public struct DamageType
+namespace DamageTypes
 {
-	public string Name { get; set; }
-	public List<string> StrongAgainst { get; set; }
-	public List<string> WeakAgainst { get; set; }
-	public List<float> DamageTextRGBA { get; set; }
+	public struct DamageType
+	{
+		public string Name { get; set; }
+		public List<string> StrongAgainst { get; set; }
+		public List<string> WeakAgainst { get; set; }
+		public List<float> DamageTextRgba { get; set; }
 
-
-	private Color? _damageTextColor;
-	public Color DamageTextColor => _damageTextColor ??= DamageTextRGBA.ToColor();
+		private Color? _damageTextColor;
+		public Color DamageTextColor => _damageTextColor ??= DamageTextRgba.ToColor();
+	}
 }

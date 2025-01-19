@@ -1,6 +1,7 @@
 ﻿using GameWorld.Characters;
 using GeneralBehaviours.HealthBehaviours;
 using System;
+using DamageTypes;
 using Game;
 using UnityEngine;
 

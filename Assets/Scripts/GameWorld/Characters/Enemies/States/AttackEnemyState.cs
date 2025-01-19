@@ -1,4 +1,5 @@
 ﻿using System;
+using DamageTypes;
 using Game;
 using UnityEngine;
 using Time = UnityEngine.Time;
