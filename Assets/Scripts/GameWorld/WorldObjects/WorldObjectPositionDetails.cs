@@ -14,5 +14,7 @@ namespace GameWorld.WorldObjects
 		public Vector3 Size { get; }
 
 		public Vector3 Center => Position + (Size / 2f);
+
+		public override string ToString() => $"Position: {Position}\nSize: {Size}";
 	}
 }

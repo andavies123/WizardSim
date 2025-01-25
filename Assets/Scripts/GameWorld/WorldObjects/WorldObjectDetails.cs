@@ -11,6 +11,9 @@ namespace GameWorld.WorldObjects
 	{
 		[Tooltip("The unique name for a world object.")]
 		[field: SerializeField] public string Name { get; private set; }
+		
+		[Tooltip("The world object group this object belongs to.")]
+		[field: SerializeField] public string Group { get; private set; }
 
 		[Tooltip("The GameObject prefab that will be used to instantiate the object into the world.")] 
 		[field: SerializeField] public WorldObject Prefab { get; private set; }

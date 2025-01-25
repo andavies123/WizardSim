@@ -3,11 +3,13 @@ World Generation
 Todo: The world should generate more chunks as the camera moves
 Todo: Certain world objects should be generated with a random rotation (rocks, trees, etc...)
 Todo: Certain world objects should be generated with a random size (rocks, trees, etc...)
+Todo: World objects should be able to be larger than 1 x 1 x 1 
 
 World Objects
 =============
 Todo: World Objects should contain how much experience is gained on destruction
 Todo: World Objects should contain which attributes should get experience or something like that
+Todo: Update medium and large rocks to be larger than 1 x 1 x 1
 
 Attribute System
 ================
@@ -100,3 +102,6 @@ Todo: UI Buttons should all come from the same button prefab to make styling eas
 Other
 =====
 Todo: Try and update the other loading resources to use the updated ResourceRepo
+Todo: Add GameTime into managers rather than inside of world
+Todo: Add World into managers rather
+Todo: Change name of Managers to something that holds managers and non managers

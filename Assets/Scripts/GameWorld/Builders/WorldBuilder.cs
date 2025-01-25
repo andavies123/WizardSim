@@ -32,20 +32,30 @@ namespace GameWorld.Builders
 		[SerializeField, Required] private int rocksPerChunk;
 
 		private readonly List<ISubscription> _subscriptions = new();
+
+		private readonly Dictionary<string, IWorldObjectFactory> _worldObjectFactories = new();
 		
 		private MessageBroker _messageBroker;
 		private SubscriptionBuilder _subBuilder;
 		private WorldObjectPreviewManager _worldObjectPreviewManager;
-
-		public RockObjectBuilder RockObjectBuilder { get; private set; }
 		
 		private void Awake()
 		{
-			RockObjectBuilder = new RockObjectBuilder(world, rockPrefabs, worldObjectParent);
 			_worldObjectPreviewManager = new WorldObjectPreviewManager(world, transform);
 
 			_messageBroker = Dependencies.Get<MessageBroker>();
 			_subBuilder = new SubscriptionBuilder(this);
+
+			// Build the world object builder dictionary
+			IWorldObjectFactory[] worldObjectBuilders = GetComponents<IWorldObjectFactory>();
+			foreach (IWorldObjectFactory builder in worldObjectBuilders)
+			{
+				if (!_worldObjectFactories.TryAdd(builder.BuilderType, builder))
+				{
+					Debug.LogWarning($"Issue caching {nameof(IWorldObjectFactory)}: {builder.GetType().Name}");
+				}
+			}
+			
 
 			_subscriptions.Add(_subBuilder.ResetAllButSubscriber()
 				.SetMessageType<WorldObjectPlacementRequest>()
@@ -133,14 +143,28 @@ namespace GameWorld.Builders
 		{
 			int addedRocks = 0;
 
+			if (!_worldObjectFactories.TryGetValue("Rock", out IWorldObjectFactory rockFactory))
+			{
+				Debug.LogError($"Unable to find world object factory, Type: \"Rock\"");
+				return;
+			}
+			
 			while (addedRocks < rocksPerChunk)
 			{
 				Vector2Int localChunkPosition = RandomExt.RangeVector2Int(
 					0, world.WorldDetails.ChunkTiles.x,
 					0, world.WorldDetails.ChunkTiles.y);
 
-				if (RockObjectBuilder.TrySpawnSingle(chunk, localChunkPosition))
+				WorldObject rock = rockFactory.CreateObject(chunk.Position, localChunkPosition);
+				if (chunk.TryAddWorldObject(rock))
+				{
 					addedRocks++;
+					Vector3 worldPosition = world
+					 		.WorldPositionFromTilePosition(localChunkPosition, chunk.Position, centerOfTile: false)
+						    .ToVector3(VectorSub.XSubY) + new Vector3(0.5f, 0, 0.5f);
+					
+					rock.transform.SetPositionAndRotation(worldPosition, Quaternion.identity);
+				}
 			}
 		}
 

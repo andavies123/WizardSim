@@ -606,6 +606,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageTextManager: {fileID: 1180853481}
+  world: {fileID: 2007172221}
+  worldObjectDetailsMap: {fileID: 2007172223}
 --- !u!1 &305748071
 GameObject:
   m_ObjectHideFlags: 0
@@ -2210,7 +2212,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4412138356026239436, guid: 16019c84fd6e24c8ca631a12cf8d3fcc, type: 3}
       propertyPath: m_Name
-      value: Rock Hot Bar Item
+      value: Small Rock Hot Bar Item
       objectReference: {fileID: 0}
     - target: {fileID: 5507054341924516727, guid: 16019c84fd6e24c8ca631a12cf8d3fcc, type: 3}
       propertyPath: worldObjectDetails
@@ -2355,6 +2357,7 @@ GameObject:
   m_Component:
   - component: {fileID: 992639649}
   - component: {fileID: 992639650}
+  - component: {fileID: 992639651}
   m_Layer: 0
   m_Name: World Builder
   m_TagString: Untagged
@@ -2399,6 +2402,18 @@ MonoBehaviour:
   - {fileID: 9090978207146980024, guid: 0d5f9ec3c2a80f24ebbf63f29e051e0a, type: 3}
   - {fileID: 9090978207146980024, guid: 3a57f1db7ef31d1438057480cfd91900, type: 3}
   rocksPerChunk: 1
+--- !u!114 &992639651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 992639648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cb18697891a4f44a1914e88183c56a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1145572428
 GameObject:
   m_ObjectHideFlags: 0

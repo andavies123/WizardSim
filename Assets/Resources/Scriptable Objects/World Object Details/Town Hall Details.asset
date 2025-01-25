@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Town Hall Details
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Town Hall
+  <Group>k__BackingField: Main
   <Prefab>k__BackingField: {fileID: 4884935886393915854, guid: 4a87562d92989e5469a8268fbc272843, type: 3}
   <PlacementProperties>k__BackingField:
     <Size>k__BackingField: {x: 1, y: 3, z: 1}
@@ -22,3 +23,4 @@ MonoBehaviour:
     <Description>k__BackingField: The center of your village
   <HealthProperties>k__BackingField:
     <MaxHealth>k__BackingField: 100
+  <ResourcesWhenDestroyed>k__BackingField: []

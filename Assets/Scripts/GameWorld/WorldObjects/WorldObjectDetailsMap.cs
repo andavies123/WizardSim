@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace GameWorld.WorldObjects
 {
@@ -7,17 +8,18 @@ namespace GameWorld.WorldObjects
 	{
 		private const string RESOURCES_PATH = "Scriptable Objects/World Object Details";
         
-		private readonly Dictionary<string, WorldObjectDetails> _detailsMap = new();
-
-		public bool TryGetDetails(string worldObjectName, out WorldObjectDetails details)
+		private readonly Dictionary<string, IDictionary<string, WorldObjectDetails>> _detailsByGroup = new();
+        
+		public IReadOnlyDictionary<string, IDictionary<string, WorldObjectDetails>> DetailsByGroup => _detailsByGroup;
+		
+		public bool TryGetDetails(string detailsGroup, string detailsName, out WorldObjectDetails details)
 		{
-			if (!_detailsMap.TryGetValue(worldObjectName, out details))
-			{
-				Debug.LogWarning($"World Object Details do not exist for \"{worldObjectName}\"");
+			details = null;
+			
+			if (!_detailsByGroup.TryGetValue(detailsGroup, out IDictionary<string, WorldObjectDetails> groupDetails))
 				return false;
-			}
 
-			return true;
+			return groupDetails.TryGetValue(detailsName, out details);
 		}
         
 		private void Awake()
@@ -26,9 +28,9 @@ namespace GameWorld.WorldObjects
 			CreateWorldObjectMap(loadedDetails);
 		}
 
-		private void CreateWorldObjectMap(WorldObjectDetails[] loadedDetails)
+		private void CreateWorldObjectMap(IReadOnlyCollection<WorldObjectDetails> loadedDetails)
 		{
-			if (loadedDetails == null || loadedDetails.Length == 0)
+			if (loadedDetails == null || loadedDetails.Count == 0)
 			{
 				Debug.LogWarning("There were no world object details loaded at runtime");
 				return;
@@ -36,10 +38,20 @@ namespace GameWorld.WorldObjects
 			
 			foreach (WorldObjectDetails details in loadedDetails)
 			{
-				if (!_detailsMap.TryAdd(details.Name, details))
+				if (_detailsByGroup.TryGetValue(details.Group, out IDictionary<string, WorldObjectDetails> groupDetails))
 				{
-					// The only reason this should fail is if there already exists an entry with the same key
-					Debug.LogWarning($"Unable to map world object details {details.Name}. Possible duplicate.");
+					if (!groupDetails.TryAdd(details.Name, details))
+					{
+						Debug.LogWarning($"Possible world object details duplication | Problem object: \"{details.name}\" | Existing object: \"{groupDetails[details.Name].name}\"", details);
+					}
+				}
+				else
+				{
+					if (!_detailsByGroup.TryAdd(details.Group, new Dictionary<string, WorldObjectDetails> { {details.Name, details} }))
+					{
+						// This should probably never happen
+						Debug.LogWarning($"Unable to add new world object details group: {details.Group}");
+					}
 				}
 			}
 		}

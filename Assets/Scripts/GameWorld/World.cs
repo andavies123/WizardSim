@@ -30,7 +30,6 @@ namespace GameWorld
 		public WorldDetails WorldDetails => worldDetails;
 		public IReadOnlyDictionary<Vector2Int, Chunk> Chunks => _chunks;
 		public IWorldObjectManager WorldObjectManager { get; private set; }
-		public WorldObjectDetailsMap DetailsMap { get; private set; }
 
 		public EntityManager EnemyManager => enemyManager;
 
@@ -150,7 +149,6 @@ namespace GameWorld
 		{
 			Dependencies.Register(this);
 			_gameWorldTime = GetComponent<GameWorldTimeBehaviour>();
-			DetailsMap = GetComponent<WorldObjectDetailsMap>();
 			WorldObjectManager = new WorldObjectManager(worldObjectContainer);
 		}
 

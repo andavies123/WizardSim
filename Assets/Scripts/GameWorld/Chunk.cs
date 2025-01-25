@@ -9,7 +9,7 @@ namespace GameWorld
 	{
 		[SerializeField] private Transform worldObjectsParent;
 
-		private readonly World parentWorld;
+		private readonly World _parentWorld;
 		private Tile[,] _tiles;
 		private bool[,] _occupiedTiles;
 
@@ -63,6 +63,8 @@ namespace GameWorld
 			// Update local collection
 			positions.ForEach(position => _occupiedTiles[position.x, position.y] = true);
 
+			worldObject.transform.SetParent(worldObjectsParent);
+			
 			return true;
 		}
 

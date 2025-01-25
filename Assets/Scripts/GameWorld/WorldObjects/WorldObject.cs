@@ -1,4 +1,5 @@
 ﻿using System;
+using Extensions;
 using Game;
 using GameWorld.WorldResources;
 using GeneralBehaviours.Damageable;
@@ -19,7 +20,7 @@ namespace GameWorld.WorldObjects
 	public sealed class WorldObject : MonoBehaviour
 	{
 		[SerializeField] private HealthProperties healthProperties;
-        
+
 		public WorldObjectDetails Details { get; private set; }
 		public WorldObjectPositionDetails PositionDetails { get; private set; }
 		public ChunkPlacementData ChunkPlacementData { get; private set; }
@@ -35,8 +36,11 @@ namespace GameWorld.WorldObjects
 			Details = details;
 			ChunkPlacementData = chunkPlacementData;
 
-			PositionDetails = new WorldObjectPositionDetails(transform.position, details.PlacementProperties.Size);
+			PositionDetails = new WorldObjectPositionDetails(
+				Managers.World.WorldPositionFromTilePosition(chunkPlacementData.TilePosition, chunkPlacementData.ChunkPosition).ToVector3(VectorSub.XSubY), 
+				details.PlacementProperties.Size);
 
+			print(PositionDetails);
 			gameObject.name = Details.Name;
 			
 			Health.InitializeWithProperties(Details.HealthProperties);
