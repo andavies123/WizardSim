@@ -24,6 +24,7 @@ Todo: The player should be able to assign a wizard a profession
 General Wizard Tasks
 ====================
 Todo: Certain wizard tasks should have a max stat level in order to be worked on
+Todo: Wizards should move to the center of a world object
 
 Guard Wizard
 ============

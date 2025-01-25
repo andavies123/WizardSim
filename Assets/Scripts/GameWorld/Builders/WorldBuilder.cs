@@ -158,12 +158,15 @@ namespace GameWorld.Builders
 				WorldObject rock = rockFactory.CreateObject(chunk.Position, localChunkPosition);
 				if (chunk.TryAddWorldObject(rock))
 				{
-					addedRocks++;
 					Vector3 worldPosition = world
 					 		.WorldPositionFromTilePosition(localChunkPosition, chunk.Position, centerOfTile: false)
 						    .ToVector3(VectorSub.XSubY) + new Vector3(0.5f, 0, 0.5f);
 					
-					rock.transform.SetPositionAndRotation(worldPosition, Quaternion.identity);
+					//rock.transform.SetPositionAndRotation(worldPosition, Quaternion.identity);
+
+					rock.transform.position = rock.PositionDetails.Position;
+					
+					addedRocks++;
 				}
 			}
 		}

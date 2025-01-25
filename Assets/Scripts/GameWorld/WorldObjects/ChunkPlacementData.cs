@@ -2,7 +2,7 @@
 
 namespace GameWorld.WorldObjects
 {
-	public struct ChunkPlacementData
+	public readonly struct ChunkPlacementData
 	{
 		public Vector2Int ChunkPosition { get; }
 		public Vector2Int TilePosition { get; }
@@ -12,5 +12,7 @@ namespace GameWorld.WorldObjects
 			ChunkPosition = chunkPosition;
 			TilePosition = tilePosition;
 		}
+
+		public override string ToString() => $"Chunk: {ChunkPosition}\nTile: {TilePosition}";
 	}
 }

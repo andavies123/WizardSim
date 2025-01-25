@@ -40,7 +40,6 @@ namespace GameWorld.WorldObjects
 				Managers.World.WorldPositionFromTilePosition(chunkPlacementData.TilePosition, chunkPlacementData.ChunkPosition).ToVector3(VectorSub.XSubY), 
 				details.PlacementProperties.Size);
 
-			print(PositionDetails);
 			gameObject.name = Details.Name;
 			
 			Health.InitializeWithProperties(Details.HealthProperties);
