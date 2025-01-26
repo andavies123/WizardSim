@@ -22,7 +22,7 @@ namespace GameWorld.Builders
 
 		private void LoadWorldObjectDetails()
 		{
-			if (!Managers.WorldObjectDetailsMap.DetailsByGroup.TryGetValue(BuilderType, out IDictionary<string, WorldObjectDetails> groupDetails))
+			if (!Global.WorldObjectDetailsMap.DetailsByGroup.TryGetValue(BuilderType, out IDictionary<string, WorldObjectDetails> groupDetails))
 			{
 				Debug.LogError($"World Object Details do not exist for the following group: {BuilderType}");
 				return;

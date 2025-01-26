@@ -37,7 +37,7 @@ namespace GameWorld.WorldObjects
 			ChunkPlacementData = chunkPlacementData;
 
 			PositionDetails = new WorldObjectPositionDetails(
-				Managers.World.WorldPositionFromTilePosition(chunkPlacementData.TilePosition, chunkPlacementData.ChunkPosition).ToVector3(VectorSub.XSubY), 
+				Global.World.WorldPositionFromTilePosition(chunkPlacementData.TilePosition, chunkPlacementData.ChunkPosition).ToVector3(VectorSub.XSubY), 
 				details.PlacementProperties.Size);
 
 			gameObject.name = Details.Name;

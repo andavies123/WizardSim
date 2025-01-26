@@ -104,5 +104,10 @@ Other
 =====
 Todo: Try and update the other loading resources to use the updated ResourceRepo
 Todo: Add GameTime into managers rather than inside of world
-Todo: Add World into managers rather
-Todo: Change name of Managers to something that holds managers and non managers
+Done: Add World into managers rather than using dependencies
+Done: Change name of Managers to something that holds managers and non managers
+
+Context Menu Item Injection
+===========================
+Todo: Context menu should be able to be injected by another object (Tile doesn't need to know about wizards) (wizards can inject into tile context menus)
+Todo: Context menu users or interactables should have a "type" which is used to inject into 

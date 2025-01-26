@@ -7,7 +7,7 @@ using Utilities.Attributes;
 namespace Game
 {
 	[DisallowMultipleComponent]
-	public class Managers : MonoBehaviour
+	public class Global : MonoBehaviour
 	{
 		[Header("UI References")]
 		[SerializeField, Required] private DamageTextManager damageTextManager;
@@ -23,7 +23,7 @@ namespace Game
 		public static World World => Instance.world;
 		public static WorldObjectDetailsMap WorldObjectDetailsMap => Instance.worldObjectDetailsMap;
 		
-		private static Managers Instance { get; set; }
+		private static Global Instance { get; set; }
 
 		private void Awake()
 		{
