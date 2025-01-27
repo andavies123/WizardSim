@@ -144,15 +144,15 @@ namespace GameWorld.Characters.Wizards
 
 		protected override void InitializeContextMenu()
 		{
-			ContextMenuUser.AddMenuItem(
+			Globals.ContextMenuInjections.InjectContextMenuOption<Wizard>(
 				ContextMenuBuilder.BuildPath("Action", "Idle"), 
-				() => StateMachine.Idle(), 
+				_ => StateMachine.Idle(), 
 				() => !IsIdling,
 				() => true);
 			
-			ContextMenuUser.AddMenuItem(
+			Globals.ContextMenuInjections.InjectContextMenuOption<Wizard>(
 				ContextMenuBuilder.BuildPath("Action", "Move To"),
-				() => _messageBroker.PublishSingle(
+				_ => _messageBroker.PublishSingle(
 					new StartInteractionRequest
 					{
 						Sender = this,
@@ -161,9 +161,9 @@ namespace GameWorld.Characters.Wizards
 				() => true,
 				() => true);
 
-			ContextMenuUser.AddMenuItem(
+			Globals.ContextMenuInjections.InjectContextMenuOption<Wizard>(
 				ContextMenuBuilder.BuildPath("Kill"),
-				() => Health.CurrentHealth -= Health.CurrentHealth,
+				_ => Health.CurrentHealth -= Health.CurrentHealth,
 				() => true,
 				() => true);
 

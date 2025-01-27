@@ -15,7 +15,7 @@ namespace UI.ContextMenus
 		public string Name { get; }
 		public bool IsLeaf => ChildMenuItems.Count == 0;
 		
-		public Action MenuClickCallback { get; set; }
+		public Action<IContextMenuUser> MenuClickCallback { get; set; }
 		public Func<bool> IsEnabledFunc { get; set; }
 		public Func<bool> IsVisibleFunc { get; set; }
         

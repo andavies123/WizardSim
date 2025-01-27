@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Extensions;
+using Game;
 using GeneralBehaviours.Utilities.ContextMenuBuilders;
 using GeneralClasses.Health.HealthEventArgs;
 using UnityEngine;
@@ -56,9 +57,9 @@ namespace GameWorld.Characters.Enemies
 
 		protected override void InitializeContextMenu()
 		{
-			ContextMenuUser.AddMenuItem(
+			Globals.ContextMenuInjections.InjectContextMenuOption<Enemy>(
 				ContextMenuBuilder.BuildPath("Action", "Idle"),
-				null,
+				_ => print($"Idle not set up"),
 				() => false,
 				() => true);
 

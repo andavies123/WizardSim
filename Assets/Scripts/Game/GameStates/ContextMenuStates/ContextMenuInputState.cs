@@ -59,7 +59,7 @@ namespace Game.GameStates.ContextMenuStates
 		{
 			if (!args?.Interactable)
 				return;
-			
+
 			if (args.Interactable.TryGetComponent(out ContextMenuUser contextMenuUser))
 				OpenNewContextMenuRequested?.Invoke(this, contextMenuUser);
 		}

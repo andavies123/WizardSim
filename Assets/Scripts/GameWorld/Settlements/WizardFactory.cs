@@ -1,9 +1,13 @@
 ﻿using System;
 using AndysTools.GameWorldTimeManagement.Runtime;
 using Extensions;
+using Game;
 using GameWorld.Characters.Wizards;
 using GameWorld.Settlements.Interfaces;
+using GameWorld.Tiles;
 using GeneralBehaviours.ShaderManagers;
+using GeneralBehaviours.Utilities.ContextMenuBuilders;
+using UI.ContextMenus;
 using UnityEngine;
 using Utilities;
 using Utilities.Attributes;
@@ -11,7 +15,7 @@ using Random = UnityEngine.Random;
 
 namespace GameWorld.Settlements
 {
-	public class WizardFactory : MonoBehaviour, IWizardFactory
+	public class WizardFactory : MonoBehaviour, IWizardFactory, IContextMenuUser
 	{
 		[Header("External Components")]
 		[SerializeField, Required] private Settlement settlement;
@@ -66,6 +70,7 @@ namespace GameWorld.Settlements
 		
 		private void Start()
 		{
+			InitializeContextMenu();
 			LoopUtilities.Loop(initialSpawns, SpawnRandomWizard);
 		}
 
@@ -90,6 +95,26 @@ namespace GameWorld.Settlements
 				WizardType.Lightning => lightningWizardColor,
 				_ => throw new ArgumentOutOfRangeException(nameof(wizardType), wizardType, null)
 			};
+		}
+
+		private void InitializeContextMenu()
+		{
+			foreach (WizardType wizardType in Enum.GetValues(typeof(WizardType)))
+			{
+				Globals.ContextMenuInjections.InjectContextMenuOption<Tile>(
+					ContextMenuBuilder.BuildPath("Spawn Wizard", wizardType.ToString()),
+					tile => SpawnWizard(tile, wizardType),
+					() => true,
+					() => true);
+			}
+		}
+
+		private void SpawnWizard(Tile tile, WizardType wizardType)
+		{
+			Vector2 tileWorldPosition = Globals.World.WorldPositionFromTile(tile, centerOfTile: true);
+			Vector3 spawnPosition = new(tileWorldPosition.x, 1, tileWorldPosition.y);
+			
+			CreateNewWizard(spawnPosition, wizardType);
 		}
 		
 		private static WizardType GetRandomWizardType() => RandomExt.RandomEnumValue<WizardType>();

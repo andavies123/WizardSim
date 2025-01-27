@@ -1,5 +1,6 @@
 ﻿using GameWorld;
 using GameWorld.WorldObjects;
+using UI.ContextMenus;
 using UI.DamageTexts;
 using UnityEngine;
 using Utilities.Attributes;
@@ -7,7 +8,7 @@ using Utilities.Attributes;
 namespace Game
 {
 	[DisallowMultipleComponent]
-	public class Global : MonoBehaviour
+	public class Globals : MonoBehaviour
 	{
 		[Header("UI References")]
 		[SerializeField, Required] private DamageTextManager damageTextManager;
@@ -16,6 +17,11 @@ namespace Game
 		[SerializeField, Required] private World world;
 		[SerializeField, Required] private WorldObjectDetailsMap worldObjectDetailsMap;
 
+		[Header("UI References")] 
+		
+		[Header("Context Menu")] 
+		[SerializeField, Required] private ContextMenuInjections contextMenuInjections;
+
 		// UI References
 		public static DamageTextManager DamageTextManager => Instance.damageTextManager;
 		
@@ -23,7 +29,10 @@ namespace Game
 		public static World World => Instance.world;
 		public static WorldObjectDetailsMap WorldObjectDetailsMap => Instance.worldObjectDetailsMap;
 		
-		private static Global Instance { get; set; }
+		// UI References
+		public static ContextMenuInjections ContextMenuInjections => Instance.contextMenuInjections;
+		
+		private static Globals Instance { get; set; }
 
 		private void Awake()
 		{

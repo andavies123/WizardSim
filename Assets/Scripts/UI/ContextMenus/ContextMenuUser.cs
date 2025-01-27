@@ -1,12 +1,20 @@
 ﻿using System;
 using UnityEngine;
+using Utilities.Attributes;
 
 namespace UI.ContextMenus
 {
+	public interface IContextMenuUser
+	{
+		
+	}
+	
 	[DisallowMultipleComponent]
 	[RequireComponent(typeof(Interactable))]
 	public class ContextMenuUser : MonoBehaviour
 	{
+		[SerializeField, Required] private string objectType;
+		
 		private bool _isOpen = false;
 		
 		public event EventHandler IsContextMenuOpenValueChanged;
@@ -27,10 +35,10 @@ namespace UI.ContextMenus
 			}
 		}
         
-		public void AddMenuItem(string path, Action menuClickCallback, Func<bool> isEnabledFunc, Func<bool> isVisibleFunc)
-		{   
-			MenuItemTree.AddChildMenuItem(path, menuClickCallback, isEnabledFunc, isVisibleFunc);
-		}
+//		public void AddMenuItem(string path, Action menuClickCallback, Func<bool> isEnabledFunc, Func<bool> isVisibleFunc)
+//		{   
+//			//MenuItemTree.AddChildMenuItem(path, menuClickCallback, isEnabledFunc, isVisibleFunc);
+//		}
 
 		private void Awake()
 		{

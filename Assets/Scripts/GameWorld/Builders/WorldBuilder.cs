@@ -143,7 +143,7 @@ namespace GameWorld.Builders
 		{
 			int addedRocks = 0;
 
-			if (!_worldObjectFactories.TryGetValue("Rock", out IWorldObjectFactory rockFactory))
+			if (!_worldObjectFactories.TryGetValue("Rock", out IWorldObjectFactory rockFactory) || rockFactory == null)
 			{
 				Debug.LogError($"Unable to find world object factory, Type: \"Rock\"");
 				return;

@@ -24,7 +24,9 @@ namespace UI.ContextMenus
 		
 		private readonly List<ContextMenuItem> _menuItems = new();
 		private ContextMenuItemGroupUI _currentMenuItemGroup;
-		private ContextMenuUser _contextMenuUser;
+
+		private IContextMenuUser _currentContextMenuUser;
+		private ContextMenuItemTree _contextMenuTree;
 		
 		private Vector2 _mouseClickScreenPosition;
 		private float _groupWidth;
@@ -34,17 +36,13 @@ namespace UI.ContextMenus
 
 		private Vector3 CanvasScale => scaledTransform.localScale;
 
-		public void Initialize(ContextMenuUser user, Vector2 screenPosition)
+		public void Initialize(IContextMenuUser selectedObject, ContextMenuItemTree contextMenuTree, Vector2 screenPosition)
 		{
 			_menuItems.Clear();
-            
-			if (_contextMenuUser)
-			{
-				_contextMenuUser.IsOpen = false;
-			}
-
-			_contextMenuUser = user;
-			_contextMenuUser.IsOpen = true;
+			
+			_currentContextMenuUser = selectedObject;
+			_contextMenuTree = contextMenuTree;
+			
 			_mouseClickScreenPosition = screenPosition;
 			pathText.rectTransform.position = CalculatePathTextPosition();
 			BuildContextMenu();
@@ -52,12 +50,6 @@ namespace UI.ContextMenus
 		
 		public void CloseMenu()
 		{
-			if (_contextMenuUser)
-			{
-				_contextMenuUser.IsOpen = false;
-				_contextMenuUser = null;
-			}
-			
 			_menuItems.Clear();
 
 			if (_currentMenuItemGroup)
@@ -82,7 +74,7 @@ namespace UI.ContextMenus
 
 		private void BuildContextMenu()
 		{
-			if (!_contextMenuUser || _contextMenuUser.MenuItemTree.IsEmpty)
+			if (_contextMenuTree?.IsEmpty ?? true)
 			{
 				return;
 			}
@@ -101,7 +93,8 @@ namespace UI.ContextMenus
 				_isSubscribedToGroupEvents = true;
 			}
 			
-			GoForwardOneMenu(_contextMenuUser.MenuItemTree.RootMenuItem);
+			//GoForwardOneMenu(_contextMenuUser.MenuItemTree.RootMenuItem);
+			GoForwardOneMenu(_contextMenuTree.RootMenuItem);
 		}
 
 		private void GoForwardOneMenu(ContextMenuItem menuItem)
@@ -186,7 +179,7 @@ namespace UI.ContextMenus
 					break;
 				case ContextMenuItemType.Leaf:
 					CloseMenu();
-					menuItemUI.ContextMenuItem.MenuClickCallback?.Invoke();
+					menuItemUI.ContextMenuItem.MenuClickCallback?.Invoke(_currentContextMenuUser);
 					break;
 				case ContextMenuItemType.Group:
 					GoForwardOneMenu(menuItemUI.ContextMenuItem);

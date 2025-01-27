@@ -1,6 +1,8 @@
 ﻿using System.Text;
 using Extensions;
+using Game;
 using GeneralBehaviours.HealthBehaviours;
+using GeneralClasses.Health;
 using UI.ContextMenus;
 using UnityEngine;
 
@@ -30,29 +32,29 @@ namespace GeneralBehaviours.Utilities.ContextMenuBuilders
 				return;
 			}
 			
-			contextMenuUser.AddMenuItem(
-				BuildPath(HealthPathItem, HealPathItem, "25%"),
-				() => healthComponent.IncreaseHealthByPercent(0.25f),
-				healthComponent.IsNotAtMaxHealth,
-				() => true);
-			
-			contextMenuUser.AddMenuItem(
-				BuildPath(HealthPathItem, HurtPathItem, "25%"),
-				() => healthComponent.DecreaseHealthByPercent(0.25f),
-				healthComponent.IsNotAtMinHealth,
-				() => true);
-			
-			contextMenuUser.AddMenuItem(
-				BuildPath(HealthPathItem, HealPathItem, "100%"),
-				() => healthComponent.IncreaseHealthByPercent(1f),
-				healthComponent.IsNotAtMaxHealth,
-				() => true);
-			
-			contextMenuUser.AddMenuItem(
-				BuildPath(HealthPathItem, HurtPathItem, "100%"),
-				() => healthComponent.DecreaseHealthByPercent(1f),
-				healthComponent.IsNotAtMinHealth,
-				() => true);
+			// Globals.ContextMenuInjections.InjectContextMenuOption<Health>(
+			// 	BuildPath(HealthPathItem, HealPathItem, "25%"),
+			// 	health => healthComponent.IncreaseHealthByPercent(0.25f),
+			// 	healthComponent.IsNotAtMaxHealth,
+			// 	() => true);
+			//
+			// Globals.ContextMenuInjections.InjectContextMenuOption<Health>(
+			// 	BuildPath(HealthPathItem, HurtPathItem, "25%"),
+			// 	health => healthComponent.DecreaseHealthByPercent(0.25f),
+			// 	healthComponent.IsNotAtMinHealth,
+			// 	() => true);
+			//
+			// Globals.ContextMenuInjections.InjectContextMenuOption<Health>(
+			// 	BuildPath(HealthPathItem, HealPathItem, "100%"),
+			// 	health => healthComponent.IncreaseHealthByPercent(1f),
+			// 	healthComponent.IsNotAtMaxHealth,
+			// 	() => true);
+			//
+			// Globals.ContextMenuInjections.InjectContextMenuOption<Health>(
+			// 	BuildPath(HealthPathItem, HurtPathItem, "100%"),
+			// 	health => healthComponent.DecreaseHealthByPercent(1f),
+			// 	healthComponent.IsNotAtMinHealth,
+			// 	() => true);
 		}
 
 		/// <summary>

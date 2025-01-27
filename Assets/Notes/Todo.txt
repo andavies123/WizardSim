@@ -102,6 +102,7 @@ Todo: UI Buttons should all come from the same button prefab to make styling eas
 
 Other
 =====
+Todo: Add an attribute that automatically grabs a GetComponent for me
 Todo: Try and update the other loading resources to use the updated ResourceRepo
 Todo: Add GameTime into managers rather than inside of world
 Done: Add World into managers rather than using dependencies

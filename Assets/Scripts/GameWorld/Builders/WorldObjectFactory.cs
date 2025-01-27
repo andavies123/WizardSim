@@ -13,7 +13,7 @@ namespace GameWorld.Builders
 		public abstract string BuilderType { get; }
 		public abstract WorldObject CreateObject(Vector2Int chunkPosition, Vector2Int localChunkPosition);
 
-		protected virtual void Start()
+		protected virtual void Awake()
 		{
 			LoadWorldObjectDetails();
 		}
@@ -22,7 +22,7 @@ namespace GameWorld.Builders
 
 		private void LoadWorldObjectDetails()
 		{
-			if (!Global.WorldObjectDetailsMap.DetailsByGroup.TryGetValue(BuilderType, out IDictionary<string, WorldObjectDetails> groupDetails))
+			if (!Globals.WorldObjectDetailsMap.DetailsByGroup.TryGetValue(BuilderType, out IDictionary<string, WorldObjectDetails> groupDetails))
 			{
 				Debug.LogError($"World Object Details do not exist for the following group: {BuilderType}");
 				return;

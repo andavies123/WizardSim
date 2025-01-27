@@ -19,7 +19,7 @@ namespace GameWorld.Characters
 	[RequireComponent(typeof(HealthComponent))]
 	[RequireComponent(typeof(Interactable))]
 	[RequireComponent(typeof(Movement))]
-	public abstract class Character : MonoBehaviour
+	public abstract class Character : MonoBehaviour, IContextMenuUser
 	{
 		private CharacterProperties _characterProperties;
 

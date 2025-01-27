@@ -369,6 +369,7 @@ GameObject:
   m_Component:
   - component: {fileID: 147671581}
   - component: {fileID: 147671582}
+  - component: {fileID: 147671583}
   m_Layer: 5
   m_Name: Context Menu
   m_TagString: Untagged
@@ -418,6 +419,18 @@ MonoBehaviour:
     <FocusedBackgroundColor>k__BackingField: {r: 0.31132078, g: 0.3010413, b: 0.013216442, a: 1}
     <DefaultTextColor>k__BackingField: {r: 0.8490566, g: 0.8490566, b: 0.8490566, a: 1}
     <DisabledTextColor>k__BackingField: {r: 0, g: 0, b: 0, a: 1}
+--- !u!114 &147671583
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 147671580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a53ca0721f44437bfe2e2c2618d062f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &262803722
 GameObject:
   m_ObjectHideFlags: 0
@@ -608,6 +621,7 @@ MonoBehaviour:
   damageTextManager: {fileID: 1180853481}
   world: {fileID: 2007172221}
   worldObjectDetailsMap: {fileID: 2007172223}
+  contextMenuInjections: {fileID: 147671583}
 --- !u!1 &305748071
 GameObject:
   m_ObjectHideFlags: 0

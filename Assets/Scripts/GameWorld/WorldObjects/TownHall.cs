@@ -10,7 +10,7 @@ namespace GameWorld.WorldObjects
 {
 	[RequireComponent(typeof(WorldObject))]
 	[RequireComponent(typeof(ContextMenuUser))]
-	public class TownHall : MonoBehaviour
+	public class TownHall : MonoBehaviour, IContextMenuUser
 	{
 		private MessageBroker _messageBroker;
 
@@ -27,15 +27,15 @@ namespace GameWorld.WorldObjects
 
 		private void InitializeContextMenu()
 		{
-			ContextMenuUser.AddMenuItem(
+			Globals.ContextMenuInjections.InjectContextMenuOption<TownHall>(
 				ContextMenuBuilder.BuildPath("Open Menu"),
-				OpenTownHallMenu,
+				_ => OpenTownHallMenu(),
 				() => true,
 				() => true);
 
-			ContextMenuUser.AddMenuItem(
+			Globals.ContextMenuInjections.InjectContextMenuOption<TownHall>(
 				ContextMenuBuilder.BuildPath("Print Info"),
-				() => print("I'M SORRY I DON'T HAVE ANY INFO FOR YOU"),
+				_ => print("I'M SORRY I DON'T HAVE ANY INFO FOR YOU"),
 				() => true,
 				() => true);
 		}

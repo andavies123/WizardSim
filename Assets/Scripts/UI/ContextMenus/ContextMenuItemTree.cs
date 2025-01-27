@@ -13,7 +13,7 @@ namespace UI.ContextMenus
 		public ContextMenuItem RootMenuItem { get; } = new(ROOT_ITEM_NAME);
 		public bool IsEmpty => RootMenuItem.ChildMenuItems.Count == 0;
 
-		public void AddChildMenuItem(string path, Action menuClickCallback, Func<bool> isEnabledFunc, Func<bool> isVisibleFunc)
+		public void AddChildMenuItem(string path, Action<IContextMenuUser> menuClickCallback, Func<bool> isEnabledFunc, Func<bool> isVisibleFunc)
 		{
 			if (path.IsNullOrWhiteSpace())
 			{

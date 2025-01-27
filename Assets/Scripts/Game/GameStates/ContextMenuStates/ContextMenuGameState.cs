@@ -27,7 +27,8 @@ namespace Game.GameStates.ContextMenuStates
 
 		public void Initialize(ContextMenuUser contextMenuUser, Vector2 screenPosition)
 		{
-			_contextMenuUIState.ContextMenu.Initialize(contextMenuUser, screenPosition);
+			OnOpenNewContextMenuRequested(this, contextMenuUser);
+			//_contextMenuUIState.ContextMenu.Initialize(contextMenuUser, screenPosition);
 		}
 
 		protected override void OnEnabled()
@@ -81,9 +82,16 @@ namespace Game.GameStates.ContextMenuStates
 			_contextMenuUIState.ContextMenu.CloseMenu();
 		}
 
+		// Todo: Update to not have ContextMenuUser
 		private void OnOpenNewContextMenuRequested(object sender, ContextMenuUser contextMenuUser)
 		{
-			_contextMenuUIState.ContextMenu.Initialize(contextMenuUser, Input.mousePosition);
+			if (contextMenuUser.TryGetComponent(out IContextMenuUser contextMenuUserInt))
+			{
+				if (Globals.ContextMenuInjections.TryGetMenuItemTreeByType(contextMenuUserInt.GetType().Name, out ContextMenuItemTree menuItemTree))
+					_contextMenuUIState.ContextMenu.Initialize(contextMenuUserInt, menuItemTree, Input.mousePosition);
+				else
+					Debug.Log($"Type not found: {contextMenuUserInt.GetType().Name}");
+			}
 		}
 
 		private void OnContextMenuClosed(object sender, EventArgs args)

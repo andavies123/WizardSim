@@ -36,7 +36,7 @@ namespace GeneralBehaviours.Damageable
 				// Raise any necessary events
 				if (damageReceived > 0)
 				{
-					Global.DamageTextManager.ShowDamageText(transform.position + new Vector3(.5f, 2.5f, .5f), damageType, damageReceived);
+					Globals.DamageTextManager.ShowDamageText(transform.position + new Vector3(.5f, 2.5f, .5f), damageType, damageReceived);
 					DamageReceived?.Invoke(this, new DamageReceivedEventArgs(damageDealer, damageReceived));
 				}
 

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 
 namespace GameWorld.WorldObjects
 {
@@ -24,8 +23,7 @@ namespace GameWorld.WorldObjects
         
 		private void Awake()
 		{
-			WorldObjectDetails[] loadedDetails = LoadWorldObjectResources();
-			CreateWorldObjectMap(loadedDetails);
+			CreateWorldObjectMap(LoadWorldObjectResources());
 		}
 
 		private void CreateWorldObjectMap(IReadOnlyCollection<WorldObjectDetails> loadedDetails)
