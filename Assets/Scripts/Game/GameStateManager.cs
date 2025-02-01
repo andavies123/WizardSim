@@ -165,9 +165,9 @@ namespace Game
 		private static void OnQuitGameRequested(object sender, EventArgs args) => GameManager.Instance.QuitGame();
 
 		// Context Menu Related Events
-		private void OnOpenContextMenuRequested(object sender, (ContextMenuUser contextMenuUser, Vector2 screenPosition) args)
+		private void OnOpenContextMenuRequested(IContextMenuUser[] contextMenuUsers)
 		{
-			_contextMenuGameState.Initialize(args.contextMenuUser, args.screenPosition);
+			_contextMenuGameState.Initialize(contextMenuUsers);
 			UpdateCurrentState(_contextMenuGameState);
 		}
 		private void OnContextMenuClosed(object sender, EventArgs args)

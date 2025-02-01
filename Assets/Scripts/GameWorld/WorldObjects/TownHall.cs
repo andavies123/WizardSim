@@ -29,15 +29,11 @@ namespace GameWorld.WorldObjects
 		{
 			Globals.ContextMenuInjections.InjectContextMenuOption<TownHall>(
 				ContextMenuBuilder.BuildPath("Open Menu"),
-				_ => OpenTownHallMenu(),
-				() => true,
-				() => true);
+				_ => OpenTownHallMenu());
 
 			Globals.ContextMenuInjections.InjectContextMenuOption<TownHall>(
 				ContextMenuBuilder.BuildPath("Print Info"),
-				_ => print("I'M SORRY I DON'T HAVE ANY INFO FOR YOU"),
-				() => true,
-				() => true);
+				_ => print("I'M SORRY I DON'T HAVE ANY INFO FOR YOU"));
 		}
 
 		private void OpenTownHallMenu()

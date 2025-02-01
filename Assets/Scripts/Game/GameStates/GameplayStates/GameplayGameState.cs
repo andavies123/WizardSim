@@ -21,7 +21,7 @@ namespace Game.GameStates.GameplayStates
 		private readonly MessageBroker _messageBroker;
 
 		public event EventHandler PauseGameRequested;
-		public event EventHandler<(ContextMenuUser, Vector2)> OpenContextMenuRequested;
+		public event Action<IContextMenuUser[]> OpenContextMenuRequested;
 		public event EventHandler<BeginPlacementModeEventArgs> BeginPlacementModeRequested;
 		public event EventHandler OpenTownManagementWindow;
 		public event EventHandler OpenTaskManagementWindow
@@ -144,11 +144,13 @@ namespace Game.GameStates.GameplayStates
 			{
 				if (selectedMessage.SelectedInteractable)
 				{
-					if (selectedMessage.SelectedInteractable.TryGetComponent(out ContextMenuUser contextMenuUser))
+					IContextMenuUser[] contextMenuUsers = selectedMessage.SelectedInteractable.GetComponents<IContextMenuUser>();
+
+					if (contextMenuUsers.Length > 0)
 					{
 						_gameplayUIState.InfoWindow.OpenWindow(selectedMessage.SelectedInteractable);
-						OpenContextMenuRequested?.Invoke(this, (contextMenuUser, Input.mousePosition));
-					}	
+						OpenContextMenuRequested?.Invoke(contextMenuUsers);
+					}
 				}
 			}
 		}

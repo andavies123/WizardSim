@@ -5,25 +5,26 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Utilities;
+using Utilities.Attributes;
 
 namespace UI.ContextMenus
 {
-	public class ContextMenuItemUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler
+	public class ContextMenuNodeUI : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler
 	{
-		
 		[Header("UI Elements")]
-		[SerializeField] private TMP_Text itemText;
-		[SerializeField] private TMP_Text nextGroupArrow;
-		[SerializeField] private TMP_Text previousGroupArrow;
-		[SerializeField] private Image backgroundImage;
+		[SerializeField, Required] private TMP_Text itemText;
+		[SerializeField, Required] private TMP_Text nextGroupArrow;
+		[SerializeField, Required] private TMP_Text previousGroupArrow;
+		[SerializeField, Required] private Image backgroundImage;
 
 		private ContextMenuStyling _styling;
 		private bool _isFocused = false;
+		private bool _isEnabled = true;
 		
-		public event Action<ContextMenuItemUI> Selected;
-		public event Action<ContextMenuItemUI> FocusRequested;
+		public event Action<ContextMenuNodeUI> Selected;
+		public event Action<ContextMenuNodeUI> FocusRequested;
 		
-		public ContextMenuItem ContextMenuItem { get; private set; }
+		public ContextMenuTreeNode TreeNode { get; private set; }
 		public ContextMenuItemType ItemType { get; private set; }
 
 		public bool IsFocused
@@ -36,24 +37,28 @@ namespace UI.ContextMenus
 			}
 		}
 		
-		public void Initialize(ContextMenuItem contextMenuItem, ContextMenuStyling styling, ContextMenuItemType itemType)
+		public void Initialize(ContextMenuTreeNode treeNode, ContextMenuStyling styling, ContextMenuItemType itemType)
 		{
-			ContextMenuItem = contextMenuItem;
+			TreeNode = treeNode;
 			_styling = styling;
 			ItemType = itemType;
 			
 			BuildUI();
-			contextMenuItem.RecalculateVisibility();
+		}
+
+		public void RecalculateVisibility(IContextMenuUser user)
+		{
+			_isEnabled = TreeNode.IsEnabledFunc.Invoke(user);
 			UpdateBackgroundColor();
 			UpdateTextColor();
 		}
 		
 		public void OnPointerClick(PointerEventData eventData)
 		{
-			if (ContextMenuItem == null)
+			if (TreeNode == null)
 				return;
 
-			if (!ContextMenuItem.IsEnabled)
+			if (!_isEnabled)
 				return;
 			
 			Selected?.Invoke(this);
@@ -66,26 +71,28 @@ namespace UI.ContextMenus
 
 		private void BuildUI()
 		{
-			if (ContextMenuItem == null)
+			if (TreeNode == null)
 			{
-				Debug.LogWarning($"Unable to build {nameof(ContextMenuItemUI)}. {nameof(ContextMenuItem)} is null...");
+				Debug.LogWarning($"Unable to build {nameof(ContextMenuNodeUI)}. {nameof(TreeNode)} is null...");
 				return;
 			}
 
-			itemText.SetText(ContextMenuItem.Name);
+			itemText.SetText(TreeNode.Text);
 
-			if (ContextMenuItem.IsBack)
+			switch (ItemType)
 			{
-				BuildAsBack();
+				case ContextMenuItemType.Back:
+					BuildAsBack();
+					break;
+				case ContextMenuItemType.Leaf:
+					BuildAsLeaf();
+					break;
+				case ContextMenuItemType.Group:
+					BuildAsGroup();
+					break;
+				default:
+					throw new ArgumentOutOfRangeException(ItemType.ToString());
 			}
-			else if (ContextMenuItem.IsLeaf)
-			{
-				BuildAsLeaf();
-			}
-			else
-			{
-				BuildAsGroup();
-			}	
 		}
 
 		private void BuildAsLeaf()
@@ -115,22 +122,16 @@ namespace UI.ContextMenus
 		private void UpdateBackgroundColor()
 		{
 			if (IsFocused)
-			{
 				backgroundImage.color = _styling.FocusedBackgroundColor;
-			}
-			else if (!ContextMenuItem.IsEnabled)
-			{
+			else if (!_isEnabled)
 				backgroundImage.color = _styling.DisabledBackgroundColor;
-			}
 			else
-			{
 				backgroundImage.color = _styling.DefaultBackgroundColor;
-			}
 		}
 
 		private void UpdateTextColor()
 		{
-			itemText.color = ContextMenuItem.IsEnabled ? _styling.DefaultTextColor : _styling.DisabledTextColor;
+			itemText.color = _isEnabled ? _styling.DefaultTextColor : _styling.DisabledTextColor;
 		}
 
 		private void Awake()

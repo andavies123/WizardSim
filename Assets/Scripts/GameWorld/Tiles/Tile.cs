@@ -6,7 +6,7 @@ using UnityEngine;
 namespace GameWorld.Tiles
 {
 	[RequireComponent(typeof(Interactable))]
-	public partial class Tile : MonoBehaviour, IContextMenuUser
+	public class Tile : MonoBehaviour, IContextMenuUser
 	{
 		private Interactable _interactable;
 		

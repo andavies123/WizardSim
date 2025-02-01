@@ -3,6 +3,7 @@ using Extensions;
 using Game;
 using GeneralBehaviours.Utilities.ContextMenuBuilders;
 using GeneralClasses.Health.HealthEventArgs;
+using UI.ContextMenus;
 using UnityEngine;
 
 namespace GameWorld.Characters.Enemies
@@ -55,15 +56,12 @@ namespace GameWorld.Characters.Enemies
 			Health.CurrentHealthChanged -= OnCurrentHealthChanged;
 		}
 
-		protected override void InitializeContextMenu()
+		protected void InitializeContextMenu()
 		{
 			Globals.ContextMenuInjections.InjectContextMenuOption<Enemy>(
 				ContextMenuBuilder.BuildPath("Action", "Idle"),
 				_ => print($"Idle not set up"),
-				() => false,
-				() => true);
-
-			base.InitializeContextMenu();
+				isEnabledFunc: ContextMenuTreeNode.AlwaysFalse);
 		}
 
 		private void UpdateInteractableInfoText()

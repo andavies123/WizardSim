@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using CameraComponents;
 using Extensions;
 using UI.ContextMenus;
@@ -25,10 +26,9 @@ namespace Game.GameStates.ContextMenuStates
 		protected override UIState UIState => _contextMenuUIState;
 		protected override IInputState InputState => _contextMenuInputState;
 
-		public void Initialize(ContextMenuUser contextMenuUser, Vector2 screenPosition)
+		public void Initialize(IContextMenuUser[] contextMenuUsers)
 		{
-			OnOpenNewContextMenuRequested(this, contextMenuUser);
-			//_contextMenuUIState.ContextMenu.Initialize(contextMenuUser, screenPosition);
+			OnOpenNewContextMenuRequested(contextMenuUsers);
 		}
 
 		protected override void OnEnabled()
@@ -82,16 +82,19 @@ namespace Game.GameStates.ContextMenuStates
 			_contextMenuUIState.ContextMenu.CloseMenu();
 		}
 
-		// Todo: Update to not have ContextMenuUser
-		private void OnOpenNewContextMenuRequested(object sender, ContextMenuUser contextMenuUser)
+		private void OnOpenNewContextMenuRequested(IContextMenuUser[] contextMenuUsers)
 		{
-			if (contextMenuUser.TryGetComponent(out IContextMenuUser contextMenuUserInt))
-			{
-				if (Globals.ContextMenuInjections.TryGetMenuItemTreeByType(contextMenuUserInt.GetType().Name, out ContextMenuItemTree menuItemTree))
-					_contextMenuUIState.ContextMenu.Initialize(contextMenuUserInt, menuItemTree, Input.mousePosition);
+			List<(IContextMenuUser user, ContextMenuTreeNode rootNode)> pairing = new();
+			
+			foreach (IContextMenuUser contextMenuUser in contextMenuUsers)
+			{   
+				if (Globals.ContextMenuInjections.TryGetRootNode(contextMenuUser.GetType(), out ContextMenuTreeNode rootNode))
+					pairing.Add((contextMenuUser, rootNode));
 				else
-					Debug.Log($"Type not found: {contextMenuUserInt.GetType().Name}");
+					Debug.Log($"Type not found: {contextMenuUser.GetType().Name}");
 			}
+			
+			_contextMenuUIState.ContextMenu.Initialize(pairing, Input.mousePosition);
 		}
 
 		private void OnContextMenuClosed(object sender, EventArgs args)

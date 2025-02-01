@@ -2,8 +2,6 @@
 using Extensions;
 using Game;
 using GeneralBehaviours.HealthBehaviours;
-using GeneralClasses.Health;
-using UI.ContextMenus;
 using UnityEngine;
 
 namespace GeneralBehaviours.Utilities.ContextMenuBuilders
@@ -17,44 +15,38 @@ namespace GeneralBehaviours.Utilities.ContextMenuBuilders
 		private const string HealthPathItem = "Health";
 		private const string HealPathItem = "Heal";
 		private const string HurtPathItem = "Hurt";
-        
-		/// <summary>
-		/// Adds health related context menu items to the passed context menu user.
-		/// Using extension method to make it cleaner to type/read
-		/// </summary>
-		/// <param name="contextMenuUser">The extended context menu user that will have context menu items added</param>
-		/// <param name="healthComponent">The health component that will be used to heal/hurt</param>
-		public static void AddHealthComponentContextMenuItems(this ContextMenuUser contextMenuUser, HealthComponent healthComponent)
+
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+		private static void AddContextMenuItems()
 		{
-			if (!contextMenuUser || !healthComponent)
-			{
-				Debug.LogWarning($"Unable to add health context menu items. {nameof(contextMenuUser)} or {nameof(healthComponent)} is null");
-				return;
-			}
+			AddHealthComponentContextMenuItems();
+		}
+        
+		private static void AddHealthComponentContextMenuItems()
+		{
+			Globals.ContextMenuInjections.InjectContextMenuOption<HealthComponent>(
+				BuildPath(HealthPathItem, HealPathItem, "25%"),
+				health => health.IncreaseHealthByPercent(0.25f),
+				health => health.IsNotAtMaxHealth(),
+				_ => true);
 			
-			// Globals.ContextMenuInjections.InjectContextMenuOption<Health>(
-			// 	BuildPath(HealthPathItem, HealPathItem, "25%"),
-			// 	health => healthComponent.IncreaseHealthByPercent(0.25f),
-			// 	healthComponent.IsNotAtMaxHealth,
-			// 	() => true);
-			//
-			// Globals.ContextMenuInjections.InjectContextMenuOption<Health>(
-			// 	BuildPath(HealthPathItem, HurtPathItem, "25%"),
-			// 	health => healthComponent.DecreaseHealthByPercent(0.25f),
-			// 	healthComponent.IsNotAtMinHealth,
-			// 	() => true);
-			//
-			// Globals.ContextMenuInjections.InjectContextMenuOption<Health>(
-			// 	BuildPath(HealthPathItem, HealPathItem, "100%"),
-			// 	health => healthComponent.IncreaseHealthByPercent(1f),
-			// 	healthComponent.IsNotAtMaxHealth,
-			// 	() => true);
-			//
-			// Globals.ContextMenuInjections.InjectContextMenuOption<Health>(
-			// 	BuildPath(HealthPathItem, HurtPathItem, "100%"),
-			// 	health => healthComponent.DecreaseHealthByPercent(1f),
-			// 	healthComponent.IsNotAtMinHealth,
-			// 	() => true);
+			Globals.ContextMenuInjections.InjectContextMenuOption<HealthComponent>(
+				BuildPath(HealthPathItem, HurtPathItem, "25%"),
+				health => health.DecreaseHealthByPercent(0.25f),
+				health => health.IsNotAtMinHealth(),
+				_ => true);
+			
+			Globals.ContextMenuInjections.InjectContextMenuOption<HealthComponent>(
+				BuildPath(HealthPathItem, HealPathItem, "100%"),
+				health => health.IncreaseHealthByPercent(1f),
+				health => health.IsNotAtMaxHealth(),
+				_ => true);
+			
+			Globals.ContextMenuInjections.InjectContextMenuOption<HealthComponent>(
+				BuildPath(HealthPathItem, HurtPathItem, "100%"),
+				health => health.DecreaseHealthByPercent(1f),
+				health => health.IsNotAtMinHealth(),
+				_ => true);
 		}
 
 		/// <summary>

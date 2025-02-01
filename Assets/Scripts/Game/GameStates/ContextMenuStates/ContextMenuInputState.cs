@@ -20,8 +20,8 @@ namespace Game.GameStates.ContextMenuStates
 			_contextMenuActions = _playerInputActions.ContextMenu;
 		}
 
+		public event Action<IContextMenuUser[]> OpenNewContextMenuRequested;
 		public event EventHandler<ContextMenuNavigationEventArgs> NavigationActionPerformed;
-		public event EventHandler<ContextMenuUser> OpenNewContextMenuRequested;
 		public event EventHandler SelectActionPerformed;
 		public event EventHandler CloseRequested;
 		
@@ -60,8 +60,10 @@ namespace Game.GameStates.ContextMenuStates
 			if (!args?.Interactable)
 				return;
 
-			if (args.Interactable.TryGetComponent(out ContextMenuUser contextMenuUser))
-				OpenNewContextMenuRequested?.Invoke(this, contextMenuUser);
+			IContextMenuUser[] contextMenuUsers = args.Interactable.GetComponents<IContextMenuUser>();
+
+			if (contextMenuUsers.Length > 0)
+				OpenNewContextMenuRequested?.Invoke(contextMenuUsers);
 		}
 
 		private void OnNavigationActionPerformed(CallbackContext context)
@@ -75,7 +77,6 @@ namespace Game.GameStates.ContextMenuStates
 			
 			NavigationActionPerformed?.Invoke(this, new ContextMenuNavigationEventArgs(navigationOption));
 		}
-
 
 		private void OnInteractableSelectedPrimary(object sender, InteractableRaycasterEventArgs args) => CloseRequested?.Invoke(this, EventArgs.Empty);
 		private void OnNonInteractableSelected(object sender, EventArgs args) => CloseRequested?.Invoke(this, EventArgs.Empty);

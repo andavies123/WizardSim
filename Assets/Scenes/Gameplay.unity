@@ -411,8 +411,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pathText: {fileID: 1550178615}
   scaledTransform: {fileID: 583746061}
-  contextMenuItemGroupPrefab: {fileID: -1093056455675243285, guid: c8014fed0038145489a8045e06b3c3d8, type: 3}
-  contextMenuItemPrefab: {fileID: 5999225317678134349, guid: 936a1300369941a4195e926126c1df5a, type: 3}
+  contextMenuNodePagePrefab: {fileID: -1093056455675243285, guid: c8014fed0038145489a8045e06b3c3d8, type: 3}
+  contextMenuNodePrefab: {fileID: 5999225317678134349, guid: 936a1300369941a4195e926126c1df5a, type: 3}
   contextMenuStyling:
     <DefaultBackgroundColor>k__BackingField: {r: 0.11320752, g: 0.11320752, b: 0.11320752, a: 1}
     <DisabledBackgroundColor>k__BackingField: {r: 0.5377358, g: 0.5377358, b: 0.5377358, a: 1}

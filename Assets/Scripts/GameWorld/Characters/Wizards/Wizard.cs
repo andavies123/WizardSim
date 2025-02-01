@@ -11,6 +11,7 @@ using Game;
 using GameWorld.Characters.Wizards.AgeSystem;
 using GameWorld.Settlements;
 using MessagingSystem;
+using UI.ContextMenus;
 using UI.Messages;
 using Component = UnityEngine.Component;
 using Random = UnityEngine.Random;
@@ -142,13 +143,12 @@ namespace GameWorld.Characters.Wizards
 			};
 		}
 
-		protected override void InitializeContextMenu()
+		protected void InitializeContextMenu()
 		{
 			Globals.ContextMenuInjections.InjectContextMenuOption<Wizard>(
-				ContextMenuBuilder.BuildPath("Action", "Idle"), 
-				_ => StateMachine.Idle(), 
-				() => !IsIdling,
-				() => true);
+				ContextMenuBuilder.BuildPath("Action", "Idle"),
+				_ => StateMachine.Idle(),
+				isEnabledFunc: _ => !IsIdling);
 			
 			Globals.ContextMenuInjections.InjectContextMenuOption<Wizard>(
 				ContextMenuBuilder.BuildPath("Action", "Move To"),
@@ -157,17 +157,11 @@ namespace GameWorld.Characters.Wizards
 					{
 						Sender = this,
 						InteractionCallback = OnInteractionCallback
-					}),
-				() => true,
-				() => true);
+					}));
 
 			Globals.ContextMenuInjections.InjectContextMenuOption<Wizard>(
 				ContextMenuBuilder.BuildPath("Kill"),
-				_ => Health.CurrentHealth -= Health.CurrentHealth,
-				() => true,
-				() => true);
-
-			base.InitializeContextMenu();
+				_ => Health.CurrentHealth -= Health.CurrentHealth);
 		}
 		
 		private void OnInteractionCallback(Component component)

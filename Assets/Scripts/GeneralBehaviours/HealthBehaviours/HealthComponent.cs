@@ -4,12 +4,13 @@ using GeneralClasses.Health;
 using GeneralClasses.Health.HealthEventArgs;
 using GeneralClasses.Health.Interfaces;
 using System;
+using UI.ContextMenus;
 using UI.HealthBars;
 using UnityEngine;
 
 namespace GeneralBehaviours.HealthBehaviours
 {
-	public class HealthComponent : MonoBehaviour, IHealth, IHealthBarUser
+	public class HealthComponent : MonoBehaviour, IHealth, IHealthBarUser, IContextMenuUser
 	{
 		[SerializeField] private Vector3 healthBarOffset = new(0, 1.5f, 0);
 

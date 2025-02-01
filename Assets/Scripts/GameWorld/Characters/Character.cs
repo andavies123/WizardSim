@@ -23,8 +23,8 @@ namespace GameWorld.Characters
 	{
 		private CharacterProperties _characterProperties;
 
-		protected abstract string CharacterType { get; }
 		public abstract CharacterStats CharacterStats { get; protected set; }
+		protected abstract string CharacterType { get; }
 		
 		public Guid Id { get; } = Guid.NewGuid();
 		public World ParentWorld { get; private set; }
@@ -59,12 +59,6 @@ namespace GameWorld.Characters
 		protected virtual void Start() { }
 		protected virtual void OnDestroy() { }
 		protected virtual void Update() { }
-
-		protected virtual void InitializeContextMenu()
-		{
-			if (Health)
-				ContextMenuUser.AddHealthComponentContextMenuItems(Health);
-		}
 		
 		private void LoadProperties()
 		{

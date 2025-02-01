@@ -1,34 +1,36 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using Extensions;
 using UnityEngine;
 
 namespace UI.ContextMenus
 {
 	public class ContextMenuInjections : MonoBehaviour
 	{
-		private readonly ConcurrentDictionary<string, ContextMenuItemTree> _menuItemTreesByType = new();
+		private readonly ConcurrentDictionary<string, ContextMenuTreeNode> _rootNodesByType = new();
 
-		public void InjectContextMenuOption<TFor>(string path, Action<TFor> menuClickCallback, Func<bool> isEnabledFunc, Func<bool> isVisibleFunc) where TFor : IContextMenuUser
+		public void InjectContextMenuOption<TFor>(string path, Action<TFor> menuClickCallback, Func<TFor, bool> isEnabledFunc = null, Func<TFor, bool> isVisibleFunc = null) where TFor : IContextMenuUser
 		{
-			if (!_menuItemTreesByType.TryGetValue(typeof(TFor).Name, out ContextMenuItemTree menuItemTree))
-			{
-				menuItemTree = new ContextMenuItemTree();
-				_menuItemTreesByType[typeof(TFor).Name] = menuItemTree;
-			}
+			string typeName = typeof(TFor).Name;
 			
-			menuItemTree.AddChildMenuItem(path, obj => menuClickCallback?.Invoke((TFor)obj), isEnabledFunc, isVisibleFunc);
+			if (!_rootNodesByType.TryGetValue(typeName, out ContextMenuTreeNode rootNode))
+			{
+				rootNode = new ContextMenuTreeNode();
+				_rootNodesByType[typeName] = rootNode;
+			}
+
+			ContextMenuTreeNode childNode = ContextMenuTreeUtility.Insert(rootNode, path);
+			childNode.MenuClickCallback = obj => menuClickCallback.Invoke((TFor) obj);
+
+			if (isEnabledFunc != null)
+				childNode.IsEnabledFunc = obj => isEnabledFunc.Invoke((TFor) obj);
+
+			if (isVisibleFunc != null)
+				childNode.IsVisibleFunc = obj => isVisibleFunc.Invoke((TFor) obj);
 		}
 
-		public bool TryGetMenuItemTreeByType(string type, out ContextMenuItemTree menuItemTree)
+		public bool TryGetRootNode(Type targetType, out ContextMenuTreeNode rootNode)
 		{
-			if (type.IsNullOrWhiteSpace())
-			{
-				menuItemTree = null;
-				return false;
-			}
-			
-			return _menuItemTreesByType.TryGetValue(type, out menuItemTree);
+			return _rootNodesByType.TryGetValue(targetType.Name, out rootNode);
 		}
 	}
 }

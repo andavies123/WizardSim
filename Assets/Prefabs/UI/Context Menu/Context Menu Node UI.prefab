@@ -281,7 +281,7 @@ GameObject:
   - component: {fileID: 6488190693692226051}
   - component: {fileID: 3054970899515954938}
   m_Layer: 5
-  m_Name: Context Menu Item
+  m_Name: Context Menu Node UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -318,7 +318,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4788018607473335477}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9af3c7ef23d24caea18ca1996335f5cc, type: 3}
+  m_Script: {fileID: 11500000, guid: 64c801778f374c143a21906845ab5a3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   itemText: {fileID: 4773051022239303468}

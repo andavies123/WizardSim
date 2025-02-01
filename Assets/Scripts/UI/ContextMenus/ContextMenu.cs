@@ -16,17 +16,17 @@ namespace UI.ContextMenus
 		[SerializeField, Required] private RectTransform scaledTransform;
 		
 		[Header("Prefabs")]
-		[SerializeField, Required] private ContextMenuItemGroupUI contextMenuItemGroupPrefab;
-		[SerializeField, Required] private ContextMenuItemUI contextMenuItemPrefab;
+		[SerializeField, Required] private ContextMenuNodePageUI contextMenuNodePagePrefab;
+		[SerializeField, Required] private ContextMenuNodeUI contextMenuNodePrefab;
 
 		[Header("Styles")]
 		[SerializeField, Required] private ContextMenuStyling contextMenuStyling;
 		
-		private readonly List<ContextMenuItem> _menuItems = new();
-		private ContextMenuItemGroupUI _currentMenuItemGroup;
+		private readonly List<ContextMenuTreeNode> _menuNodes = new();
+		private ContextMenuNodePageUI _currentMenuNodePage;
 
-		private IContextMenuUser _currentContextMenuUser;
-		private ContextMenuItemTree _contextMenuTree;
+		private List<(IContextMenuUser user, ContextMenuTreeNode rootNode)> _userTreePairs;
+		private ContextMenuTreeNode _rootNode = null;
 		
 		private Vector2 _mouseClickScreenPosition;
 		private float _groupWidth;
@@ -36,12 +36,11 @@ namespace UI.ContextMenus
 
 		private Vector3 CanvasScale => scaledTransform.localScale;
 
-		public void Initialize(IContextMenuUser selectedObject, ContextMenuItemTree contextMenuTree, Vector2 screenPosition)
+		public void Initialize(List<(IContextMenuUser, ContextMenuTreeNode)> userTreePairs, Vector2 screenPosition)
 		{
-			_menuItems.Clear();
+			_userTreePairs = userTreePairs;
 			
-			_currentContextMenuUser = selectedObject;
-			_contextMenuTree = contextMenuTree;
+			_menuNodes.Clear();
 			
 			_mouseClickScreenPosition = screenPosition;
 			pathText.rectTransform.position = CalculatePathTextPosition();
@@ -50,62 +49,65 @@ namespace UI.ContextMenus
 		
 		public void CloseMenu()
 		{
-			_menuItems.Clear();
+			_menuNodes.Clear();
 
-			if (_currentMenuItemGroup)
+			if (_currentMenuNodePage)
 			{
 				if (_isSubscribedToGroupEvents)
 				{
-					_currentMenuItemGroup.ItemSelected -= OnItemSelected;
+					_currentMenuNodePage.ItemSelected -= OnItemSelected;
 					_isSubscribedToGroupEvents = false;
 				}
 				
-				_currentMenuItemGroup.CleanUp();
+				_currentMenuNodePage.CleanUp();
 			}
 			
 			MenuClosed?.Invoke(this, EventArgs.Empty);
 		}
 		
-		public void NavigateUp() => _currentMenuItemGroup.FocusedMenuItemIndex--;
-		public void NavigateDown() => _currentMenuItemGroup.FocusedMenuItemIndex++;
-		public void NavigateForward() => GoForwardOneMenu(_currentMenuItemGroup.FocusedMenuItemUI.ContextMenuItem);
+		public void NavigateUp() => _currentMenuNodePage.FocusedMenuItemIndex--;
+		public void NavigateDown() => _currentMenuNodePage.FocusedMenuItemIndex++;
+		public void NavigateForward() => GoForwardOneMenu(_currentMenuNodePage.FocusedMenuNodeUI.TreeNode);
 		public void NavigateBack() => GoBackOneMenu();
-		public void SelectCurrentItem() => SelectItem(_currentMenuItemGroup.FocusedMenuItemUI);
+		public void SelectCurrentItem() => SelectItem(_currentMenuNodePage.FocusedMenuNodeUI);
 
 		private void BuildContextMenu()
 		{
-			if (_contextMenuTree?.IsEmpty ?? true)
-			{
+			if (_userTreePairs.IsNullOrEmpty())
 				return;
-			}
 
-			if (!_currentMenuItemGroup)
+			_rootNode = new ContextMenuTreeNode();
+			_userTreePairs.ForEach(userNodePair =>
 			{
-				_currentMenuItemGroup = Instantiate(contextMenuItemGroupPrefab, transform);
-				_currentMenuItemGroup.Initialize(contextMenuStyling);
+				userNodePair.rootNode.ChildrenNodes.ForEach(childNode => _rootNode.AddChild(childNode));
+			});
+
+			if (!_currentMenuNodePage)
+			{
+				_currentMenuNodePage = Instantiate(contextMenuNodePagePrefab, transform);
+				_currentMenuNodePage.Initialize(contextMenuStyling);
 			}
 
-			_currentMenuItemGroup.GetComponent<RectTransform>().position = CalculateMenuPosition();
+			_currentMenuNodePage.GetComponent<RectTransform>().position = CalculateMenuPosition();
 			
 			if (!_isSubscribedToGroupEvents)
 			{
-				_currentMenuItemGroup.ItemSelected += OnItemSelected;
+				_currentMenuNodePage.ItemSelected += OnItemSelected;
 				_isSubscribedToGroupEvents = true;
 			}
 			
-			//GoForwardOneMenu(_contextMenuUser.MenuItemTree.RootMenuItem);
-			GoForwardOneMenu(_contextMenuTree.RootMenuItem);
+			GoForwardOneMenu(_rootNode);
 		}
 
-		private void GoForwardOneMenu(ContextMenuItem menuItem)
+		private void GoForwardOneMenu(ContextMenuTreeNode treeNode)
 		{
-			_menuItems.Add(menuItem);
+			_menuNodes.Add(treeNode);
 			UpdateCurrentMenuGroup();
 		}
 
 		private void GoBackOneMenu()
 		{
-			if (_menuItems.TryRemoveLast(out _))
+			if (_menuNodes.TryRemoveLast(out _))
 			{
 				UpdateCurrentMenuGroup();
 			}
@@ -113,21 +115,21 @@ namespace UI.ContextMenus
 
 		private void UpdateCurrentMenuGroup()
 		{
-			if (!_currentMenuItemGroup)
+			if (!_currentMenuNodePage)
 			{
 				Debug.LogWarning("Unable to update context menu. UI unavailable...");
 				return;
 			}
 
-			ContextMenuItem currentMenuItem = _menuItems.Last();
+			ContextMenuTreeNode currentTreeNode = _menuNodes.Last();
 
-			if (currentMenuItem.IsLeaf)
+			if (currentTreeNode.IsLeafNode)
 			{
 				Debug.LogWarning("Unable to create context menu. Current menu item is a leaf node...");
 				return;
 			}
 			
-			_currentMenuItemGroup.SetMenuItems(currentMenuItem.ChildMenuItems, _menuItems.Count);
+			_currentMenuNodePage.SetMenuItems(currentTreeNode.ChildrenNodes, _menuNodes.Count);
 			UpdatePathText();
 		}
 
@@ -136,12 +138,12 @@ namespace UI.ContextMenus
 			StringBuilder pathBuilder = new();
 
 			// Skip the ROOT text by starting the index at 1
-			for (int index = 1; index < _menuItems.Count; index++)
+			for (int index = 1; index < _menuNodes.Count; index++)
 			{
-				ContextMenuItem menuItem = _menuItems[index];
-				pathBuilder.Append(menuItem.Name);
+				ContextMenuTreeNode menuNode = _menuNodes[index];
+				pathBuilder.Append(menuNode.Text);
 
-				if (index < _menuItems.Count - 1)
+				if (index < _menuNodes.Count - 1)
 				{
 					pathBuilder.Append(" > ");
 				}
@@ -152,7 +154,7 @@ namespace UI.ContextMenus
 
 		private Vector3 CalculateMenuPosition()
 		{
-			/* Due to the canvas scaler, I found out that the _groupWidth value was not
+			/* Due to the canvas scalar, I found out that the _groupWidth value was not
 			 being scaled unlike the position values. So we need to apply the scaling
 			 to the width before continuing with our calculations */
 			float scaledGroupWidth = _groupWidth * CanvasScale.x;
@@ -170,28 +172,28 @@ namespace UI.ContextMenus
 			return new Vector3(xPosition, yPosition, 0);
 		}
 
-		private void SelectItem(ContextMenuItemUI menuItemUI)
+		private void SelectItem(ContextMenuNodeUI menuNodeUI)
 		{
-			switch (menuItemUI.ItemType)
+			switch (menuNodeUI.ItemType)
 			{
 				case ContextMenuItemType.Back:
 					GoBackOneMenu();
 					break;
 				case ContextMenuItemType.Leaf:
 					CloseMenu();
-					menuItemUI.ContextMenuItem.MenuClickCallback?.Invoke(_currentContextMenuUser);
+					menuNodeUI.TreeNode.MenuClickCallback?.Invoke(null/* Todo: Add correct IContextMenuUser here */);
 					break;
 				case ContextMenuItemType.Group:
-					GoForwardOneMenu(menuItemUI.ContextMenuItem);
+					GoForwardOneMenu(menuNodeUI.TreeNode);
 					break;
 				default:
-					throw new ArgumentOutOfRangeException(menuItemUI.ItemType.ToString());
+					throw new ArgumentOutOfRangeException(menuNodeUI.ItemType.ToString());
 			}
 		}
 
 		private Vector3 CalculatePathTextPosition()
 		{
-			/* Due to the canvas scaler, I found out that the _groupWidth value was not
+			/* Due to the canvas scalar, I found out that the _groupWidth value was not
 			 being scaled unlike the position values. So we need to apply the scaling
 			 to the width before continuing with our calculations */
 			float scaledGroupWidth = _groupWidth * CanvasScale.x;
@@ -203,11 +205,11 @@ namespace UI.ContextMenus
 			return new Vector3(xPosition, yPosition, 0);
 		}
 
-		private void OnItemSelected(ContextMenuItemUI menuItemUI) => SelectItem(menuItemUI);
+		private void OnItemSelected(ContextMenuNodeUI menuNodeUI) => SelectItem(menuNodeUI);
 
 		private void Awake()
 		{
-			_groupWidth = ((RectTransform) contextMenuItemPrefab.transform).rect.width;
+			_groupWidth = ((RectTransform) contextMenuNodePrefab.transform).rect.width;
 		}
 	}
 }

@@ -35,9 +35,7 @@ namespace GameWorld.WorldObjects.Rocks
 				{
 					Sender = this,
 					Task = new DestroyRocksTask(new List<Rock> {this})
-				}),
-				() => true,
-				() => true);
+				}));
 			
 			Globals.ContextMenuInjections.InjectContextMenuOption<Rock>(
 				ContextMenuBuilder.BuildPath("Destroy", "Surrounding"),
@@ -45,9 +43,7 @@ namespace GameWorld.WorldObjects.Rocks
 				{
 					Sender = this,
 					Task = new DestroyRocksTask(GetSurroundingRocks())
-				}),
-				() => true,
-				() => true);
+				}));
 		}
 
 		private List<Rock> GetSurroundingRocks()

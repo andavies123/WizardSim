@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7451874616152498202}
   - component: {fileID: -1093056455675243285}
   m_Layer: 5
-  m_Name: Context Menu Item Group
+  m_Name: Context Menu Node Group
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -90,4 +90,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb5001fac8dd42c9ae7c09a8ef4a0545, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  contextMenuItemPrefab: {fileID: 5999225317678134349, guid: 936a1300369941a4195e926126c1df5a, type: 3}
+  contextMenuNodePrefab: {fileID: 5999225317678134349, guid: 936a1300369941a4195e926126c1df5a, type: 3}

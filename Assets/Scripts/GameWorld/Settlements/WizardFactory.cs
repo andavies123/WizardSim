@@ -15,7 +15,7 @@ using Random = UnityEngine.Random;
 
 namespace GameWorld.Settlements
 {
-	public class WizardFactory : MonoBehaviour, IWizardFactory, IContextMenuUser
+	public class WizardFactory : MonoBehaviour, IWizardFactory
 	{
 		[Header("External Components")]
 		[SerializeField, Required] private Settlement settlement;
@@ -103,9 +103,7 @@ namespace GameWorld.Settlements
 			{
 				Globals.ContextMenuInjections.InjectContextMenuOption<Tile>(
 					ContextMenuBuilder.BuildPath("Spawn Wizard", wizardType.ToString()),
-					tile => SpawnWizard(tile, wizardType),
-					() => true,
-					() => true);
+					tile => SpawnWizard(tile, wizardType));
 			}
 		}
 
