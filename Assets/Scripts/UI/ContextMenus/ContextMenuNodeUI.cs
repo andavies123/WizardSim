@@ -48,7 +48,6 @@ namespace UI.ContextMenus
 			RecalculateVisibility();
 		}
 
-		// Todo: call this somewhere
 		public void RecalculateVisibility()
 		{
 			if (ContextMenuUser != null)
