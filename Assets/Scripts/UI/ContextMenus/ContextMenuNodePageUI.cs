@@ -20,12 +20,13 @@ namespace UI.ContextMenus
 			MenuClickCallback = null
 		};
 
+		private RectTransform _rectTransform;
+		private ContextMenuUITreeMap _contextMenuUITreeMap;
 		private ContextMenuStyling _styling = new();
 		private int _focusedMenuItemIndex = 0;
 
 		public event Action<ContextMenuNodeUI> ItemSelected;
 		
-		public RectTransform RectTransform { get; private set; }
 		public ContextMenuNodeUI FocusedMenuNodeUI => _menuNodeUIs[FocusedMenuItemIndex];
 
 		public int FocusedMenuItemIndex
@@ -45,8 +46,10 @@ namespace UI.ContextMenus
 			}
 		}
 
-		public void Initialize(ContextMenuStyling styling)
+		public void Initialize(ContextMenuUITreeMap uiTreeMap, Vector3 menuPosition, ContextMenuStyling styling)
 		{
+			_contextMenuUITreeMap = uiTreeMap ?? throw new ArgumentNullException(nameof(uiTreeMap));
+			_rectTransform.position = menuPosition;
 			_styling = styling;
 		}
 
@@ -87,7 +90,10 @@ namespace UI.ContextMenus
 		private ContextMenuNodeUI CreateMenuItemUI(ContextMenuTreeNode treeNode)
 		{
 			ContextMenuNodeUI menuNodeUI = Instantiate(contextMenuNodePrefab, transform);
-			menuNodeUI.Initialize(treeNode, _styling, GetItemTypeFromMenuItem(treeNode));
+			
+			_contextMenuUITreeMap.TryGetUserFromNode(treeNode, out IContextMenuUser user);
+            
+			menuNodeUI.Initialize(treeNode, user, _styling, GetItemTypeFromMenuItem(treeNode));
 			menuNodeUI.Selected += OnContextMenuItemSelected;
 			menuNodeUI.FocusRequested += OnContextMenuItemFocusRequested;
 			return menuNodeUI;
@@ -116,7 +122,7 @@ namespace UI.ContextMenus
 
 		private void Awake()
 		{
-			RectTransform = GetComponent<RectTransform>();
+			_rectTransform = GetComponent<RectTransform>();
 		}
 	}
 }

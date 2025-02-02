@@ -1,5 +1,4 @@
 ﻿using System;
-using Extensions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -25,6 +24,7 @@ namespace UI.ContextMenus
 		public event Action<ContextMenuNodeUI> FocusRequested;
 		
 		public ContextMenuTreeNode TreeNode { get; private set; }
+		public IContextMenuUser ContextMenuUser { get; private set; }
 		public ContextMenuItemType ItemType { get; private set; }
 
 		public bool IsFocused
@@ -37,28 +37,29 @@ namespace UI.ContextMenus
 			}
 		}
 		
-		public void Initialize(ContextMenuTreeNode treeNode, ContextMenuStyling styling, ContextMenuItemType itemType)
+		public void Initialize(ContextMenuTreeNode treeNode, IContextMenuUser contextMenuUser, ContextMenuStyling styling, ContextMenuItemType itemType)
 		{
 			TreeNode = treeNode;
+			ContextMenuUser = contextMenuUser;
 			_styling = styling;
 			ItemType = itemType;
 			
 			BuildUI();
+			RecalculateVisibility();
 		}
 
-		public void RecalculateVisibility(IContextMenuUser user)
+		// Todo: call this somewhere
+		public void RecalculateVisibility()
 		{
-			_isEnabled = TreeNode.IsEnabledFunc.Invoke(user);
+			if (ContextMenuUser != null)
+				_isEnabled = TreeNode.IsEnabledFunc.Invoke(ContextMenuUser);
 			UpdateBackgroundColor();
 			UpdateTextColor();
 		}
 		
 		public void OnPointerClick(PointerEventData eventData)
 		{
-			if (TreeNode == null)
-				return;
-
-			if (!_isEnabled)
+			if (TreeNode == null || !_isEnabled)
 				return;
 			
 			Selected?.Invoke(this);
@@ -81,17 +82,10 @@ namespace UI.ContextMenus
 
 			switch (ItemType)
 			{
-				case ContextMenuItemType.Back:
-					BuildAsBack();
-					break;
-				case ContextMenuItemType.Leaf:
-					BuildAsLeaf();
-					break;
-				case ContextMenuItemType.Group:
-					BuildAsGroup();
-					break;
-				default:
-					throw new ArgumentOutOfRangeException(ItemType.ToString());
+				case ContextMenuItemType.Back: BuildAsBack(); break;
+				case ContextMenuItemType.Leaf: BuildAsLeaf(); break;
+				case ContextMenuItemType.Group: BuildAsGroup(); break;
+				default: throw new ArgumentOutOfRangeException(ItemType.ToString());
 			}
 		}
 
@@ -132,14 +126,6 @@ namespace UI.ContextMenus
 		private void UpdateTextColor()
 		{
 			itemText.color = _isEnabled ? _styling.DefaultTextColor : _styling.DisabledTextColor;
-		}
-
-		private void Awake()
-		{
-			itemText.ThrowIfNull(nameof(itemText));
-			nextGroupArrow.ThrowIfNull(nameof(nextGroupArrow));
-			previousGroupArrow.ThrowIfNull(nameof(previousGroupArrow));
-			backgroundImage.ThrowIfNull(nameof(backgroundImage));
 		}
 	}
 }

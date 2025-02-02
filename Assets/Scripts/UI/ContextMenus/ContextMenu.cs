@@ -25,6 +25,7 @@ namespace UI.ContextMenus
 		private readonly List<ContextMenuTreeNode> _menuNodes = new();
 		private ContextMenuNodePageUI _currentMenuNodePage;
 
+		private ContextMenuUITreeMap _contextMenuUITreeMap;
 		private List<(IContextMenuUser user, ContextMenuTreeNode rootNode)> _userTreePairs;
 		private ContextMenuTreeNode _rootNode = null;
 		
@@ -39,6 +40,7 @@ namespace UI.ContextMenus
 		public void Initialize(List<(IContextMenuUser, ContextMenuTreeNode)> userTreePairs, Vector2 screenPosition)
 		{
 			_userTreePairs = userTreePairs;
+			_contextMenuUITreeMap = new ContextMenuUITreeMap(userTreePairs);
 			
 			_menuNodes.Clear();
 			
@@ -85,9 +87,9 @@ namespace UI.ContextMenus
 			if (!_currentMenuNodePage)
 			{
 				_currentMenuNodePage = Instantiate(contextMenuNodePagePrefab, transform);
-				_currentMenuNodePage.Initialize(contextMenuStyling);
 			}
-
+			
+			_currentMenuNodePage.Initialize(_contextMenuUITreeMap, CalculateMenuPosition(), contextMenuStyling);
 			_currentMenuNodePage.GetComponent<RectTransform>().position = CalculateMenuPosition();
 			
 			if (!_isSubscribedToGroupEvents)
@@ -181,7 +183,7 @@ namespace UI.ContextMenus
 					break;
 				case ContextMenuItemType.Leaf:
 					CloseMenu();
-					menuNodeUI.TreeNode.MenuClickCallback?.Invoke(null/* Todo: Add correct IContextMenuUser here */);
+					menuNodeUI.TreeNode.MenuClickCallback?.Invoke(menuNodeUI.ContextMenuUser);
 					break;
 				case ContextMenuItemType.Group:
 					GoForwardOneMenu(menuNodeUI.TreeNode);
