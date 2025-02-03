@@ -1,6 +1,7 @@
 ﻿using GeneralBehaviours.HealthBehaviours;
 using UI.HealthBars;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using Utilities.Attributes;
 
 namespace UI
@@ -31,8 +32,8 @@ namespace UI
 			if (!healthBarManager)
 				return;
 			
-			// Check to see if the Health component exists
-			if (raycastHit.transform && raycastHit.transform.TryGetComponent(out HealthComponent component))
+			// Check to see if the Health component exists or if the mouse is over UI
+			if (!EventSystem.current.IsPointerOverGameObject() && raycastHit.transform && raycastHit.transform.TryGetComponent(out HealthComponent component))
 			{
 				healthBarManager.SetHoverHealthBar(component, raycastHit.transform);
 			}
