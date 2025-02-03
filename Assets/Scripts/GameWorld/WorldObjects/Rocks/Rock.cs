@@ -31,30 +31,28 @@ namespace GameWorld.WorldObjects.Rocks
 		{
 			Globals.ContextMenuInjections.InjectContextMenuOption<Rock>(
 				ContextMenuBuilder.BuildPath("Destroy", "Single"),
-				_ => _messageBroker.PublishSingle(new AddWizardTaskRequest
+				rock => _messageBroker.PublishSingle(new AddWizardTaskRequest
 				{
-					Sender = this,
-					Task = new DestroyRocksTask(new List<Rock> {this})
+					Sender = rock,
+					Task = new DestroyRocksTask(new List<Rock> {rock})
 				}));
 			
 			Globals.ContextMenuInjections.InjectContextMenuOption<Rock>(
 				ContextMenuBuilder.BuildPath("Destroy", "Surrounding"),
-				_ => _messageBroker.PublishSingle(new AddWizardTaskRequest
+				rock => _messageBroker.PublishSingle(new AddWizardTaskRequest
 				{
-					Sender = this,
-					Task = new DestroyRocksTask(GetSurroundingRocks())
+					Sender = rock,
+					Task = new DestroyRocksTask(GetSurroundingRocks(rock.transform.position))
 				}));
 		}
 
-		private List<Rock> GetSurroundingRocks()
+		public static List<Rock> GetSurroundingRocks(Vector3 initialRockPosition)
 		{
-			Collider[] hits = Physics.OverlapSphere(transform.position, 10);
+			Collider[] hits = Physics.OverlapSphere(initialRockPosition, 10);
 
-			List<Rock> rocks = hits.Select(hit => hit.GetComponentInParent<Rock>())
-								   .Where(rock => rock)
-								   .ToList();
-
-			return rocks;
+			return hits.Select(hit => hit.GetComponentInParent<Rock>())
+				.Where(rock => rock)
+				.ToList();
 		}
 	}
 }

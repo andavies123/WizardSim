@@ -2,7 +2,6 @@ Wizard Tasks
 ============
 Bug: One wizard is constantly given the newest task while another wizard is doing nothing
 Bug: Rock breaking, the wizard shouldn't have to wait to begin hurting the rock the first time
-Bug: When giving a wizard a break rock task, they seem to walk very far away
 
 Health Bars
 ===========
