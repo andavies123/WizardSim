@@ -16,7 +16,3 @@ Bug: When a wizard is breaking surrounding rocks, the status text gets really la
 Hover Highlight
 ===============
 Bug: The highlight isn't working when hovering over rocks
-
-Scrolling
-=========
-Bug: When the user scrolls outside of the game window, the game still zooms in/out

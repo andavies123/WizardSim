@@ -149,12 +149,24 @@ namespace Game.GameStates.GameplayStates
 
 		private void OnCameraZoomActionPerformed(InputAction.CallbackContext callbackContext)
 		{
+			if (!IsMouseOverGameWindow())
+				return;
+            
 			float inputValue = callbackContext.ReadValue<float>();
 			if (inputValue == 0)
 				return;
-
+			
 			ZoomType zoomType = inputValue < 0 ? ZoomType.In : ZoomType.Out;
 			CameraZoomInputPerformed?.Invoke(this, new CameraZoomInputEventArgs(zoomType));
+		}
+
+		private static bool IsMouseOverGameWindow()
+		{
+			Vector3 mousePosition = Input.mousePosition;
+
+			return mousePosition.x >= 0 && mousePosition.x <= Screen.width &&
+			       mousePosition.y >= 0 && mousePosition.y <= Screen.height;
+
 		}
 	}
 }
