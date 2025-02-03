@@ -110,8 +110,7 @@ Done: Change name of Managers to something that holds managers and non managers
 
 Context Menu Item Injection
 ===========================
-Done: Context menu should be able to be injected by another object (Tile doesn't need to know about wizards) (wizards can inject into tile context menus)
-Done: Context menu users or interactables should have a "type" which is used to inject into 
+Todo: Move context menu injections into their own class to clean up some of these classes
 
 Context Menu
 ============
