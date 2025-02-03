@@ -87,7 +87,7 @@ namespace GameWorld.Characters.Wizards
 		{
 			base.Awake();
 
-			Dependencies.Get<MessageBroker>();
+			_messageBroker = Dependencies.Get<MessageBroker>();
 			StateMachine = GetComponent<WizardStateMachine>();
 			TaskHandler = GetComponent<WizardTaskHandler>();
 
