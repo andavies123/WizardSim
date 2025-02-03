@@ -99,15 +99,15 @@ namespace UI.ContextMenus
 			return menuNodeUI;
 		}
 
-		private ContextMenuItemType GetItemTypeFromMenuItem(ContextMenuTreeNode treeNode)
+		private ContextMenuNodeType GetItemTypeFromMenuItem(ContextMenuTreeNode treeNode)
 		{
 			if (treeNode == _backMenuItem)
-				return ContextMenuItemType.Back;
+				return ContextMenuNodeType.Back;
 
 			if (treeNode.IsLeafNode)
-				return ContextMenuItemType.Leaf;
+				return ContextMenuNodeType.Leaf;
 
-			return ContextMenuItemType.Group;
+			return ContextMenuNodeType.Group;
 		}
 
 		private void OnContextMenuItemSelected(ContextMenuNodeUI menuNodeUI)

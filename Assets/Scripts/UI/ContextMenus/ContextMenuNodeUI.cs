@@ -25,7 +25,7 @@ namespace UI.ContextMenus
 		
 		public ContextMenuTreeNode TreeNode { get; private set; }
 		public IContextMenuUser ContextMenuUser { get; private set; }
-		public ContextMenuItemType ItemType { get; private set; }
+		public ContextMenuNodeType NodeType { get; private set; }
 
 		public bool IsFocused
 		{
@@ -37,12 +37,12 @@ namespace UI.ContextMenus
 			}
 		}
 		
-		public void Initialize(ContextMenuTreeNode treeNode, IContextMenuUser contextMenuUser, ContextMenuStyling styling, ContextMenuItemType itemType)
+		public void Initialize(ContextMenuTreeNode treeNode, IContextMenuUser contextMenuUser, ContextMenuStyling styling, ContextMenuNodeType nodeType)
 		{
 			TreeNode = treeNode;
 			ContextMenuUser = contextMenuUser;
 			_styling = styling;
-			ItemType = itemType;
+			NodeType = nodeType;
 			
 			BuildUI();
 			RecalculateVisibility();
@@ -79,12 +79,12 @@ namespace UI.ContextMenus
 
 			itemText.SetText(TreeNode.Text);
 
-			switch (ItemType)
+			switch (NodeType)
 			{
-				case ContextMenuItemType.Back: BuildAsBack(); break;
-				case ContextMenuItemType.Leaf: BuildAsLeaf(); break;
-				case ContextMenuItemType.Group: BuildAsGroup(); break;
-				default: throw new ArgumentOutOfRangeException(ItemType.ToString());
+				case ContextMenuNodeType.Back: BuildAsBack(); break;
+				case ContextMenuNodeType.Leaf: BuildAsLeaf(); break;
+				case ContextMenuNodeType.Group: BuildAsGroup(); break;
+				default: throw new ArgumentOutOfRangeException(NodeType.ToString());
 			}
 		}
 

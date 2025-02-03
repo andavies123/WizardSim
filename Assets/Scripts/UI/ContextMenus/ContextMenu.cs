@@ -176,20 +176,20 @@ namespace UI.ContextMenus
 
 		private void SelectItem(ContextMenuNodeUI menuNodeUI)
 		{
-			switch (menuNodeUI.ItemType)
+			switch (menuNodeUI.NodeType)
 			{
-				case ContextMenuItemType.Back:
+				case ContextMenuNodeType.Back:
 					GoBackOneMenu();
 					break;
-				case ContextMenuItemType.Leaf:
+				case ContextMenuNodeType.Leaf:
 					CloseMenu();
 					menuNodeUI.TreeNode.MenuClickCallback?.Invoke(menuNodeUI.ContextMenuUser);
 					break;
-				case ContextMenuItemType.Group:
+				case ContextMenuNodeType.Group:
 					GoForwardOneMenu(menuNodeUI.TreeNode);
 					break;
 				default:
-					throw new ArgumentOutOfRangeException(menuNodeUI.ItemType.ToString());
+					throw new ArgumentOutOfRangeException(menuNodeUI.NodeType.ToString());
 			}
 		}
 
