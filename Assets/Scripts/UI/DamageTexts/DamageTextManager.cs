@@ -16,11 +16,12 @@ namespace UI.DamageTexts
 
 		private void Awake()
 		{
+			Transform thisTransform = transform;
 			Transform activeContainer = new GameObject("Active Damage Text Container").transform;
-			activeContainer.parent = transform;
+			activeContainer.parent = thisTransform;
 			
 			Transform inactiveContainer = new GameObject("Inactive Damage Text Container").transform;
-			inactiveContainer.parent = transform;
+			inactiveContainer.parent = thisTransform;
 
 			_damageTextFactory = new DamageTextFactory(activeContainer, inactiveContainer, damageTextPrefab.gameObject);
 		}
