@@ -44,6 +44,7 @@ namespace GeneralBehaviours.ShaderManagers
 			// Set defaults
 			meshRenderer.material.SetTexture(BaseTexture, baseTexture);
 			meshRenderer.material.SetColor(BaseColor, baseColor);
+			
 			SetIsHoveredShaderValue(interactable && interactable.IsHovered);
 			SetIsContextMenuOpenShaderValue(contextMenuUser && contextMenuUser.IsOpen);
 

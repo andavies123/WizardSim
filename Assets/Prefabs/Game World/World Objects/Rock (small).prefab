@@ -88,6 +88,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77f396fb3a734918ba467592d0b07b8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  objectType: 
 --- !u!114 &4090576990393350653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,7 +115,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseTexture: {fileID: 0}
-  baseColor: {r: 0.3773585, g: 0.3773585, b: 0.3773585, a: 1}
+  baseColor: {r: 0.4528302, g: 0.36952654, b: 0.36952654, a: 1}
   meshRenderer: {fileID: 6053211928244300655}
   interactable: {fileID: -2688453110167885317}
   contextMenuUser: {fileID: 834820806091084490}
