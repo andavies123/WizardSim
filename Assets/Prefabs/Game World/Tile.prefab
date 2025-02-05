@@ -155,6 +155,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d20e7dc40e94f94b2c2a3fc1f1828ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  colors:
+  - {r: 0.07640907, g: 0.5943396, b: 0.008410451, a: 1}
+  - {r: 0.06163133, g: 0.38679248, b: 0.020069422, a: 1}
+  - {r: 0.42454386, g: 0.6603774, b: 0.28969383, a: 1}
 --- !u!114 &1938675790559664110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -167,6 +171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77f396fb3a734918ba467592d0b07b8e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  objectType: 
 --- !u!114 &5228919932028046421
 MonoBehaviour:
   m_ObjectHideFlags: 0
