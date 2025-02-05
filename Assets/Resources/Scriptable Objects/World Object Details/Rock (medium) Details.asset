@@ -25,3 +25,4 @@ MonoBehaviour:
     <MaxHealth>k__BackingField: 50
   <ResourcesWhenDestroyed>k__BackingField:
   - {fileID: 11400000, guid: a832244101de24d3bbf2cb0b73e8fdd4, type: 2}
+  - {fileID: 11400000, guid: a832244101de24d3bbf2cb0b73e8fdd4, type: 2}
