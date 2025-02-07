@@ -6,21 +6,16 @@ using Utilities.Attributes;
 
 namespace GameWorld.Settlements
 {
-	// Todo: Should have reference to all settlement buildings
 	public class Settlement : MonoBehaviour
 	{
 		[Header("Resource Objects")]
 		[SerializeField, Required] private TownResourceStockpile resourceStockpile;
-		
-		[Header("Wizard Objects")]
-		[SerializeField, Required] private WizardFactory wizardFactory;
-		[SerializeField, Required] private Transform wizardContainer;
 
 		private TownHall _townHall;
 
 		public event Action<TownHall> TownHallUpdated; 
 
-		public ISettlementWizardManager WizardManager { get; private set; }
+		public SettlementWizardManager WizardManager { get; private set; }
 		public TownResourceStockpile ResourceStockpile => resourceStockpile;
 		public string SettlementName { get; set; } = "Un-named Settlement";
 
@@ -39,7 +34,7 @@ namespace GameWorld.Settlements
 		
 		private void Awake()
 		{
-			WizardManager = new SettlementWizardManager(wizardFactory, wizardContainer);
+			WizardManager = new SettlementWizardManager();
 			WizardManager.Init();
 		}
 

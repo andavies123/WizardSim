@@ -603,7 +603,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   world: {fileID: 2007172221}
-  wizardFactory: {fileID: 1202947230}
+  wizardFactory: {fileID: 0}
   initialWizardSpawns: 3
   spawnDistanceFromTownHall: 5
 --- !u!114 &276745022
@@ -2408,7 +2408,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   world: {fileID: 2007172221}
   worldObjectParent: {fileID: 1790581159}
-  wizardFactory: {fileID: 1202947230}
+  wizardFactory: {fileID: 0}
   enemySpawner: {fileID: 262803724}
   initialGenerationRadius: 4
   rockPrefabs:
@@ -2757,61 +2757,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1200601352}
   m_CullTransparentMesh: 1
---- !u!1 &1202947225
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1202947226}
-  - component: {fileID: 1202947230}
-  m_Layer: 0
-  m_Name: Wizard Factory
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1202947226
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1202947225}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2007172220}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1202947230
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1202947225}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 608a50db2fc94295b12bf0dbc68eea29, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  settlement: {fileID: 1256163101}
-  gameWorldTime: {fileID: 2007172222}
-  entityPrefab: {fileID: 5741234536930111, guid: 4bfb0bac7ec87bb4ca8c5e6e14993c85, type: 3}
-  initialSpawns: 0
-  spawnCenter: {x: 0, y: 0, z: 0}
-  spawnRadius: 10
-  undecidedWizardColor: {r: 0.5188679, g: 0.5188679, b: 0.5188679, a: 1}
-  fireWizardColor: {r: 0.6603774, g: 0.2614009, b: 0.04049486, a: 1}
-  earthWizardColor: {r: 0.2830189, g: 0.12974739, b: 0, a: 1}
-  waterWizardColor: {r: 0.11173906, g: 0.47570392, b: 0.8773585, a: 1}
-  lightningWizardColor: {r: 0.88722146, g: 0.8962264, b: 0.054957304, a: 1}
 --- !u!1 &1205596787
 GameObject:
   m_ObjectHideFlags: 0
@@ -2836,13 +2781,99 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1205596787}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2007172220}
+  m_Father: {fileID: 1241837779}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1241837778
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1241837779}
+  - component: {fileID: 1241837780}
+  - component: {fileID: 1241837782}
+  - component: {fileID: 1241837783}
+  m_Layer: 0
+  m_Name: Wizard Controller
+  m_TagString: Singleton
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1241837779
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1241837778}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1205596788}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1241837780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1241837778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ee254feae5d4887b7516959844da2d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wizardFactory: {fileID: 1241837783}
+  wizardRepo: {fileID: 1241837782}
+--- !u!114 &1241837782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1241837778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abb3f1033e37fc446b36706cdda91e58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wizardContainer: {fileID: 1205596788}
+--- !u!114 &1241837783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1241837778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 608a50db2fc94295b12bf0dbc68eea29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settlement: {fileID: 1256163101}
+  gameWorldTime: {fileID: 2007172222}
+  wizardContainer: {fileID: 1205596788}
+  wizardPrefab: {fileID: 5741234536930111, guid: 4bfb0bac7ec87bb4ca8c5e6e14993c85, type: 3}
+  initialSpawns: 0
+  spawnCenter: {x: 0, y: 0, z: 0}
+  spawnRadius: 10
+  undecidedWizardColor: {r: 0.5188679, g: 0.5188679, b: 0.5188679, a: 1}
+  fireWizardColor: {r: 0.6603774, g: 0.2614009, b: 0.04049486, a: 1}
+  earthWizardColor: {r: 0.2830189, g: 0.12974739, b: 0, a: 1}
+  waterWizardColor: {r: 0.11173906, g: 0.47570392, b: 0.8773585, a: 1}
+  lightningWizardColor: {r: 0.88722146, g: 0.8962264, b: 0.054957304, a: 1}
 --- !u!1 &1255912505
 GameObject:
   m_ObjectHideFlags: 0
@@ -3009,8 +3040,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   resourceStockpile: {fileID: 1256163100}
-  wizardFactory: {fileID: 1202947230}
-  wizardContainer: {fileID: 1205596788}
 --- !u!1 &1292581495
 GameObject:
   m_ObjectHideFlags: 0
@@ -4672,9 +4701,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1790581159}
-  - {fileID: 1202947226}
   - {fileID: 262803723}
-  - {fileID: 1205596788}
   - {fileID: 1256163099}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5319,3 +5346,4 @@ SceneRoots:
   - {fileID: 992639649}
   - {fileID: 2007172220}
   - {fileID: 1292581496}
+  - {fileID: 1241837779}

@@ -1,13 +1,7 @@
 ﻿using System;
 using AndysTools.GameWorldTimeManagement.Runtime;
-using Extensions;
-using Game;
 using GameWorld.Characters.Wizards;
-using GameWorld.Settlements.Interfaces;
-using GameWorld.Tiles;
 using GeneralBehaviours.ShaderManagers;
-using GeneralBehaviours.Utilities.ContextMenuBuilders;
-using UI.ContextMenus;
 using UnityEngine;
 using Utilities;
 using Utilities.Attributes;
@@ -15,14 +9,15 @@ using Random = UnityEngine.Random;
 
 namespace GameWorld.Settlements
 {
-	public class WizardFactory : MonoBehaviour, IWizardFactory
+	public class WizardFactory : MonoBehaviour
 	{
 		[Header("External Components")]
 		[SerializeField, Required] private Settlement settlement;
-		[SerializeField] private GameWorldTimeBehaviour gameWorldTime;
+		[SerializeField, Required] private GameWorldTimeBehaviour gameWorldTime;
+		[SerializeField, Required] private Transform wizardContainer;
 
 		[Header("Prefabs")]
-		[SerializeField] private Wizard entityPrefab;
+		[SerializeField, Required] private Wizard wizardPrefab;
 
 		[Header("Spawn Settings")] 
 		[SerializeField] private int initialSpawns = 5;
@@ -36,16 +31,9 @@ namespace GameWorld.Settlements
 		[SerializeField] private Color waterWizardColor;
 		[SerializeField] private Color lightningWizardColor;
 
-		private IWizardRepo _wizardRepo;
-
-		public void Initialize(IWizardRepo wizardRepo)
+		public Wizard CreateNewWizard(Vector3 spawnPosition, WizardType wizardType)
 		{
-			_wizardRepo = wizardRepo.ThrowIfNull(nameof(wizardRepo));
-		}
-
-		public void CreateNewWizard(Vector3 spawnPosition, WizardType wizardType)
-		{
-			Wizard wizard = Instantiate(entityPrefab);
+			Wizard wizard = Instantiate(wizardPrefab, wizardContainer, true);
 			wizard.Transform.position = spawnPosition;
 			wizard.WizardType = wizardType;
 			wizard.Attributes = new WizardAttributes
@@ -60,17 +48,11 @@ namespace GameWorld.Settlements
 			};
 			wizard.InitializeWizard(NameGenerator.GetNewName(), settlement, gameWorldTime);
 			wizard.GetComponent<InteractionShaderManager>().OverrideBaseColor(GetColorFromWizardType(wizardType));
-
-			if (!_wizardRepo.TryAddWizard(wizard))
-			{
-				Debug.LogWarning("Unable to add wizard to wizard repository... Destroying wizard");
-				wizard.gameObject.Destroy();
-			}
+			return wizard;
 		}
 		
 		private void Start()
 		{
-			InitializeContextMenu();
 			LoopUtilities.Loop(initialSpawns, SpawnRandomWizard);
 		}
 
@@ -95,24 +77,6 @@ namespace GameWorld.Settlements
 				WizardType.Lightning => lightningWizardColor,
 				_ => throw new ArgumentOutOfRangeException(nameof(wizardType), wizardType, null)
 			};
-		}
-
-		private void InitializeContextMenu()
-		{
-			foreach (WizardType wizardType in Enum.GetValues(typeof(WizardType)))
-			{
-				Globals.ContextMenuInjections.InjectContextMenuOption<Tile>(
-					ContextMenuBuilder.BuildPath("Spawn Wizard", wizardType.ToString()),
-					tile => SpawnWizard(tile, wizardType));
-			}
-		}
-
-		private void SpawnWizard(Tile tile, WizardType wizardType)
-		{
-			Vector2 tileWorldPosition = Globals.World.WorldPositionFromTile(tile, centerOfTile: true);
-			Vector3 spawnPosition = new(tileWorldPosition.x, 1, tileWorldPosition.y);
-			
-			CreateNewWizard(spawnPosition, wizardType);
 		}
 		
 		private static WizardType GetRandomWizardType() => RandomExt.RandomEnumValue<WizardType>();

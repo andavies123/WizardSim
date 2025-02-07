@@ -4,23 +4,19 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using GameWorld.Characters;
-using GameWorld.Settlements.Interfaces;
 using UnityEngine;
+using Utilities.Attributes;
 
 namespace GameWorld.Settlements
 {
-	public class WizardRepo : IWizardRepo
+	public class WizardRepo : MonoBehaviour
 	{
+		[SerializeField, Required] private Transform wizardContainer;
+		
 		private readonly ConcurrentDictionary<Guid, Wizard> _wizards = new();
-		private readonly Transform _wizardContainer;
 
 		public event Action<Wizard> WizardAdded;
 		public event Action<Wizard> WizardRemoved;
-
-		public WizardRepo(Transform wizardContainer)
-		{
-			_wizardContainer = wizardContainer;
-		}
 
 		public IReadOnlyDictionary<Guid, Wizard> AllWizards => _wizards;
 
@@ -32,7 +28,6 @@ namespace GameWorld.Settlements
 			if (!_wizards.TryAdd(wizard.Id, wizard))
 				return false;
 
-			wizard.Transform.parent = _wizardContainer;
 			wizard.Death.Died += OnWizardDied;
 			WizardAdded?.Invoke(wizard);
 			return true;
@@ -56,10 +51,7 @@ namespace GameWorld.Settlements
 		{
 			wizard = null;
 			
-			if (wizardId == Guid.Empty)
-				return false;
-
-			return _wizards.TryGetValue(wizardId, out wizard);
+			return wizardId != Guid.Empty && _wizards.TryGetValue(wizardId, out wizard);
 		}
 
 		public IList<Wizard> GetAllWizardsByType(WizardType wizardType)

@@ -8,15 +8,13 @@ using UnityEngine;
 
 namespace GameWorld.Settlements
 {
-	public class SettlementWizardManager : ISettlementWizardManager
+	public class SettlementWizardManager
 	{
 		private readonly ISubscription _addWizardTaskSubscription;
 		private readonly MessageBroker _messageBroker;
 		
-		public SettlementWizardManager(IWizardFactory wizardFactory, Transform wizardContainer)
+		public SettlementWizardManager()
 		{
-			Factory = wizardFactory;
-			Repo = new WizardRepo(wizardContainer);
 			TaskManager = new WizardTaskManager();
 			_messageBroker = Dependencies.Get<MessageBroker>();
 
@@ -27,13 +25,10 @@ namespace GameWorld.Settlements
 		}
 		
 		public IWizardRepo Repo { get; }
-		public IWizardFactory Factory { get; }
 		public IWizardTaskManager TaskManager { get; }
 
 		public void Init()
 		{
-			Factory.Initialize(Repo);
-            
 			Repo.WizardAdded += OnWizardAddedToRepo;
 			Repo.WizardRemoved += OnWizardRemovedFromRepo;
 
