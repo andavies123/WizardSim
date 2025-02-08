@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Game;
 using GameWorld.Characters.Wizards.Tasks;
 using GameWorld.Tiles;
@@ -108,11 +110,11 @@ namespace GameWorld.Characters.Wizards.Managers
 		
 		private void OnWizardTaskAdded(IWizardTask wizardTask)
 		{
-			/*
-			 * Todo: Find a better way to assign wizards to a new incoming task
-			 * Todo: the same wizard is being assigned new tasks
-			 */
-			foreach (Wizard wizard in repo.AllWizards.Values)
+			List<Wizard> wizards = repo.AllWizards.Values
+				.OrderBy(wiz => wiz.TaskHandler.AssignedTaskCount)
+				.ToList();
+			
+			foreach (Wizard wizard in wizards)
 			{
 				if (taskManager.TryAssignTask(wizardTask, wizard))
 					break;

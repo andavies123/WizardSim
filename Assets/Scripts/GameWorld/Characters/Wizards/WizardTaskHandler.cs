@@ -16,6 +16,8 @@ namespace GameWorld.Characters.Wizards
 		public IWizardTask ActiveTask { get; private set; }
 		public bool HasActiveTask => ActiveTask != null;
 
+		public int AssignedTaskCount => TaskBacklog.Count + (ActiveTask != null ? 1 : 0);
+
 		private void Awake()
 		{
 			_wizard = GetComponent<Wizard>();
