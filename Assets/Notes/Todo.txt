@@ -115,3 +115,8 @@ Todo: Move context menu injections into their own class to clean up some of thes
 Context Menu
 ============
 Todo: Draw a line from the side of the context menu over to the item the context menu is for, for when the object underneath moves
+
+Wizard Movement
+===============
+Todo: Wizards should be assigned a tile position
+Todo: Wizards should move tile to tile rather than freely

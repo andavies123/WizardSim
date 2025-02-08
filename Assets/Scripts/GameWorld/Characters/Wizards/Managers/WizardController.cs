@@ -17,11 +17,12 @@ namespace GameWorld.Characters.Wizards.Managers
 		[SerializeField, Required] private WizardRepo repo;
 		[SerializeField, Required] private WizardTaskManager taskManager;
 
-		public void SpawnWizard(Tile tile, WizardType wizardType)
+		public void SpawnWizard(Tile tile, WizardType wizardType) =>
+			SpawnWizard(Globals.World.WorldPositionFromTile(tile, centerOfTile: true), wizardType);
+		
+		public void SpawnWizard(Vector3 worldPosition, WizardType wizardType)
 		{
-			Vector2 tileWorldPosition = Globals.World.WorldPositionFromTile(tile, centerOfTile: true);
-			Vector3 spawnPosition = new(tileWorldPosition.x, 1, tileWorldPosition.y);
-			
+			Vector3 spawnPosition = new(worldPosition.x, 1, worldPosition.y);
 			Wizard wizard = factory.CreateNewWizard(spawnPosition, wizardType);
 
 			if (repo.TryAddWizard(wizard))
