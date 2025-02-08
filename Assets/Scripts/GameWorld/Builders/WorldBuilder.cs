@@ -60,7 +60,8 @@ namespace GameWorld.Builders
 					Debug.LogWarning($"Issue caching {nameof(IWorldObjectFactory)}: {builder.GetType().Name}");
 				}
 			}
-			
+
+			InjectContextMenuActions();
 
 			_subscriptions.Add(_subBuilder.ResetAllButSubscriber()
 				.SetMessageType<WorldObjectPlacementRequest>()

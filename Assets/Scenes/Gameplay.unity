@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2408,6 +2408,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   world: {fileID: 2007172221}
   worldObjectParent: {fileID: 1790581159}
+  wizardTaskManager: {fileID: 1241837784}
   wizardFactory: {fileID: 1241837783}
   enemySpawner: {fileID: 262803724}
   initialGenerationRadius: 4
@@ -2798,8 +2799,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1241837779}
   - component: {fileID: 1241837780}
-  - component: {fileID: 1241837782}
   - component: {fileID: 1241837783}
+  - component: {fileID: 1241837782}
+  - component: {fileID: 1241837784}
   m_Layer: 0
   m_Name: Wizard Controller
   m_TagString: Singleton
@@ -2835,8 +2837,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ee254feae5d4887b7516959844da2d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wizardFactory: {fileID: 1241837783}
-  wizardRepo: {fileID: 1241837782}
+  factory: {fileID: 1241837783}
+  repo: {fileID: 1241837782}
+  taskManager: {fileID: 1241837784}
 --- !u!114 &1241837782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2864,7 +2867,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settlement: {fileID: 1256163101}
   gameWorldTime: {fileID: 2007172222}
-  wizardContainer: {fileID: 1205596788}
   wizardPrefab: {fileID: 5741234536930111, guid: 4bfb0bac7ec87bb4ca8c5e6e14993c85, type: 3}
   initialSpawns: 0
   spawnCenter: {x: 0, y: 0, z: 0}
@@ -2874,6 +2876,18 @@ MonoBehaviour:
   earthWizardColor: {r: 0.2830189, g: 0.12974739, b: 0, a: 1}
   waterWizardColor: {r: 0.11173906, g: 0.47570392, b: 0.8773585, a: 1}
   lightningWizardColor: {r: 0.88722146, g: 0.8962264, b: 0.054957304, a: 1}
+--- !u!114 &1241837784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1241837778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4721a5302b34413fb5d9f853806887c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1255912505
 GameObject:
   m_ObjectHideFlags: 0
@@ -3225,7 +3239,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unassignedTaskListUI: {fileID: 2099059560}
   assignedTaskListUI: {fileID: 733805460}
-  world: {fileID: 2007172221}
+  wizardTaskManager: {fileID: 1241837784}
 --- !u!1 &1547729887
 GameObject:
   m_ObjectHideFlags: 0

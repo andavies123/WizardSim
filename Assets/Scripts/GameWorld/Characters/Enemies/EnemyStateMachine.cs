@@ -3,6 +3,7 @@ using GeneralBehaviours;
 using StateMachines;
 using UnityEngine;
 using GameWorld.Characters.Wizards;
+using GameWorld.Settlements;
 
 namespace GameWorld.Characters.Enemies
 {
@@ -18,6 +19,7 @@ namespace GameWorld.Characters.Enemies
 		[SerializeField] private float attackRadius = 2f;
 
 		private Enemy _enemy;
+		private WizardController _wizardController;
 
 		private IdleEnemyState _idleState;
 		private AttackWizardEnemyState _attackWizardState;
@@ -37,6 +39,7 @@ namespace GameWorld.Characters.Enemies
 		private void Awake()
 		{
 			_enemy = GetComponent<Enemy>();
+			_wizardController = FindObjectOfType<WizardController>(); // Todo: Can I find a better way?
 		}
 
 		private void Start()
@@ -76,7 +79,7 @@ namespace GameWorld.Characters.Enemies
 		private bool CheckForSurroundingWizards(out Wizard targetWizard)
 		{
 			// Get the surrounding wizard
-			if (!_enemy.ParentWorld.Settlement.WizardManager.TryGetClosestWizard(_enemy.transform.position, out targetWizard, out float distance))
+			if (!_wizardController.TryGetClosestWizard(_enemy.transform.position, out targetWizard, out float distance))
 				return false;
 
 			// Check the distance

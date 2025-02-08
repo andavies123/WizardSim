@@ -1,8 +1,7 @@
-﻿using GameWorld;
-using UI.TaskManagement.WizardEventArgs;
+﻿using UI.TaskManagement.WizardEventArgs;
 using UnityEngine;
 using GameWorld.Characters.Wizards.Tasks;
-using GameWorld.Settlements.Interfaces;
+using GameWorld.Settlements;
 using Utilities.Attributes;
 
 namespace UI.TaskManagement
@@ -11,17 +10,15 @@ namespace UI.TaskManagement
 	{
 		[SerializeField, Required] private WizardTaskListUI unassignedTaskListUI;
 		[SerializeField, Required] private WizardTaskListUI assignedTaskListUI;
-		[SerializeField, Required] private World world;
-
-		private IWizardTaskManager WizardTaskManager => world.Settlement.WizardManager.TaskManager;
+		[SerializeField, Required] private WizardTaskManager wizardTaskManager;
 
 		public void Open()
 		{
 			PopulateTaskLists();
 			
-			WizardTaskManager.TaskAssigned += OnTaskAssigned;
-			WizardTaskManager.TaskAdded += OnTaskAdded;
-			WizardTaskManager.TaskRemoved += OnTaskRemoved;
+			wizardTaskManager.TaskAssigned += OnTaskAssigned;
+			wizardTaskManager.TaskAdded += OnTaskAdded;
+			wizardTaskManager.TaskRemoved += OnTaskRemoved;
 
 			unassignedTaskListUI.TaskDeleted += OnTaskDeletedThroughUI;
 			assignedTaskListUI.TaskDeleted += OnTaskDeletedThroughUI;
@@ -29,9 +26,9 @@ namespace UI.TaskManagement
 
 		public void Close()
 		{
-			WizardTaskManager.TaskAssigned -= OnTaskAssigned;
-			WizardTaskManager.TaskAdded -= OnTaskAdded;
-			WizardTaskManager.TaskRemoved -= OnTaskRemoved;
+			wizardTaskManager.TaskAssigned -= OnTaskAssigned;
+			wizardTaskManager.TaskAdded -= OnTaskAdded;
+			wizardTaskManager.TaskRemoved -= OnTaskRemoved;
 			
 			unassignedTaskListUI.TaskDeleted -= OnTaskDeletedThroughUI;
 			assignedTaskListUI.TaskDeleted -= OnTaskDeletedThroughUI;
@@ -45,7 +42,7 @@ namespace UI.TaskManagement
 			unassignedTaskListUI.ClearTasks();
 			assignedTaskListUI.ClearTasks();
 			
-			foreach (IWizardTask task in WizardTaskManager.Tasks)
+			foreach (IWizardTask task in wizardTaskManager.Tasks)
 			{
 				if (task.IsAssigned)
 					assignedTaskListUI.AddTask(task);
@@ -84,7 +81,7 @@ namespace UI.TaskManagement
 				return;
 			}
 			
-			WizardTaskManager.RemoveTask(args.DeletedTask);
+			wizardTaskManager.RemoveTask(args.DeletedTask);
 		}
 	}
 }

@@ -15,7 +15,6 @@ namespace GameWorld.Settlements
 
 		public event Action<TownHall> TownHallUpdated; 
 
-		public SettlementWizardManager WizardManager { get; private set; }
 		public TownResourceStockpile ResourceStockpile => resourceStockpile;
 		public string SettlementName { get; set; } = "Un-named Settlement";
 
@@ -30,17 +29,6 @@ namespace GameWorld.Settlements
 					TownHallUpdated?.Invoke(_townHall);
 				}
 			}
-		}
-		
-		private void Awake()
-		{
-			WizardManager = new SettlementWizardManager();
-			WizardManager.Init();
-		}
-
-		private void OnDestroy()
-		{
-			WizardManager.CleanUp();
 		}
 	}
 }
