@@ -9,12 +9,11 @@ using Random = UnityEngine.Random;
 
 namespace GameWorld.Settlements
 {
-	public class WizardFactory : MonoBehaviour
+	internal class WizardFactory : MonoBehaviour
 	{
 		[Header("External Components")]
 		[SerializeField, Required] private Settlement settlement;
 		[SerializeField, Required] private GameWorldTimeBehaviour gameWorldTime;
-		[SerializeField, Required] private Transform wizardContainer;
 
 		[Header("Prefabs")]
 		[SerializeField, Required] private Wizard wizardPrefab;
@@ -33,7 +32,7 @@ namespace GameWorld.Settlements
 
 		public Wizard CreateNewWizard(Vector3 spawnPosition, WizardType wizardType)
 		{
-			Wizard wizard = Instantiate(wizardPrefab, wizardContainer, true);
+			Wizard wizard = Instantiate(wizardPrefab, transform, true);
 			wizard.Transform.position = spawnPosition;
 			wizard.WizardType = wizardType;
 			wizard.Attributes = new WizardAttributes

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Extensions;
 using Game;
+using GameWorld.Characters.Wizards.Tasks;
 using GameWorld.Messages;
 using GameWorld.Spawners;
 using GameWorld.Tiles;
@@ -10,6 +12,8 @@ using GameWorld.WorldObjects;
 using UnityEngine;
 using Utilities;
 using GameWorld.Settlements;
+using GameWorld.WorldObjects.Rocks;
+using GeneralBehaviours.Utilities.ContextMenuBuilders;
 using MessagingSystem;
 using Utilities.Attributes;
 
@@ -21,6 +25,7 @@ namespace GameWorld.Builders
 		[SerializeField, Required] private Transform worldObjectParent;
 		
 		[Header("Spawners")]
+		[SerializeField, Required] private WizardTaskManager wizardTaskManager;
 		[SerializeField, Required] private WizardFactory wizardFactory;
 		[SerializeField, Required] private EntitySpawner enemySpawner;
 
@@ -260,6 +265,28 @@ namespace GameWorld.Builders
 			world.WorldObjectManager.AddWorldObject(worldObject);
 
 			return true;
+		}
+
+		private void InjectContextMenuActions()
+		{
+			// Rock context menu injections
+			
+			Globals.ContextMenuInjections.InjectContextMenuOption<Rock>(
+				ContextMenuBuilder.BuildPath("Destroy", "Single"),
+				rock => wizardTaskManager.AddTask(new DestroyRocksTask(new List<Rock> {rock})));
+			
+			Globals.ContextMenuInjections.InjectContextMenuOption<Rock>(
+				ContextMenuBuilder.BuildPath("Destroy", "Surrounding"),
+				rock => wizardTaskManager.AddTask(new DestroyRocksTask(GetSurroundingRocks(rock.transform.position))));
+		}
+		
+		private static List<Rock> GetSurroundingRocks(Vector3 initialRockPosition)
+		{
+			Collider[] hits = Physics.OverlapSphere(initialRockPosition, 10);
+
+			return hits.Select(hit => hit.GetComponentInParent<Rock>())
+				.Where(rock => rock)
+				.ToList();
 		}
 	}
 }

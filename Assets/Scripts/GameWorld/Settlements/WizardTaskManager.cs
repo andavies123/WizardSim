@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using GameWorld.Characters.Wizards;
 using GameWorld.Characters.Wizards.Tasks;
-using GameWorld.Settlements.Interfaces;
 using TaskSystem;
 using TaskSystem.Interfaces;
+using UnityEngine;
 
 namespace GameWorld.Settlements
 {
-	public class WizardTaskManager : IWizardTaskManager
+	internal class WizardTaskManager : MonoBehaviour
 	{
 		private readonly ITaskManager<IWizardTask> _taskManager = new TaskManager<IWizardTask>();
 
