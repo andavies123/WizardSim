@@ -6,13 +6,11 @@ using Game;
 using GameWorld.Characters.Wizards.Managers;
 using GameWorld.Characters.Wizards.Tasks;
 using GameWorld.Messages;
-using GameWorld.Spawners;
 using GameWorld.Tiles;
 using GameWorld.WorldObjectPreviews;
 using GameWorld.WorldObjects;
 using UnityEngine;
 using Utilities;
-using GameWorld.Settlements;
 using GameWorld.WorldObjects.Rocks;
 using GeneralBehaviours.Utilities.ContextMenuBuilders;
 using MessagingSystem;
@@ -24,11 +22,6 @@ namespace GameWorld.Builders
 	{
 		[SerializeField, Required] private World world;
 		[SerializeField, Required] private Transform worldObjectParent;
-		
-		[Header("Spawners")]
-		[SerializeField, Required] private WizardTaskManager wizardTaskManager;
-		[SerializeField, Required] private WizardFactory wizardFactory;
-		[SerializeField, Required] private EntitySpawner enemySpawner;
 
 		[Header("Settings")]
 		[SerializeField, Required] private int initialGenerationRadius = 5;
@@ -36,6 +29,7 @@ namespace GameWorld.Builders
 		[Header("Rock Generation Settings")]
 		[SerializeField, Required] private List<GameObject> rockPrefabs;
 		[SerializeField, Required] private int rocksPerChunk;
+		[SerializeField, Required] private WizardTaskManager wizardTaskManager;
 
 		private readonly List<ISubscription> _subscriptions = new();
 
@@ -67,14 +61,6 @@ namespace GameWorld.Builders
 			_subscriptions.Add(_subBuilder.ResetAllButSubscriber()
 				.SetMessageType<WorldObjectPlacementRequest>()
 				.SetCallback(OnPlaceWorldObjectRequested).Build());
-			
-			_subscriptions.Add(_subBuilder.ResetAllButSubscriber()
-				.SetMessageType<WizardSpawnRequestMessage>()
-				.SetCallback(OnWizardSpawnRequested).Build());
-			
-			_subscriptions.Add(_subBuilder.ResetAllButSubscriber()
-				.SetMessageType<EnemySpawnRequestMessage>()
-				.SetCallback(OnEnemySpawnRequested).Build());
 		}
 		
 		private void Start()
@@ -176,28 +162,6 @@ namespace GameWorld.Builders
 					addedRocks++;
 				}
 			}
-		}
-
-		private void OnWizardSpawnRequested(IMessage message)
-		{
-			if (message is not WizardSpawnRequestMessage spawnRequest)
-			{
-				Debug.Log($"Received invalid {nameof(WizardSpawnRequestMessage)}");
-				return;
-			}
-			
-			wizardFactory.CreateNewWizard(spawnRequest.SpawnPosition, spawnRequest.WizardType);
-		}
-
-		private void OnEnemySpawnRequested(IMessage message)
-		{
-			if (message is not EnemySpawnRequestMessage spawnRequest)
-			{
-				Debug.Log($"Received invalid {nameof(EnemySpawnRequestMessage)}");
-				return;
-			}
-			
-			enemySpawner.SpawnEntity(spawnRequest.SpawnPosition);
 		}
 
 		private void OnPlaceWorldObjectRequested(IMessage message)
