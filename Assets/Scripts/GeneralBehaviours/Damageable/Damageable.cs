@@ -18,7 +18,7 @@ namespace GeneralBehaviours.Damageable
 		public event EventHandler<DamageReceivedEventArgs> DamageReceived;
 		public event EventHandler<DamageableDestroyedEventArgs> Destroyed;
 
-		public void DealDamage(float damageAmount, DamageType damageType, Character damageDealer)
+		public void DealDamage(float damageAmount, DamageType? damageType, Character damageDealer)
 		{
 			lock (_health)
 			{

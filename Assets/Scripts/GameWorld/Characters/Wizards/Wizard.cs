@@ -99,7 +99,6 @@ namespace GameWorld.Characters.Wizards
 			base.Start();
 
 			UpdateInteractableInfoText();
-			InitializeContextMenu();
 			
 			if (StateMachine.CurrentState == null)
 				StateMachine.Idle();
@@ -141,27 +140,6 @@ namespace GameWorld.Characters.Wizards
 				$"Intelligence: {Attributes.Intelligence.CurrentLevel}",
 				$"Courage: {Attributes.Courage.CurrentLevel}"
 			};
-		}
-
-		protected void InitializeContextMenu()
-		{
-			Globals.ContextMenuInjections.InjectContextMenuOption<Wizard>(
-				ContextMenuBuilder.BuildPath("Action", "Idle"),
-				_ => StateMachine.Idle(),
-				isEnabledFunc: _ => !IsIdling);
-			
-			Globals.ContextMenuInjections.InjectContextMenuOption<Wizard>(
-				ContextMenuBuilder.BuildPath("Action", "Move To"),
-				_ => _messageBroker.PublishSingle(
-					new StartInteractionRequest
-					{
-						Sender = this,
-						InteractionCallback = OnInteractionCallback
-					}));
-
-			Globals.ContextMenuInjections.InjectContextMenuOption<Wizard>(
-				ContextMenuBuilder.BuildPath("Kill"),
-				_ => Health.CurrentHealth -= Health.CurrentHealth);
 		}
 		
 		private void OnInteractionCallback(Component component)

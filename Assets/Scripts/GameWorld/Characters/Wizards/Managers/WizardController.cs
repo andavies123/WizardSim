@@ -72,6 +72,24 @@ namespace GameWorld.Characters.Wizards.Managers
 					ContextMenuBuilder.BuildPath("Spawn Wizard", wizardType.ToString()),
 					tile => SpawnWizard(tile, wizardType));
 			}
+			
+			Globals.ContextMenuInjections.InjectContextMenuOption<Wizard>(
+				ContextMenuBuilder.BuildPath("Action", "Idle"),
+				wizard => wizard.StateMachine.Idle(),
+				isEnabledFunc: wizard => !wizard.IsIdling);
+			
+			// Globals.ContextMenuInjections.InjectContextMenuOption<Wizard>(
+			// 	ContextMenuBuilder.BuildPath("Action", "Move To"),
+			// 	_ => _messageBroker.PublishSingle(
+			// 		new StartInteractionRequest
+			// 		{
+			// 			Sender = this,
+			// 			InteractionCallback = OnInteractionCallback
+			// 		}));
+
+			Globals.ContextMenuInjections.InjectContextMenuOption<Wizard>(
+				ContextMenuBuilder.BuildPath("Kill"),
+				wizard => wizard.Damageable.DealDamage(wizard.Health.CurrentHealth, null, null));
 		}
 		
 		private void OnWizardDied(object sender, CharacterDiedEventArgs args)

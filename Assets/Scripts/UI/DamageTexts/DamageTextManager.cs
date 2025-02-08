@@ -26,10 +26,12 @@ namespace UI.DamageTexts
 			_damageTextFactory = new DamageTextFactory(activeContainer, inactiveContainer, damageTextPrefab.gameObject);
 		}
 
-		public void ShowDamageText(Vector3 position, DamageType damageType, float damageAmount)
+		public void ShowDamageText(Vector3 position, DamageType? damageType, float damageAmount)
 		{
+			Color textColor = damageType?.DamageTextColor ?? Color.black;
+			
 			Vector3 randomizedPosition = new(position.x + Random.Range(-0.5f, 0.5f), position.y, position.z + Random.Range(-0.5f, 0.5f));
-			DamageText damageText = _damageTextFactory.CreateDamageText(randomizedPosition, damageType.DamageTextColor, damageAmount);
+			DamageText damageText = _damageTextFactory.CreateDamageText(randomizedPosition, textColor, damageAmount);
 			_damageTexts.Enqueue((damageText, Time.time));
 		}
 
