@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using GameWorld.Characters.Wizards;
 using GameWorld.Characters.Wizards.Tasks;
 using TaskSystem;
 using TaskSystem.Interfaces;
 using UnityEngine;
 
-namespace GameWorld.Settlements
+namespace GameWorld.Characters.Wizards.Managers
 {
 	internal class WizardTaskManager : MonoBehaviour
 	{

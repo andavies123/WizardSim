@@ -3,6 +3,7 @@ using GeneralBehaviours;
 using StateMachines;
 using UnityEngine;
 using GameWorld.Characters.Wizards;
+using GameWorld.Characters.Wizards.Managers;
 using GameWorld.Settlements;
 
 namespace GameWorld.Characters.Enemies

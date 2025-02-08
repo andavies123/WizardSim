@@ -1,11 +1,10 @@
-﻿using GameWorld.Characters.Wizards;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using UnityEngine;
 using Utilities.Attributes;
 
-namespace GameWorld.Settlements
+namespace GameWorld.Characters.Wizards.Managers
 {
 	internal class WizardRepo : MonoBehaviour
 	{

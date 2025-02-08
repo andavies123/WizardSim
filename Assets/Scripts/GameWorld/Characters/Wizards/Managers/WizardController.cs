@@ -1,14 +1,12 @@
 using System;
 using Game;
-using GameWorld.Characters;
-using GameWorld.Characters.Wizards;
 using GameWorld.Characters.Wizards.Tasks;
 using GameWorld.Tiles;
 using GeneralBehaviours.Utilities.ContextMenuBuilders;
 using UnityEngine;
 using Utilities.Attributes;
 
-namespace GameWorld.Settlements
+namespace GameWorld.Characters.Wizards.Managers
 {
 	[DisallowMultipleComponent]
 	public class WizardController : MonoBehaviour

@@ -6,7 +6,7 @@ using TaskSystem.Interfaces;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-namespace TaskSystem_UnitTests
+namespace Unit_Tests.TaskSystem_UnitTests
 {
 	[TestFixture]
 	public class TaskManagerTests

@@ -1,4 +1,5 @@
-﻿using UI.TaskManagement.WizardEventArgs;
+﻿using GameWorld.Characters.Wizards.Managers;
+using UI.TaskManagement.WizardEventArgs;
 using UnityEngine;
 using GameWorld.Characters.Wizards.Tasks;
 using GameWorld.Settlements;

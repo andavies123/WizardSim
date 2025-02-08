@@ -1,6 +1,7 @@
 using Extensions;
 using GameWorld;
 using GameWorld.Characters.Wizards;
+using GameWorld.Characters.Wizards.Managers;
 using GameWorld.Settlements;
 using GameWorld.WorldObjects;
 using Unity.Plastic.Newtonsoft.Json;

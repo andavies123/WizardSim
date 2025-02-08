@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Extensions;
 using Game;
+using GameWorld.Characters.Wizards.Managers;
 using GameWorld.Characters.Wizards.Tasks;
 using GameWorld.Messages;
 using GameWorld.Spawners;

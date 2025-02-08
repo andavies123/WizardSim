@@ -1,13 +1,13 @@
 ﻿using System;
 using AndysTools.GameWorldTimeManagement.Runtime;
-using GameWorld.Characters.Wizards;
+using GameWorld.Settlements;
 using GeneralBehaviours.ShaderManagers;
 using UnityEngine;
 using Utilities;
 using Utilities.Attributes;
 using Random = UnityEngine.Random;
 
-namespace GameWorld.Settlements
+namespace GameWorld.Characters.Wizards.Managers
 {
 	internal class WizardFactory : MonoBehaviour
 	{
