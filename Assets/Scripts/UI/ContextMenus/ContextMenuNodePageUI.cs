@@ -59,12 +59,18 @@ namespace UI.ContextMenus
 			
 			// Don't want to add the back option to the first group
 			if (treeIndex > 1)
-				_menuNodeUIs.Add(CreateMenuItemUI(_backMenuItem));
+			{
+				ContextMenuNodeUI menuNodeUI = CreateMenuNodeUI(_backMenuItem);
+				if (menuNodeUI)
+					_menuNodeUIs.Add(menuNodeUI);
+			}
 			
 			// Loop through the rest
 			foreach (ContextMenuTreeNode treeNode in treeNodes)
 			{
-				_menuNodeUIs.Add(CreateMenuItemUI(treeNode));
+				ContextMenuNodeUI menuNodeUI = CreateMenuNodeUI(treeNode);
+				if (menuNodeUI)
+					_menuNodeUIs.Add(menuNodeUI);
 			}
 
 			FocusedMenuItemIndex = 0;
@@ -87,12 +93,15 @@ namespace UI.ContextMenus
 			_menuNodeUIs.Clear();
 		}
 
-		private ContextMenuNodeUI CreateMenuItemUI(ContextMenuTreeNode treeNode)
+		private ContextMenuNodeUI CreateMenuNodeUI(ContextMenuTreeNode treeNode)
 		{
-			ContextMenuNodeUI menuNodeUI = Instantiate(contextMenuNodePrefab, transform);
-			
+			// Its ok if this is null, we won't always have a user (group nodes/back)
 			_contextMenuUITreeMap.TryGetUserFromNode(treeNode, out IContextMenuUser user);
+			
+			if (!treeNode.IsVisibleFunc.Invoke(user))
+				return null;
             
+			ContextMenuNodeUI menuNodeUI = Instantiate(contextMenuNodePrefab, transform);
 			menuNodeUI.Initialize(treeNode, user, _styling, GetItemTypeFromMenuItem(treeNode));
 			menuNodeUI.Selected += OnContextMenuItemSelected;
 			menuNodeUI.FocusRequested += OnContextMenuItemFocusRequested;

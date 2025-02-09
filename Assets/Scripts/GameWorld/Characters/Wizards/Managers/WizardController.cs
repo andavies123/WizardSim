@@ -74,6 +74,14 @@ namespace GameWorld.Characters.Wizards.Managers
 				Globals.ContextMenuInjections.InjectContextMenuOption<Tile>(
 					ContextMenuBuilder.BuildPath("Spawn Wizard", wizardType.ToString()),
 					tile => SpawnWizard(tile, wizardType));
+				
+				if (wizardType != WizardType.Undecided)
+				{
+					Globals.ContextMenuInjections.InjectContextMenuOption<Wizard>(
+						ContextMenuBuilder.BuildPath("Assign", wizardType.ToString()),
+						menuClickCallback: wizard => factory.SetWizardType(wizard, wizardType),
+						isVisibleFunc: wizard => wizard.WizardType == WizardType.Undecided);
+				}
 			}
 			
 			Globals.ContextMenuInjections.InjectContextMenuOption<Wizard>(

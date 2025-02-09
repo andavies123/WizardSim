@@ -21,7 +21,7 @@ namespace UI.ContextMenus
 			
 			foreach (string textNode in textNodes)
 			{
-				childNode = localRoot.ChildrenNodes.FirstOrDefault(child => child.Text == textNode);
+				childNode = localRoot.Children.FirstOrDefault(child => child.Text == textNode);
 
 				if (childNode == null)
 				{
@@ -47,15 +47,22 @@ namespace UI.ContextMenus
 		public Func<IContextMenuUser, bool> IsVisibleFunc { get; set; } = AlwaysTrue;
 		
 		public ContextMenuTreeNode ParentNode { get; set; }
-		public List<ContextMenuTreeNode> ChildrenNodes { get; set; } = new();
+		public List<ContextMenuTreeNode> Children { get; set; } = new();
 		
-		public bool IsLeafNode => ChildrenNodes.Count == 0;
-		public bool IsParentNode => ParentNode == null;
+		public bool IsLeafNode => Children.Count == 0;
 
 		public void AddChild(ContextMenuTreeNode childNode)
 		{
 			childNode.ParentNode = this;
-			ChildrenNodes.Add(childNode);
+			Children.Add(childNode);
+		}
+
+		public bool CalculateVisibility(IContextMenuUser user)
+		{
+			if (IsLeafNode)
+				return IsVisibleFunc.Invoke(user);
+
+			return Children.Any(child => child.CalculateVisibility(user));
 		}
 	}
 }

@@ -26,13 +26,12 @@ namespace UI.ContextMenus
 
 		private void BuildMap(IContextMenuUser menuUser, ContextMenuTreeNode treeNode)
 		{
+			_usersByNode.TryAdd(treeNode, menuUser);
+			
 			if (treeNode.IsLeafNode)
-			{
-				_usersByNode.TryAdd(treeNode, menuUser);
 				return;
-			}
 
-			foreach (ContextMenuTreeNode childNode in treeNode.ChildrenNodes)
+			foreach (ContextMenuTreeNode childNode in treeNode.Children)
 			{
 				BuildMap(menuUser, childNode);
 			}

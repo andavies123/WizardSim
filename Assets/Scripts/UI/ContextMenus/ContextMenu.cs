@@ -81,7 +81,7 @@ namespace UI.ContextMenus
 			_rootNode = new ContextMenuTreeNode();
 			_userTreePairs.ForEach(userNodePair =>
 			{
-				userNodePair.rootNode.ChildrenNodes.ForEach(childNode => _rootNode.AddChild(childNode));
+				userNodePair.rootNode.Children.ForEach(childNode => _rootNode.AddChild(childNode));
 			});
 
 			if (!_currentMenuNodePage)
@@ -110,9 +110,7 @@ namespace UI.ContextMenus
 		private void GoBackOneMenu()
 		{
 			if (_menuNodes.TryRemoveLast(out _))
-			{
 				UpdateCurrentMenuGroup();
-			}
 		}
 
 		private void UpdateCurrentMenuGroup()
@@ -130,8 +128,14 @@ namespace UI.ContextMenus
 				Debug.LogWarning("Unable to create context menu. Current menu item is a leaf node...");
 				return;
 			}
+
+			List<ContextMenuTreeNode> children = currentTreeNode.Children.Where(child =>
+			{
+				_contextMenuUITreeMap.TryGetUserFromNode(child, out IContextMenuUser user);
+				return child.CalculateVisibility(user);
+			}).ToList();
 			
-			_currentMenuNodePage.SetMenuItems(currentTreeNode.ChildrenNodes, _menuNodes.Count);
+			_currentMenuNodePage.SetMenuItems(children, _menuNodes.Count);
 			UpdatePathText();
 		}
 

@@ -19,7 +19,6 @@ Todo: Working on certain tasks should work towards upgrading these Attributes
 General Wizard
 ==============
 Todo: A new wizard should start out as an undecided wizard
-Todo: The player should be able to assign a wizard a profession
 
 General Wizard Tasks
 ====================
@@ -86,10 +85,6 @@ Damage Numbers
 ==============
 Todo: Damage numbers should pop up when health is healed
 Todo: Damage numbers should have different colors based on damage vs heal
-Done: Damage numbers should pop up with a bit of an offset
-Done: Damage numbers should move upwards once created
-Done: Damage numbers should shrink gradually
-Done: Damage numbers should shrink using a parabola formula so its not constant but faster near the end
 
 Game Flow
 =========
@@ -105,12 +100,6 @@ Other
 Todo: Add an attribute that automatically grabs a GetComponent for me
 Todo: Try and update the other loading resources to use the updated ResourceRepo
 Todo: Add GameTime into managers rather than inside of world
-Done: Add World into managers rather than using dependencies
-Done: Change name of Managers to something that holds managers and non managers
-
-Context Menu Item Injection
-===========================
-Todo: Move context menu injections into their own class to clean up some of these classes
 
 Context Menu
 ============

@@ -33,8 +33,8 @@ namespace GameWorld.Characters.Wizards.Managers
 		public Wizard CreateNewWizard(Vector3 spawnPosition, WizardType wizardType)
 		{
 			Wizard wizard = Instantiate(wizardPrefab, transform, true);
+			SetWizardType(wizard, wizardType);
 			wizard.Transform.position = spawnPosition;
-			wizard.WizardType = wizardType;
 			wizard.Attributes = new WizardAttributes
 			{
 				Strength = { CurrentLevel = Random.Range(0, 5) },
@@ -46,8 +46,13 @@ namespace GameWorld.Characters.Wizards.Managers
 				Courage = { CurrentLevel = Random.Range(0, 5) }
 			};
 			wizard.InitializeWizard(NameGenerator.GetNewName(), settlement, gameWorldTime);
-			wizard.GetComponent<InteractionShaderManager>().OverrideBaseColor(GetColorFromWizardType(wizardType));
 			return wizard;
+		}
+
+		public void SetWizardType(Wizard wizard, WizardType wizardType)
+		{
+			wizard.WizardType = wizardType;
+			wizard.GetComponent<InteractionShaderManager>().OverrideBaseColor(GetColorFromWizardType(wizardType));
 		}
 		
 		private void Start()

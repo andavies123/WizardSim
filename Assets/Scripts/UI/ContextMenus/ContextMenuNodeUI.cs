@@ -52,6 +52,7 @@ namespace UI.ContextMenus
 		{
 			if (ContextMenuUser != null)
 				_isEnabled = TreeNode.IsEnabledFunc.Invoke(ContextMenuUser);
+				
 			UpdateBackgroundColor();
 			UpdateTextColor();
 		}
