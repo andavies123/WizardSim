@@ -24,6 +24,7 @@ namespace GameWorld.Builders
 	{
 		[SerializeField, Required] private World world;
 		[SerializeField, Required] private Transform worldObjectParent;
+		[SerializeField, Required] private Transform playerCamera;
 
 		[Header("Settings")]
 		[SerializeField, Required] private int initialGenerationRadius = 5;
@@ -34,8 +35,8 @@ namespace GameWorld.Builders
 		[SerializeField, Required] private WizardTaskManager wizardTaskManager;
 
 		private readonly List<ISubscription> _subscriptions = new();
-
 		private readonly Dictionary<string, IWorldObjectFactory> _worldObjectFactories = new();
+		private readonly PlayerCameraChunkManager _playerCameraChunkManager = new();
 		
 		private MessageBroker _messageBroker;
 		private SubscriptionBuilder _subBuilder;
@@ -43,6 +44,8 @@ namespace GameWorld.Builders
 		
 		private void Awake()
 		{
+			_playerCameraChunkManager.ChunkBelowChanged += OnChunkBelowCameraChanged;
+			
 			_worldObjectPreviewManager = new WorldObjectPreviewManager(world, transform);
 
 			_messageBroker = Dependencies.Get<MessageBroker>();
@@ -74,11 +77,19 @@ namespace GameWorld.Builders
 			GenerateWorld();
 		}
 
+		private void Update()
+		{
+			// Todo: Update the current chunk below the camera
+			// Todo: Update the current rotation quadrant of the camera
+		}
+
 		private void OnDestroy()
 		{
 			_subscriptions.ForEach(_messageBroker.Unsubscribe);
 			
 			_worldObjectPreviewManager.UnsubscribeFromMessages();
+			
+			_playerCameraChunkManager.ChunkBelowChanged -= OnChunkBelowCameraChanged;
 		}
 
 		private void GenerateWorld()
@@ -235,6 +246,11 @@ namespace GameWorld.Builders
 			return true;
 		}
 
+		private void OnChunkBelowCameraChanged(Chunk newChunkBelowCamera)
+		{
+			print($"Chunk below camera changed: {newChunkBelowCamera.Position}");
+		}
+
 		private void InjectContextMenuActions()
 		{
 			// Rock context menu injections
@@ -274,6 +290,26 @@ namespace GameWorld.Builders
 				Sender = this,
 				Window = UIWindow.TownHallWindow
 			});
+		}
+	}
+	
+	public class PlayerCameraChunkManager
+	{
+		private Chunk _chunkBelow;
+        
+		public event Action<Chunk> ChunkBelowChanged;
+
+		public Chunk ChunkBelow
+		{
+			get => _chunkBelow;
+			set
+			{
+				if (_chunkBelow != value)
+				{
+					_chunkBelow = value;
+					ChunkBelowChanged?.Invoke(_chunkBelow);
+				}
+			}
 		}
 	}
 }
