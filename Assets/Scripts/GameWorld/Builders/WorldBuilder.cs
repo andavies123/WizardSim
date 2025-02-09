@@ -13,6 +13,8 @@ using UnityEngine;
 using Utilities;
 using GameWorld.WorldObjects.Rocks;
 using GeneralBehaviours.Utilities.ContextMenuBuilders;
+using Messages.UI;
+using Messages.UI.Enums;
 using MessagingSystem;
 using Utilities.Attributes;
 
@@ -244,6 +246,16 @@ namespace GameWorld.Builders
 			Globals.ContextMenuInjections.InjectContextMenuOption<Rock>(
 				ContextMenuBuilder.BuildPath("Destroy", "Surrounding"),
 				rock => wizardTaskManager.AddTask(new DestroyRocksTask(GetSurroundingRocks(rock.transform.position))));
+			
+			// Town Hall context menu injections
+			
+			Globals.ContextMenuInjections.InjectContextMenuOption<TownHall>(
+				ContextMenuBuilder.BuildPath("Open Menu"),
+				_ => OpenTownHallMenu());
+
+			Globals.ContextMenuInjections.InjectContextMenuOption<TownHall>(
+				ContextMenuBuilder.BuildPath("Print Info"),
+				_ => print("I'M SORRY I DON'T HAVE ANY INFO FOR YOU"));
 		}
 		
 		private static List<Rock> GetSurroundingRocks(Vector3 initialRockPosition)
@@ -253,6 +265,15 @@ namespace GameWorld.Builders
 			return hits.Select(hit => hit.GetComponentInParent<Rock>())
 				.Where(rock => rock)
 				.ToList();
+		}
+		
+		private void OpenTownHallMenu()
+		{
+			_messageBroker.PublishSingle(new OpenUIRequest
+			{
+				Sender = this,
+				Window = UIWindow.TownHallWindow
+			});
 		}
 	}
 }

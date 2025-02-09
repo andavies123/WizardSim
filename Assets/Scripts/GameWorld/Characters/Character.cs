@@ -2,19 +2,16 @@
 using GeneralBehaviours.Damageable;
 using Extensions;
 using GeneralBehaviours.HealthBehaviours;
-using GeneralBehaviours.Utilities.ContextMenuBuilders;
 using UI;
 using UI.ContextMenus;
 using UnityEngine;
 using GameWorld.Characters.GeneralComponents;
-using GameWorld.Characters.Wizards;
 
 namespace GameWorld.Characters
 {
 	[SelectionBase]
 	[DisallowMultipleComponent]
 	[RequireComponent(typeof(CharacterDeath))]
-	[RequireComponent(typeof(ContextMenuUser))]
 	[RequireComponent(typeof(Damageable))]
 	[RequireComponent(typeof(HealthComponent))]
 	[RequireComponent(typeof(Interactable))]
@@ -33,7 +30,6 @@ namespace GameWorld.Characters
 		public Damageable Damageable { get; private set; }
 		public CharacterDeath Death { get; private set; }
 		public Movement Movement { get; private set; }
-		protected ContextMenuUser ContextMenuUser { get; private set; }
 		protected Interactable Interactable { get; private set; }
 
 		public Vector3 Position => Transform.position;
@@ -46,7 +42,6 @@ namespace GameWorld.Characters
 		protected virtual void Awake()
 		{
 			Transform = transform;
-			ContextMenuUser = GetComponent<ContextMenuUser>();
 			Damageable = GetComponent<Damageable>();
 			Health = GetComponent<HealthComponent>();
 			Death = GetComponent<CharacterDeath>();

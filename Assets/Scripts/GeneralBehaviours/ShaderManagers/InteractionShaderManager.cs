@@ -1,7 +1,5 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using UI;
-using UI.ContextMenus;
 using UnityEngine;
 using Utilities;
 
@@ -22,7 +20,6 @@ namespace GeneralBehaviours.ShaderManagers
 		[Header("Components")]
 		[SerializeField] private MeshRenderer meshRenderer;
 		[SerializeField] private Interactable interactable;
-		[SerializeField] private ContextMenuUser contextMenuUser;
 
 		public void OverrideBaseColor(Color color)
 		{
@@ -46,26 +43,16 @@ namespace GeneralBehaviours.ShaderManagers
 			meshRenderer.material.SetColor(BaseColor, baseColor);
 			
 			SetIsHoveredShaderValue(interactable && interactable.IsHovered);
-			SetIsContextMenuOpenShaderValue(contextMenuUser && contextMenuUser.IsOpen);
 
 			if (interactable)
 				interactable.PropertyChanged += OnInteractablePropertyChanged;
-
-			if (contextMenuUser)
-				contextMenuUser.IsContextMenuOpenValueChanged += OnIsContextMenuOpenValueChanged;
 		}
 
 		private void OnDisable()
 		{
 			if (interactable)
 				interactable.PropertyChanged -= OnInteractablePropertyChanged;
-			
-			if (contextMenuUser)
-				contextMenuUser.IsContextMenuOpenValueChanged -= OnIsContextMenuOpenValueChanged;
 		}
-
-		private void OnIsContextMenuOpenValueChanged(object sender, EventArgs args) => 
-			SetIsContextMenuOpenShaderValue(contextMenuUser.IsOpen);
 		
 		private void OnInteractablePropertyChanged(object sender, PropertyChangedEventArgs args)
 		{

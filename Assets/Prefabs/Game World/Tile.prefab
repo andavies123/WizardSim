@@ -116,7 +116,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2859662155011041617}
   - component: {fileID: -5100131755638846822}
-  - component: {fileID: 1938675790559664110}
   - component: {fileID: 5228919932028046421}
   - component: {fileID: 4250150672241257233}
   - component: {fileID: -72692409299606396}
@@ -159,19 +158,6 @@ MonoBehaviour:
   - {r: 0.07640907, g: 0.5943396, b: 0.008410451, a: 1}
   - {r: 0.06163133, g: 0.38679248, b: 0.020069422, a: 1}
   - {r: 0.23004703, g: 0.3584906, b: 0.15726237, a: 1}
---- !u!114 &1938675790559664110
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6905772132014365446}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77f396fb3a734918ba467592d0b07b8e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectType: 
 --- !u!114 &5228919932028046421
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -200,7 +186,6 @@ MonoBehaviour:
   baseColor: {r: 0.019607844, g: 0.4156863, b: 0, a: 1}
   meshRenderer: {fileID: 2235466628899657055}
   interactable: {fileID: 5228919932028046421}
-  contextMenuUser: {fileID: 1938675790559664110}
 --- !u!54 &-72692409299606396
 Rigidbody:
   m_ObjectHideFlags: 0

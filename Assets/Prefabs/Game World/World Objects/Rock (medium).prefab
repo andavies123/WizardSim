@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 549436623565192771}
   - component: {fileID: 346430161919122289}
   - component: {fileID: -2688453110167885317}
-  - component: {fileID: 834820806091084490}
   - component: {fileID: 4090576990393350653}
   - component: {fileID: -7084425321684881284}
   - component: {fileID: 259842188948108905}
@@ -76,19 +75,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b300eabee1624c15a8fee72b4ef559af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &834820806091084490
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9090978207146980024}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 77f396fb3a734918ba467592d0b07b8e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectType: 
 --- !u!114 &4090576990393350653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,7 +104,6 @@ MonoBehaviour:
   baseColor: {r: 0.24123353, g: 0.31531477, b: 0.3679245, a: 1}
   meshRenderer: {fileID: 578144838169377296}
   interactable: {fileID: -2688453110167885317}
-  contextMenuUser: {fileID: 834820806091084490}
 --- !u!54 &259842188948108905
 Rigidbody:
   m_ObjectHideFlags: 0
