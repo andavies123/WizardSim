@@ -80,6 +80,11 @@ namespace GameWorld.Builders
 		private void Update()
 		{
 			// Todo: Update the current chunk below the camera
+			Vector3 cameraPosition = playerCamera.position;
+
+			_playerCameraChunkManager.ChunkBelow =
+				world.ChunkPositionFromWorldPosition(new Vector2(cameraPosition.x, cameraPosition.z));
+
 			// Todo: Update the current rotation quadrant of the camera
 		}
 
@@ -90,6 +95,29 @@ namespace GameWorld.Builders
 			_worldObjectPreviewManager.UnsubscribeFromMessages();
 			
 			_playerCameraChunkManager.ChunkBelowChanged -= OnChunkBelowCameraChanged;
+		}
+
+		private void LoadChunks()
+		{
+			
+		}
+
+		private void LoadChunk(Vector2Int chunkPosition)
+		{
+			if (!world.Chunks.TryGetValue(chunkPosition, out Chunk chunk))
+			{
+				// Todo: Create chunk
+			}
+			
+			// Todo: Make sure the chunk is visible
+		}
+
+		private void UnloadChunk(Vector2Int chunkPosition)
+		{
+			if (world.Chunks.TryGetValue(chunkPosition, out Chunk chunk))
+			{
+				
+			}
 		}
 
 		private void GenerateWorld()
@@ -246,9 +274,9 @@ namespace GameWorld.Builders
 			return true;
 		}
 
-		private void OnChunkBelowCameraChanged(Chunk newChunkBelowCamera)
+		private void OnChunkBelowCameraChanged(Vector2Int newChunkBelowCamera)
 		{
-			print($"Chunk below camera changed: {newChunkBelowCamera.Position}");
+			print($"Chunk below camera changed: {newChunkBelowCamera}");
 		}
 
 		private void InjectContextMenuActions()
@@ -291,23 +319,23 @@ namespace GameWorld.Builders
 				Window = UIWindow.TownHallWindow
 			});
 		}
-	}
-	
-	public class PlayerCameraChunkManager
-	{
-		private Chunk _chunkBelow;
-        
-		public event Action<Chunk> ChunkBelowChanged;
-
-		public Chunk ChunkBelow
+		
+		private class PlayerCameraChunkManager
 		{
-			get => _chunkBelow;
-			set
+			private Vector2Int _chunkBelow;
+        
+			public event Action<Vector2Int> ChunkBelowChanged;
+
+			public Vector2Int ChunkBelow
 			{
-				if (_chunkBelow != value)
+				get => _chunkBelow;
+				set
 				{
-					_chunkBelow = value;
-					ChunkBelowChanged?.Invoke(_chunkBelow);
+					if (_chunkBelow != value)
+					{
+						_chunkBelow = value;
+						ChunkBelowChanged?.Invoke(_chunkBelow);
+					}
 				}
 			}
 		}
