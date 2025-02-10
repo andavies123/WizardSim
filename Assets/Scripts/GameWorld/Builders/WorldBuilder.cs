@@ -37,6 +37,7 @@ namespace GameWorld.Builders
 		private readonly List<ISubscription> _subscriptions = new();
 		private readonly Dictionary<string, IWorldObjectFactory> _worldObjectFactories = new();
 		private readonly PlayerCameraChunkManager _playerCameraChunkManager = new();
+		private readonly HashSet<Vector2Int> _loadedChunks = new();
 		
 		private MessageBroker _messageBroker;
 		private SubscriptionBuilder _subBuilder;
@@ -97,27 +98,51 @@ namespace GameWorld.Builders
 			_playerCameraChunkManager.ChunkBelowChanged -= OnChunkBelowCameraChanged;
 		}
 
-		private void LoadChunks()
+		private void LoadChunks(Vector2Int from, Vector2Int to)
 		{
-			
+			for (int x = Math.Min(from.x, to.x); x < Math.Max(from.x, to.x); x++)
+			{
+				for (int y = Math.Min(from.y, to.y); y < Math.Max(from.y, to.y); y++)
+				{
+					LoadChunk(new Vector2Int(x, y));
+				}
+			}
 		}
-
+        
 		private void LoadChunk(Vector2Int chunkPosition)
 		{
 			if (!world.Chunks.TryGetValue(chunkPosition, out Chunk chunk))
 			{
-				// Todo: Create chunk
+				chunk = CreateChunk(chunkPosition);
+				world.AddChunk(chunk);
 			}
 			
-			// Todo: Make sure the chunk is visible
+			chunk.gameObject.SetActive(true);
+			_loadedChunks.Add(chunkPosition);
 		}
 
 		private void UnloadChunk(Vector2Int chunkPosition)
 		{
 			if (world.Chunks.TryGetValue(chunkPosition, out Chunk chunk))
 			{
-				
+				chunk.gameObject.SetActive(false);
 			}
+		}
+
+		private Chunk CreateChunk(Vector2Int chunkPosition)
+		{
+			Vector3 spawnPosition = new(chunkPosition.x, 0, chunkPosition.y);
+			Vector3 chunkSize = new(world.WorldDetails.ChunkSize.x, 0, world.WorldDetails.ChunkSize.y);
+			spawnPosition.Scale(chunkSize);
+					
+			Chunk chunk = Instantiate(world.WorldDetails.ChunkPrefab, world.transform).GetComponent<Chunk>();
+
+			Transform chunkTransform = chunk.transform;
+			chunkTransform.localPosition = spawnPosition;
+			chunk.Initialize(world, chunkPosition, GenerateTilesForChunk(chunk, chunkTransform));
+			GenerateRocks(chunk);
+
+			return chunk;
 		}
 
 		private void GenerateWorld()
@@ -127,27 +152,7 @@ namespace GameWorld.Builders
 			if (!world.WorldDetails)
 				throw new NullReferenceException($"Unable to Generate World. {nameof(world.WorldDetails)} object is null");
 			
-			Transform worldTransform = world.transform; // Added so world.transform isn't called for each loop iteration
-			
-			for (int x = -initialGenerationRadius + 1; x < initialGenerationRadius; x++)
-			{
-				for (int z = -initialGenerationRadius + 1; z < initialGenerationRadius; z++)
-				{
-					Vector2Int chunkPosition = new(x, z);
-					Vector3 spawnPosition = new(x, 0, z);
-					Vector3 chunkSize = new(world.WorldDetails.ChunkSize.x, 0, world.WorldDetails.ChunkSize.y);
-					spawnPosition.Scale(chunkSize);
-					
-					Chunk chunk = Instantiate(world.WorldDetails.ChunkPrefab, worldTransform).GetComponent<Chunk>();
-
-					Transform chunkTransform = chunk.transform;
-					chunkTransform.localPosition = spawnPosition;
-					chunk.Initialize(world, chunkPosition, GenerateTilesForChunk(chunk, chunkTransform));
-					GenerateRocks(chunk);
-					
-					world.AddChunk(chunk);
-				}
-			}
+			LoadChunks(new Vector2Int(-initialGenerationRadius, -initialGenerationRadius), new Vector2Int(initialGenerationRadius, initialGenerationRadius));
 		}
 
 		private Tile[,] GenerateTilesForChunk(Chunk parentChunk, Transform parent)
@@ -276,7 +281,23 @@ namespace GameWorld.Builders
 
 		private void OnChunkBelowCameraChanged(Vector2Int newChunkBelowCamera)
 		{
-			print($"Chunk below camera changed: {newChunkBelowCamera}");
+			Vector2Int loadFrom = new(newChunkBelowCamera.x - initialGenerationRadius, newChunkBelowCamera.y - initialGenerationRadius);
+			Vector2Int loadTo = new(newChunkBelowCamera.x + initialGenerationRadius, newChunkBelowCamera.y + initialGenerationRadius);
+
+			Vector2Int min = new(Math.Min(loadFrom.x, loadTo.x), Math.Min(loadFrom.y, loadTo.y));
+			Vector2Int max = new(Math.Max(loadFrom.x, loadTo.x), Math.Max(loadFrom.y, loadTo.y));
+			
+			// Unload chunks
+			foreach (Vector2Int loadedChunkPosition in _loadedChunks)
+			{
+				if (loadedChunkPosition.x < min.x || loadedChunkPosition.x > max.x || loadedChunkPosition.y < min.y || loadedChunkPosition.y > max.y)
+				{
+					UnloadChunk(loadedChunkPosition);
+				}
+			}
+			
+			// Load chunks
+			LoadChunks(loadFrom, loadTo);
 		}
 
 		private void InjectContextMenuActions()
