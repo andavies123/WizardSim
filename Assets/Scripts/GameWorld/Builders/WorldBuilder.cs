@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Extensions;
@@ -80,7 +81,6 @@ namespace GameWorld.Builders
 
 		private void Update()
 		{
-			// Todo: Update the current chunk below the camera
 			Vector3 cameraPosition = playerCamera.position;
 
 			_playerCameraChunkManager.ChunkBelow =
@@ -98,19 +98,27 @@ namespace GameWorld.Builders
 			_playerCameraChunkManager.ChunkBelowChanged -= OnChunkBelowCameraChanged;
 		}
 
-		private void LoadChunks(Vector2Int from, Vector2Int to)
+		private IEnumerator LoadChunks(Vector2Int from, Vector2Int to)
 		{
 			for (int x = Math.Min(from.x, to.x); x < Math.Max(from.x, to.x); x++)
 			{
 				for (int y = Math.Min(from.y, to.y); y < Math.Max(from.y, to.y); y++)
 				{
-					LoadChunk(new Vector2Int(x, y));
+					Vector2Int chunkPosition = new(x, y);
+					if (!_loadedChunks.Contains(chunkPosition))
+					{
+						LoadChunk(new Vector2Int(x, y));
+						yield return new WaitForEndOfFrame();
+					}
 				}
 			}
 		}
         
 		private void LoadChunk(Vector2Int chunkPosition)
 		{
+			if (_loadedChunks.Contains(chunkPosition))
+				return;
+			
 			if (!world.Chunks.TryGetValue(chunkPosition, out Chunk chunk))
 			{
 				chunk = CreateChunk(chunkPosition);
@@ -123,9 +131,10 @@ namespace GameWorld.Builders
 
 		private void UnloadChunk(Vector2Int chunkPosition)
 		{
-			if (world.Chunks.TryGetValue(chunkPosition, out Chunk chunk))
+			if (_loadedChunks.Contains(chunkPosition) && world.Chunks.TryGetValue(chunkPosition, out Chunk chunk))
 			{
 				chunk.gameObject.SetActive(false);
+				_loadedChunks.Remove(chunkPosition);
 			}
 		}
 
@@ -152,7 +161,8 @@ namespace GameWorld.Builders
 			if (!world.WorldDetails)
 				throw new NullReferenceException($"Unable to Generate World. {nameof(world.WorldDetails)} object is null");
 			
-			LoadChunks(new Vector2Int(-initialGenerationRadius, -initialGenerationRadius), new Vector2Int(initialGenerationRadius, initialGenerationRadius));
+			var x = LoadChunks(new Vector2Int(-initialGenerationRadius, -initialGenerationRadius), new Vector2Int(initialGenerationRadius, initialGenerationRadius));
+			StartCoroutine(x);
 		}
 
 		private Tile[,] GenerateTilesForChunk(Chunk parentChunk, Transform parent)
@@ -288,7 +298,7 @@ namespace GameWorld.Builders
 			Vector2Int max = new(Math.Max(loadFrom.x, loadTo.x), Math.Max(loadFrom.y, loadTo.y));
 			
 			// Unload chunks
-			foreach (Vector2Int loadedChunkPosition in _loadedChunks)
+			foreach (Vector2Int loadedChunkPosition in _loadedChunks.ToList())
 			{
 				if (loadedChunkPosition.x < min.x || loadedChunkPosition.x > max.x || loadedChunkPosition.y < min.y || loadedChunkPosition.y > max.y)
 				{
@@ -297,7 +307,8 @@ namespace GameWorld.Builders
 			}
 			
 			// Load chunks
-			LoadChunks(loadFrom, loadTo);
+			var x = LoadChunks(loadFrom, loadTo);
+			StartCoroutine(x);
 		}
 
 		private void InjectContextMenuActions()
