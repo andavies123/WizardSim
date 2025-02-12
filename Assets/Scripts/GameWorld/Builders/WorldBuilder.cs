@@ -107,8 +107,8 @@ namespace GameWorld.Builders
 					Vector2Int chunkPosition = new(x, y);
 					if (!_loadedChunks.Contains(chunkPosition))
 					{
-						LoadChunk(new Vector2Int(x, y));
-						yield return new WaitForEndOfFrame();
+						LoadChunk(chunkPosition);
+						yield return null;
 					}
 				}
 			}
