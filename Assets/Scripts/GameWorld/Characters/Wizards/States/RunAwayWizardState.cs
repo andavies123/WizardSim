@@ -1,5 +1,5 @@
-﻿using GeneralBehaviours.Damageable;
-using System;
+﻿using System;
+using GeneralBehaviours.Damageables;
 using UnityEngine;
 
 namespace GameWorld.Characters.Wizards.States

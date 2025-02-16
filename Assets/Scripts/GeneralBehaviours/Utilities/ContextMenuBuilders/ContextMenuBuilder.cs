@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using Extensions;
 using Game;
+using GeneralBehaviours.Damageables;
 using GeneralBehaviours.HealthBehaviours;
 using UnityEngine;
 
@@ -12,40 +13,70 @@ namespace GeneralBehaviours.Utilities.ContextMenuBuilders
 	/// </summary>
 	public static class ContextMenuBuilder
 	{
-		private const string HealthPathItem = "Health";
+		private const string HealthGroupName = "Health";
+		private const string DamageableGroupName = "Damageable";
+		
 		private const string HealPathItem = "Heal";
 		private const string HurtPathItem = "Hurt";
 
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
 		private static void AddContextMenuItems()
 		{
-			AddHealthComponentContextMenuItems();
+			//AddHealthComponentContextMenuItems();
+			AddDamageableComponentContextMenuItems();
 		}
         
 		private static void AddHealthComponentContextMenuItems()
 		{
 			Globals.ContextMenuInjections.InjectContextMenuOption<HealthComponent>(
-				BuildPath(HealthPathItem, HealPathItem, "25%"),
+				BuildPath(HealthGroupName, HealPathItem, "25%"),
 				health => health.IncreaseHealthByPercent(0.25f),
 				health => health.IsNotAtMaxHealth(),
 				_ => true);
 			
 			Globals.ContextMenuInjections.InjectContextMenuOption<HealthComponent>(
-				BuildPath(HealthPathItem, HurtPathItem, "25%"),
+				BuildPath(HealthGroupName, HurtPathItem, "25%"),
 				health => health.DecreaseHealthByPercent(0.25f),
 				health => health.IsNotAtMinHealth(),
 				_ => true);
 			
 			Globals.ContextMenuInjections.InjectContextMenuOption<HealthComponent>(
-				BuildPath(HealthPathItem, HealPathItem, "100%"),
+				BuildPath(HealthGroupName, HealPathItem, "100%"),
 				health => health.IncreaseHealthByPercent(1f),
 				health => health.IsNotAtMaxHealth(),
 				_ => true);
 			
 			Globals.ContextMenuInjections.InjectContextMenuOption<HealthComponent>(
-				BuildPath(HealthPathItem, HurtPathItem, "100%"),
+				BuildPath(HealthGroupName, HurtPathItem, "100%"),
 				health => health.DecreaseHealthByPercent(1f),
 				health => health.IsNotAtMinHealth(),
+				_ => true);
+		}
+		
+		private static void AddDamageableComponentContextMenuItems()
+		{
+			Globals.ContextMenuInjections.InjectContextMenuOption<Damageable>(
+				BuildPath(DamageableGroupName, HealPathItem, "25%"),
+				damageable => damageable.DealDamage(-damageable.Health.MaxHealth/4, null, null),
+				damageable => damageable.Health.IsNotAtMaxHealth(),
+				_ => true);
+			
+			Globals.ContextMenuInjections.InjectContextMenuOption<Damageable>(
+				BuildPath(DamageableGroupName, HurtPathItem, "25%"),
+				damageable => damageable.DealDamage(damageable.Health.MaxHealth/4, null, null),
+				damageable => damageable.Health.IsNotAtMinHealth(),
+				_ => true);
+			
+			Globals.ContextMenuInjections.InjectContextMenuOption<Damageable>(
+				BuildPath(DamageableGroupName, HealPathItem, "100%"),
+				damageable => damageable.DealDamage(-damageable.Health.MaxHealth, null, null),
+				damageable => damageable.Health.IsNotAtMaxHealth(),
+				_ => true);
+			
+			Globals.ContextMenuInjections.InjectContextMenuOption<Damageable>(
+				BuildPath(DamageableGroupName, HurtPathItem, "100%"),
+				damageable => damageable.DealDamage(damageable.Health.MaxHealth, null, null),
+				damageable => damageable.Health.IsNotAtMinHealth(),
 				_ => true);
 		}
 

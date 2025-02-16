@@ -2,7 +2,7 @@
 using Extensions;
 using Game;
 using GameWorld.WorldResources;
-using GeneralBehaviours.Damageable;
+using GeneralBehaviours.Damageables;
 using GeneralBehaviours.HealthBehaviours;
 using GeneralBehaviours.ShaderManagers;
 using GeneralClasses.Health;
@@ -67,7 +67,6 @@ namespace GameWorld.WorldObjects
 			{
 				stockpile.AddResources(resource, 1);
 			});
-			
 			Destroy(gameObject);
 		}
 	}

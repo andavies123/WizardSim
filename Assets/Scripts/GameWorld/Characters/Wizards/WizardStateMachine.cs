@@ -1,9 +1,9 @@
 ﻿using GeneralBehaviours;
-using GeneralBehaviours.Damageable;
 using StateMachines;
 using UnityEngine;
 using GameWorld.Characters.Wizards.States;
 using GameWorld.Characters.States;
+using GeneralBehaviours.Damageables;
 
 namespace GameWorld.Characters.Wizards
 {

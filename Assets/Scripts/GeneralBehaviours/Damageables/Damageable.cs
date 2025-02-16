@@ -1,16 +1,17 @@
-﻿using GameWorld.Characters;
-using GeneralBehaviours.HealthBehaviours;
-using System;
+﻿using System;
 using DamageTypes;
 using Game;
+using GameWorld.Characters;
+using GeneralBehaviours.HealthBehaviours;
+using UI.ContextMenus;
 using UnityEngine;
 
-namespace GeneralBehaviours.Damageable
+namespace GeneralBehaviours.Damageables
 {
 	[RequireComponent(typeof(HealthComponent))]
-	public class Damageable : MonoBehaviour
+	public class Damageable : MonoBehaviour, IContextMenuUser
 	{
-		private HealthComponent _health;
+		public HealthComponent Health { get; private set; }
 
 		/// <summary>
 		/// Raised when this object received damage greater than 0
@@ -20,18 +21,18 @@ namespace GeneralBehaviours.Damageable
 
 		public void DealDamage(float damageAmount, DamageType? damageType, Character damageDealer)
 		{
-			lock (_health)
+			lock (Health)
 			{
-				if (_health.IsAtMinHealth || damageAmount <= 0f)
+				if (Health.IsAtMinHealth || damageAmount <= 0f)
 				{
 					// We don't need to progress further if any of the above cases are true
 					return;
 				}
 
 				// Cache the health before hand so we can calculate the literal damage that was dealt
-				float beforeHealth = _health.CurrentHealth;
-				_health.CurrentHealth -= damageAmount;
-				float damageReceived = beforeHealth - _health.CurrentHealth;
+				float beforeHealth = Health.CurrentHealth;
+				Health.CurrentHealth -= damageAmount;
+				float damageReceived = beforeHealth - Health.CurrentHealth;
 
 				// Raise any necessary events
 				if (damageReceived > 0)
@@ -40,7 +41,7 @@ namespace GeneralBehaviours.Damageable
 					DamageReceived?.Invoke(this, new DamageReceivedEventArgs(damageDealer, damageReceived));
 				}
 
-				if (_health.IsAtMinHealth)
+				if (Health.IsAtMinHealth)
 				{
 					Destroyed?.Invoke(this, new DamageableDestroyedEventArgs(damageDealer));
 				}
@@ -49,7 +50,7 @@ namespace GeneralBehaviours.Damageable
 
 		private void Awake()
 		{
-			_health = GetComponent<HealthComponent>();
+			Health = GetComponent<HealthComponent>();
 		}
 	}
 

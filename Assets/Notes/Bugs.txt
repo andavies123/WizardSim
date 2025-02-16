@@ -19,6 +19,6 @@ Hover Highlight
 ===============
 Bug: The highlight isn't working when hovering over rocks
 
-Rocks
-=====
-Bug: Under the rock context menu Health >> Hurt >> 100% the rock does not disappear
+WIZARD MOVEMENT
+===============
+Bug: When a wizard faces a rock, it tilts downward towards it

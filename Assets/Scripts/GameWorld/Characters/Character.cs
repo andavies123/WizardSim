@@ -1,11 +1,11 @@
 ﻿using System;
-using GeneralBehaviours.Damageable;
 using Extensions;
 using GeneralBehaviours.HealthBehaviours;
 using UI;
 using UI.ContextMenus;
 using UnityEngine;
 using GameWorld.Characters.GeneralComponents;
+using GeneralBehaviours.Damageables;
 
 namespace GameWorld.Characters
 {
