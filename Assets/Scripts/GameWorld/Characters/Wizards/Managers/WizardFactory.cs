@@ -51,7 +51,7 @@ namespace GameWorld.Characters.Wizards.Managers
 
 		public void SetWizardType(Wizard wizard, WizardType wizardType)
 		{
-			wizard.WizardType = wizardType;
+			wizard.SetWizardType(wizardType);
 			wizard.GetComponent<InteractionShaderManager>().OverrideBaseColor(GetColorFromWizardType(wizardType));
 		}
 		

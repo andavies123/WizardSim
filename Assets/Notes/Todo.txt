@@ -100,7 +100,6 @@ Other
 Todo: Add an attribute that automatically grabs a GetComponent for me
 Todo: Try and update the other loading resources to use the updated ResourceRepo
 Todo: Add GameTime into managers rather than inside of world
-Todo: Rock task should not contain the damage type. That should be held by the wizard
 
 Context Menu
 ============
@@ -110,3 +109,9 @@ Wizard Movement
 ===============
 Todo: Wizards should be assigned a tile position
 Todo: Wizards should move tile to tile rather than freely
+
+WIZARD TYPES
+============
+Todo: Wizard types should be held in an object
+Todo: WizardType objects should contain properties such as color, damage, etc..
+Todo: It should still be easy to switch wizard types

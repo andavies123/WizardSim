@@ -1,7 +1,5 @@
 ﻿using System;
-using DamageTypes;
 using Extensions;
-using Game;
 using GameWorld.WorldObjects;
 using GameWorld.WorldObjects.Rocks;
 using UnityEngine;
@@ -15,7 +13,6 @@ namespace GameWorld.Characters.Wizards.States
 		private readonly float _timeBetweenAttacks; // How long it takes to attack
 		
 		private Rock _rock; // The rock that is being targeted
-		private DamageType _earthDamageType; // The damage type of a rock
 		private float _attackTimer; // The current time since the last attack
 
 		public DestroyRockState(Wizard wizard) : base(wizard)
@@ -31,7 +28,6 @@ namespace GameWorld.Characters.Wizards.States
 		public void Initialize(Rock rock)
 		{
 			_rock = rock;
-			_earthDamageType = Dependencies.Get<ResourceRepo<DamageType>>().Repo["Earth"];
 			_rock.WorldObject.Destroyed += OnRockDestroyed;
 		}
 		
@@ -53,7 +49,10 @@ namespace GameWorld.Characters.Wizards.States
 			if (_rock)
 			{
 				_attackTimer = 0;
-				_rock.WorldObject.Damageable.DealDamage(Wizard.WizardStats.RockAttackDamage.Value, _earthDamageType, Wizard);
+				_rock.WorldObject.Damageable.DealDamage(
+					Wizard.WizardStats.RockAttackDamage.Value, 
+					Wizard.DamageType, 
+					Wizard);
 				
 				// Todo: Update the way a rock gets destroyed
 				if (_rock.WorldObject.Health.CurrentHealth <= 0)

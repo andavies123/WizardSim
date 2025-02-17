@@ -7,6 +7,7 @@ using UnityEngine;
 using GameWorld.Characters.Wizards.States;
 using System;
 using System.Collections.Generic;
+using DamageTypes;
 using Game;
 using GameWorld.Characters.Wizards.AgeSystem;
 using GameWorld.Settlements;
@@ -27,10 +28,12 @@ namespace GameWorld.Characters.Wizards
 
 		public string Name { get; set; }
 		public IAge Age { get; } = new Age();
-		public WizardType WizardType { get; set; } = WizardType.Undecided;
+		public WizardType WizardType { get; private set; } = WizardType.Undecided;
 		public WizardAttributes Attributes { get; set; }
 		public WizardStats WizardStats { get; private set; }
 		public bool IsIdling => StateMachine.CurrentState is WizardIdleState;
+		
+		public DamageType DamageType { get; private set; }
 		
 		// Components
 		public WizardStateMachine StateMachine { get; private set; }
@@ -76,6 +79,20 @@ namespace GameWorld.Characters.Wizards
 			Attributes.LeveledUp += OnAttributeLeveledUp;
 			
 			gameObject.name = $"Wizard - {Name} - {WizardType}";
+		}
+
+		public void SetWizardType(WizardType wizardType)
+		{
+			WizardType = wizardType;
+			DamageType = WizardType switch
+			{
+				WizardType.Undecided => Dependencies.Get<ResourceRepo<DamageType>>().Repo["Physical"],
+				WizardType.Earth => Dependencies.Get<ResourceRepo<DamageType>>().Repo["Earth"],
+				WizardType.Water => Dependencies.Get<ResourceRepo<DamageType>>().Repo["Water"],
+				WizardType.Fire => Dependencies.Get<ResourceRepo<DamageType>>().Repo["Fire"],
+				WizardType.Lightning => Dependencies.Get<ResourceRepo<DamageType>>().Repo["Lightning"],
+				_ => throw new ArgumentOutOfRangeException()
+			};
 		}
 
 		private void OnAttributeLeveledUp(CharacterAttribute leveledUpAttribute)

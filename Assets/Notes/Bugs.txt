@@ -1,7 +1,3 @@
-WIZARD TASKS
-============
-Bug: Rock breaking, the wizard shouldn't have to wait to begin hurting the rock the first time
-
 HEALTH BARS
 ===========
 Bug: Suddenly a consistent "Argument Null Exception": Value cannot be null (Remove Hover HealthBar)
