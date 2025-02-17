@@ -84,6 +84,7 @@ namespace GameWorld.Characters.GeneralComponents
 
 			Vector3 currentPosition = _transform.position;
 			Vector3 direction = (_targetPosition.Value - currentPosition).normalized;
+			direction.y = 0;
 			Quaternion targetRotation = Quaternion.LookRotation(direction);
 
 			if (Quaternion.Angle(_transform.rotation, targetRotation) > 0.1f)

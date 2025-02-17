@@ -1,24 +1,20 @@
-Wizard Tasks
+WIZARD TASKS
 ============
 Bug: Rock breaking, the wizard shouldn't have to wait to begin hurting the rock the first time
 
-Health Bars
+HEALTH BARS
 ===========
 Bug: Suddenly a consistent "Argument Null Exception": Value cannot be null (Remove Hover HealthBar)
 
-Wizard Info
+WIZARD INFO
 ===========
 Bug: Wizard info boxes should not be updated every update frame. Find a better way to do that
 Bug: When a wizard is breaking surrounding rocks, the status text gets really large
 
-Game Time
+GAME TIME
 =========
 Bug: When the game is paused, the game world time continues to tick
 
-Hover Highlight
-===============
+ROCK HOVER HIGHLIGHT
+====================
 Bug: The highlight isn't working when hovering over rocks
-
-WIZARD MOVEMENT
-===============
-Bug: When a wizard faces a rock, it tilts downward towards it
