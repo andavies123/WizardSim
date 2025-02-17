@@ -11,11 +11,17 @@ namespace GameWorld.Characters.Wizards.States
 	public class DestroyRockState : WizardState
 	{
 		public const string EXIT_REASON_ROCK_DESTROYED = nameof(EXIT_REASON_ROCK_DESTROYED);
+
+		private readonly float _timeBetweenAttacks; // How long it takes to attack
 		
-		private Rock _rock;
-		private DamageType _earthDamageType;
-		
-		public DestroyRockState(Wizard wizard) : base(wizard) { }
+		private Rock _rock; // The rock that is being targeted
+		private DamageType _earthDamageType; // The damage type of a rock
+		private float _attackTimer; // The current time since the last attack
+
+		public DestroyRockState(Wizard wizard) : base(wizard)
+		{
+			_timeBetweenAttacks = 1f / Wizard.WizardStats.RockAttackSpeed.Value;
+		}
 
 		public override event EventHandler<string> ExitRequested;
 
@@ -31,16 +37,14 @@ namespace GameWorld.Characters.Wizards.States
 		
 		public override void Begin()
 		{
-			_attackTimer = 0.0f;
+			_attackTimer = _timeBetweenAttacks;
 			UpdateDisplayStatus();
 		}
 
-		private float _attackTimer = 0.0f;
 
 		public override void Update()
 		{
-			float timeBetweenAttacks = 1f / Wizard.WizardStats.RockAttackSpeed.Value;
-			if (_attackTimer < timeBetweenAttacks)
+			if (_attackTimer < _timeBetweenAttacks)
 			{
 				_attackTimer += Time.deltaTime;
 				return;

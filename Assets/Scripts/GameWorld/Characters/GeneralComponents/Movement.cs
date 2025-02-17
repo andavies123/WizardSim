@@ -9,6 +9,7 @@ namespace GameWorld.Characters.GeneralComponents
 	[RequireComponent(typeof(Rigidbody))]
 	public class Movement : MonoBehaviour
 	{
+		private const int DEGREES_PER_SECOND = 720;
 		private enum MovementType { NoMovement, MoveToPoint, MoveInDirection }
 
 		private Character _character;
@@ -75,7 +76,7 @@ namespace GameWorld.Characters.GeneralComponents
 				case MovementType.MoveInDirection: HandleMoveInDirection(); break;
 				default: throw new InvalidEnumArgumentException(nameof(_movementType));
 			}
-		}
+		} 
 
 		private void HandleMoveToPoint()
 		{
@@ -89,7 +90,10 @@ namespace GameWorld.Characters.GeneralComponents
 
 			if (Quaternion.Angle(_transform.rotation, targetRotation) > 0.1f)
 			{
-				_transform.rotation = Quaternion.RotateTowards(_transform.rotation, targetRotation, 180 * Time.fixedDeltaTime);
+				_transform.rotation = Quaternion.RotateTowards(
+					_transform.rotation, 
+					targetRotation, 
+					DEGREES_PER_SECOND * Time.fixedDeltaTime);
 				return;
 			}
 			
@@ -116,13 +120,20 @@ namespace GameWorld.Characters.GeneralComponents
 			if (!_moveDirection.HasValue)
 				return;
 
-			if (Vector3.Distance(_transform.forward, _moveDirection.Value) > 0.1f)
+			Vector3 currentPosition = _transform.position;
+			Vector3 direction = (_moveDirection.Value - currentPosition).normalized;
+			direction.y = 0;
+			Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+			if (Quaternion.Angle(_transform.rotation, targetRotation) > 0.1f)
 			{
-				_transform.Rotate(Vector3.up, 180 * Time.fixedDeltaTime);
+				_transform.rotation = Quaternion.RotateTowards(
+					_transform.rotation, 
+					targetRotation, 
+					DEGREES_PER_SECOND * Time.fixedDeltaTime);
 				return;
 			}
 
-			Vector3 currentPosition = _transform.position;
 			Vector3 newPosition = currentPosition + _moveDirection.Value * (_character.CharacterStats.Speed.Value * Time.fixedDeltaTime);
 			_rigidbody.MovePosition(newPosition);
 
