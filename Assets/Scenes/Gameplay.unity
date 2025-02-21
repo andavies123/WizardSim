@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657838, g: 0.49641228, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2402,6 +2402,7 @@ GameObject:
   m_Component:
   - component: {fileID: 992639649}
   - component: {fileID: 992639650}
+  - component: {fileID: 992639652}
   - component: {fileID: 992639651}
   m_Layer: 0
   m_Name: World Builder
@@ -2438,6 +2439,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   world: {fileID: 2007172221}
+  chunkBuilder: {fileID: 992639652}
   worldObjectParent: {fileID: 1790581159}
   playerCamera: {fileID: 1688352105}
   initialGenerationRadius: 4
@@ -2459,6 +2461,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cb18697891a4f44a1914e88183c56a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &992639652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 992639648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b48c822032449dab2113aef301ba484, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileTexture: {fileID: 2800000, guid: 67dc852ebf71340439ae1fe97d5a89fa, type: 3}
+  grassColors:
+  - {r: 0.05112849, g: 0.4056604, b: 0.036356345, a: 1}
+  - {r: 0.3255018, g: 0.3773585, b: 0.13705945, a: 1}
+  - {r: 0.23794688, g: 0.3773585, b: 0.14773941, a: 1}
 --- !u!1 &1145572428
 GameObject:
   m_ObjectHideFlags: 0

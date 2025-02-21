@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using AndysTools.GameWorldTimeManagement.Runtime;
 using Game;
+using GameWorld.Builders.Chunks;
 using GameWorld.Tiles;
 using GameWorld.WorldObjects;
 using UnityEngine;
@@ -21,19 +22,19 @@ namespace GameWorld
 
 		[Header("Required for Settlement")]
 		[SerializeField, Required] private Settlement settlement;
-		
-		private readonly Dictionary<Vector2Int, Chunk> _chunks = new();
+
+		private readonly Dictionary<Vector2Int, ChunkData> _chunks = new();
 		private GameWorldTimeBehaviour _gameWorldTime;
 
 		public IGameWorldTime GameTime => _gameWorldTime;
 		public Settlement Settlement => settlement;
 		public WorldDetails WorldDetails => worldDetails;
-		public IReadOnlyDictionary<Vector2Int, Chunk> Chunks => _chunks;
+		public IReadOnlyDictionary<Vector2Int, ChunkData> Chunks => _chunks;
 		public IWorldObjectManager WorldObjectManager { get; private set; }
 
 		public EntityManager EnemyManager => enemyManager;
 
-		public void AddChunk(Chunk chunk)
+		public void AddChunk(ChunkData chunk)
 		{
 			_chunks[chunk.Position] = chunk;
 		}
@@ -46,7 +47,7 @@ namespace GameWorld
 		/// <returns>The world position in unity units of the given tile</returns>
 		public Vector2 WorldPositionFromTile(Tile tile, bool centerOfTile = true)
 		{
-			return WorldPositionFromTilePosition(tile.TilePosition, tile.ParentChunk.Position, centerOfTile);
+			return WorldPositionFromTilePosition(tile.TilePosition, tile.ParentChunk.ChunkData.Position, centerOfTile);
 		}
 
 		/// <summary>
@@ -79,7 +80,7 @@ namespace GameWorld
 		/// <param name="worldPosition">Position in the world</param>
 		/// <param name="chunk">The chunk object at the given world position</param>
 		/// <returns>True if the chunk was found at the given world position. False if it wasn't</returns>
-		public bool TryGetChunkFromWorldPosition(Vector2 worldPosition, out Chunk chunk)
+		public bool TryGetChunkFromWorldPosition(Vector2 worldPosition, out ChunkData chunk)
 		{
 			Vector2Int chunkPosition = ChunkPositionFromWorldPosition(worldPosition);
 
@@ -112,7 +113,7 @@ namespace GameWorld
 			Vector2Int chunkPosition = ChunkPositionFromWorldPosition(worldPosition);
 
 			// Make sure the chunk exists
-			if (!_chunks.TryGetValue(chunkPosition, out Chunk chunk))
+			if (!_chunks.TryGetValue(chunkPosition, out ChunkData chunk))
 			{
 				Debug.LogWarning($"Unable to get chunk at position: {chunkPosition}");
 				return false;
@@ -130,7 +131,7 @@ namespace GameWorld
 			Vector2Int tilePosition = new(tilePositionX, tilePositionY);
 			
 			// Make sure the tile exists
-			if (!chunk.TryGetTile(tilePosition, out tile))
+			//if (!chunk.TryGetTile(tilePosition, out tile))
 			{
 				Debug.LogWarning($"Unable to get tile at position: {tilePosition}");
 				return false;

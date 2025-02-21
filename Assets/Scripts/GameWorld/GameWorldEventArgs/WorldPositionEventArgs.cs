@@ -13,7 +13,7 @@ namespace GameWorld.GameWorldEventArgs
 
 		public WorldPositionEventArgs(Tile tile)
 		{
-			ChunkPosition = tile.ParentChunk.Position;
+			ChunkPosition = tile.ParentChunk.ChunkData.Position;
 			TilePosition = tile.TilePosition;
 		}
 		

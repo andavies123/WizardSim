@@ -1,6 +1,6 @@
 World Generation
 ================
-Todo: The world should generate more chunks as the camera moves
+Done: The world should generate more chunks as the camera moves
 Todo: Certain world objects should be generated with a random rotation (rocks, trees, etc...)
 Todo: Certain world objects should be generated with a random size (rocks, trees, etc...)
 Todo: World objects should be able to be larger than 1 x 1 x 1 
@@ -109,6 +109,11 @@ Wizard Movement
 ===============
 Todo: Wizards should be assigned a tile position
 Todo: Wizards should move tile to tile rather than freely
+
+SAVE SYSTEM
+===========
+Todo: Create a save folder for each new world
+Todo: Save chunk terrain to disk
 
 WIZARD TYPES
 ============

@@ -1,4 +1,4 @@
-{
+﻿{
     "m_SGVersion": 3,
     "m_Type": "UnityEditor.ShaderGraph.GraphData",
     "m_ObjectId": "5a18f802cb984df08906efab61285d96",
@@ -2571,4 +2571,3 @@
     "m_Hidden": false,
     "m_Value": false
 }
-
