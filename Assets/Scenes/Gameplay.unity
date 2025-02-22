@@ -2442,7 +2442,8 @@ MonoBehaviour:
   chunkBuilder: {fileID: 992639652}
   worldObjectParent: {fileID: 1790581159}
   playerCamera: {fileID: 1688352105}
-  initialGenerationRadius: 4
+  worldSeed: 46873654
+  initialGenerationRadius: 10
   rockPrefabs:
   - {fileID: 9090978207146980024, guid: 70ca3cc2895272241a88451b6498dfe8, type: 3}
   - {fileID: 9090978207146980024, guid: 0d5f9ec3c2a80f24ebbf63f29e051e0a, type: 3}
@@ -2476,8 +2477,9 @@ MonoBehaviour:
   tileTexture: {fileID: 2800000, guid: 67dc852ebf71340439ae1fe97d5a89fa, type: 3}
   grassColors:
   - {r: 0.05112849, g: 0.4056604, b: 0.036356345, a: 1}
-  - {r: 0.3255018, g: 0.3773585, b: 0.13705945, a: 1}
-  - {r: 0.23794688, g: 0.3773585, b: 0.14773941, a: 1}
+  - {r: 0.5157661, g: 0.6037736, b: 0.19081523, a: 1}
+  - {r: 0.14894255, g: 0.5849056, b: 0.11863652, a: 1}
+  - {r: 0.3018868, g: 0.25690964, b: 0.09825561, a: 1}
 --- !u!1 &1145572428
 GameObject:
   m_ObjectHideFlags: 0

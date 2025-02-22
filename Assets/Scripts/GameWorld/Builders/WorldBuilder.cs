@@ -27,6 +27,7 @@ namespace GameWorld.Builders
 		[SerializeField, Required] private Transform playerCamera;
 
 		[Header("Settings")]
+		[SerializeField, Required] private int worldSeed = 46873654;
 		[SerializeField, Required] private int initialGenerationRadius = 5;
 
 		[Header("Rock Generation Settings")]
@@ -39,12 +40,15 @@ namespace GameWorld.Builders
 		private readonly Dictionary<string, IWorldObjectFactory> _worldObjectFactories = new();
 		private readonly PlayerCameraChunkManager _playerCameraChunkManager = new();
 		
+		private Transform _activeChunkContainer;
 		private MessageBroker _messageBroker;
 		private SubscriptionBuilder _subBuilder;
 		private WorldObjectPreviewManager _worldObjectPreviewManager;
 		
 		private void Awake()
 		{
+			_activeChunkContainer = new GameObject("Active Chunks").transform;
+			
 			_playerCameraChunkManager.ChunkBelowChanged += OnChunkBelowCameraChanged;
 			
 			_worldObjectPreviewManager = new WorldObjectPreviewManager(world, transform);
@@ -118,7 +122,7 @@ namespace GameWorld.Builders
 			if (_loadedChunks.ContainsKey(chunkPosition))
 				return;
 
-			Chunk loadedChunk = null;
+			Chunk loadedChunk;
 
 			if (world.Chunks.TryGetValue(chunkPosition, out ChunkData chunkData))
 			{
@@ -126,12 +130,15 @@ namespace GameWorld.Builders
 			}
 			else
 			{
-				loadedChunk = chunkBuilder.BuildNewChunk(chunkPosition, 46873654); // Todo: Update world seed to be passed down
+				loadedChunk = chunkBuilder.BuildNewChunk(chunkPosition, worldSeed);
 				world.AddChunk(loadedChunk.ChunkData);
 			}
 
 			loadedChunk.gameObject.SetActive(true);
 			_loadedChunks.TryAdd(chunkPosition, loadedChunk);
+			
+			loadedChunk.transform.SetParent(_activeChunkContainer);
+			_activeChunkContainer.name = $"Active Chunks: {_activeChunkContainer.childCount}";
 		}
 		
 		private void UnloadChunk(Vector2Int chunkPosition)

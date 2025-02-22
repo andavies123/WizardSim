@@ -12,6 +12,8 @@ namespace GameWorld.Builders.Chunks
 		[SerializeField, Required] private List<Color> grassColors;
         
 		private readonly ConcurrentQueue<Chunk> _chunkObjectPool = new();
+
+		private Transform _releasedChunkContainer;
 		
 		public Chunk BuildNewChunk(Vector2Int chunkPosition, int worldSeed)
 		{
@@ -27,6 +29,8 @@ namespace GameWorld.Builders.Chunks
 		{
 			chunk.CleanUp();
 			_chunkObjectPool.Enqueue(chunk);
+			chunk.transform.SetParent(_releasedChunkContainer);
+			_releasedChunkContainer.name = $"Released Chunks: {_releasedChunkContainer.childCount}";
 		}
 		
 		private Chunk BuildChunk(ChunkData chunkData)
@@ -85,7 +89,7 @@ namespace GameWorld.Builders.Chunks
 			
 			for (int grassType = 0; grassType < grassColors.Count; grassType++) // Initialize for all grass types
 			{
-				triangleIndices.Add(new List<int>());				
+				triangleIndices.Add(new List<int>());
 			}
 
 			ChunkData chunkData = chunk.ChunkData;
@@ -104,6 +108,11 @@ namespace GameWorld.Builders.Chunks
 			}
 
 			chunk.ChunkMesh.Init(vertices.ToArray(), triangleIndices.Select(list => list.ToArray()).ToList(), uvs.ToArray(), grassColors, tileTexture);
+		}
+
+		private void Awake()
+		{
+			_releasedChunkContainer = new GameObject("Released Chunks").transform;
 		}
 	}
 }
