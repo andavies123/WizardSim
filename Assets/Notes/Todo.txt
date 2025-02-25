@@ -109,9 +109,3 @@ Wizard Movement
 ===============
 Todo: Wizards should be assigned a tile position
 Todo: Wizards should move tile to tile rather than freely
-
-WIZARD TYPES
-============
-Todo: Wizard types should be held in an object
-Todo: WizardType objects should contain properties such as color, damage, etc..
-Todo: It should still be easy to switch wizard types
