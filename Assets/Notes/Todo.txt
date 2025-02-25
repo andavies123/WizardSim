@@ -109,3 +109,26 @@ Wizard Movement
 ===============
 Todo: Wizards should be assigned a tile position
 Todo: Wizards should move tile to tile rather than freely
+
+Upgrades
+========
+Todo: Create an abstract Upgrade class that will be the base of the Rogue-Like system
+Todo: Create a starting set of upgrades
+Todo: Create a UI that can pop up and disappear
+Todo: The player should be able to select an upgrade
+Todo: A random set of 2 upgrades should pop up
+
+Upgrade Items
+=============
+Todo: Create upgrade to spawn a new wizard
+Todo: Create upgrade to place new buildings
+Todo: Create upgrade to add a new skill to an existing wizard
+Todo: Create upgrade to add resources to the settlement
+
+Challenges
+==========
+Todo: Create an abstract Challenge class
+Todo: Create a starting set of challenges
+Todo: Challenges should always be visible
+Todo: Challenges should update in real time
+Todo: A 3rd upgrade should pop up if a challenge is completed
