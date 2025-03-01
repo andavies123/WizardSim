@@ -9,17 +9,11 @@ namespace GameWorld.WorldResources
 		private const string LoadFolderPath = "Scriptable Objects/Town Resources";
 		
 		private readonly Dictionary<Guid, TownResource> _resourcesById = new();
-		
+
 		/// <summary>
-		/// Tries to get a town resource from the internal repository if it exists
+		/// Collection of all loaded town resources stored by their unique resource Id
 		/// </summary>
-		/// <param name="resourceId">The unique ID of the town resource</param>
-		/// <param name="resource">The <see cref="TownResource"/> object stored in the repository</param>
-		/// <returns>True if the resource exists. False if the resource does not exist</returns>
-		public bool TryGetResourceById(Guid resourceId, out TownResource resource)
-		{
-			return _resourcesById.TryGetValue(resourceId, out resource);
-		}
+		public IReadOnlyDictionary<Guid, TownResource> ResourcesById => _resourcesById;
 		
 		/// <summary>
 		/// Loads all Town Resources in a specified folder.
