@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Upgrades;
@@ -25,6 +26,7 @@ namespace UI.Upgrades
 			{
 				UpgradeCard upgradeCard = GetUpgradeCard();
 				upgradeCard.Initialize(upgrade);
+				upgradeCard.Selected += OnUpgradeCardSelected;
 				_activeUpgradeCards.Add(upgradeCard);
 				upgradeCard.gameObject.SetActive(true);
 			}
@@ -39,6 +41,8 @@ namespace UI.Upgrades
 
 			foreach (UpgradeCard upgradeCard in _activeUpgradeCards)
 			{
+				upgradeCard.gameObject.SetActive(false);
+				upgradeCard.Selected -= OnUpgradeCardSelected;
 				ReleaseUpgradeCard(upgradeCard);
 			}
 			_activeUpgradeCards.Clear();
@@ -56,8 +60,16 @@ namespace UI.Upgrades
 
 		private void ReleaseUpgradeCard(UpgradeCard upgradeCard)
 		{
-			upgradeCard.gameObject.SetActive(false);
 			_pooledUpgradeCards.Enqueue(upgradeCard);
+		}
+		
+		private void OnUpgradeCardSelected(object sender, EventArgs args)
+		{
+			if (sender is not UpgradeCard upgradeCard)
+				return;
+			
+			upgradeCard.Upgrade.Apply?.Invoke();
+			Deactivate();
 		}
 
 		private void Awake()
