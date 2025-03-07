@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace Upgrades
 {
@@ -18,5 +19,23 @@ namespace Upgrades
 		/// Apply the current upgrade
 		/// </summary>
 		public Action Apply { get; set; }
+		
+		/// <summary>
+		/// How the upgrade should be displayed (upgrade card)
+		/// </summary>
+		public UpgradeDisplaySettings DisplaySettings { get; set; }
+	}
+
+	public sealed class UpgradeDisplaySettings
+	{
+		/// <summary>
+		/// The background color of upgrade card
+		/// </summary>
+		public Color BackgroundColor { get; set; }
+		
+		/// <summary>
+		/// The outline color of the upgrade card
+		/// </summary>
+		public Color OutlineColor { get; set; }
 	}
 }

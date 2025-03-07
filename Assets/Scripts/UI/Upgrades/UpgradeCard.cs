@@ -9,7 +9,7 @@ using Utilities.Attributes;
 namespace UI.Upgrades
 {
 	// Todo: Add support for an icon
-	// Todo: Add support for a general background color
+	// Todo: Add support for an outline color
 	public class UpgradeCard : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 	{
 		[SerializeField, Required] private TMP_Text titleText;
@@ -18,7 +18,6 @@ namespace UI.Upgrades
 
 		private readonly Color _tintColor = new(0.75f, 0.75f, 0.75f);
 
-		private Color _backgroundColor;
 		private bool _isHovered;
 
 		public event EventHandler Selected;
@@ -30,8 +29,7 @@ namespace UI.Upgrades
 			Upgrade = upgrade;
 			titleText.SetText(upgrade.Title);
 			descriptionText.SetText(upgrade.Description);
-
-			_backgroundColor = backgroundImage.color;
+			backgroundImage.color = upgrade.DisplaySettings.BackgroundColor;
 		}
 
 		public void OnPointerClick(PointerEventData eventData)
@@ -54,9 +52,9 @@ namespace UI.Upgrades
 		private void UpdateVisuals()
 		{
 			if (_isHovered)
-				backgroundImage.color = _backgroundColor * _tintColor;
+				backgroundImage.color = Upgrade.DisplaySettings.BackgroundColor * _tintColor;
 			else
-				backgroundImage.color = _backgroundColor;
+				backgroundImage.color = Upgrade.DisplaySettings.BackgroundColor;
 		}
 	}
 }

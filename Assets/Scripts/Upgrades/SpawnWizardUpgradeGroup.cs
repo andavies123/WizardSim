@@ -29,7 +29,12 @@ namespace Upgrades
 			{
 				Title = $"Spawn {wizardType} Wizard",
 				Description = $"Spawns a single {wizardType} wizard into your settlement",
-				Apply = () => _wizardController.SpawnWizard(Vector3.zero, wizardType)
+				Apply = () => _wizardController.SpawnWizard(Vector3.zero, wizardType),
+				DisplaySettings = new UpgradeDisplaySettings
+				{
+					BackgroundColor = Color.cyan,
+					OutlineColor = Color.yellow
+				}
 			};
 		}
 	}

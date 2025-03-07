@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using GameWorld.WorldResources;
+using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Upgrades
@@ -30,7 +31,12 @@ namespace Upgrades
 			{
 				Title = $"Increase {townResource.DisplayName}",
 				Description = $"Increases {townResource.DisplayName} by {increaseAmount}",
-				Apply = () => _resourceStockpile.AddResources(townResource, increaseAmount)
+				Apply = () => _resourceStockpile.AddResources(townResource, increaseAmount),
+				DisplaySettings = new UpgradeDisplaySettings
+				{
+					BackgroundColor = Color.green,
+					OutlineColor = Color.black
+				}
 			};
 		}
 	}

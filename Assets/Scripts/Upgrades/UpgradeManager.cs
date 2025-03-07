@@ -24,7 +24,9 @@ namespace Upgrades
 			// Todo: Figure out a better way to use the selection weights
 			for (int index = 0; index < count; index++)
 			{
-				upgrades.Add(_spawnWizardUpgradeGroup.GetUpgrade());
+				upgrades.Add(Random.Range(0, 2) % 2 == 0
+					? _spawnWizardUpgradeGroup.GetUpgrade()
+					: _increaseResourcesUpgradeGroup.GetUpgrade());
 			}
 
 			return upgrades;
