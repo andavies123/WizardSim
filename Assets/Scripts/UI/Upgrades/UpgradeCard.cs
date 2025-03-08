@@ -15,8 +15,7 @@ namespace UI.Upgrades
 		[SerializeField, Required] private TMP_Text titleText;
 		[SerializeField, Required] private TMP_Text descriptionText;
 		[SerializeField, Required] private Image backgroundImage;
-
-		private readonly Color _tintColor = new(0.75f, 0.75f, 0.75f);
+		[SerializeField, Required] private Image selectionOutlineImage;
 
 		private bool _isHovered;
 
@@ -30,6 +29,9 @@ namespace UI.Upgrades
 			titleText.SetText(upgrade.Title);
 			descriptionText.SetText(upgrade.Description);
 			backgroundImage.color = upgrade.DisplaySettings.BackgroundColor;
+			
+			_isHovered = false;
+			UpdateVisuals();
 		}
 
 		public void OnPointerClick(PointerEventData eventData)
@@ -51,10 +53,7 @@ namespace UI.Upgrades
 
 		private void UpdateVisuals()
 		{
-			if (_isHovered)
-				backgroundImage.color = Upgrade.DisplaySettings.BackgroundColor * _tintColor;
-			else
-				backgroundImage.color = Upgrade.DisplaySettings.BackgroundColor;
+			selectionOutlineImage.enabled = _isHovered;
 		}
 	}
 }
