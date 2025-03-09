@@ -28,7 +28,7 @@ namespace Challenges
 		/// Can be a string that displays the current progress.
 		/// Can be null if a challenge doesn't require special tracking
 		/// </returns>
-		public Func<string> ProgressTracker { get; set; }
+		public Func<string> ProgressText { get; set; }
 		
 		/// <summary>
 		/// Logic to check whether or not the challenge is completed.
