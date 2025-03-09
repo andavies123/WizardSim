@@ -1,3 +1,4 @@
+using System.Collections;
 using Challenges;
 using TMPro;
 using UnityEngine;
@@ -36,13 +37,24 @@ namespace UI.Challenges
 		private void Awake()
 		{
 			challengesManager.CurrentChallengeUpdated += OnCurrentChallengeUpdated;
+			StartCoroutine(nameof(UpdateProgressText));
 		}
 
 		private void OnDestroy()
 		{
 			challengesManager.CurrentChallengeUpdated -= OnCurrentChallengeUpdated;
+			StopAllCoroutines();
 		}
 
 		private void OnCurrentChallengeUpdated() => UpdateUI();
+
+		private IEnumerator UpdateProgressText()
+		{
+			while (true)
+			{
+				yield return new WaitForSeconds(0.5f);
+				UpdateUI();
+			}
+		}
 	}
 }
