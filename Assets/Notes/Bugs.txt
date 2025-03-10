@@ -15,6 +15,11 @@ ROCK HOVER HIGHLIGHT
 ====================
 Bug: The highlight isn't working when hovering over rocks
 
-(03/09/25) SPAWNED WIZARDS
-==========================
-Bug: When a wizard is spawned by upgrades, it seems to not behave properly
+SPAWNED WIZARDS
+===============
+Bug: (03/09/25) When a wizard is spawned by upgrades, it seems to not behave properly
+
+MESH GENERATION
+===============
+Bug: (03/10/25) Rocks are being generated in a weird pattern
+Bug: (03/10/25) Terrain isn't  interactable anymore
