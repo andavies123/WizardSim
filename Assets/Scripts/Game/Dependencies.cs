@@ -12,16 +12,6 @@ namespace Game
 	{
 		private static readonly ConcurrentDictionary<Type, object> DependencyStore = new();
 		private static readonly ConcurrentDictionary<Type, Dictionary<string, object>> KeyedDependencyStore = new();
-
-		static Dependencies()
-		{
-			TownResourceRepo townResourceRepo = new();
-			townResourceRepo.LoadAllTownResources();
-			
-			// Registering non singletons
-			Register(new MessageBroker());
-			Register(townResourceRepo);
-		}
 		
 		public static void Register<T>(T dependency)
 		{
@@ -56,6 +46,20 @@ namespace Game
 				throw new InvalidDataException($"{typeof(T)} dependency not found with key: {key}");
 
 			return (T) value;
+		}
+
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+		private static void Reset()
+		{
+			DependencyStore.Clear();
+			KeyedDependencyStore.Clear();
+			
+			TownResourceRepo townResourceRepo = new();
+			townResourceRepo.LoadAllTownResources();
+			
+			// Registering non singletons
+			Register(new MessageBroker());
+			Register(townResourceRepo);
 		}
 	}
 }
