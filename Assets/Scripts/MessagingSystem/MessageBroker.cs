@@ -24,7 +24,7 @@ namespace MessagingSystem
 		{
 			if (!SubscriptionStore.TryAddSubscription(subscription))
 			{
-				Debug.LogWarning($"Subscription from {subscription.Subscriber} failed for message type: {subscription.MessageType}");
+				Debug.LogWarning($"Subscription from {subscription.Subscriber} failed for message type: {subscription.MessageType} from Subscriber: {subscription.Subscriber.GetType()}");
 			}
 		}
 

@@ -76,9 +76,6 @@ namespace Game.GameStates.GameplayStates
 			// UI
 			_gameplayUIState.PauseButtonPressed += OnPauseButtonPressed;
 			_gameplayUIState.HotBarItemSelected += OnPlacementModeRequested;
-			
-			// Interactable Raycaster
-			_interactableRaycaster.NonInteractableSelectedPrimary += OnNonInteractablePrimaryActionSelected;
 
 			_subscriptions.ForEach(sub => _messageBroker.Subscribe(sub));
 		}
@@ -92,9 +89,6 @@ namespace Game.GameStates.GameplayStates
 			// UI
 			_gameplayUIState.PauseButtonPressed -= OnPauseButtonPressed;
 			_gameplayUIState.HotBarItemSelected -= OnPlacementModeRequested;
-			
-			// Interactable Raycaster
-			_interactableRaycaster.NonInteractableSelectedPrimary += OnNonInteractablePrimaryActionSelected;
 
 			_subscriptions.ForEach(sub => _messageBroker.Unsubscribe(sub));
 		}
@@ -131,6 +125,8 @@ namespace Game.GameStates.GameplayStates
 		{
 			if (message is CurrentSelectedInteractable selectedMessage)
 			{
+				Debug.Log($"Interactable Selected - {(selectedMessage.SelectedInteractable ? selectedMessage.SelectedInteractable.name : "null")}");
+
 				if (selectedMessage.SelectedInteractable)
 					_gameplayUIState.InfoWindow.OpenWindow(selectedMessage.SelectedInteractable);
 				else
@@ -152,14 +148,6 @@ namespace Game.GameStates.GameplayStates
 						OpenContextMenuRequested?.Invoke(contextMenuUsers);
 					}
 				}
-			}
-		}
-		
-		private void OnNonInteractablePrimaryActionSelected(object sender, EventArgs args)
-		{
-			if (!UIState.IsMouseOverGameObject)
-			{
-				_gameplayUIState.InfoWindow.CloseWindow();
 			}
 		}
 	}

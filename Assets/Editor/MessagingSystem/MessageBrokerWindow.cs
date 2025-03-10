@@ -24,7 +24,7 @@ namespace Editor.MessagingSystem
 		};
 		
 		// Editor UI States
-		private Dictionary<Type, bool> _persistantMessageFoldoutStates;
+		private Dictionary<Type, bool> _persistentMessageFoldoutStates;
 		
 		private MessageBroker _messageBroker;
 		private string _currentListeningMode = LISTENING_MODE_STOPPED;
