@@ -27,6 +27,7 @@ namespace Upgrades
 			
 			return new Upgrade
 			{
+				Id = $"{nameof(SpawnWizardUpgradeGroup)}.{wizardType}",
 				Title = $"Spawn {wizardType} Wizard",
 				Description = $"Spawns a single {wizardType} wizard into your settlement",
 				Apply = () => _wizardController.SpawnWizard(Vector3.zero, wizardType),

@@ -6,6 +6,11 @@ namespace Upgrades
 	public sealed class Upgrade
 	{
 		/// <summary>
+		/// Unique Id for this upgrade "type"
+		/// </summary>
+		public string Id { get; set; }
+		
+		/// <summary>
 		/// The title text that would be displayed on the upgrade card
 		/// </summary>
 		public string Title { get; set; }

@@ -29,6 +29,7 @@ namespace Upgrades
 
 			return new Upgrade
 			{
+				Id = $"{nameof(IncreaseResourcesUpgradeGroup)}.{townResource.DisplayName}",
 				Title = $"Increase {townResource.DisplayName}",
 				Description = $"Increases {townResource.DisplayName} by {increaseAmount}",
 				Apply = () => _resourceStockpile.AddResources(townResource, increaseAmount),

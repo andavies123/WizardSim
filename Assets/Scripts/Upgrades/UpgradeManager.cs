@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Game;
 using GameWorld.Characters.Wizards.Managers;
 using GameWorld.WorldResources;
@@ -24,9 +25,18 @@ namespace Upgrades
 			// Todo: Figure out a better way to use the selection weights
 			for (int index = 0; index < count; index++)
 			{
-				upgrades.Add(Random.Range(0, 2) % 2 == 0
+				Upgrade upgrade = Random.Range(0, 2) % 2 == 0
 					? _spawnWizardUpgradeGroup.GetUpgrade()
-					: _increaseResourcesUpgradeGroup.GetUpgrade());
+					: _increaseResourcesUpgradeGroup.GetUpgrade();
+
+				// Make sure we don't have any duplicates
+				if (upgrades.Any(x => x.Id == upgrade.Id))
+				{
+					index--;
+					continue;
+				}
+				
+				upgrades.Add(upgrade);
 			}
 
 			return upgrades;
