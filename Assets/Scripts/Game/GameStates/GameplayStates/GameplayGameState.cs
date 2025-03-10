@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using CameraComponents;
 using Extensions;
 using GameWorld.WorldObjects;
 using Messages.Selection;
@@ -8,7 +7,6 @@ using Messages.UI;
 using Messages.UI.Enums;
 using MessagingSystem;
 using UI.ContextMenus;
-using UnityEngine;
 
 namespace Game.GameStates.GameplayStates
 {
@@ -16,7 +14,6 @@ namespace Game.GameStates.GameplayStates
 	{
 		private readonly GameplayUIState _gameplayUIState;
 		private readonly GameplayInputState _gameplayInputState;
-		private readonly InteractableRaycaster _interactableRaycaster;
 		private readonly List<ISubscription> _subscriptions = new();
 		private readonly MessageBroker _messageBroker;
 
@@ -30,11 +27,9 @@ namespace Game.GameStates.GameplayStates
 			remove => _gameplayInputState.OpenTaskManagementRequested -= value;
 		}
 
-		public GameplayGameState(GameplayUIState gameplayUIState, InteractableRaycaster interactableRaycaster)
+		public GameplayGameState(GameplayUIState gameplayUIState)
 		{
 			_gameplayUIState = gameplayUIState.ThrowIfNull(nameof(gameplayUIState));
-			_interactableRaycaster = interactableRaycaster.ThrowIfNull(nameof(interactableRaycaster));
-			
 			_messageBroker = Dependencies.Get<MessageBroker>();
 			_gameplayInputState = new GameplayInputState();
 			
@@ -125,8 +120,6 @@ namespace Game.GameStates.GameplayStates
 		{
 			if (message is CurrentSelectedInteractable selectedMessage)
 			{
-				Debug.Log($"Interactable Selected - {(selectedMessage.SelectedInteractable ? selectedMessage.SelectedInteractable.name : "null")}");
-
 				if (selectedMessage.SelectedInteractable)
 					_gameplayUIState.InfoWindow.OpenWindow(selectedMessage.SelectedInteractable);
 				else

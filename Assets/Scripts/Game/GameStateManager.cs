@@ -69,7 +69,7 @@ namespace Game
 
 		private void Awake()
 		{
-			_gameplayGameState = new GameplayGameState(gameplayUIState, interactableRaycaster);
+			_gameplayGameState = new GameplayGameState(gameplayUIState);
 			_pauseMenuGameState = new PauseMenuGameState(pauseMenuUIState);
 			_interactionGameState = new InteractionGameState(interactionUIState, interactableRaycaster);
 			_contextMenuGameState = new ContextMenuGameState(contextMenuUIState, interactableRaycaster);
