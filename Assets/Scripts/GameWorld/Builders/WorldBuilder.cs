@@ -76,28 +76,22 @@ namespace GameWorld.Builders
 		private void Start()
 		{
 			_subscriptions.ForEach(_messageBroker.Subscribe);
-			
 			_worldObjectPreviewManager.SubscribeToMessages();
-			
 			GenerateWorld();
 		}
 
 		private void Update()
 		{
 			Vector3 cameraPosition = playerCamera.position;
-
 			_playerCameraChunkManager.ChunkBelow =
 				world.ChunkPositionFromWorldPosition(new Vector2(cameraPosition.x, cameraPosition.z));
-
 			// Todo: Update the current rotation quadrant of the camera
 		}
 
 		private void OnDestroy()
 		{
 			_subscriptions.ForEach(_messageBroker.Unsubscribe);
-			
-			_worldObjectPreviewManager.UnsubscribeFromMessages();
-			
+			_worldObjectPreviewManager.UnsubscribeFromMessages();	
 			_playerCameraChunkManager.ChunkBelowChanged -= OnChunkBelowCameraChanged;
 		}
 
@@ -199,38 +193,6 @@ namespace GameWorld.Builders
 		// 	}
 		//
 		// 	return tiles;
-		// }
-
-		// private void GenerateRocks(Chunk chunk)
-		// {
-		// 	int addedRocks = 0;
-		//
-		// 	if (!_worldObjectFactories.TryGetValue("Rock", out IWorldObjectFactory rockFactory) || rockFactory == null)
-		// 	{
-		// 		Debug.LogError($"Unable to find world object factory, Type: \"Rock\"");
-		// 		return;
-		// 	}
-		// 	
-		// 	while (addedRocks < rocksPerChunk)
-		// 	{
-		// 		Vector2Int localChunkPosition = RandomExt.RangeVector2Int(
-		// 			0, world.WorldDetails.ChunkTiles.x,
-		// 			0, world.WorldDetails.ChunkTiles.y);
-		//
-		// 		WorldObject rock = rockFactory.CreateObject(chunk.Position, localChunkPosition);
-		// 		if (chunk.TryAddWorldObject(rock))
-		// 		{
-		// 			Vector3 worldPosition = world
-		// 			 		.WorldPositionFromTilePosition(localChunkPosition, chunk.Position, centerOfTile: false)
-		// 				    .ToVector3(VectorSub.XSubY) + new Vector3(0.5f, 0, 0.5f);
-		// 			
-		// 			//rock.transform.SetPositionAndRotation(worldPosition, Quaternion.identity);
-		//
-		// 			rock.transform.position = rock.PositionDetails.Position;
-		// 			
-		// 			addedRocks++;
-		// 		}
-		// 	}
 		// }
 
 		// private void OnPlaceWorldObjectRequested(IMessage message)

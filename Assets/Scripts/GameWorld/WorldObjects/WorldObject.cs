@@ -21,6 +21,7 @@ namespace GameWorld.WorldObjects
 	{
 		[SerializeField] private HealthProperties healthProperties;
 
+		public Guid Id { get; } = Guid.NewGuid();
 		public WorldObjectDetails Details { get; private set; }
 		public WorldObjectPositionDetails PositionDetails { get; private set; }
 		public ChunkPlacementData ChunkPlacementData { get; private set; }

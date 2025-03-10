@@ -1,12 +1,24 @@
-﻿namespace GameWorld.Builders.Chunks
+﻿using System.Collections.Generic;
+using UnityEngine;
+
+namespace GameWorld.Builders.Chunks
 {
 	public class ChunkTerrain
 	{
-		public readonly int[,] GrassType;
+		/// <summary>
+		/// The type of terrain for each "tile"
+		/// </summary>
+		public readonly int[,] TerrainType;
+		
+		/// <summary>
+		/// Contains all rocks that are in this chunk
+		/// (Position of the rock in the chunk, the type of rock)
+		/// </summary>
+		public readonly Dictionary<Vector2Int, int> Rocks = new();
 
-		public ChunkTerrain(int chunkSize)
+		public ChunkTerrain(Vector2Int chunkSize)
 		{
-			GrassType = new int[chunkSize, chunkSize];
+			TerrainType = new int[chunkSize.x, chunkSize.y];
 		}
 	}
 }

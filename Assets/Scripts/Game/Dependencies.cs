@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using GameWorld.WorldResources;
 using MessagingSystem;
+using UnityEngine;
 
 namespace Game
 {
@@ -25,7 +26,7 @@ namespace Game
 		public static void Register<T>(T dependency)
 		{
 			if (!DependencyStore.TryAdd(dependency.GetType(), dependency))
-				throw new InvalidDataException($"{typeof(T)} dependency already exists");
+				Debug.LogWarning($"{typeof(T)} dependency already exists");
 		}
 
 		public static void Register<T>(T dependency, string key)

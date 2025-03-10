@@ -1,5 +1,4 @@
-﻿using Extensions;
-using GameWorld.WorldObjects;
+﻿using GameWorld.WorldObjects;
 using UnityEngine;
 
 namespace GameWorld.Builders
