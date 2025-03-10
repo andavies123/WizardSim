@@ -14,3 +14,7 @@ Bug: When the game is paused, the game world time continues to tick
 ROCK HOVER HIGHLIGHT
 ====================
 Bug: The highlight isn't working when hovering over rocks
+
+(03/09/25) SPAWNED WIZARDS
+==========================
+Bug: When a wizard is spawned by upgrades, it seems to not behave properly

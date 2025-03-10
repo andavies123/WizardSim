@@ -1051,9 +1051,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 433302623}
-  upgradeManager: {fileID: 1759905811}
   upgradeCardPrefab: {fileID: 6526099562958935827, guid: 61339059d99444fd1b74733c8f4df6a0, type: 3}
   upgradeCardContainer: {fileID: 1818104328}
+  upgradeManager: {fileID: 1759905811}
+  challengesManager: {fileID: 869663735}
 --- !u!1 &510311433
 GameObject:
   m_ObjectHideFlags: 0

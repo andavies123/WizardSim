@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Challenges;
 using UnityEngine;
 using Upgrades;
 using Utilities.Attributes;
@@ -8,10 +9,17 @@ namespace UI.Upgrades
 {
 	public class UpgradeScreen : MonoBehaviour
 	{
+		private const int UPGRADE_COUNT_CHALLENGE_COMPLETE = 3;
+		private const int UPGRADE_COUNT_CHALLENGE_INCOMPLETE = 2;
+		
+		[Header("UI")]
 		[SerializeField, Required] private Canvas canvas;
-		[SerializeField, Required] private UpgradeManager upgradeManager;
 		[SerializeField, Required] private UpgradeCard upgradeCardPrefab;
 		[SerializeField, Required] private Transform upgradeCardContainer;
+		
+		[Header("Non-UI")]
+		[SerializeField, Required] private UpgradeManager upgradeManager;
+		[SerializeField, Required] private ChallengesManager challengesManager;
 		
 		private readonly Queue<UpgradeCard> _pooledUpgradeCards = new();
 		private readonly List<UpgradeCard> _activeUpgradeCards = new();
@@ -20,7 +28,10 @@ namespace UI.Upgrades
 		
 		public void Activate()
 		{
-			List<Upgrade> upgrades = upgradeManager.GetRandomUpgrades(2);
+			int upgradesToDisplay = challengesManager.CurrentChallenge?.CompletionCriteria?.Invoke() ?? false
+				? UPGRADE_COUNT_CHALLENGE_COMPLETE
+				: UPGRADE_COUNT_CHALLENGE_INCOMPLETE;
+			List<Upgrade> upgrades = upgradeManager.GetRandomUpgrades(upgradesToDisplay);
 			
 			foreach (Upgrade upgrade in upgrades)
 			{
