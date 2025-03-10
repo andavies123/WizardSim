@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2930,11 +2930,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileTexture: {fileID: 2800000, guid: 67dc852ebf71340439ae1fe97d5a89fa, type: 3}
-  grassColors:
-  - {r: 0.05112849, g: 0.4056604, b: 0.036356345, a: 1}
-  - {r: 0.5157661, g: 0.6037736, b: 0.19081523, a: 1}
-  - {r: 0.14894255, g: 0.5849056, b: 0.11863652, a: 1}
-  - {r: 0.3018868, g: 0.25690964, b: 0.09825561, a: 1}
+  grassColors: []
 --- !u!1 &1018374469
 GameObject:
   m_ObjectHideFlags: 0
