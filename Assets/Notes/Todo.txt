@@ -1,6 +1,6 @@
 World Generation
 ================
-Done: The world should generate more chunks as the camera moves
+Todo: The world should generate more chunks as the camera moves
 Todo: Certain world objects should be generated with a random rotation (rocks, trees, etc...)
 Todo: Certain world objects should be generated with a random size (rocks, trees, etc...)
 Todo: World objects should be able to be larger than 1 x 1 x 1 
@@ -110,13 +110,26 @@ Wizard Movement
 Todo: Wizards should be assigned a tile position
 Todo: Wizards should move tile to tile rather than freely
 
-SAVE SYSTEM
-===========
-Todo: Create a save folder for each new world
-Todo: Save chunk terrain to disk
+Upgrades
+========
+Done: Create an abstract Upgrade class that will be the base of the Rogue-Like system
+Done: Create a starting set of upgrades
+Todo: Create a UI that can pop up and disappear
+Todo: The player should be able to select an upgrade
+Todo: A random set of 2 upgrades should pop up
+Todo: At start of game, the player should get to select the starting wizard types (from a random selection)
 
-WIZARD TYPES
-============
-Todo: Wizard types should be held in an object
-Todo: WizardType objects should contain properties such as color, damage, etc..
-Todo: It should still be easy to switch wizard types
+Upgrade Items
+=============
+Done: Create upgrade to spawn a new wizard
+Todo: Create upgrade to place new buildings
+Todo: Create upgrade to add a new skill to an existing wizard
+Done: Create upgrade to add resources to the settlement
+
+Challenges
+==========
+Todo: Create an abstract Challenge class
+Todo: Create a starting set of challenges
+Todo: Challenges should always be visible
+Todo: Challenges should update in real time
+Todo: A 3rd upgrade should pop up if a challenge is completed
