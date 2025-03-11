@@ -55,7 +55,6 @@ namespace GameWorld.Builders.Chunks
 		private ChunkTerrain GenerateChunkTerrain(Vector2Int chunkPosition, int worldSeed, Vector2Int chunkSize)
 		{
 			Random.State originalRandomState = Random.state;
-
 			ChunkTerrain chunkTerrain = new(chunkSize);
             
 			for (int x = 0; x < chunkSize.x; x++)
@@ -71,7 +70,7 @@ namespace GameWorld.Builders.Chunks
 					chunkTerrain.TerrainType[x, z] = Random.Range(0, grassColors.Count);
 					
 					// Rocks
-					if (Random.Range(0, 100) < 10)
+					if (Random.Range(0, 100) < 100)
 					{
 						chunkTerrain.Rocks.TryAdd(tilePosition, 0);
 					}
@@ -134,6 +133,7 @@ namespace GameWorld.Builders.Chunks
 
 				WorldObject worldObject = _rockObjectFactory.CreateObject(chunk.ChunkData.Position, rockPosition);
 				worldObject.transform.position = worldObject.PositionDetails.Position;
+				chunk.AddWorldObject(worldObject);
 			}
 		}
 
