@@ -70,9 +70,9 @@ namespace GameWorld.Builders.Chunks
 					chunkTerrain.TerrainType[x, z] = Random.Range(0, grassColors.Count);
 					
 					// Rocks
-					if (Random.Range(0, 100) < 100)
+					if (Random.Range(0, 100) < 1)
 					{
-						chunkTerrain.Rocks.TryAdd(tilePosition, 0);
+						chunkTerrain.Rocks.TryAdd(new Vector2Int(x, z), 0);
 					}
 				}
 			}
