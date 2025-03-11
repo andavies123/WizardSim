@@ -21,5 +21,6 @@ Bug: (03/09/25) When a wizard is spawned by upgrades, it seems to not behave pro
 
 MESH GENERATION
 ===============
-Bug: (03/10/25) Rocks are being generated in a weird pattern
-Bug: (03/10/25) Terrain isn't  interactable anymore
+Done: (03/10/25) Rocks are being generated in a weird pattern
+Bug: (03/10/25) Terrain isn't interactable anymore
+Bug: (03/10/25) Rocks aren't properly using the seed to generate its type
