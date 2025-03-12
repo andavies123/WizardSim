@@ -2858,6 +2858,7 @@ GameObject:
   m_Component:
   - component: {fileID: 992639649}
   - component: {fileID: 992639650}
+  - component: {fileID: 992639653}
   - component: {fileID: 992639652}
   - component: {fileID: 992639651}
   m_Layer: 0
@@ -2918,6 +2919,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cb18697891a4f44a1914e88183c56a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  worldObjectPool: {fileID: 992639653}
 --- !u!114 &992639652
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2930,6 +2932,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b48c822032449dab2113aef301ba484, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  worldObjectPool: {fileID: 992639653}
   tileTexture: {fileID: 2800000, guid: 67dc852ebf71340439ae1fe97d5a89fa, type: 3}
   grassColors:
   - {r: 0.41509432, g: 0.25200084, b: 0.0763617, a: 1}
@@ -2937,6 +2940,19 @@ MonoBehaviour:
   - {r: 0.44928825, g: 0.5471698, b: 0.2710039, a: 1}
   - {r: 0.2603733, g: 0.4056604, b: 0.14351194, a: 1}
   - {r: 0.12156863, g: 0.38039216, b: 0.039215688, a: 1}
+--- !u!114 &992639653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 992639648}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc14f94314af454ea6b89e6afc4067f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxInactiveStorage: 50
 --- !u!1 &1018374469
 GameObject:
   m_ObjectHideFlags: 0

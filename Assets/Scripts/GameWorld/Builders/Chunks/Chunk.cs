@@ -25,6 +25,7 @@ namespace GameWorld.Builders.Chunks
 			ChunkData = null;
 			gameObject.name = "Chunk: Not Initialized";
 			gameObject.SetActive(false);
+			WorldObjects.Clear();
 		}
 
 		public void AddWorldObject(WorldObject worldObject)

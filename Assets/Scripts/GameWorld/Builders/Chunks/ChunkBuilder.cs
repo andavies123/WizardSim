@@ -9,6 +9,7 @@ namespace GameWorld.Builders.Chunks
 {
 	public class ChunkBuilder : MonoBehaviour
 	{
+		[SerializeField, Required] private WorldObjectPool worldObjectPool;
 		[SerializeField, Required] private Texture tileTexture;
 		[SerializeField, Required] private List<Color> grassColors;
         
@@ -31,6 +32,11 @@ namespace GameWorld.Builders.Chunks
 
 		public void ReleaseChunk(Chunk chunk)
 		{
+			foreach (WorldObject worldObject in chunk.WorldObjects.Values)
+			{
+				worldObjectPool.ReleaseObject(worldObject);
+			}
+			
 			chunk.CleanUp();
 			_chunkObjectPool.Enqueue(chunk);
 			chunk.transform.SetParent(_releasedChunkContainer);
