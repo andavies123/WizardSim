@@ -76,7 +76,7 @@ namespace GameWorld.Builders.Chunks
 					chunkTerrain.TerrainType[x, z] = Random.Range(0, grassColors.Count);
 					
 					// Rocks
-					if (Random.Range(0, 100) < 1)
+					if (Random.Range(0, 100) < 5)
 					{
 						chunkTerrain.Rocks.TryAdd(new Vector2Int(x, z), 0);
 					}
@@ -148,37 +148,5 @@ namespace GameWorld.Builders.Chunks
 			_releasedChunkContainer = new GameObject("Released Chunks").transform;
 			_rockObjectFactory = GetComponent<RockObjectFactory>();
 		}
-		
-		// private void GenerateRocks(Chunk chunk)
-		// {
-		// 	int addedRocks = 0;
-		//
-		// 	if (!_worldObjectFactories.TryGetValue("Rock", out IWorldObjectFactory rockFactory) || rockFactory == null)
-		// 	{
-		// 		Debug.LogError($"Unable to find world object factory, Type: \"Rock\"");
-		// 		return;
-		// 	}
-		// 	
-		// 	while (addedRocks < rocksPerChunk)
-		// 	{
-		// 		Vector2Int localChunkPosition = RandomExt.RangeVector2Int(
-		// 			0, world.WorldDetails.ChunkTiles.x,
-		// 			0, world.WorldDetails.ChunkTiles.y);
-		//
-		// 		WorldObject rock = rockFactory.CreateObject(chunk.Position, localChunkPosition);
-		// 		if (chunk.TryAddWorldObject(rock))
-		// 		{
-		// 			Vector3 worldPosition = world
-		// 			 		.WorldPositionFromTilePosition(localChunkPosition, chunk.Position, centerOfTile: false)
-		// 				    .ToVector3(VectorSub.XSubY) + new Vector3(0.5f, 0, 0.5f);
-		// 			
-		// 			//rock.transform.SetPositionAndRotation(worldPosition, Quaternion.identity);
-		//
-		// 			rock.transform.position = rock.PositionDetails.Position;
-		// 			
-		// 			addedRocks++;
-		// 		}
-		// 	}
-		// }
 	}
 }
