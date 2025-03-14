@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using GameWorld.WorldObjects;
+using UI;
 using UnityEngine;
 
 namespace GameWorld.Builders.Chunks
@@ -41,13 +42,10 @@ namespace GameWorld.Builders.Chunks
 
 		private void Awake()
 		{
+			ChunkMesh = GetComponentInChildren<ChunkMesh>();
+			
 			WorldObjectContainer = new GameObject("World Object Container").transform;
 			WorldObjectContainer.SetParent(transform);
-		}
-
-		private void Start()
-		{
-			ChunkMesh.GetComponent<ChunkMesh>();
 		}
 	}
 }

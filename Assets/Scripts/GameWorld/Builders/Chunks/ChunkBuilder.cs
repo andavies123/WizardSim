@@ -9,6 +9,7 @@ namespace GameWorld.Builders.Chunks
 {
 	public class ChunkBuilder : MonoBehaviour
 	{
+		[SerializeField, Required] private Chunk chunkPrefab;
 		[SerializeField, Required] private WorldObjectPool worldObjectPool;
 		[SerializeField, Required] private Texture tileTexture;
 		[SerializeField, Required] private List<Color> grassColors;
@@ -89,11 +90,10 @@ namespace GameWorld.Builders.Chunks
 			return chunkTerrain;
 		}
 
-		private static Chunk CreateChunkGameObject()
+		private Chunk CreateChunkGameObject()
 		{
-			GameObject chunkGameObject = new("Chunk: Not Initialized", typeof(Chunk), typeof(ChunkMesh));
-			Chunk chunk = chunkGameObject.GetComponent<Chunk>();
-			chunk.ChunkMesh = chunk.GetComponent<ChunkMesh>();
+			Chunk chunk = Instantiate(chunkPrefab, Vector3.zero, Quaternion.identity);
+			chunk.gameObject.name = "Uninitialized Chunk";
 			
 			return chunk;
 		}

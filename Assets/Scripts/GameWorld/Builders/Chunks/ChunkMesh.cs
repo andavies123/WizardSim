@@ -3,6 +3,8 @@ using UnityEngine;
 
 namespace GameWorld.Builders.Chunks
 {
+	[RequireComponent(typeof(MeshFilter))]
+	[RequireComponent(typeof(MeshRenderer))]
 	public class ChunkMesh : MonoBehaviour
 	{
 		private static readonly int BaseColor = Shader.PropertyToID("_BaseColor");
@@ -22,9 +24,6 @@ namespace GameWorld.Builders.Chunks
             
 			_mesh ??= new Mesh();
 			_mesh.Clear();
-			
-			if (!_meshFilter) _meshFilter = gameObject.AddComponent<MeshFilter>();
-			if (!_meshRenderer) _meshRenderer = gameObject.AddComponent<MeshRenderer>();
             
 			_meshFilter.mesh = _mesh;
 			_mesh.vertices = vertices;
@@ -47,6 +46,12 @@ namespace GameWorld.Builders.Chunks
 			_meshRenderer.materials = materials.ToArray();
 			
 			_mesh.RecalculateNormals();
+		}
+
+		private void Awake()
+		{
+			_meshFilter = GetComponent<MeshFilter>();
+			_meshRenderer = GetComponent<MeshRenderer>();
 		}
 	}
 }

@@ -2932,6 +2932,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b48c822032449dab2113aef301ba484, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  chunkPrefab: {fileID: 4075291208823530317, guid: 852cec6006c9f024987856a29cf067dd, type: 3}
   worldObjectPool: {fileID: 992639653}
   tileTexture: {fileID: 2800000, guid: 67dc852ebf71340439ae1fe97d5a89fa, type: 3}
   grassColors:
