@@ -114,9 +114,9 @@ Upgrades
 ========
 Done: Create an abstract Upgrade class that will be the base of the Rogue-Like system
 Done: Create a starting set of upgrades
-Todo: Create a UI that can pop up and disappear
-Todo: The player should be able to select an upgrade
-Todo: A random set of 2 upgrades should pop up
+Done: Create a UI that can pop up and disappear
+Done: The player should be able to select an upgrade
+Done: A random set of 2 upgrades should pop up
 Todo: At start of game, the player should get to select the starting wizard types (from a random selection)
 
 Upgrade Items
