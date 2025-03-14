@@ -7,15 +7,15 @@ namespace GameWorld.WorldObjects
 	{
 		private const string RESOURCES_PATH = "Scriptable Objects/World Object Details";
         
-		private readonly Dictionary<string, IDictionary<string, WorldObjectDetails>> _detailsByGroup = new();
+		private readonly Dictionary<string, Dictionary<string, WorldObjectDetails>> _detailsByGroup = new();
         
-		public IReadOnlyDictionary<string, IDictionary<string, WorldObjectDetails>> DetailsByGroup => _detailsByGroup;
+		public IReadOnlyDictionary<string, Dictionary<string, WorldObjectDetails>> DetailsByGroup => _detailsByGroup;
 		
 		public bool TryGetDetails(string detailsGroup, string detailsName, out WorldObjectDetails details)
 		{
 			details = null;
 			
-			if (!_detailsByGroup.TryGetValue(detailsGroup, out IDictionary<string, WorldObjectDetails> groupDetails))
+			if (!_detailsByGroup.TryGetValue(detailsGroup, out Dictionary<string, WorldObjectDetails> groupDetails))
 				return false;
 
 			return groupDetails.TryGetValue(detailsName, out details);
@@ -36,7 +36,7 @@ namespace GameWorld.WorldObjects
 			
 			foreach (WorldObjectDetails details in loadedDetails)
 			{
-				if (_detailsByGroup.TryGetValue(details.Group, out IDictionary<string, WorldObjectDetails> groupDetails))
+				if (_detailsByGroup.TryGetValue(details.Group, out Dictionary<string, WorldObjectDetails> groupDetails))
 				{
 					if (!groupDetails.TryAdd(details.Name, details))
 					{

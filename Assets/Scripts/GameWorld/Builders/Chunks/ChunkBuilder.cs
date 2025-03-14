@@ -78,7 +78,8 @@ namespace GameWorld.Builders.Chunks
 					// Rocks
 					if (Random.Range(0, 100) < 5)
 					{
-						chunkTerrain.Rocks.TryAdd(new Vector2Int(x, z), 0);
+						int rockType = Random.Range(0, _rockObjectFactory.Details.Count);
+						chunkTerrain.Rocks.TryAdd(new Vector2Int(x, z), rockType);
 					}
 				}
 			}
@@ -133,11 +134,10 @@ namespace GameWorld.Builders.Chunks
 			// Create Rocks
 			foreach ((Vector2Int rockPosition, int rockType) in chunk.ChunkData.Terrain.Rocks)
 			{
-				// Todo: Get the world position
 				// Todo: Get the correct rock object
-				// Todo: Instantiate the world object
 
-				WorldObject worldObject = _rockObjectFactory.CreateObject(chunk.ChunkData.Position, rockPosition);
+				WorldObject worldObject = _rockObjectFactory.CreateObject(chunk.ChunkData.Position, 
+					rockPosition, _rockObjectFactory.Details[rockType]);
 				worldObject.transform.position = worldObject.PositionDetails.Position;
 				chunk.AddWorldObject(worldObject);
 			}

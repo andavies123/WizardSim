@@ -23,4 +23,4 @@ MESH GENERATION
 ===============
 Done: (03/10/25) Rocks are being generated in a weird pattern
 Bug: (03/10/25) Terrain isn't interactable anymore
-Bug: (03/10/25) Rocks aren't properly using the seed to generate its type
+Done: (03/10/25) Rocks aren't properly using the seed to generate its type

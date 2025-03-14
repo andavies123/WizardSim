@@ -10,11 +10,9 @@ namespace GameWorld.Builders
 		
 		public override string BuilderType => "Rock";
 
-		public override WorldObject CreateObject(Vector2Int chunkPosition, Vector2Int localChunkPosition)
+		public override WorldObject CreateObject(Vector2Int chunkPosition, Vector2Int localChunkPosition, WorldObjectDetails details)
 		{
-			WorldObjectDetails details = GetRandomDetails();
 			worldObjectPool.TryGetWorldObject(details, out WorldObject rock);
-			
 			rock.Init(details, new ChunkPlacementData(chunkPosition, localChunkPosition));
 			rock.gameObject.SetActive(true);
 			
