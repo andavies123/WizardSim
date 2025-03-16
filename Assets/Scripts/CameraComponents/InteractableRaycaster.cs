@@ -1,4 +1,5 @@
 ﻿using System;
+using Extensions;
 using Game;
 using Messages.Selection;
 using MessagingSystem;
@@ -17,7 +18,7 @@ namespace CameraComponents
 		private MessageBroker _messageBroker;
 		private Interactable _currentHover;
 		private Interactable _currentSelected;
-		private bool _isPointerOverUI = false;
+		private bool _isPointerOverUI;
         
 		public event EventHandler<InteractableRaycasterEventArgs> InteractableSelectedPrimary;
         public event EventHandler<InteractableRaycasterEventArgs> InteractableSelectedSecondary;
@@ -60,8 +61,11 @@ namespace CameraComponents
 			Interactable interactable = null;
 
 			bool didRaycastHit = Physics.Raycast(ray, out RaycastHit hitInfo, maxRaycastDistance);
-			bool interactableFound = hitInfo.transform && hitInfo.transform.TryGetComponent(out interactable);
 
+			bool interactableFound = hitInfo.transform && 
+			                         (hitInfo.transform.TryGetComponent(out interactable) || 
+			                          hitInfo.transform.TryGetComponentInParent(out interactable));
+			
 			if (!didRaycastHit || !interactableFound)
 				HandleNoInteractableFound();
 			else

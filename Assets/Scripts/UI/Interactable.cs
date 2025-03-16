@@ -4,10 +4,10 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using GameWorld.WorldObjects;
 using UnityEngine;
+using Utilities.Attributes;
 
 namespace UI
 {
-	[RequireComponent(typeof(Rigidbody))]
 	public class Interactable : MonoBehaviour, INotifyPropertyChanged
 	{
 		private bool _isHovered;

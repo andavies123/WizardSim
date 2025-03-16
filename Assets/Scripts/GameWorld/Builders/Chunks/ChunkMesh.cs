@@ -5,6 +5,7 @@ namespace GameWorld.Builders.Chunks
 {
 	[RequireComponent(typeof(MeshFilter))]
 	[RequireComponent(typeof(MeshRenderer))]
+	[RequireComponent(typeof(MeshCollider))]
 	public class ChunkMesh : MonoBehaviour
 	{
 		private static readonly int BaseColor = Shader.PropertyToID("_BaseColor");
@@ -13,6 +14,7 @@ namespace GameWorld.Builders.Chunks
 		
 		private MeshFilter _meshFilter;
 		private MeshRenderer _meshRenderer;
+		private MeshCollider _meshCollider;
 
 		public void Init(Vector3[] vertices, List<int[]> triangleIndices, Vector2[] uvs, List<Color> grassColors, Texture tileTexture)
 		{
@@ -26,6 +28,7 @@ namespace GameWorld.Builders.Chunks
 			_mesh.Clear();
             
 			_meshFilter.mesh = _mesh;
+			_meshCollider.sharedMesh = _mesh;
 			_mesh.vertices = vertices;
 			_mesh.uv = uvs;
 			_mesh.subMeshCount = triangleIndices.Count;
@@ -52,6 +55,7 @@ namespace GameWorld.Builders.Chunks
 		{
 			_meshFilter = GetComponent<MeshFilter>();
 			_meshRenderer = GetComponent<MeshRenderer>();
+			_meshCollider = GetComponent<MeshCollider>();
 		}
 	}
 }

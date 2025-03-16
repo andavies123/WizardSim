@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1795425857398772189}
   - component: {fileID: 4075291208823530317}
+  - component: {fileID: 7291977502259810343}
+  - component: {fileID: 6990748602194454988}
   m_Layer: 0
   m_Name: Chunk
   m_TagString: Untagged
@@ -45,6 +47,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdc94aca067b4d829e9971be52240b7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7291977502259810343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4135288140020288548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b300eabee1624c15a8fee72b4ef559af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6990748602194454988
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4135288140020288548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6336935f880644388ac3a9199c804290, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseTexture: {fileID: 0}
+  baseColor: {r: 0, g: 0, b: 0, a: 1}
+  meshRenderer: {fileID: 2215593756909809741}
+  interactable: {fileID: 7291977502259810343}
 --- !u!1 &5549852429825521291
 GameObject:
   m_ObjectHideFlags: 0
@@ -57,6 +87,7 @@ GameObject:
   - component: {fileID: 5025548386072370500}
   - component: {fileID: 7857129792376423255}
   - component: {fileID: 2215593756909809741}
+  - component: {fileID: 6706945356260698717}
   m_Layer: 0
   m_Name: Mesh
   m_TagString: Untagged
@@ -141,3 +172,25 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &6706945356260698717
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5549852429825521291}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 0}
