@@ -125,7 +125,7 @@ Done: Create upgrade to spawn a new wizard
 Todo: Create upgrade to place new buildings
 Todo: Create upgrade to add a new skill to an existing wizard
 Done: Create upgrade to add resources to the settlement
-Todo: There shouldn't be any duplicate upgrades
+Done: There shouldn't be any duplicate upgrades
 
 Challenges
 ==========
@@ -133,4 +133,4 @@ Done: Create an abstract Challenge class
 Done: Create a starting set of challenges
 Done: Challenges should always be visible
 Done: Challenges should update in real time
-Todo: A 3rd upgrade should pop up if a challenge is completed
+Done: A 3rd upgrade should pop up if a challenge is completed
