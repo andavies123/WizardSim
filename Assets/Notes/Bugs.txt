@@ -11,10 +11,6 @@ GAME TIME
 =========
 Bug: When the game is paused, the game world time continues to tick
 
-ROCK HOVER HIGHLIGHT
-====================
-Bug: The highlight isn't working when hovering over rocks
-
 SPAWNED WIZARDS
 ===============
 Bug: (03/09/25) When a wizard is spawned by upgrades, it seems to not behave properly
@@ -22,5 +18,6 @@ Bug: (03/09/25) When a wizard is spawned by upgrades, it seems to not behave pro
 MESH GENERATION
 ===============
 Done: (03/10/25) Rocks are being generated in a weird pattern
-Bug: (03/10/25) Terrain isn't interactable anymore
+Done: (03/10/25) Terrain isn't interactable anymore
 Done: (03/10/25) Rocks aren't properly using the seed to generate its type
+Bug: (03/15/25) Tiles aren't interactable, only the whole chunk is
