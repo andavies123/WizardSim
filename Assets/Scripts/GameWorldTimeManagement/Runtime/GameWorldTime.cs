@@ -11,9 +11,9 @@ namespace AndysTools.GameWorldTimeManagement.Runtime
 		private readonly float _toWorldTimeConversionFactor; // Precalculated conversion value
 		private readonly Object _debugLogContext; // Value only used for debugging
 		
-		private int _hours = 0; // Property backing value for "Hours"
-		private int _minutes = 0; // Property backing value for "Minutes"
-		private float _seconds = 0; // Property backing value for "Seconds"
+		private int _hours; // Property backing value for "Hours"
+		private int _minutes; // Property backing value for "Minutes"
+		private float _seconds; // Property backing value for "Seconds"
 		
 		public GameWorldTime(float realWorldSecondsPerWorldDay, Object debugLogContext = null)
 		{

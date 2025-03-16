@@ -57,8 +57,11 @@ namespace AndysTools.GameWorldTimeManagement.Runtime
 
 		protected virtual void Update()
 		{
-			// Since _gameWorldTime is not a MonoBehaviour, we need to update the time here in the update method 
-			_gameWorldTime.AdvanceTime(Time.unscaledDeltaTime);
+			// Since _gameWorldTime is not a MonoBehaviour, we need to update the time here in the update method
+			if (Time.timeScale == 0)
+				_gameWorldTime.AdvanceTime(0);
+			else
+				_gameWorldTime.AdvanceTime(Time.unscaledDeltaTime);
 		}
 	}
 }

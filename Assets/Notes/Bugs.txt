@@ -7,14 +7,6 @@ WIZARD INFO
 Bug: Wizard info boxes should not be updated every update frame. Find a better way to do that
 Bug: When a wizard is breaking surrounding rocks, the status text gets really large
 
-GAME TIME
-=========
-Bug: When the game is paused, the game world time continues to tick
-
-SPAWNED WIZARDS
-===============
-Bug: (03/09/25) When a wizard is spawned by upgrades, it seems to not behave properly
-
 MESH GENERATION
 ===============
 Done: (03/10/25) Rocks are being generated in a weird pattern
