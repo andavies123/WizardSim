@@ -2,6 +2,7 @@
 using UI;
 using UnityEngine;
 using Utilities;
+using Utilities.Attributes;
 
 namespace GeneralBehaviours.ShaderManagers
 {
@@ -18,8 +19,8 @@ namespace GeneralBehaviours.ShaderManagers
 		[SerializeField] private Color baseColor;
 		
 		[Header("Components")]
-		[SerializeField] private MeshRenderer meshRenderer;
-		[SerializeField] private Interactable interactable;
+		[SerializeField, Required] private MeshRenderer meshRenderer;
+		[SerializeField, Required] protected Interactable interactable;
 
 		public void OverrideBaseColor(Color color)
 		{
@@ -27,16 +28,7 @@ namespace GeneralBehaviours.ShaderManagers
 			meshRenderer.material.SetColor(BaseColor, baseColor);
 		}
 
-		private void Awake()
-		{
-			if (meshRenderer == null)
-			{
-				Debug.LogWarning($"{nameof(meshRenderer)} is null. Removing the {nameof(InteractionShaderManager)} component on this GameObject: {gameObject.name}", this);
-				Destroy(this);
-			}
-		}
-
-		private void OnEnable()
+		protected virtual void OnEnable()
 		{
 			// Set defaults
 			meshRenderer.material.SetTexture(BaseTexture, baseTexture);
@@ -47,17 +39,15 @@ namespace GeneralBehaviours.ShaderManagers
 			
 			SetIsHoveredShaderValue(interactable && interactable.IsHovered);
 
-			if (interactable)
-				interactable.PropertyChanged += OnInteractablePropertyChanged;
+			interactable.PropertyChanged += OnInteractablePropertyChanged;
 		}
 
-		private void OnDisable()
+		protected virtual void OnDisable()
 		{
-			if (interactable)
-				interactable.PropertyChanged -= OnInteractablePropertyChanged;
+			interactable.PropertyChanged -= OnInteractablePropertyChanged;
 		}
 		
-		private void OnInteractablePropertyChanged(object sender, PropertyChangedEventArgs args)
+		protected virtual void OnInteractablePropertyChanged(object sender, PropertyChangedEventArgs args)
 		{
 			if (args.PropertyName == nameof(Interactable.IsHovered))
 				SetIsHoveredShaderValue(interactable.IsHovered);

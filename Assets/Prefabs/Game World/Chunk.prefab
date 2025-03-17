@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1795425857398772189}
   - component: {fileID: 4075291208823530317}
   - component: {fileID: 7291977502259810343}
-  - component: {fileID: 6990748602194454988}
+  - component: {fileID: -6679620840793026078}
   m_Layer: 0
   m_Name: Chunk
   m_TagString: Untagged
@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdc94aca067b4d829e9971be52240b7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  interactable: {fileID: 7291977502259810343}
 --- !u!114 &7291977502259810343
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59,7 +60,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b300eabee1624c15a8fee72b4ef559af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &6990748602194454988
+--- !u!114 &-6679620840793026078
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -68,11 +69,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4135288140020288548}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6336935f880644388ac3a9199c804290, type: 3}
+  m_Script: {fileID: 11500000, guid: da9540ad0ea54e4383038c2d6505589c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   baseTexture: {fileID: 0}
-  baseColor: {r: 0, g: 0, b: 0, a: 1}
+  baseColor: {r: 0, g: 0, b: 0, a: 0}
   meshRenderer: {fileID: 2215593756909809741}
   interactable: {fileID: 7291977502259810343}
 --- !u!1 &5549852429825521291
