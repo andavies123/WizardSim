@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using GameWorld.WorldObjects;
 using UI;
 using UnityEngine;
+using Utilities.Attributes;
 
 namespace GameWorld.Builders.Chunks
 { 
 	public class Chunk : MonoBehaviour
 	{
 		public static readonly Vector2Int ChunkSize = new(10, 10);
+
+		[SerializeField, Required] private Interactable interactable;
 
 		public Transform WorldObjectContainer { get; private set; }
 		public ChunkData ChunkData { get; private set; }
@@ -46,6 +50,17 @@ namespace GameWorld.Builders.Chunks
 			
 			WorldObjectContainer = new GameObject("World Object Container").transform;
 			WorldObjectContainer.SetParent(transform);
+		}
+
+		private void Start()
+		{
+			InitializeInteractable();
+		}
+
+		private void InitializeInteractable()
+		{
+			interactable.TitleText = $"Chunk {ChunkData.Position}";
+			interactable.InfoText = new List<string> { "This should be a tile instead" };
 		}
 	}
 }

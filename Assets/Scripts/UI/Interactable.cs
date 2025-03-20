@@ -15,10 +15,24 @@ namespace UI
 		private string _titleText = string.Empty;
 		private List<string> _infoText = new();
 		private List<string> _extendedInfoText = new();
+		private RaycastHit? _latestHoverRaycastHit;
+		private RaycastHit? _latestSelectedRaycastHit;
 
 		public event EventHandler PrimaryActionSelected;
 		public event EventHandler SecondaryActionSelected;
 
+		public RaycastHit? LatestHoverRaycastHit
+		{
+			get => _latestHoverRaycastHit;
+			set => SetValue(ref _latestHoverRaycastHit, value);
+		}
+
+		public RaycastHit? LatestSelectedRaycastHit
+		{
+			get => _latestSelectedRaycastHit;
+			set => SetValue(ref _latestSelectedRaycastHit, value);
+		}
+		
 		public bool IsHovered
 		{
 			get => _isHovered;

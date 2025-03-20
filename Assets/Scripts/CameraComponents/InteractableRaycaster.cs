@@ -69,16 +69,17 @@ namespace CameraComponents
 			if (!didRaycastHit || !interactableFound)
 				HandleNoInteractableFound();
 			else
-				HandleInteractableFound(interactable);
+				HandleInteractableFound(interactable, hitInfo);
 		}
 
-		private void HandleInteractableFound(Interactable interactable)
+		private void HandleInteractableFound(Interactable interactable, RaycastHit hitInfo)
 		{
 			BeginNewHover(interactable);
+			_currentHover.LatestHoverRaycastHit = hitInfo;
 
 			if (Input.GetMouseButtonDown(InputUtilities.LeftMouseButton))
 			{
-				BeginNewSelection(interactable);
+				BeginNewSelection(interactable, hitInfo);
 			}
 
 			if (Input.GetMouseButtonDown(InputUtilities.RightMouseButton))
@@ -110,16 +111,20 @@ namespace CameraComponents
 			}
 		}
 
-		private void BeginNewSelection(Interactable newSelection)
+		private void BeginNewSelection(Interactable newSelection, RaycastHit hitInfo)
 		{
 			if (_currentSelected)
+			{
 				_currentSelected.IsSelected = false;
+				_currentSelected.LatestSelectedRaycastHit = null;
+			}
 
 			_currentSelected = newSelection;
 
 			if (_currentSelected)
 			{
 				_currentSelected.IsSelected = true;
+				_currentSelected.LatestSelectedRaycastHit = hitInfo;
 				_currentSelected.SelectPrimaryAction();
 				InteractableSelectedPrimary?.Invoke(this, new InteractableRaycasterEventArgs(_currentSelected));
 
@@ -148,6 +153,7 @@ namespace CameraComponents
 			if (!_currentHover)
 				return;
 
+			_currentHover.LatestHoverRaycastHit = null;
 			_currentHover.IsHovered = false;
 			InteractableHoverEnd?.Invoke(this, new InteractableRaycasterEventArgs(_currentHover));
 			_currentHover = null;
