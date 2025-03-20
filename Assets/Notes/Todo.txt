@@ -1,6 +1,6 @@
 World Generation
 ================
-Todo: The world should generate more chunks as the camera moves
+Done: The world should generate more chunks as the camera moves
 Todo: Certain world objects should be generated with a random rotation (rocks, trees, etc...)
 Todo: Certain world objects should be generated with a random size (rocks, trees, etc...)
 Todo: World objects should be able to be larger than 1 x 1 x 1 
@@ -61,11 +61,12 @@ Todo: Create icon for stone
 =========
 Todo: Add a custom model for trees
 
-Message to the Player UI
-========================
+Player Notifications
+====================
 Todo: Add a Popup UI that is designed to display a message to the player
 Todo: This UI should have the option to stay until closed or have a timer to disappear
 Todo: This UI should have the ability to queue messages so they appear one at a time
+Todo: This UI should fade away when the time to live is up
 
 Audio
 =====
