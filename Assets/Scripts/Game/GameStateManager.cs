@@ -162,7 +162,7 @@ namespace Game
 		// Pause Menu Related Events
 		private void OnPauseGameRequested(object sender, EventArgs args) => UpdateCurrentState(_pauseMenuGameState);
 		private void OnResumeGameRequested(object sender, EventArgs args) => UpdateCurrentState(_gameplayGameState);
-		private static void OnQuitGameRequested(object sender, EventArgs args) => GameManager.Instance.QuitGame();
+		private void OnQuitGameRequested(object sender, EventArgs args) => GameEvents.General.QuitGame.Request(this);
 
 		// Context Menu Related Events
 		private void OnOpenContextMenuRequested(IContextMenuUser[] contextMenuUsers)

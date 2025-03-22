@@ -1,49 +1,55 @@
-﻿using UnityEngine;
-using UnityEngine.SceneManagement;
+﻿using System;
+using UnityEngine;
 
 namespace Game
 {
 	[DisallowMultipleComponent]
 	public class GameManager : MonoBehaviour
 	{
-		private bool _isGamePaused = false;
+		private bool _isGamePaused;
 
-		public static GameManager Instance { get; private set; }
-		
-		public void PauseGame()
+		private void Awake()
+		{
+			GameEvents.General.PauseGame.Requested += OnPauseGameRequested;
+			GameEvents.General.ResumeGame.Requested += OnResumeGameRequested;
+			GameEvents.General.QuitGame.Requested += OnQuitGameRequested;
+		}
+
+		private void OnDestroy()
+		{
+			GameEvents.General.PauseGame.Requested -= OnPauseGameRequested;
+			GameEvents.General.ResumeGame.Requested -= OnResumeGameRequested;
+			GameEvents.General.QuitGame.Requested -= OnQuitGameRequested;
+		}
+
+		private void OnPauseGameRequested(object sender, EventArgs _) => PauseGame();
+		private void OnResumeGameRequested(object sender, EventArgs _) => ResumeGame();
+		private void OnQuitGameRequested(object sender, EventArgs _) => ExitGame();
+
+		private void PauseGame()
 		{
 			if (_isGamePaused)
 				return;
 			
 			_isGamePaused = true;
 			Time.timeScale = 0f;
+			GameEvents.General.PauseGame.Activate(this);
 		}
 
-		public void ResumeGame()
+		private void ResumeGame()
 		{
 			if (!_isGamePaused)
 				return;
 			
 			_isGamePaused = false;
 			Time.timeScale = 1f;
+			GameEvents.General.ResumeGame.Activate(this);
 		}
-
-		public void QuitGame()
+		
+		private void ExitGame()
 		{
-			// Todo: Add a save game call here
-			SceneManager.LoadScene("Scenes/MainMenuScene");
-		}
-
-		private void Awake()
-		{
-			if (Instance)
-			{
-				Debug.Log($"Unable to have multiple {nameof(GameManager)}. Deleting this instance.", gameObject);
-				Destroy(this);
-				return;
-			}
-
-			Instance = this;
+			// Todo: Save game
+			// Todo: change to main menu scene
 		}
 	}
 }

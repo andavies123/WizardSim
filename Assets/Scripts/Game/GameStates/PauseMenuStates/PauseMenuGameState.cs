@@ -1,6 +1,5 @@
 ﻿using System;
 using Extensions;
-using UnityEngine;
 
 namespace Game.GameStates.PauseMenuStates
 {
@@ -43,12 +42,12 @@ namespace Game.GameStates.PauseMenuStates
 
 		protected override void OnEnabled()
 		{
-			GameManager.Instance.PauseGame();
+			GameEvents.General.PauseGame.Request(this);
 		}
 
 		protected override void OnDisabled()
 		{
-			GameManager.Instance.ResumeGame();
+			GameEvents.General.ResumeGame.Request(this);
 		}
 	}
 }
