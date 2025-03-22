@@ -2,7 +2,6 @@ using System.Collections.Concurrent;
 using System.Timers;
 using TMPro;
 using UnityEngine;
-using Utilities.Attributes;
 
 namespace UI.PlayerNotifications
 {
