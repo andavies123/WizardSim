@@ -33,7 +33,7 @@ namespace Game
 			
 			_isGamePaused = true;
 			Time.timeScale = 0f;
-			GameEvents.General.PauseGame.Activate(new GameEventArgs(this));
+			GameEvents.General.PauseGame.Raise(new GameEventArgs(this));
 		}
 
 		private void ResumeGame()
@@ -43,7 +43,7 @@ namespace Game
 			
 			_isGamePaused = false;
 			Time.timeScale = 1f;
-			GameEvents.General.ResumeGame.Activate(new GameEventArgs(this));
+			GameEvents.General.ResumeGame.Raise(new GameEventArgs(this));
 		}
 		
 		private void QuitGame()

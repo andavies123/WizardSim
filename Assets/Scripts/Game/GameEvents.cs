@@ -16,11 +16,11 @@ namespace Game
 
 	public class GameEvent<T> where T : GameEventArgs
 	{
-		public event EventHandler<T> Activated;
+		public event EventHandler<T> Raised;
 		public event EventHandler Requested;
 
-		public void Activate(T args) => Activated?.Invoke(args.Sender, args);
-		public void Request(object sender) => Requested?.Invoke(sender, EventArgs.Empty);
+		public void Raise(T args) => Raised?.Invoke(args.Sender, args);
+		public void Request(object requester) => Requested?.Invoke(requester, EventArgs.Empty);
 	}
 
 	public class GameEventArgs : EventArgs
