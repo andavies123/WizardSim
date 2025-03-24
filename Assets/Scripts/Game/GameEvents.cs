@@ -14,20 +14,33 @@ namespace Game
 		}
 	}
 
-	public class GameEvent
+	public class GameEvent<T> where T : GameEventArgs
 	{
-		public event EventHandler Activated;
+		public event EventHandler<T> Activated;
 		public event EventHandler Requested;
 
-		public void Activate(object sender) => Activated?.Invoke(sender, EventArgs.Empty);
+		public void Activate(T args) => Activated?.Invoke(args.Sender, args);
 		public void Request(object sender) => Requested?.Invoke(sender, EventArgs.Empty);
+	}
+
+	public class GameEventArgs : EventArgs
+	{
+		public GameEventArgs(object sender) => Sender = sender;
+		
+		public object Sender { get; set; }
 	}
 
 	public class GeneralEvents
 	{
-		public GameEvent PauseGame { get; } = new();
-		public GameEvent ResumeGame { get; } = new();
-		public GameEvent QuitGame { get; } = new();
-		public GameEvent SaveGame { get; } = new();
+		public GameEvent<GameEventArgs> PauseGame { get; } = new();
+		public GameEvent<GameEventArgs> ResumeGame { get; } = new();
+		public GameEvent<GameEventArgs> QuitGame { get; } = new();
+		public GameEvent<GameEventArgs> SaveGame { get; } = new();
+	}
+
+	public class SettlementEvents
+	{
+		public GameEvent<GameEventArgs> WizardAdded { get; } = new();
+		public GameEvent<GameEventArgs> WizardDied { get; } = new();
 	}
 }
