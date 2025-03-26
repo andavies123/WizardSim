@@ -33,7 +33,7 @@ namespace Game
 			
 			_isGamePaused = true;
 			Time.timeScale = 0f;
-			GameEvents.General.PauseGame.Raise(new GameEventArgs(this));
+			GameEvents.General.GamePaused.Raise(this);
 		}
 
 		private void ResumeGame()
@@ -43,13 +43,14 @@ namespace Game
 			
 			_isGamePaused = false;
 			Time.timeScale = 1f;
-			GameEvents.General.ResumeGame.Raise(new GameEventArgs(this));
+			GameEvents.General.GameResumed.Raise(this);
 		}
 		
 		private void QuitGame()
 		{
 			// Todo: Save game
 			// Todo: change to main menu scene
+			Debug.Log("Quit Game not setup");
 		}
 	}
 }

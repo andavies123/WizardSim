@@ -1,4 +1,5 @@
-﻿using GameWorld.Tiles;
+﻿using GameWorld.Builders.Chunks;
+using GameWorld.Tiles;
 using UnityEngine;
 
 namespace GameWorld.GameWorldEventArgs
@@ -15,6 +16,12 @@ namespace GameWorld.GameWorldEventArgs
 		{
 			ChunkPosition = tile.ParentChunk.ChunkData.Position;
 			TilePosition = tile.TilePosition;
+		}
+
+		public WorldPositionEventArgs(Chunk chunk)
+		{
+			ChunkPosition = chunk.ChunkData.Position;
+			TilePosition = Vector2Int.zero;
 		}
 		
 		public Vector2Int ChunkPosition { get; }

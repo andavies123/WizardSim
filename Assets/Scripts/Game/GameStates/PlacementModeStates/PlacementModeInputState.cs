@@ -1,8 +1,8 @@
 ﻿using System;
 using CameraComponents;
+using GameWorld.Builders.Chunks;
 using GameWorld.GameWorldEventArgs;
 using GameWorld.Tiles;
-using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Game.GameStates.PlacementModeStates
@@ -56,9 +56,9 @@ namespace Game.GameStates.PlacementModeStates
 
 		private void OnInteractableHoverBegin(object sender, InteractableRaycasterEventArgs args)
 		{
-			if (args.Interactable.TryGetComponent(out Tile tile))
+			if (args.Interactable.TryGetComponent(out Chunk chunk))
 			{
-				PreviewPositionUpdated?.Invoke(this, new WorldPositionEventArgs(tile));
+				PreviewPositionUpdated?.Invoke(this, new WorldPositionEventArgs(chunk));
 				PreviewVisibilityUpdated?.Invoke(this, true);
 			}
 			else

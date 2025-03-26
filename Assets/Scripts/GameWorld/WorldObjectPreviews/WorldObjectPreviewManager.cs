@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using Extensions;
 using Game;
-using GameWorld.WorldObjectPreviews.Messages;
 using GameWorld.WorldObjects;
 using GeneralBehaviours.ShaderManagers;
-using MessagingSystem;
 using UnityEngine;
+using static Game.GameWorldEvents;
 using Object = UnityEngine.Object;
 
 namespace GameWorld.WorldObjectPreviews
@@ -21,40 +20,11 @@ namespace GameWorld.WorldObjectPreviews
 
 		private readonly World _world;
 		private readonly Transform _previewParent;
-		private readonly MessageBroker _messageBroker;
-		private readonly List<ISubscription> _subscriptions = new();
 
 		public WorldObjectPreviewManager(World world, Transform previewParent)
 		{
 			_world = world;
 			_previewParent = previewParent;
-
-			_messageBroker = Dependencies.Get<MessageBroker>();
-			SubscriptionBuilder subscriptionBuilder = new(this);
-			
-			_subscriptions.Add(subscriptionBuilder
-				.ResetAllButSubscriber()
-				.SetMessageType<WorldObjectPreviewSetDetailsMessage>()
-				.SetCallback(OnSetDetailsMessageReceived)
-				.Build());
-			
-			_subscriptions.Add(subscriptionBuilder
-				.ResetAllButSubscriber()
-				.SetMessageType<WorldObjectPreviewSetPositionMessage>()
-				.SetCallback(OnSetPositionMessageReceived)
-				.Build());
-			
-			_subscriptions.Add(subscriptionBuilder
-				.ResetAllButSubscriber()
-				.SetMessageType<WorldObjectPreviewSetVisibilityMessage>()
-				.SetCallback(OnSetVisibilityMessageReceived)
-				.Build());
-			
-			_subscriptions.Add(subscriptionBuilder
-				.ResetAllButSubscriber()
-				.SetMessageType<WorldObjectPreviewDeleteMessage>()
-				.SetCallback(OnDeletePreviewMessageReceived)
-				.Build());
 		}
 		
 		private WorldObject PreviewObject { get; set; }
@@ -64,74 +34,76 @@ namespace GameWorld.WorldObjectPreviews
 
 		public void SubscribeToMessages()
 		{
-			_subscriptions.ForEach(_messageBroker.Subscribe);
-
 			_world.WorldObjectManager.WorldObjectAdded += OnWorldObjectCountChanged;
 			_world.WorldObjectManager.WorldObjectRemoved += OnWorldObjectCountChanged;
+
+			GameEvents.GameWorld.PlacePreviewWorldObject.Requested += OnPlacePreviewRequested;
+			GameEvents.GameWorld.DeletePreviewWorldObject.Requested += OnDeletePreviewRequested;
 		}
 
 		public void UnsubscribeFromMessages()
 		{
-			_subscriptions.ForEach(_messageBroker.Unsubscribe);
-
 			_world.WorldObjectManager.WorldObjectAdded -= OnWorldObjectCountChanged;
 			_world.WorldObjectManager.WorldObjectRemoved -= OnWorldObjectCountChanged;
+
+			GameEvents.GameWorld.PlacePreviewWorldObject.Requested -= OnPlacePreviewRequested;
+			GameEvents.GameWorld.DeletePreviewWorldObject.Requested -= OnDeletePreviewRequested;
 		}
 
-		private void OnSetDetailsMessageReceived(IMessage message)
+		private void OnPlacePreviewRequested(object sender, PlacementEventArgs args)
 		{
-			if (message is not WorldObjectPreviewSetDetailsMessage setDetailsMessage || !setDetailsMessage.Details)
+			Vector3 newPreviewWorldPosition = _world
+				.WorldPositionFromTilePosition(args.TilePosition, args.ChunkPosition, centerOfTile: false)
+				.ToVector3(VectorSub.XSubY);
+
+			if (PreviewWorldPosition != newPreviewWorldPosition)
 			{
-				Debug.LogWarning($"Received invalid {nameof(WorldObjectPreviewSetDetailsMessage)}");
-				return;
+				PreviewWorldPosition = newPreviewWorldPosition;
+			}
+
+			if (PreviewVisibility != args.Visibility)
+			{
+				PreviewVisibility = args.Visibility;
 			}
 			
-			PreviewDetails = setDetailsMessage.Details;
-			
+			if (PreviewDetails != args.WorldObjectDetails)
+			{
+				PreviewDetails = args.WorldObjectDetails;
+				UpdatePreviewDetails();
+			}
+			else // Updating the details already sets the position/visibility due to it being a new object
+			{
+				UpdatePreviewPosition();
+				UpdatePreviewVisibility();	
+			}
+		}
+
+		private void OnDeletePreviewRequested(object sender, EventArgs args)
+		{
+			DeletePreview();
+		}
+
+		private void UpdatePreviewDetails()
+		{
 			CreatePreview(PreviewDetails, _previewParent);
 			PreviewObject.transform.SetPositionAndRotation(PreviewWorldPosition, Quaternion.identity);
 			PreviewObject.gameObject.SetActive(PreviewVisibility);
 		}
 
-		private void OnSetPositionMessageReceived(IMessage message)
+		private void UpdatePreviewPosition()
 		{
-			if (message is not WorldObjectPreviewSetPositionMessage setPositionMessage)
-			{
-				Debug.LogWarning($"Received invalid {nameof(WorldObjectPreviewSetPositionMessage)}");
-				return;
-			}
-			
-			PreviewWorldPosition = _world
-				.WorldPositionFromTilePosition(setPositionMessage.TilePosition, setPositionMessage.ChunkPosition, centerOfTile: false)
-				.ToVector3(VectorSub.XSubY);
-			
 			if (PreviewObject)
+			{
 				PreviewObject.transform.SetPositionAndRotation(PreviewWorldPosition, Quaternion.identity);
+			}
 		}
 
-		private void OnSetVisibilityMessageReceived(IMessage message)
+		private void UpdatePreviewVisibility()
 		{
-			if (message is not WorldObjectPreviewSetVisibilityMessage setVisibilityMessage)
-			{
-				Debug.LogWarning($"Received invalid {nameof(WorldObjectPreviewSetVisibilityMessage)}");
-				return;
-			}
-
-			PreviewVisibility = setVisibilityMessage.Visibility;
-            
 			if (PreviewObject)
-				PreviewObject.gameObject.SetActive(PreviewVisibility);
-		}
-
-		private void OnDeletePreviewMessageReceived(IMessage message)
-		{
-			if (message is not WorldObjectPreviewDeleteMessage)
 			{
-				Debug.LogWarning($"Received invalid {nameof(WorldObjectPreviewDeleteMessage)}");
-				return;
+				PreviewObject.gameObject.SetActive(PreviewVisibility);
 			}
-            
-			DeletePreview();
 		}
 
 		private void OnWorldObjectCountChanged(object sender, WorldObjectManagerEventArgs args)
@@ -140,15 +112,6 @@ namespace GameWorld.WorldObjectPreviews
 				return; // We only care about the current detail set
 
 			UpdatePreviewColor();
-		}
-
-		private void DeletePreview()
-		{
-			if (PreviewObject)
-			{
-				PreviewObject.gameObject.Destroy();
-				PreviewObject = null;
-			}
 		}
 
 		private void UpdatePreviewColor()
@@ -174,6 +137,15 @@ namespace GameWorld.WorldObjectPreviews
 			PreviewObject.GetComponent<InteractionShaderManager>().enabled = false;
 			PreviewObject.GetComponentsInChildren<Collider>(true).ToList().ForEach(collider => collider.enabled = false);
 			UpdatePreviewColor();
+		}
+
+		private void DeletePreview()
+		{
+			if (PreviewObject)
+			{
+				PreviewObject.gameObject.Destroy();
+				PreviewObject = null;
+			}
 		}
 	}
 }
