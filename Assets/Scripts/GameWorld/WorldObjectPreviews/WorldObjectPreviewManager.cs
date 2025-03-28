@@ -2,10 +2,11 @@
 using System.Linq;
 using Extensions;
 using Game;
+using Game.Events;
 using GameWorld.WorldObjects;
 using GeneralBehaviours.ShaderManagers;
 using UnityEngine;
-using static Game.GameWorldEvents;
+using static Game.Events.GameWorldEvents;
 using Object = UnityEngine.Object;
 
 namespace GameWorld.WorldObjectPreviews

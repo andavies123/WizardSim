@@ -1,10 +1,11 @@
 ﻿using System;
 using CameraComponents;
 using Extensions;
+using Game.Events;
 using GameWorld.GameWorldEventArgs;
 using GameWorld.WorldObjects;
 using UnityEngine;
-using static Game.GameWorldEvents;
+using static Game.Events.GameWorldEvents;
 
 namespace Game.GameStates.PlacementModeStates
 {

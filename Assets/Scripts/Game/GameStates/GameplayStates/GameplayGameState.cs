@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using Extensions;
+using Game.Events;
 using GameWorld.WorldObjects;
-using Messages.Selection;
-using Messages.UI;
-using Messages.UI.Enums;
-using MessagingSystem;
+using UI;
 using UI.ContextMenus;
 
 namespace Game.GameStates.GameplayStates
@@ -14,8 +11,6 @@ namespace Game.GameStates.GameplayStates
 	{
 		private readonly GameplayUIState _gameplayUIState;
 		private readonly GameplayInputState _gameplayInputState;
-		private readonly List<ISubscription> _subscriptions = new();
-		private readonly MessageBroker _messageBroker;
 
 		public event EventHandler PauseGameRequested;
 		public event Action<IContextMenuUser[]> OpenContextMenuRequested;
@@ -30,30 +25,7 @@ namespace Game.GameStates.GameplayStates
 		public GameplayGameState(GameplayUIState gameplayUIState)
 		{
 			_gameplayUIState = gameplayUIState.ThrowIfNull(nameof(gameplayUIState));
-			_messageBroker = Dependencies.Get<MessageBroker>();
 			_gameplayInputState = new GameplayInputState();
-			
-			SubscriptionBuilder subscriptionBuilder = new(this);
-
-			_subscriptions.Add(subscriptionBuilder
-				.ResetAllButSubscriber()
-				.SetMessageType<OpenUIRequest>()
-				.SetCallback(OnOpenUIRequested)
-				.Build());
-
-			_subscriptions.Add(subscriptionBuilder
-				.ResetAllButSubscriber()
-				.SetMessageType<CurrentSelectedInteractable>()
-				.SetCallback(OnPrimarySelectedInteractableReceived)
-				.AddFilter(message => ((CurrentSelectedInteractable)message).InteractionType == InteractionType.PrimarySelection)
-				.Build());
-			
-			_subscriptions.Add(subscriptionBuilder
-				.ResetAllButSubscriber()
-				.SetMessageType<CurrentSelectedInteractable>()
-				.SetCallback(OnSecondarySelectedInteractableReceived)
-				.AddFilter(message => ((CurrentSelectedInteractable)message).InteractionType == InteractionType.SecondarySelection)
-				.Build());
 		}
 
 		public override bool AllowCameraInputs => true;
@@ -72,7 +44,8 @@ namespace Game.GameStates.GameplayStates
 			_gameplayUIState.PauseButtonPressed += OnPauseButtonPressed;
 			_gameplayUIState.HotBarItemSelected += OnPlacementModeRequested;
 
-			_subscriptions.ForEach(sub => _messageBroker.Subscribe(sub));
+			GameEvents.Interaction.CurrentSelectedInteractableUpdated.Raised += OnCurrentSelectedInteractableUpdated;
+			GameEvents.UI.OpenUI.Requested += OnOpenUIRequested;
 		}
 
 		protected override void OnDisabled()
@@ -84,8 +57,9 @@ namespace Game.GameStates.GameplayStates
 			// UI
 			_gameplayUIState.PauseButtonPressed -= OnPauseButtonPressed;
 			_gameplayUIState.HotBarItemSelected -= OnPlacementModeRequested;
-
-			_subscriptions.ForEach(sub => _messageBroker.Unsubscribe(sub));
+			
+			GameEvents.Interaction.CurrentSelectedInteractableUpdated.Raised -= OnCurrentSelectedInteractableUpdated;
+			GameEvents.UI.OpenUI.Requested -= OnOpenUIRequested;
 		}
 
 		private void OnPauseInputPerformed(object sender, EventArgs args)
@@ -98,48 +72,56 @@ namespace Game.GameStates.GameplayStates
 			PauseGameRequested?.Invoke(sender, args);
 		
 		private void OnPlacementModeRequested(object sender, WorldObjectDetails details) =>
-			BeginPlacementModeRequested?.Invoke(this, new BeginPlacementModeEventArgs(details));
+			BeginPlacementModeRequested?.Invoke(this, new BeginPlacementModeEventArgs {WorldObjectDetails = details});
 
 		private void OnCloseInfoWindowRequested(object sender, EventArgs args) =>
 			_gameplayUIState.InfoWindow.CloseWindow();
 
-		private void OnOpenUIRequested(IMessage message)
+		private void OnOpenUIRequested(object sender, OpenUIEventArgs args)
 		{
-			if (message is OpenUIRequest openUIRequest)
-			{
-				switch (openUIRequest.Window)
-				{
-					case UIWindow.TownHallWindow:
-						OpenTownManagementWindow?.Invoke(this, EventArgs.Empty);
-						break;
-				}
+			switch (args.Window)
+			{ 
+				case UIWindow.TownHallWindow:
+					OpenTownManagementWindow?.Invoke(this, EventArgs.Empty);
+					break;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(args.Window), args.Window.ToString());
 			}
 		}
 
-		private void OnPrimarySelectedInteractableReceived(IMessage message)
+		private void OnCurrentSelectedInteractableUpdated(object sender, SelectedInteractableEventArgs args)
 		{
-			if (message is CurrentSelectedInteractable selectedMessage)
+			switch (args.SelectionType)
 			{
-				if (selectedMessage.SelectedInteractable)
-					_gameplayUIState.InfoWindow.OpenWindow(selectedMessage.SelectedInteractable);
-				else
-					_gameplayUIState.InfoWindow.CloseWindow();
+				case SelectionType.PrimarySelection:
+					HandlePrimarySelectedInteractableReceived(args.SelectedInteractable);
+					break;
+				case SelectionType.SecondarySelection:
+					HandleSecondarySelectedInteractableReceived(args.SelectedInteractable);
+					break;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(args.SelectionType));
 			}
 		}
 
-		private void OnSecondarySelectedInteractableReceived(IMessage message)
+		private void HandlePrimarySelectedInteractableReceived(Interactable selectedInteractable)
 		{
-			if (message is CurrentSelectedInteractable selectedMessage)
-			{
-				if (selectedMessage.SelectedInteractable)
-				{
-					IContextMenuUser[] contextMenuUsers = selectedMessage.SelectedInteractable.GetComponents<IContextMenuUser>();
+			if (selectedInteractable)
+				_gameplayUIState.InfoWindow.OpenWindow(selectedInteractable);
+			else
+				_gameplayUIState.InfoWindow.CloseWindow();
+		}
 
-					if (contextMenuUsers.Length > 0)
-					{
-						_gameplayUIState.InfoWindow.OpenWindow(selectedMessage.SelectedInteractable);
-						OpenContextMenuRequested?.Invoke(contextMenuUsers);
-					}
+		private void HandleSecondarySelectedInteractableReceived(Interactable selectedInteractable)
+		{
+			if (selectedInteractable)
+			{
+				IContextMenuUser[] contextMenuUsers = selectedInteractable.GetComponents<IContextMenuUser>();
+
+				if (contextMenuUsers.Length > 0)
+				{
+					_gameplayUIState.InfoWindow.OpenWindow(selectedInteractable);
+					OpenContextMenuRequested?.Invoke(contextMenuUsers);
 				}
 			}
 		}

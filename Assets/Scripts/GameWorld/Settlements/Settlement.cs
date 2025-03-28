@@ -16,7 +16,7 @@ namespace GameWorld.Settlements
 		public event Action<TownHall> TownHallUpdated; 
 
 		public TownResourceStockpile ResourceStockpile => resourceStockpile;
-		public string SettlementName { get; set; } = "Un-named Settlement";
+		public string SettlementName { get; set; } = "Unnamed Settlement";
 
 		public TownHall TownHall
 		{

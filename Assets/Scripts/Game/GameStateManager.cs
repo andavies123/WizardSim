@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using CameraComponents;
+using Game.Events;
 using Game.GameStates;
 using Game.GameStates.ContextMenuStates;
 using Game.GameStates.GameplayStates;
@@ -9,9 +9,7 @@ using Game.GameStates.PauseMenuStates;
 using Game.GameStates.PlacementModeStates;
 using Game.GameStates.TaskManagementGameStates;
 using Game.GameStates.TownManagementStates;
-using MessagingSystem;
 using UI.ContextMenus;
-using UI.Messages;
 using UnityEngine;
 using Utilities.Attributes;
 
@@ -31,9 +29,6 @@ namespace Game
 		[Header("External Components")]
 		[SerializeField, Required] private InteractableRaycaster interactableRaycaster;
 
-		private readonly List<ISubscription> _subscriptions = new();
-
-		private MessageBroker _messageBroker;
 		private GameState _currentGameState;
 
 		private GameplayGameState _gameplayGameState;
@@ -79,21 +74,6 @@ namespace Game
 			
 			_cameraInputState = new CameraInputState();
 			Dependencies.Register(_cameraInputState);
-			_messageBroker = Dependencies.Get<MessageBroker>();
-
-			SubscriptionBuilder subscriptionBuilder = new(this);
-			
-			_subscriptions.Add(subscriptionBuilder
-				.ResetAllButSubscriber()
-				.SetMessageType<StartInteractionRequest>()
-				.SetCallback(OnInteractionModeRequested)
-				.Build());
-			
-			_subscriptions.Add(subscriptionBuilder
-				.ResetAllButSubscriber()
-				.SetMessageType<EndInteractionRequest>()
-				.SetCallback(OnInteractionEndRequested)
-				.Build());
 		}
 
 		private void Start()
@@ -131,8 +111,9 @@ namespace Game
 			_taskManagementGameState.CloseMenu += OnCloseTaskManagementWindow;
 
 			_townManagementGameState.CloseMenu += OnCloseTownManagementWindow;
-			
-			_subscriptions.ForEach(_messageBroker.Subscribe);
+
+			GameEvents.UI.StartInteraction.Requested += OnStartInteractionRequested;
+			GameEvents.UI.EndInteraction.Requested += OnEndInteractionRequested;
 		}
 
 		private void OnDisable()
@@ -155,8 +136,9 @@ namespace Game
 			_taskManagementGameState.CloseMenu -= OnCloseTaskManagementWindow;
 
 			_townManagementGameState.CloseMenu -= OnCloseTownManagementWindow;
-			
-			_subscriptions.ForEach(_messageBroker.Unsubscribe);
+
+			GameEvents.UI.StartInteraction.Requested -= OnStartInteractionRequested;
+			GameEvents.UI.EndInteraction.Requested -= OnEndInteractionRequested;
 		}
 
 		// Pause Menu Related Events
@@ -181,26 +163,21 @@ namespace Game
 		// Placement Mode Related Events
 		private void OnBeginPlacementModeRequested(object sender, BeginPlacementModeEventArgs args)
 		{
-			_placementModeGameState.LatestPreviewWorldObject = args.PlacementDetails;
+			_placementModeGameState.LatestPreviewWorldObject = args.WorldObjectDetails;
 			UpdateCurrentState(_placementModeGameState);
 		}
 		private void OnPlacementModeEnded(object sender, EventArgs args) => UpdateCurrentState(_gameplayGameState);
 
 		// Interaction Mode Related Events
-		private void OnInteractionModeRequested(IMessage message)
+		private void OnStartInteractionRequested(object sender, StartInteractionEventArgs args)
 		{
-			if (message is StartInteractionRequest request)
-			{
-				_interactionGameState.SetInteractionCallback(request.InteractionCallback);
-				UpdateCurrentState(_interactionGameState);
-			}
+			_interactionGameState.SetInteractionCallback(args.InteractionCallback);
+			UpdateCurrentState(_interactionGameState);
 		}
-		private void OnInteractionEndRequested(IMessage message)
+		
+		private void OnEndInteractionRequested(object sender, EventArgs args)
 		{
-			if (message is EndInteractionRequest)
-			{
-				UpdateCurrentState(_gameplayGameState);
-			}
+			UpdateCurrentState(_gameplayGameState);
 		}
 
 		private void OnInteractionModeCanceled(object sender, EventArgs args) => UpdateCurrentState(_gameplayGameState);

@@ -1,7 +1,6 @@
 ﻿using AndysTools.GameWorldTimeManagement.Runtime;
 using Extensions;
 using GameWorld.Tiles;
-using GeneralBehaviours.Utilities.ContextMenuBuilders;
 using GeneralClasses.Health.HealthEventArgs;
 using UnityEngine;
 using GameWorld.Characters.Wizards.States;
@@ -9,11 +8,9 @@ using System;
 using System.Collections.Generic;
 using DamageTypes;
 using Game;
+using Game.Events;
 using GameWorld.Characters.Wizards.AgeSystem;
 using GameWorld.Settlements;
-using MessagingSystem;
-using UI.ContextMenus;
-using UI.Messages;
 using Component = UnityEngine.Component;
 using Random = UnityEngine.Random;
 
@@ -23,7 +20,6 @@ namespace GameWorld.Characters.Wizards
 	[RequireComponent(typeof(WizardTaskHandler))]
 	public class Wizard : Character
 	{
-		private MessageBroker _messageBroker;
 		private GameWorldTimeBehaviour _worldTime;
 
 		public string Name { get; set; }
@@ -104,7 +100,6 @@ namespace GameWorld.Characters.Wizards
 		{
 			base.Awake();
 
-			_messageBroker = Dependencies.Get<MessageBroker>();
 			StateMachine = GetComponent<WizardStateMachine>();
 			TaskHandler = GetComponent<WizardTaskHandler>();
 
@@ -168,7 +163,7 @@ namespace GameWorld.Characters.Wizards
 			Vector3 moveToPosition = new(tilePosition.x, Transform.position.y, tilePosition.z);
 			StateMachine.MoveTo(moveToPosition);
             
-			_messageBroker.PublishSingle(new EndInteractionRequest {Sender = this});
+			GameEvents.UI.EndInteraction.Request(this);
 		}
 
 		private void OnCurrentHealthChanged(object sender, CurrentHealthChangedEventArgs args)

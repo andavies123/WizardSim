@@ -3,7 +3,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using GameWorld.WorldResources;
-using MessagingSystem;
 using UnityEngine;
 
 namespace Game
@@ -58,7 +57,6 @@ namespace Game
 			townResourceRepo.LoadAllTownResources();
 			
 			// Registering non singletons
-			Register(new MessageBroker());
 			Register(townResourceRepo);
 		}
 	}

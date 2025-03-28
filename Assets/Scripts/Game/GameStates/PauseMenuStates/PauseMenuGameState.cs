@@ -1,5 +1,6 @@
 ﻿using System;
 using Extensions;
+using Game.Events;
 
 namespace Game.GameStates.PauseMenuStates
 {

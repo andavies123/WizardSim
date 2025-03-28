@@ -1,8 +1,6 @@
 ﻿using System;
 using Extensions;
-using Game;
-using Messages.Selection;
-using MessagingSystem;
+using Game.Events;
 using UI;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -15,7 +13,6 @@ namespace CameraComponents
 		[SerializeField] private new Camera camera;
 		[SerializeField] private float maxRaycastDistance = 1000;
 
-		private MessageBroker _messageBroker;
 		private Interactable _currentHover;
 		private Interactable _currentSelected;
 		private bool _isPointerOverUI;
@@ -31,11 +28,6 @@ namespace CameraComponents
         public event EventHandler UIHoverEnd;
 
         public bool IsInteractableCurrentlyHovered => _currentHover;
-
-        private void Awake()
-        {
-	        _messageBroker = Dependencies.Get<MessageBroker>();
-        }
         
 		private void Update()
 		{
@@ -87,7 +79,7 @@ namespace CameraComponents
 				interactable.SelectSecondaryAction();
 				InteractableSelectedSecondary?.Invoke(this, new InteractableRaycasterEventArgs(interactable));
 
-				SendSelectedMessage(InteractionType.SecondarySelection, interactable);
+				RaiseInteractableSelected(SelectionType.SecondarySelection, interactable);
 			}
 		}
 
@@ -101,13 +93,13 @@ namespace CameraComponents
 			if (Input.GetMouseButtonDown(InputUtilities.LeftMouseButton))
 			{
 				NonInteractableSelectedPrimary?.Invoke(this, EventArgs.Empty);
-				SendSelectedMessage(InteractionType.PrimarySelection, null);
+				RaiseInteractableSelected(SelectionType.PrimarySelection, null);
 			}
 
 			if (Input.GetMouseButtonDown(InputUtilities.RightMouseButton))
 			{
 				NonInteractableSelectedSecondary?.Invoke(this, EventArgs.Empty);
-				SendSelectedMessage(InteractionType.SecondarySelection, null);
+				RaiseInteractableSelected(SelectionType.SecondarySelection, null);
 			}
 		}
 
@@ -128,7 +120,7 @@ namespace CameraComponents
 				_currentSelected.SelectPrimaryAction();
 				InteractableSelectedPrimary?.Invoke(this, new InteractableRaycasterEventArgs(_currentSelected));
 
-				SendSelectedMessage(InteractionType.PrimarySelection, _currentSelected);
+				RaiseInteractableSelected(SelectionType.PrimarySelection, _currentSelected);
 			}
 		}
 
@@ -159,13 +151,12 @@ namespace CameraComponents
 			_currentHover = null;
 		}
 
-		private void SendSelectedMessage(InteractionType interactionType, Interactable selectedInteractable)
+		private void RaiseInteractableSelected(SelectionType selectionType, Interactable selectedInteractable)
 		{
-			_messageBroker.PublishSingle(new InteractableSelected
+			GameEvents.Interaction.InteractableSelected.Raise(this, new SelectedInteractableEventArgs
 			{
-				InteractionType = interactionType,
 				SelectedInteractable = selectedInteractable,
-				Sender = this
+				SelectionType = selectionType
 			});
 		}
 	}

@@ -11,12 +11,12 @@ namespace Game.GameStates.PlacementModeStates
 	{
 		private readonly PlayerInputActions _playerInputActions = new();
 		private readonly InteractableRaycaster _interactableRaycaster;
-		private PlayerInputActions.PlacementModeActions placementMode;
+		private PlayerInputActions.PlacementModeActions _placementMode;
 		
 		public PlacementModeInputState(InteractableRaycaster interactableRaycaster)
 		{
 			_interactableRaycaster = interactableRaycaster;
-			placementMode = _playerInputActions.PlacementMode;
+			_placementMode = _playerInputActions.PlacementMode;
 		}
 		
 		public event EventHandler<WorldPositionEventArgs> PlacementRequested;
@@ -34,21 +34,21 @@ namespace Game.GameStates.PlacementModeStates
 			_interactableRaycaster.InteractableSelectedPrimary += OnInteractableSelectedPrimary;
 			_interactableRaycaster.NonInteractableHoverBegin += OnNonInteractableHoverBegin;
 			
-			placementMode.EndPlacementMode.performed += OnEndPlacementModeActionPerformed;
+			_placementMode.EndPlacementMode.performed += OnEndPlacementModeActionPerformed;
 			
-			placementMode.Enable();
+			_placementMode.Enable();
 		}
 
 		public void Disable()
 		{
-			placementMode.Disable();
+			_placementMode.Disable();
 
 			_interactableRaycaster.InteractableHoverBegin -= OnInteractableHoverBegin;
 			_interactableRaycaster.UIHoverBegin -= OnUIHoverBegin;
 			_interactableRaycaster.InteractableSelectedPrimary -= OnInteractableSelectedPrimary;
 			_interactableRaycaster.NonInteractableHoverBegin -= OnNonInteractableHoverBegin;
 			
-			placementMode.EndPlacementMode.performed -= OnEndPlacementModeActionPerformed;
+			_placementMode.EndPlacementMode.performed -= OnEndPlacementModeActionPerformed;
 		}
 
 		private void OnEndPlacementModeActionPerformed(InputAction.CallbackContext context) =>

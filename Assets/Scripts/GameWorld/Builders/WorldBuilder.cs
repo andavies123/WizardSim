@@ -4,6 +4,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using Game;
+using Game.Events;
 using GameWorld.Builders.Chunks;
 using GameWorld.Characters.Wizards.Managers;
 using GameWorld.Characters.Wizards.Tasks;
@@ -12,9 +13,6 @@ using GameWorld.WorldObjects;
 using UnityEngine;
 using GameWorld.WorldObjects.Rocks;
 using GeneralBehaviours.Utilities.ContextMenuBuilders;
-using Messages.UI;
-using Messages.UI.Enums;
-using MessagingSystem;
 using Utilities.Attributes;
 
 namespace GameWorld.Builders
@@ -35,14 +33,11 @@ namespace GameWorld.Builders
 		[SerializeField, Required] private int rocksPerChunk;
 		[SerializeField, Required] private WizardTaskManager wizardTaskManager;
 
-		private readonly List<ISubscription> _subscriptions = new();
 		private readonly ConcurrentDictionary<Vector2Int, Chunk> _loadedChunks = new();
 		private readonly Dictionary<string, IWorldObjectFactory> _worldObjectFactories = new();
 		private readonly PlayerCameraChunkManager _playerCameraChunkManager = new();
 		
 		private Transform _activeChunkContainer;
-		private MessageBroker _messageBroker;
-		private SubscriptionBuilder _subBuilder;
 		private WorldObjectPreviewManager _worldObjectPreviewManager;
 		
 		private void Awake()
@@ -52,9 +47,6 @@ namespace GameWorld.Builders
 			_playerCameraChunkManager.ChunkBelowChanged += OnChunkBelowCameraChanged;
 			
 			_worldObjectPreviewManager = new WorldObjectPreviewManager(world, transform);
-
-			_messageBroker = Dependencies.Get<MessageBroker>();
-			_subBuilder = new SubscriptionBuilder(this);
 
 			// Build the world object builder dictionary
 			IWorldObjectFactory[] worldObjectBuilders = GetComponents<IWorldObjectFactory>();
@@ -66,16 +58,12 @@ namespace GameWorld.Builders
 				}
 			}
 
+			// Todo: Do I need to add a listener for requesting to place a world object?
 			InjectContextMenuActions();
-
-			// _subscriptions.Add(_subBuilder.ResetAllButSubscriber()
-			// 	.SetMessageType<WorldObjectPlacementRequest>()
-			// 	.SetCallback(OnPlaceWorldObjectRequested).Build());
 		}
 		
 		private void Start()
 		{
-			_subscriptions.ForEach(_messageBroker.Subscribe);
 			_worldObjectPreviewManager.SubscribeToMessages();
 			GenerateWorld();
 		}
@@ -90,7 +78,6 @@ namespace GameWorld.Builders
 
 		private void OnDestroy()
 		{
-			_subscriptions.ForEach(_messageBroker.Unsubscribe);
 			_worldObjectPreviewManager.UnsubscribeFromMessages();	
 			_playerCameraChunkManager.ChunkBelowChanged -= OnChunkBelowCameraChanged;
 		}
@@ -320,9 +307,8 @@ namespace GameWorld.Builders
 		
 		private void OpenTownHallMenu()
 		{
-			_messageBroker.PublishSingle(new OpenUIRequest
+			GameEvents.UI.OpenUI.Request(this, new OpenUIEventArgs
 			{
-				Sender = this,
 				Window = UIWindow.TownHallWindow
 			});
 		}
