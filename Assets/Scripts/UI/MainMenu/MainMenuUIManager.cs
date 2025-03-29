@@ -23,7 +23,11 @@ namespace UI.MainMenu
 
 		public void DisableAllPages()
 		{
-			_allMainMenuPages.ForEach(page => page.Disable());
+			_allMainMenuPages.ForEach(page =>
+			{
+				page.gameObject.SetActive(true);
+				page.Disable();
+			});
 		}
 		
 		private void Awake()

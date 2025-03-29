@@ -1,6 +1,9 @@
+using System;
 using System.Diagnostics;
 using Cysharp.Threading.Tasks;
 using Game.EventChannels;
+using Game.Events;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Utilities.Attributes;
@@ -30,17 +33,27 @@ namespace PersistantManagers
 			LogSceneUnloadRequest(sceneName, sender.ToString());
 			await SceneManager.UnloadSceneAsync(sceneName);
 		}
+
+		private static void OnCloseGameRequested(object sender, EventArgs args)
+		{
+			EditorApplication.ExitPlaymode(); // Editor mode
+			Application.Quit(); // Application mode
+		}
 		
 		private void OnEnable()
 		{
 			sceneLoadRequestChannel.Raised += OnSceneLoadRequested;
 			sceneUnloadRequestChannel.Raised += OnSceneUnloadRequested;
+
+			GameEvents.General.CloseGame.Requested += OnCloseGameRequested;
 		}
 
 		private void OnDisable()
 		{
 			sceneLoadRequestChannel.Raised -= OnSceneLoadRequested;
 			sceneUnloadRequestChannel.Raised -= OnSceneUnloadRequested;
+			
+			GameEvents.General.CloseGame.Requested -= OnCloseGameRequested;
 		}
 
 		[Conditional("UNITY_EDITOR")]
