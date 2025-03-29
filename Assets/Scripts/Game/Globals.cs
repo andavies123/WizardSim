@@ -32,7 +32,7 @@ namespace Game
 		// UI References
 		public static ContextMenuInjections ContextMenuInjections => Instance.contextMenuInjections;
 		
-		private static Globals Instance { get; set; }
+		public static Globals Instance { get; set; }
 
 		private void Awake()
 		{

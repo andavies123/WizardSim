@@ -22,7 +22,10 @@ namespace GeneralBehaviours.Utilities.ContextMenuBuilders
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
 		private static void AddContextMenuItems()
 		{
-			//AddHealthComponentContextMenuItems();
+			if (Globals.Instance == null)
+				return;
+			
+			AddHealthComponentContextMenuItems();
 			AddDamageableComponentContextMenuItems();
 		}
         
