@@ -33,7 +33,7 @@ namespace UI.MainMenu
 		{
 			if (backButtonPagePair.IsComplete)
 			{
-				backButtonPagePair.Button.onClick.AddListener(() => _uiManager.ChangePage(backButtonPagePair.NextPage));
+				backButtonPagePair.Button.onClick.AddListener(() => _uiManager.SetActivePage(backButtonPagePair.NextPage));
 			}
 
 			foreach (ButtonPagePair nextButtonPagePair in nextButtonPagePairs)
@@ -41,7 +41,7 @@ namespace UI.MainMenu
 				if (!nextButtonPagePair.IsComplete)
 					continue;
 				
-				nextButtonPagePair.Button.onClick.AddListener(() => _uiManager.ChangePage(nextButtonPagePair.NextPage));
+				nextButtonPagePair.Button.onClick.AddListener(() => _uiManager.SetActivePage(nextButtonPagePair.NextPage));
 			}
 			
 			PageEnabled?.Invoke();

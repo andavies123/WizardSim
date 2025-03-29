@@ -9,8 +9,7 @@ namespace Game
 {
 	public class GameInitiator : MonoBehaviour
 	{
-		[SerializeField, Required]
-		private StringEventChannel sceneChangeRequestChannel;
+		[SerializeField, Required] private StringEventChannel sceneChangeRequestChannel;
 
 		private async void Start()
 		{

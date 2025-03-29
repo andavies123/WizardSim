@@ -1,5 +1,4 @@
 ﻿using GameWorld;
-using GameWorld.Settlements.Interfaces;
 using GameWorld.WorldObjects;
 using UI.ContextMenus;
 using UI.DamageTexts;
