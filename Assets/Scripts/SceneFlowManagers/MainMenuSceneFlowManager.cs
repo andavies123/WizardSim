@@ -4,6 +4,14 @@ using Utilities.Attributes;
 
 namespace SceneFlowManagers
 {
+	/// <summary>
+	/// Class to handle the flow of the main menu scene.
+	///
+	/// Once this scene is loaded, this class will be in charge of making
+	/// sure the right series of events occurs
+	///
+	/// Since not much happens in the main menu, this shouldn't be too large (for now)
+	/// </summary>
 	[DisallowMultipleComponent]
 	public class MainMenuSceneFlowManager : MonoBehaviour
 	{
