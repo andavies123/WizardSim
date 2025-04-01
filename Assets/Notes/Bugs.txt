@@ -13,6 +13,7 @@ Done: (03/10/25) Rocks are being generated in a weird pattern
 Done: (03/10/25) Terrain isn't interactable anymore
 Done: (03/10/25) Rocks aren't properly using the seed to generate its type
 Bug: (03/15/25) Tiles aren't interactable, only the whole chunk is
+Bug: (03/30/25) When a chunk is unloaded then reloaded, the colors are gone
 
 LOAD GAME SCREEN
 ================
