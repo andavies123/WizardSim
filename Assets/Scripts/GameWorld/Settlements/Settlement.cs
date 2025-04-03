@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Game.Events;
 using GameWorld.WorldObjects;
 using GameWorld.WorldResources;
 using UnityEngine;
@@ -11,9 +11,7 @@ namespace GameWorld.Settlements
 		[Header("Resource Objects")]
 		[SerializeField, Required] private TownResourceStockpile resourceStockpile;
 
-		private TownHall _townHall;
-
-		public event Action<TownHall> TownHallUpdated; 
+		private TownHall _townHall; 
 
 		public TownResourceStockpile ResourceStockpile => resourceStockpile;
 		public string SettlementName { get; set; } = "Unnamed Settlement";
@@ -26,7 +24,7 @@ namespace GameWorld.Settlements
 				if (value != _townHall)
 				{
 					_townHall = value;
-					TownHallUpdated?.Invoke(_townHall);
+					GameEvents.Settlement.TownHallPlaced.Raise(this, new TownHallPlacedEventArgs { TownHall = _townHall });
 				}
 			}
 		}

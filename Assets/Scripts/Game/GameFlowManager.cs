@@ -1,8 +1,9 @@
+using System;
 using Extensions;
+using Game.Events;
 using GameWorld;
 using GameWorld.Characters.Wizards;
 using GameWorld.Characters.Wizards.Managers;
-using GameWorld.WorldObjects;
 using UnityEngine;
 using Utilities;
 using Utilities.Attributes;
@@ -27,6 +28,8 @@ namespace Game
 
 		private readonly ResourceLoader _resourceLoader = new();
 
+		private bool _townHallInitiallyPlaced;
+
 		private void Awake()
 		{
 			_resourceLoader.LoadAllResources();
@@ -34,18 +37,25 @@ namespace Game
 
 		private void Start()
 		{
-			world.Settlement.TownHallUpdated += OnTownHallUpdated;
+			GameEvents.Settlement.TownHallPlaced.Raised += OnTownHallPlaced;
+
+			GameEvents.TimeEvents.DaytimeStarted.Raised += OnDayStarted;
+			GameEvents.TimeEvents.NighttimeStarted.Raised += OnNightStarted;
 		}
 
 		private void OnDestroy()
 		{
-			world.Settlement.TownHallUpdated -= OnTownHallUpdated;
+			GameEvents.Settlement.TownHallPlaced.Raised -= OnTownHallPlaced;
+
+			GameEvents.TimeEvents.DaytimeStarted.Raised -= OnDayStarted;
+			GameEvents.TimeEvents.NighttimeStarted.Raised -= OnNightStarted;
 		}
 
-		private void OnTownHallUpdated(TownHall townHall)
+		private void OnTownHallPlaced(object sender, TownHallPlacedEventArgs args)
 		{
-			if (townHall)
+			if (!_townHallInitiallyPlaced && args.TownHall)
 			{
+				_townHallInitiallyPlaced = true;
 				Vector3 townHallCenter = world.Settlement.TownHall.WorldObject.PositionDetails.Center.SubY(0);
 				for (int i = 0; i < initialWizardSpawns; i++)
 				{
@@ -56,6 +66,19 @@ namespace Game
 					wizardController.SpawnWizard(spawnPosition, RandomExt.RandomEnumValue<WizardType>());
 				}
 			}
+		}
+
+		private void OnDayStarted(object sender, EventArgs args)
+		{
+			// Time should be paused before selecting upgrade
+			GameEvents.TimeEvents.ChangeGameSpeed.Request(this, new GameSpeedEventArgs {GameSpeed = GameSpeed.Paused});
+			
+			// Todo: Pop up the upgrade window
+		}
+
+		private void OnNightStarted(object sender, EventArgs args)
+		{
+			// Todo: Start spawning enemies
 		}
 	}
 }

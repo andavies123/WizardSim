@@ -9,6 +9,7 @@ namespace Game.Events
 		public static GeneralEvents General { get; private set; } = new();
 		public static InteractionEvents Interaction { get; private set; } = new();
 		public static SettlementEvents Settlement { get; private set; } = new();
+		public static TimeEvents TimeEvents { get; private set; } = new();
 		public static UIEvents UI { get; private set; } = new();
 
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
@@ -19,6 +20,7 @@ namespace Game.Events
 			General = new GeneralEvents();
 			Interaction = new InteractionEvents();
 			Settlement = new SettlementEvents();
+			TimeEvents = new TimeEvents();
 			UI = new UIEvents();
 		}
 	}

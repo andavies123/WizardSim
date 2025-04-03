@@ -1,10 +1,21 @@
+using GameWorld.WorldObjects;
+
 namespace Game.Events
 {
 	public class SettlementEvents
 	{
-		public GameEvent<GameEventArgs> WizardAdded { get; } = new();
-		public GameEvent<GameEventArgs> WizardDied { get; } = new();
-		public GameEvent<GameEventArgs> BuildingAdded { get; } = new();
-		public GameEvent<GameEventArgs> BuildingDestroyed { get; } = new();
+		// Wizards
+		public GameEvent WizardAdded { get; } = new();
+		public GameEvent WizardDied { get; } = new();
+		
+		// Buildings
+		public GameEvent BuildingAdded { get; } = new();
+		public GameEvent BuildingDestroyed { get; } = new();
+		public GameEvent<TownHallPlacedEventArgs> TownHallPlaced { get; } = new();
+	}
+
+	public class TownHallPlacedEventArgs : GameEventArgs
+	{
+		public TownHall TownHall { get; set; }
 	}
 }
