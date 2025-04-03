@@ -6096,6 +6096,7 @@ GameObject:
   - component: {fileID: 2007172220}
   - component: {fileID: 2007172221}
   - component: {fileID: 2007172222}
+  - component: {fileID: 2007172224}
   - component: {fileID: 2007172223}
   m_Layer: 0
   m_Name: World
@@ -6163,6 +6164,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91f196cc9a8b4a1bb0053596d8386aff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2007172224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2007172219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09f437f1e4e645d3847989b6aad8616e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameWorldTime: {fileID: 2007172222}
 --- !u!224 &2099059557 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7575635562821945125, guid: 953b31e6686fcf444900efb4550f5bc2, type: 3}
