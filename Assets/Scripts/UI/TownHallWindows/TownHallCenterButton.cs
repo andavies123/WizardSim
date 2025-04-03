@@ -1,3 +1,4 @@
+using Game.Events;
 using GameWorld.Settlements;
 using GameWorld.WorldObjects;
 using UnityEngine;
@@ -26,14 +27,14 @@ namespace UI.TownHallWindows
 		private void Start()
 		{
 			_townHall = settlement.TownHall; // Could be null
-			settlement.TownHallUpdated += OnTownHallUpdated;
+			GameEvents.Settlement.TownHallPlaced.Raised += OnTownHallPlaced;
 			_button.onClick.AddListener(OnButtonClicked);
 			UpdateButtonState();
 		}
 
 		private void OnDestroy()
 		{
-			settlement.TownHallUpdated -= OnTownHallUpdated;
+			GameEvents.Settlement.TownHallPlaced.Raised -= OnTownHallPlaced;
 			_button.onClick.RemoveAllListeners();
 		}
 
@@ -42,9 +43,9 @@ namespace UI.TownHallWindows
 			_button.interactable = (bool)_townHall;
 		}
 
-		private void OnTownHallUpdated(TownHall townHall)
+		private void OnTownHallPlaced(object sender, TownHallPlacedEventArgs args)
 		{
-			_townHall = townHall;
+			_townHall = args.TownHall;
 			UpdateButtonState();
 		}
 
