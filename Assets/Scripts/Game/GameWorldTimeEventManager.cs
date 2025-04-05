@@ -20,19 +20,19 @@ namespace Game
 
 		private void Awake()
 		{
-			GameEvents.TimeEvents.ChangeGameSpeed.Requested += OnChangeGameSpeedRequested;
+			GameEvents.Time.ChangeGameSpeed.Requested += OnChangeGameSpeedRequested;
 		}
 
 		private void OnDestroy()
 		{
-			GameEvents.TimeEvents.ChangeGameSpeed.Requested -= OnChangeGameSpeedRequested;
+			GameEvents.Time.ChangeGameSpeed.Requested -= OnChangeGameSpeedRequested;
 		}
 
 		private void Update()
 		{
 			if (_previousDay != gameWorldTime.Days)
 			{
-				GameEvents.TimeEvents.NewGameDayStarted.Raise(this);
+				GameEvents.Time.NewGameDayStarted.Raise(this);
 				_previousDay = gameWorldTime.Days;
 			}
 
@@ -40,11 +40,11 @@ namespace Game
 			{
 				if (_previousHour == DAYTIME_START_HOUR - 1 && gameWorldTime.Hours == DAYTIME_START_HOUR)
 				{
-					GameEvents.TimeEvents.DaytimeStarted.Raise(this);
+					GameEvents.Time.DaytimeStarted.Raise(this);
 				}
 				else if (_previousHour == NIGHTTIME_START_HOUR - 1 && gameWorldTime.Hours == NIGHTTIME_START_HOUR)
 				{
-					GameEvents.TimeEvents.NighttimeStarted.Raise(this);
+					GameEvents.Time.NighttimeStarted.Raise(this);
 				}
 				
 				_previousHour = gameWorldTime.Hours;
@@ -68,7 +68,7 @@ namespace Game
 
 			if (Math.Abs(gameWorldTime.TimeMultiplier - previousTimeMultiplier) > .00001f)
 			{
-				GameEvents.TimeEvents.GameSpeedChanged.Raise(this, args);
+				GameEvents.Time.GameSpeedChanged.Raise(this, args);
 			}
 		}
 	}

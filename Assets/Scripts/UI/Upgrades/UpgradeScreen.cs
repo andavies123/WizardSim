@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Challenges;
+using Game.Events;
 using UnityEngine;
 using Upgrades;
 using Utilities.Attributes;
@@ -28,9 +29,12 @@ namespace UI.Upgrades
 		
 		public void Activate()
 		{
+			if (_isActive)
+				return;
+			
 			int upgradesToDisplay = challengesManager.CurrentChallenge?.CompletionCriteria?.Invoke() ?? false
-				? UPGRADE_COUNT_CHALLENGE_COMPLETE
-				: UPGRADE_COUNT_CHALLENGE_INCOMPLETE;
+				? UPGRADE_COUNT_CHALLENGE_COMPLETE : UPGRADE_COUNT_CHALLENGE_INCOMPLETE;
+			
 			List<Upgrade> upgrades = upgradeManager.GetRandomUpgrades(upgradesToDisplay);
 			
 			foreach (Upgrade upgrade in upgrades)
@@ -48,6 +52,9 @@ namespace UI.Upgrades
 
 		public void Deactivate()
 		{
+			if (!_isActive)
+				return;
+            
 			canvas.enabled = false;
 
 			foreach (UpgradeCard upgradeCard in _activeUpgradeCards)
@@ -79,12 +86,15 @@ namespace UI.Upgrades
 			if (sender is not UpgradeCard upgradeCard)
 				return;
 			
+			GameEvents.UI.UpgradeSelected.Raise(this,
+				new UpgradeSelectedEventArgs {SelectedUpgrade = upgradeCard.Upgrade});
+			
 			upgradeCard.Upgrade.Apply?.Invoke();
-			Deactivate();
 		}
 
 		private void Awake()
 		{
+			_isActive = canvas.enabled;
 			Deactivate();
 		}
 

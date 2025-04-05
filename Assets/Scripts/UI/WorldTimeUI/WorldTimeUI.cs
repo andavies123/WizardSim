@@ -43,7 +43,7 @@ namespace UI.WorldTimeUI
 			_doubleSpeedGroup = new TimeScaleGroup(doubleSpeedButton, GameSpeed.Double, "2x");
 			_quadrupleSpeedGroup = new TimeScaleGroup(quadrupleSpeedButton, GameSpeed.Quadruple, "4x");
 
-			GameEvents.TimeEvents.GameSpeedChanged.Raised += OnGameSpeedChanged;
+			GameEvents.Time.GameSpeedChanged.Raised += OnGameSpeedChanged;
 		}
 
 		private void Start()
@@ -66,7 +66,7 @@ namespace UI.WorldTimeUI
 			doubleSpeedButton.onClick.RemoveListener(OnDoubleSpeedButtonPressed);
 			quadrupleSpeedButton.onClick.RemoveListener(OnQuadrupleSpeedButtonPressed);
 			
-			GameEvents.TimeEvents.GameSpeedChanged.Raised -= OnGameSpeedChanged;
+			GameEvents.Time.GameSpeedChanged.Raised -= OnGameSpeedChanged;
 		}
 
 		private IEnumerator UpdateTimeText()
@@ -90,7 +90,7 @@ namespace UI.WorldTimeUI
 
 		private void SetCurrentTimeScaleGroup(TimeScaleGroup group)
 		{
-			GameEvents.TimeEvents.ChangeGameSpeed.Request(this, new GameSpeedEventArgs { GameSpeed = group.GameSpeed });
+			GameEvents.Time.ChangeGameSpeed.Request(this, new GameSpeedEventArgs { GameSpeed = group.GameSpeed });
 		}
 
 		private void UpdateTimeScaleUI(GameSpeed gameSpeed)

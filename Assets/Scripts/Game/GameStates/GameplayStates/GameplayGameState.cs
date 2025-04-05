@@ -84,8 +84,9 @@ namespace Game.GameStates.GameplayStates
 				case UIWindow.TownHallWindow:
 					OpenTownManagementWindow?.Invoke(this, EventArgs.Empty);
 					break;
+				case UIWindow.UpgradeWindow:
 				default:
-					throw new ArgumentOutOfRangeException(nameof(args.Window), args.Window.ToString());
+					break;
 			}
 		}
 

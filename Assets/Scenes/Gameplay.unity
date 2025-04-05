@@ -563,6 +563,7 @@ MonoBehaviour:
   placementModeUIState: {fileID: 664519175}
   taskManagementUIState: {fileID: 1834829560}
   townManagementUIState: {fileID: 134541380}
+  upgradeScreen: {fileID: 433302626}
   interactableRaycaster: {fileID: 391488598}
 --- !u!114 &276745019
 MonoBehaviour:

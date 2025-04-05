@@ -10,6 +10,7 @@ using Game.GameStates.PlacementModeStates;
 using Game.GameStates.TaskManagementGameStates;
 using Game.GameStates.TownManagementStates;
 using UI.ContextMenus;
+using UI.Upgrades;
 using UnityEngine;
 using Utilities.Attributes;
 
@@ -25,6 +26,9 @@ namespace Game
 		[SerializeField, Required] private PlacementModeUIState placementModeUIState;
 		[SerializeField, Required] private TaskManagementUIState taskManagementUIState;
 		[SerializeField, Required] private TownManagementUIState townManagementUIState;
+
+		[Header("UI Windows")]
+		[SerializeField, Required] private UpgradeScreen upgradeScreen;
 
 		[Header("External Components")]
 		[SerializeField, Required] private InteractableRaycaster interactableRaycaster;
@@ -114,6 +118,8 @@ namespace Game
 
 			GameEvents.UI.StartInteraction.Requested += OnStartInteractionRequested;
 			GameEvents.UI.EndInteraction.Requested += OnEndInteractionRequested;
+			GameEvents.UI.OpenUI.Requested += OnOpenUIRequested;
+			GameEvents.UI.CloseUI.Requested += OnCloseUIRequested;
 		}
 
 		private void OnDisable()
@@ -139,6 +145,8 @@ namespace Game
 
 			GameEvents.UI.StartInteraction.Requested -= OnStartInteractionRequested;
 			GameEvents.UI.EndInteraction.Requested -= OnEndInteractionRequested;
+			GameEvents.UI.OpenUI.Requested -= OnOpenUIRequested;
+			GameEvents.UI.CloseUI.Requested -= OnCloseUIRequested;
 		}
 
 		// Pause Menu Related Events
@@ -189,5 +197,29 @@ namespace Game
 		// Town Management Menu Related Events
 		private void OnOpenTownManagementWindow(object sender, EventArgs args) => UpdateCurrentState(_townManagementGameState);
 		private void OnCloseTownManagementWindow(object sender, EventArgs args) => UpdateCurrentState(_gameplayGameState);
+
+		private void OnOpenUIRequested(object sender, OpenUIEventArgs args)
+		{
+			switch (args.Window)
+			{
+				case UIWindow.UpgradeWindow:
+					upgradeScreen.Activate();
+					break;
+				case UIWindow.TownHallWindow:
+				default: break;
+			}
+		}
+		
+		private void OnCloseUIRequested(object sender, CloseUIEventArgs args)
+		{
+			switch (args.Window)
+			{
+				case UIWindow.UpgradeWindow:
+					upgradeScreen.Deactivate();
+					break;
+				case UIWindow.TownHallWindow:
+				default: break;
+			}
+		}
 	}
 }

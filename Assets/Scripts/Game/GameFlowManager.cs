@@ -39,16 +39,20 @@ namespace Game
 		{
 			GameEvents.Settlement.TownHallPlaced.Raised += OnTownHallPlaced;
 
-			GameEvents.TimeEvents.DaytimeStarted.Raised += OnDayStarted;
-			GameEvents.TimeEvents.NighttimeStarted.Raised += OnNightStarted;
+			GameEvents.Time.DaytimeStarted.Raised += OnDayStarted;
+			GameEvents.Time.NighttimeStarted.Raised += OnNightStarted;
+			
+			GameEvents.UI.UpgradeSelected.Raised += OnUpgradeSelected;
 		}
 
 		private void OnDestroy()
 		{
 			GameEvents.Settlement.TownHallPlaced.Raised -= OnTownHallPlaced;
 
-			GameEvents.TimeEvents.DaytimeStarted.Raised -= OnDayStarted;
-			GameEvents.TimeEvents.NighttimeStarted.Raised -= OnNightStarted;
+			GameEvents.Time.DaytimeStarted.Raised -= OnDayStarted;
+			GameEvents.Time.NighttimeStarted.Raised -= OnNightStarted;
+			
+			GameEvents.UI.UpgradeSelected.Raised -= OnUpgradeSelected;
 		}
 
 		private void OnTownHallPlaced(object sender, TownHallPlacedEventArgs args)
@@ -71,14 +75,24 @@ namespace Game
 		private void OnDayStarted(object sender, EventArgs args)
 		{
 			// Time should be paused before selecting upgrade
-			GameEvents.TimeEvents.ChangeGameSpeed.Request(this, new GameSpeedEventArgs {GameSpeed = GameSpeed.Paused});
+			GameEvents.Time.ChangeGameSpeed.Request(this, new GameSpeedEventArgs {GameSpeed = GameSpeed.Paused});
 			
-			// Todo: Pop up the upgrade window
+			// Open the upgrade window
+			GameEvents.UI.OpenUI.Request(this, new OpenUIEventArgs {Window = UIWindow.UpgradeWindow});
 		}
 
 		private void OnNightStarted(object sender, EventArgs args)
 		{
 			// Todo: Start spawning enemies
+		}
+
+		private void OnUpgradeSelected(object sender, UpgradeSelectedEventArgs args)
+		{
+			// Close the upgrade window
+			GameEvents.UI.CloseUI.Request(this, new CloseUIEventArgs {Window = UIWindow.UpgradeWindow});
+			
+			// Resume time
+			GameEvents.Time.ChangeGameSpeed.Request(this, new GameSpeedEventArgs {GameSpeed = GameSpeed.Regular});
 		}
 	}
 }
