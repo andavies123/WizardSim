@@ -1,7 +1,8 @@
 ﻿using System;
-using System.Collections;
-using AndysTools.GameWorldTimeManagement.Runtime;
+using System.ComponentModel;
+using Game.Common;
 using Game.Events;
+using Game.Values;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,9 +12,7 @@ namespace UI.WorldTimeUI
 {
 	public class WorldTimeUI : MonoBehaviour
 	{
-		[SerializeField, Required] private GameWorldTimeBehaviour worldTime;
 		[SerializeField, Required] private TMP_Text timeText;
-		[SerializeField] private float updatesPerSecond;
 
 		[Header("Time Buttons")]
 		[SerializeField, Required] private Button pauseSpeedButton;
@@ -25,25 +24,26 @@ namespace UI.WorldTimeUI
 		[SerializeField] private Color unselectedColor;
 
 		private Button _selectedButton;
-		private float _waitTime = 0f;
+		private float _waitTime;
 
 		private TimeScaleGroup _pausedSpeedGroup;
 		private TimeScaleGroup _normalSpeedGroup;
 		private TimeScaleGroup _doubleSpeedGroup;
 		private TimeScaleGroup _quadrupleSpeedGroup;
 
-		public bool UpdateText { get; set; } = true;
+		private static int Day => GameValues.Time.Day;
+		private static int Hour => GameValues.Time.Hour;
+		private static int Minute => GameValues.Time.Minute;
+		private static GameSpeed GameSpeed => GameValues.Time.GameSpeed;
 
 		private void Awake()
 		{
-			_waitTime = 1.0f / updatesPerSecond;
-
 			_pausedSpeedGroup = new TimeScaleGroup(pauseSpeedButton, GameSpeed.Paused, "0x");
 			_normalSpeedGroup = new TimeScaleGroup(normalSpeedButton, GameSpeed.Regular, "1x");
 			_doubleSpeedGroup = new TimeScaleGroup(doubleSpeedButton, GameSpeed.Double, "2x");
 			_quadrupleSpeedGroup = new TimeScaleGroup(quadrupleSpeedButton, GameSpeed.Quadruple, "4x");
 
-			GameEvents.Time.GameSpeedChanged.Raised += OnGameSpeedChanged;
+			GameValues.Time.PropertyChanged += OnTimeValueChanged;
 		}
 
 		private void Start()
@@ -53,8 +53,8 @@ namespace UI.WorldTimeUI
 			doubleSpeedButton.onClick.AddListener(OnDoubleSpeedButtonPressed);
 			quadrupleSpeedButton.onClick.AddListener(OnQuadrupleSpeedButtonPressed);
 
-			OnNormalSpeedButtonPressed();
-			StartCoroutine(nameof(UpdateTimeText));
+			//OnNormalSpeedButtonPressed();
+			UpdateTimeScaleUI();
 		}
 
 		private void OnDestroy()
@@ -66,21 +66,27 @@ namespace UI.WorldTimeUI
 			doubleSpeedButton.onClick.RemoveListener(OnDoubleSpeedButtonPressed);
 			quadrupleSpeedButton.onClick.RemoveListener(OnQuadrupleSpeedButtonPressed);
 			
-			GameEvents.Time.GameSpeedChanged.Raised -= OnGameSpeedChanged;
+			GameValues.Time.PropertyChanged -= OnTimeValueChanged;
 		}
 
-		private IEnumerator UpdateTimeText()
+		private void UpdateTimeText()
 		{
-			while (UpdateText)
+			timeText.SetText($"Day: {Day} ({Hour:00}:{Minute:00})");
+		}
+
+		private void OnTimeValueChanged(object sender, PropertyChangedEventArgs args)
+		{
+			switch (args.PropertyName)
 			{
-				timeText.SetText($"Day: {worldTime.Days} ({worldTime.Hours:00}:{worldTime.Minutes:00})");
-				yield return new WaitForSeconds(_waitTime);
+				case nameof(TimeValues.GameSpeed):
+					UpdateTimeScaleUI();
+					break;
+				case nameof(TimeValues.Day):
+				case nameof(TimeValues.Hour):
+				case nameof(TimeValues.Minute):
+					UpdateTimeText();
+					break;
 			}
-		}
-
-		private void OnGameSpeedChanged(object sender, GameSpeedEventArgs args)
-		{
-			UpdateTimeScaleUI(args.GameSpeed);
 		}
 
 		private void OnPauseButtonPressed() => SetCurrentTimeScaleGroup(_pausedSpeedGroup);
@@ -90,21 +96,21 @@ namespace UI.WorldTimeUI
 
 		private void SetCurrentTimeScaleGroup(TimeScaleGroup group)
 		{
-			GameEvents.Time.ChangeGameSpeed.Request(this, new GameSpeedEventArgs { GameSpeed = group.GameSpeed });
+			GameEvents.Time.ChangeGameSpeed.Request(this, new GameSpeedEventArgs { GameSpeed = group.Speed });
 		}
 
-		private void UpdateTimeScaleUI(GameSpeed gameSpeed)
+		private void UpdateTimeScaleUI()
 		{
 			if (_selectedButton)
 				_selectedButton.image.color = unselectedColor;
 			
-			TimeScaleGroup timeScaleGroup = gameSpeed switch
+			TimeScaleGroup timeScaleGroup = GameSpeed switch
 			{
 				GameSpeed.Paused => _pausedSpeedGroup,
 				GameSpeed.Regular => _normalSpeedGroup,
 				GameSpeed.Double => _doubleSpeedGroup,
 				GameSpeed.Quadruple => _quadrupleSpeedGroup,
-				_ => throw new ArgumentOutOfRangeException(nameof(gameSpeed), gameSpeed, null)
+				_ => throw new ArgumentOutOfRangeException(nameof(GameSpeed), GameSpeed, null)
 			};
 			_selectedButton = timeScaleGroup.Button;
 			
@@ -118,12 +124,12 @@ namespace UI.WorldTimeUI
 		{
 			public Button Button { get; }
 			public string ScaleText { get; }
-			public GameSpeed GameSpeed { get; }
+			public GameSpeed Speed { get; }
 
-			public TimeScaleGroup(Button button, GameSpeed gameSpeed, string scaleText)
+			public TimeScaleGroup(Button button, GameSpeed speed, string scaleText)
 			{
 				Button = button;
-				GameSpeed = gameSpeed;
+				Speed = speed;
 				ScaleText = scaleText;
 			}
 		}

@@ -1,3 +1,5 @@
+using Game.Common;
+
 namespace Game.Events
 {
 	public class TimeEvents
@@ -17,11 +19,6 @@ namespace Game.Events
 		/// Raised when the day is finishing transitioning from day to night
 		/// </summary>
 		public GameEvent NighttimeStarted { get; } = new();
-
-		/// <summary>
-		/// Raised when the game speed has been updated/changed
-		/// </summary>
-		public GameEvent<GameSpeedEventArgs> GameSpeedChanged { get; } = new();
 		
 		/// <summary>
 		/// Requests to update the game time speed
@@ -29,14 +26,6 @@ namespace Game.Events
 		public GameRequest<GameSpeedEventArgs> ChangeGameSpeed { get; } = new();
 	}
 
-	public enum GameSpeed
-	{
-		Paused,
-		Regular,
-		Double,
-		Quadruple
-	}
-	
 	public class GameSpeedEventArgs : GameEventArgs
 	{
 		public GameSpeed GameSpeed { get; set; }

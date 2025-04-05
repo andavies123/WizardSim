@@ -1,5 +1,6 @@
 using System;
 using Extensions;
+using Game.Common;
 using Game.Events;
 using GameWorld;
 using GameWorld.Characters.Wizards;
@@ -11,10 +12,12 @@ using Random = UnityEngine.Random;
 
 namespace Game
 {
-	/* Possible States:
+	/*
+	 * Possible States:
 	 * 
 	 * - Force placement of town hall state
 	 * - Pick upgrade state
+	 * 
 	 */
 	[DisallowMultipleComponent]
 	public class GameFlowManager : MonoBehaviour

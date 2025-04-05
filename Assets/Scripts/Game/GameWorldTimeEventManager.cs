@@ -1,11 +1,16 @@
 using System;
+using System.ComponentModel;
+using System.IO;
 using AndysTools.GameWorldTimeManagement.Runtime;
+using Game.Common;
 using Game.Events;
+using Game.Values;
 using UnityEngine;
 using Utilities.Attributes;
 
 namespace Game
 {
+	[DisallowMultipleComponent]
 	public class GameWorldTimeEventManager : MonoBehaviour
 	{
 		private const int DAYTIME_START_HOUR = 6;
@@ -15,47 +20,102 @@ namespace Game
 		
 		private int _previousDay;
 		private int _previousHour;
-		private int _previousMinute;
-		private int _previousSecond;
+
+		private static int CurrentDay => GameValues.Time.Day;
+		private static int CurrentHour => GameValues.Time.Hour;
 
 		private void Awake()
 		{
 			GameEvents.Time.ChangeGameSpeed.Requested += OnChangeGameSpeedRequested;
+			GameValues.Time.PropertyChanged += OnGameTimeValuesChanged;
+			GameValues.Time.PropertyChanging += OnGameTimeValuesChanging;
+		}
+
+		private void Start()
+		{
+			GameValues.Time.Day = gameWorldTime.Days;
+			GameValues.Time.Hour = gameWorldTime.Hours;
+			GameValues.Time.Minute = gameWorldTime.Minutes;
+			GameValues.Time.Second = gameWorldTime.Seconds;
+			GameValues.Time.GameSpeed = TimeMultiplierToGameSpeed(gameWorldTime.TimeMultiplier);
 		}
 
 		private void OnDestroy()
 		{
 			GameEvents.Time.ChangeGameSpeed.Requested -= OnChangeGameSpeedRequested;
+			GameValues.Time.PropertyChanged -= OnGameTimeValuesChanged;
+			GameValues.Time.PropertyChanging -= OnGameTimeValuesChanging;
 		}
 
 		private void Update()
 		{
-			if (_previousDay != gameWorldTime.Days)
-			{
-				GameEvents.Time.NewGameDayStarted.Raise(this);
-				_previousDay = gameWorldTime.Days;
-			}
-
-			if (_previousHour != gameWorldTime.Hours)
-			{
-				if (_previousHour == DAYTIME_START_HOUR - 1 && gameWorldTime.Hours == DAYTIME_START_HOUR)
-				{
-					GameEvents.Time.DaytimeStarted.Raise(this);
-				}
-				else if (_previousHour == NIGHTTIME_START_HOUR - 1 && gameWorldTime.Hours == NIGHTTIME_START_HOUR)
-				{
-					GameEvents.Time.NighttimeStarted.Raise(this);
-				}
-				
-				_previousHour = gameWorldTime.Hours;
-			}
+			// Update the global values
+			GameValues.Time.Day = gameWorldTime.Days;
+			GameValues.Time.Hour = gameWorldTime.Hours;
+			GameValues.Time.Minute = gameWorldTime.Minutes;
+			GameValues.Time.Second = gameWorldTime.Seconds;
 		}
 
 		private void OnChangeGameSpeedRequested(object sender, GameSpeedEventArgs args)
 		{
-			float previousTimeMultiplier = gameWorldTime.TimeMultiplier;
-			
-			gameWorldTime.TimeMultiplier = args.GameSpeed switch
+			gameWorldTime.TimeMultiplier = GameSpeedToTimeMultiplier(args.GameSpeed);
+			Time.timeScale = gameWorldTime.TimeMultiplier;
+			GameValues.Time.GameSpeed = args.GameSpeed;
+		}
+
+		private void OnDayValueChanged()
+		{
+			if (CurrentDay - _previousDay == 1)
+			{
+				GameEvents.Time.NewGameDayStarted.Raise(this);
+			}
+		}
+
+		private void OnHourValueChanged()
+		{
+			if (CurrentHour == DAYTIME_START_HOUR && CurrentHour - _previousHour == 1)
+			{
+				GameEvents.Time.DaytimeStarted.Raise(this);
+			}
+			else if (CurrentHour == NIGHTTIME_START_HOUR && CurrentHour - _previousHour == 1)
+			{
+				GameEvents.Time.NighttimeStarted.Raise(this);
+			}
+		}
+
+		private void OnGameTimeValuesChanging(object sender, PropertyChangingEventArgs args)
+		{
+			switch (args.PropertyName)
+			{
+				case nameof(TimeValues.Day): _previousDay = CurrentDay; break;
+				case nameof(TimeValues.Hour): _previousHour = CurrentHour; break;
+			}
+		}
+
+		private void OnGameTimeValuesChanged(object sender, PropertyChangedEventArgs args)
+		{
+			switch (args.PropertyName)
+			{
+				case nameof(TimeValues.Day): OnDayValueChanged(); break;
+				case nameof(TimeValues.Hour): OnHourValueChanged(); break;
+			}
+		}
+
+		private static GameSpeed TimeMultiplierToGameSpeed(float timeMultiplier)
+		{
+			return timeMultiplier switch
+			{
+				0f => GameSpeed.Paused,
+				1f => GameSpeed.Regular,
+				2f => GameSpeed.Double,
+				4f => GameSpeed.Quadruple,
+				_ => throw new InvalidDataException("Unable to convert time multiplier to game speed enum")
+			};
+		}
+
+		private static float GameSpeedToTimeMultiplier(GameSpeed gameSpeed)
+		{
+			return gameSpeed switch
 			{
 				GameSpeed.Paused => 0f,
 				GameSpeed.Regular => 1f,
@@ -63,13 +123,6 @@ namespace Game
 				GameSpeed.Quadruple => 4f,
 				_ => throw new ArgumentOutOfRangeException()
 			};
-			
-			Time.timeScale = gameWorldTime.TimeMultiplier;
-
-			if (Math.Abs(gameWorldTime.TimeMultiplier - previousTimeMultiplier) > .00001f)
-			{
-				GameEvents.Time.GameSpeedChanged.Raise(this, args);
-			}
 		}
 	}
 }
