@@ -2,6 +2,7 @@ using System;
 using Extensions;
 using Game.Common;
 using Game.Events;
+using Game.Values;
 using GameWorld;
 using GameWorld.Characters.Wizards;
 using GameWorld.Characters.Wizards.Managers;
@@ -32,6 +33,7 @@ namespace Game
 		private readonly ResourceLoader _resourceLoader = new();
 
 		private bool _townHallInitiallyPlaced;
+		private GameSpeed _gameSpeedBeforeUpgrade = GameSpeed.Regular;
 
 		private void Awake()
 		{
@@ -78,6 +80,7 @@ namespace Game
 		private void OnDayStarted(object sender, EventArgs args)
 		{
 			// Time should be paused before selecting upgrade
+			_gameSpeedBeforeUpgrade = GameValues.Time.GameSpeed;
 			GameEvents.Time.ChangeGameSpeed.Request(this, new GameSpeedEventArgs {GameSpeed = GameSpeed.Paused});
 			
 			// Open the upgrade window
@@ -95,7 +98,7 @@ namespace Game
 			GameEvents.UI.CloseUI.Request(this, new CloseUIEventArgs {Window = UIWindow.UpgradeWindow});
 			
 			// Resume time
-			GameEvents.Time.ChangeGameSpeed.Request(this, new GameSpeedEventArgs {GameSpeed = GameSpeed.Regular});
+			GameEvents.Time.ChangeGameSpeed.Request(this, new GameSpeedEventArgs {GameSpeed = _gameSpeedBeforeUpgrade});
 		}
 	}
 }
