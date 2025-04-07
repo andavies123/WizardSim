@@ -28,6 +28,8 @@ namespace Game.Events
 
 	public class GameSpeedEventArgs : GameEventArgs
 	{
-		public GameSpeed GameSpeed { get; set; }
+		public GameSpeedEventArgs(GameSpeed gameSpeed) => GameSpeed = gameSpeed;
+		
+		public GameSpeed GameSpeed { get; }
 	}
 }

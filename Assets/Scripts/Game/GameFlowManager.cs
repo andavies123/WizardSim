@@ -41,7 +41,7 @@ namespace Game
 		}
 
 		private void Start()
-		{
+		{	
 			GameEvents.Settlement.TownHallPlaced.Raised += OnTownHallPlaced;
 
 			GameEvents.Time.DaytimeStarted.Raised += OnDayStarted;
@@ -81,7 +81,7 @@ namespace Game
 		{
 			// Time should be paused before selecting upgrade
 			_gameSpeedBeforeUpgrade = GameValues.Time.GameSpeed;
-			GameEvents.Time.ChangeGameSpeed.Request(this, new GameSpeedEventArgs {GameSpeed = GameSpeed.Paused});
+			GameEvents.Time.ChangeGameSpeed.Request(this, new GameSpeedEventArgs(GameSpeed.Paused));
 			
 			// Open the upgrade window
 			GameEvents.UI.OpenUI.Request(this, new OpenUIEventArgs {Window = UIWindow.UpgradeWindow});
@@ -98,7 +98,7 @@ namespace Game
 			GameEvents.UI.CloseUI.Request(this, new CloseUIEventArgs {Window = UIWindow.UpgradeWindow});
 			
 			// Resume time
-			GameEvents.Time.ChangeGameSpeed.Request(this, new GameSpeedEventArgs {GameSpeed = _gameSpeedBeforeUpgrade});
+			GameEvents.Time.ChangeGameSpeed.Request(this, new GameSpeedEventArgs(_gameSpeedBeforeUpgrade));
 		}
 	}
 }

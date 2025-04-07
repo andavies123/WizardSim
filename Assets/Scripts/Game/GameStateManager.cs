@@ -116,6 +116,9 @@ namespace Game
 
 			_townManagementGameState.CloseMenu += OnCloseTownManagementWindow;
 
+			GameEvents.General.GamePaused.Raised += OnGamePaused;
+			GameEvents.General.GameResumed.Raised += OnGameResumed;
+
 			GameEvents.UI.StartInteraction.Requested += OnStartInteractionRequested;
 			GameEvents.UI.EndInteraction.Requested += OnEndInteractionRequested;
 			GameEvents.UI.OpenUI.Requested += OnOpenUIRequested;
@@ -143,6 +146,9 @@ namespace Game
 
 			_townManagementGameState.CloseMenu -= OnCloseTownManagementWindow;
 
+			GameEvents.General.GamePaused.Raised -= OnGamePaused;
+			GameEvents.General.GameResumed.Raised -= OnGameResumed;
+
 			GameEvents.UI.StartInteraction.Requested -= OnStartInteractionRequested;
 			GameEvents.UI.EndInteraction.Requested -= OnEndInteractionRequested;
 			GameEvents.UI.OpenUI.Requested -= OnOpenUIRequested;
@@ -150,8 +156,8 @@ namespace Game
 		}
 
 		// Pause Menu Related Events
-		private void OnPauseGameRequested(object sender, EventArgs args) => UpdateCurrentState(_pauseMenuGameState);
-		private void OnResumeGameRequested(object sender, EventArgs args) => UpdateCurrentState(_gameplayGameState);
+		private void OnPauseGameRequested(object sender, EventArgs args) => GameEvents.General.PauseGame.Request(this);
+		private void OnResumeGameRequested(object sender, EventArgs args) => GameEvents.General.ResumeGame.Request(this);
 		private void OnQuitGameRequested(object sender, EventArgs args) => GameEvents.General.QuitGame.Request(this);
 
 		// Context Menu Related Events
@@ -198,6 +204,10 @@ namespace Game
 		private void OnOpenTownManagementWindow(object sender, EventArgs args) => UpdateCurrentState(_townManagementGameState);
 		private void OnCloseTownManagementWindow(object sender, EventArgs args) => UpdateCurrentState(_gameplayGameState);
 
+		// We should be able to pause the game from any state
+		private void OnGamePaused(object sender, EventArgs args) => UpdateCurrentState(_pauseMenuGameState);
+		private void OnGameResumed(object sender, EventArgs args) => UpdateCurrentState(_gameplayGameState);
+		
 		private void OnOpenUIRequested(object sender, OpenUIEventArgs args)
 		{
 			switch (args.Window)

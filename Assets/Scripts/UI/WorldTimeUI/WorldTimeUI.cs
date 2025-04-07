@@ -96,7 +96,7 @@ namespace UI.WorldTimeUI
 
 		private void SetCurrentTimeScaleGroup(TimeScaleGroup group)
 		{
-			GameEvents.Time.ChangeGameSpeed.Request(this, new GameSpeedEventArgs { GameSpeed = group.Speed });
+			GameEvents.Time.ChangeGameSpeed.Request(this, new GameSpeedEventArgs(group.Speed));
 		}
 
 		private void UpdateTimeScaleUI()

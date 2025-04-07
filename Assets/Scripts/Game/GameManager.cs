@@ -1,5 +1,7 @@
 ﻿using System;
+using Game.Common;
 using Game.Events;
+using Game.Values;
 using UnityEngine;
 
 namespace Game
@@ -8,6 +10,7 @@ namespace Game
 	public class GameManager : MonoBehaviour
 	{
 		private bool _isGamePaused;
+		private GameSpeed _gameSpeedBeforePause;
 
 		private void Awake()
 		{
@@ -33,7 +36,10 @@ namespace Game
 				return;
 			
 			_isGamePaused = true;
-			Time.timeScale = 0f;
+			_gameSpeedBeforePause = GameValues.Time.GameSpeed;
+			
+			//Time.timeScale = 0f;
+			GameEvents.Time.ChangeGameSpeed.Request(this, new GameSpeedEventArgs(GameSpeed.Paused));
 			GameEvents.General.GamePaused.Raise(this);
 		}
 
@@ -43,7 +49,8 @@ namespace Game
 				return;
 			
 			_isGamePaused = false;
-			Time.timeScale = 1f;
+			//Time.timeScale = 1f;
+			GameEvents.Time.ChangeGameSpeed.Request(this, new GameSpeedEventArgs(_gameSpeedBeforePause));
 			GameEvents.General.GameResumed.Raise(this);
 		}
 		
