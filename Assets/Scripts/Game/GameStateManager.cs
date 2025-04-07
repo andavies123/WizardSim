@@ -103,9 +103,6 @@ namespace Game
 			_gameplayGameState.OpenTaskManagementWindow += OnOpenTaskManagementWindow;
 			_gameplayGameState.OpenTownManagementWindow += OnOpenTownManagementWindow;
 
-			_pauseMenuGameState.ResumeGameRequested += OnResumeGameRequested;
-			_pauseMenuGameState.QuitGameRequested += OnQuitGameRequested;
-
 			_interactionGameState.InteractionCanceled += OnInteractionModeCanceled;
 
 			_contextMenuGameState.MenuClosed += OnContextMenuClosed;
@@ -133,9 +130,6 @@ namespace Game
 			_gameplayGameState.OpenTaskManagementWindow -= OnOpenTaskManagementWindow;
 			_gameplayGameState.OpenTownManagementWindow -= OnOpenTownManagementWindow;
 
-			_pauseMenuGameState.ResumeGameRequested -= OnResumeGameRequested;
-			_pauseMenuGameState.QuitGameRequested -= OnQuitGameRequested;
-
 			_interactionGameState.InteractionCanceled -= OnInteractionModeCanceled;
 
 			_contextMenuGameState.MenuClosed -= OnContextMenuClosed;
@@ -157,8 +151,6 @@ namespace Game
 
 		// Pause Menu Related Events
 		private void OnPauseGameRequested(object sender, EventArgs args) => GameEvents.General.PauseGame.Request(this);
-		private void OnResumeGameRequested(object sender, EventArgs args) => GameEvents.General.ResumeGame.Request(this);
-		private void OnQuitGameRequested(object sender, EventArgs args) => GameEvents.General.QuitGame.Request(this);
 
 		// Context Menu Related Events
 		private void OnOpenContextMenuRequested(IContextMenuUser[] contextMenuUsers)

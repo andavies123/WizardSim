@@ -9,26 +9,6 @@ namespace Game.GameStates.PauseMenuStates
 		private readonly PauseMenuUIState _pauseMenuUIState;
 		private readonly PauseMenuInputState _pauseMenuInputState;
 
-		public event EventHandler ResumeGameRequested 
-		{
-			add 
-			{
-				_pauseMenuInputState.ResumeActionPerformed += value;
-				_pauseMenuUIState.ResumeButtonPressed += value;
-			}
-			remove 
-			{
-				_pauseMenuInputState.ResumeActionPerformed -= value;
-				_pauseMenuUIState.ResumeButtonPressed -= value;
-			}
-		}
-		
-		public event EventHandler QuitGameRequested
-		{
-			add => _pauseMenuUIState.QuitButtonPressed += value;
-			remove => _pauseMenuUIState.QuitButtonPressed -= value;
-		}
-        
 		public PauseMenuGameState(PauseMenuUIState pauseMenuUIState)
 		{
 			_pauseMenuUIState = pauseMenuUIState.ThrowIfNull(nameof(pauseMenuUIState));
@@ -43,12 +23,21 @@ namespace Game.GameStates.PauseMenuStates
 
 		protected override void OnEnabled()
 		{
-			GameEvents.General.PauseGame.Request(this);
+			_pauseMenuInputState.ResumeActionPerformed += RequestResumeGame;
+			_pauseMenuUIState.ResumeButtonPressed += RequestResumeGame;
+			
+			_pauseMenuUIState.QuitButtonPressed += RequestQuitGame;
 		}
 
 		protected override void OnDisabled()
 		{
-			GameEvents.General.ResumeGame.Request(this);
+			_pauseMenuInputState.ResumeActionPerformed -= RequestResumeGame;
+			_pauseMenuUIState.ResumeButtonPressed -= RequestResumeGame;
+
+			_pauseMenuUIState.QuitButtonPressed -= RequestQuitGame;
 		}
+
+		private void RequestResumeGame(object sender, EventArgs args) => GameEvents.General.ResumeGame.Request(sender);
+		private void RequestQuitGame(object sender, EventArgs args) => GameEvents.General.QuitGame.Request(sender);
 	}
 }

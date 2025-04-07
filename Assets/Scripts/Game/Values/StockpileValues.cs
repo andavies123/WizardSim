@@ -30,6 +30,6 @@ namespace Game.Values
 		{
 			get => _woodMax;
 			set => SetField(ref _woodMax, Math.Max(value, 0));
-		}
+		} 
 	}
 }
