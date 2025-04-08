@@ -86,8 +86,7 @@ namespace UI.Upgrades
 			if (sender is not UpgradeCard upgradeCard)
 				return;
 			
-			GameEvents.UI.UpgradeSelected.Raise(this,
-				new UpgradeSelectedEventArgs {SelectedUpgrade = upgradeCard.Upgrade});
+			GameEvents.UI.UpgradeSelected.Raise(this, new UpgradeSelectedEventArgs(upgradeCard.Upgrade));
 			
 			upgradeCard.Upgrade.Apply?.Invoke();
 		}

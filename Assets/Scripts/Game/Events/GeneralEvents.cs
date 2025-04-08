@@ -16,6 +16,11 @@ namespace Game.Events
 		/// Raised when the game finished saving
 		/// </summary>
 		public GameEvent GameSaved { get; } = new();
+
+		/// <summary>
+		/// Raised when the game is finished loading
+		/// </summary>
+		public GameEvent GameLoaded { get; } = new();
 		
 		
 		

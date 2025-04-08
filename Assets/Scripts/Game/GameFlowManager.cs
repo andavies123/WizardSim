@@ -41,7 +41,9 @@ namespace Game
 		}
 
 		private void Start()
-		{	
+		{
+			GameEvents.General.GameLoaded.Raised += OnGameLoaded;
+			
 			GameEvents.Settlement.TownHallPlaced.Raised += OnTownHallPlaced;
 
 			GameEvents.Time.DaytimeStarted.Raised += OnDayStarted;
@@ -52,12 +54,22 @@ namespace Game
 
 		private void OnDestroy()
 		{
+			GameEvents.General.GameLoaded.Raised -= OnGameLoaded;
+			
 			GameEvents.Settlement.TownHallPlaced.Raised -= OnTownHallPlaced;
 
 			GameEvents.Time.DaytimeStarted.Raised -= OnDayStarted;
 			GameEvents.Time.NighttimeStarted.Raised -= OnNightStarted;
 			
 			GameEvents.UI.UpgradeSelected.Raised -= OnUpgradeSelected;
+		}
+
+		private void OnGameLoaded(object sender, EventArgs args)
+		{
+			// Pause time while the player places the townhall
+			GameEvents.Time.ChangeGameSpeed.Request(this, new GameSpeedEventArgs(GameSpeed.Paused));
+			
+			// Force the player to place a town hall
 		}
 
 		private void OnTownHallPlaced(object sender, TownHallPlacedEventArgs args)
@@ -84,7 +96,7 @@ namespace Game
 			GameEvents.Time.ChangeGameSpeed.Request(this, new GameSpeedEventArgs(GameSpeed.Paused));
 			
 			// Open the upgrade window
-			GameEvents.UI.OpenUI.Request(this, new OpenUIEventArgs {Window = UIWindow.UpgradeWindow});
+			GameEvents.UI.OpenUI.Request(this, new OpenUIEventArgs(UIWindow.UpgradeWindow));
 		}
 
 		private void OnNightStarted(object sender, EventArgs args)
@@ -95,7 +107,7 @@ namespace Game
 		private void OnUpgradeSelected(object sender, UpgradeSelectedEventArgs args)
 		{
 			// Close the upgrade window
-			GameEvents.UI.CloseUI.Request(this, new CloseUIEventArgs {Window = UIWindow.UpgradeWindow});
+			GameEvents.UI.CloseUI.Request(this, new CloseUIEventArgs(UIWindow.UpgradeWindow));
 			
 			// Resume time
 			GameEvents.Time.ChangeGameSpeed.Request(this, new GameSpeedEventArgs(_gameSpeedBeforeUpgrade));

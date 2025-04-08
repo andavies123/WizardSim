@@ -20,22 +20,31 @@ namespace Game.Events
 
 	public class UpgradeSelectedEventArgs : GameEventArgs
 	{
-		public Upgrade SelectedUpgrade { get; set; }
+		public UpgradeSelectedEventArgs(Upgrade selectedUpgrade) => SelectedUpgrade = selectedUpgrade;
+		
+		public Upgrade SelectedUpgrade { get; }
 	}
 
 	public class StartInteractionEventArgs : GameEventArgs
 	{
-		public Action<MonoBehaviour> InteractionCallback { get; set; }
+		public StartInteractionEventArgs(Action<MonoBehaviour> interactionCallback) =>
+			InteractionCallback = interactionCallback;
+		
+		public Action<MonoBehaviour> InteractionCallback { get; }
 	}
 
 	public class OpenUIEventArgs : GameEventArgs
 	{
-		public UIWindow Window { get; set; }
+		public OpenUIEventArgs(UIWindow window) => Window = window;
+
+		public UIWindow Window { get; }
 	}
 
 	public class CloseUIEventArgs : GameEventArgs
 	{
-		public UIWindow Window { get; set; }
+		public CloseUIEventArgs(UIWindow window) => Window = window;
+        
+		public UIWindow Window { get; }
 	}
 		
 	public enum UIWindow

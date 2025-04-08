@@ -307,10 +307,7 @@ namespace GameWorld.Builders
 		
 		private void OpenTownHallMenu()
 		{
-			GameEvents.UI.OpenUI.Request(this, new OpenUIEventArgs
-			{
-				Window = UIWindow.TownHallWindow
-			});
+			GameEvents.UI.OpenUI.Request(this, new OpenUIEventArgs(UIWindow.TownHallWindow));
 		}
 		
 		private class PlayerCameraChunkManager
