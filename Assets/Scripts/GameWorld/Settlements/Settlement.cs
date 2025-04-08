@@ -1,4 +1,5 @@
 ﻿using Game.Events;
+using Game.Values;
 using GameWorld.WorldObjects;
 using GameWorld.WorldResources;
 using UnityEngine;
@@ -10,17 +11,17 @@ namespace GameWorld.Settlements
 	{
 		[Header("Resource Objects")]
 		[SerializeField, Required] private TownResourceStockpile resourceStockpile;
+		
+		public TownResourceStockpile ResourceStockpile => resourceStockpile;
 
 		private TownHall _townHall; 
-
-		public TownResourceStockpile ResourceStockpile => resourceStockpile;
-		public string SettlementName { get; set; } = "Unnamed Settlement";
-
 		public TownHall TownHall
 		{
 			get => _townHall;
 			set
 			{
+				GameValues.Settlement.TownHall = value;
+				
 				if (value != _townHall)
 				{
 					_townHall = value;
