@@ -16,6 +16,8 @@ namespace Game.Events
 
 	public class TownHallPlacedEventArgs : GameEventArgs
 	{
-		public TownHall TownHall { get; set; }
+		public TownHallPlacedEventArgs(TownHall townHall) => TownHall = townHall;
+		
+		public TownHall TownHall { get; }
 	}
 }

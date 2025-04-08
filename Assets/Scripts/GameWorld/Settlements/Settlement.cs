@@ -24,7 +24,7 @@ namespace GameWorld.Settlements
 				if (value != _townHall)
 				{
 					_townHall = value;
-					GameEvents.Settlement.TownHallPlaced.Raise(this, new TownHallPlacedEventArgs { TownHall = _townHall });
+					GameEvents.Settlement.TownHallPlaced.Raise(this, new TownHallPlacedEventArgs(_townHall));
 				}
 			}
 		}
