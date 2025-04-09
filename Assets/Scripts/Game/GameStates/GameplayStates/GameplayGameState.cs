@@ -2,7 +2,6 @@
 using Extensions;
 using Game.Events;
 using GameWorld.WorldObjects;
-using UI;
 using UI.ContextMenus;
 
 namespace Game.GameStates.GameplayStates
@@ -44,7 +43,8 @@ namespace Game.GameStates.GameplayStates
 			_gameplayUIState.PauseButtonPressed += OnPauseButtonPressed;
 			_gameplayUIState.HotBarItemSelected += OnPlacementModeRequested;
 
-			GameEvents.Interaction.CurrentSelectedInteractableUpdated.Raised += OnCurrentSelectedInteractableUpdated;
+			GameEvents.Interaction.PrimarySelectedInteractableUpdated.Raised += OnPrimarySelectedInteractableUpdated;
+			GameEvents.Interaction.SecondarySelectedInteractableUpdated.Raised += OnSecondarySelectedInteractableUpdated;
 			GameEvents.UI.OpenUI.Requested += OnOpenUIRequested;
 		}
 
@@ -58,7 +58,8 @@ namespace Game.GameStates.GameplayStates
 			_gameplayUIState.PauseButtonPressed -= OnPauseButtonPressed;
 			_gameplayUIState.HotBarItemSelected -= OnPlacementModeRequested;
 			
-			GameEvents.Interaction.CurrentSelectedInteractableUpdated.Raised -= OnCurrentSelectedInteractableUpdated;
+			GameEvents.Interaction.PrimarySelectedInteractableUpdated.Raised -= OnPrimarySelectedInteractableUpdated;
+			GameEvents.Interaction.SecondarySelectedInteractableUpdated.Raised -= OnSecondarySelectedInteractableUpdated;
 			GameEvents.UI.OpenUI.Requested -= OnOpenUIRequested;
 		}
 
@@ -90,38 +91,23 @@ namespace Game.GameStates.GameplayStates
 			}
 		}
 
-		private void OnCurrentSelectedInteractableUpdated(object sender, SelectedInteractableEventArgs args)
+		private void OnPrimarySelectedInteractableUpdated(object sender, SelectedInteractableEventArgs args)
 		{
-			switch (args.SelectionType)
-			{
-				case SelectionType.PrimarySelection:
-					HandlePrimarySelectedInteractableReceived(args.SelectedInteractable);
-					break;
-				case SelectionType.SecondarySelection:
-					HandleSecondarySelectedInteractableReceived(args.SelectedInteractable);
-					break;
-				default:
-					throw new ArgumentOutOfRangeException(nameof(args.SelectionType));
-			}
-		}
-
-		private void HandlePrimarySelectedInteractableReceived(Interactable selectedInteractable)
-		{
-			if (selectedInteractable)
-				_gameplayUIState.InfoWindow.OpenWindow(selectedInteractable);
+			if (args.SelectedInteractable)
+				_gameplayUIState.InfoWindow.OpenWindow(args.SelectedInteractable);
 			else
 				_gameplayUIState.InfoWindow.CloseWindow();
 		}
 
-		private void HandleSecondarySelectedInteractableReceived(Interactable selectedInteractable)
+		private void OnSecondarySelectedInteractableUpdated(object sender, SelectedInteractableEventArgs args)
 		{
-			if (selectedInteractable)
+			if (args.SelectedInteractable)
 			{
-				IContextMenuUser[] contextMenuUsers = selectedInteractable.GetComponents<IContextMenuUser>();
+				IContextMenuUser[] contextMenuUsers = args.SelectedInteractable.GetComponents<IContextMenuUser>();
 
 				if (contextMenuUsers.Length > 0)
 				{
-					_gameplayUIState.InfoWindow.OpenWindow(selectedInteractable);
+					_gameplayUIState.InfoWindow.OpenWindow(args.SelectedInteractable);
 					OpenContextMenuRequested?.Invoke(contextMenuUsers);
 				}
 			}

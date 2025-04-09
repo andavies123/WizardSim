@@ -1,4 +1,5 @@
 using System;
+using Game.Common;
 using Game.Events;
 using UI;
 using UnityEngine;
@@ -38,22 +39,17 @@ namespace Game
 		private void HandleNewPrimarySelection(Interactable newSelection)
 		{
 			_currentSelectedPrimary = _currentSelectedPrimary == newSelection ? null : newSelection;
-			SendSelectedMessage(SelectionType.PrimarySelection, _currentSelectedPrimary);
+			
+			GameEvents.Interaction.PrimarySelectedInteractableUpdated.Raise(this,
+				new SelectedInteractableEventArgs(_currentSelectedPrimary, SelectionType.PrimarySelection));
 		}
 
 		private void HandleNewSecondarySelection(Interactable newSelection)
 		{
 			_currentSelectedSecondary = newSelection;
-			SendSelectedMessage(SelectionType.SecondarySelection, _currentSelectedSecondary);
-		}
-
-		private void SendSelectedMessage(SelectionType selectionType, Interactable selected)
-		{
-			GameEvents.Interaction.CurrentSelectedInteractableUpdated.Raise(this, new SelectedInteractableEventArgs
-			{
-				SelectionType = selectionType,
-				SelectedInteractable = selected
-			});
+			
+			GameEvents.Interaction.SecondarySelectedInteractableUpdated.Raise(this,
+				new SelectedInteractableEventArgs(_currentSelectedSecondary, SelectionType.SecondarySelection));
 		}
 	}
 }

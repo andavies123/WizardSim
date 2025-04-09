@@ -1,5 +1,6 @@
 ﻿using System;
 using Extensions;
+using Game.Common;
 using Game.Events;
 using UI;
 using UnityEngine;
@@ -153,11 +154,8 @@ namespace CameraComponents
 
 		private void RaiseInteractableSelected(SelectionType selectionType, Interactable selectedInteractable)
 		{
-			GameEvents.Interaction.InteractableSelected.Raise(this, new SelectedInteractableEventArgs
-			{
-				SelectedInteractable = selectedInteractable,
-				SelectionType = selectionType
-			});
+			GameEvents.Interaction.InteractableSelected.Raise(this,
+				new SelectedInteractableEventArgs(selectedInteractable, selectionType));
 		}
 	}
 }
