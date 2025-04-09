@@ -1,6 +1,5 @@
 ﻿using System;
 using Extensions;
-using UnityEngine;
 
 namespace Game.GameStates.TownManagementStates
 {
