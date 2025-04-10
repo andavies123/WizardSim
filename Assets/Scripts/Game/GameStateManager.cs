@@ -31,6 +31,7 @@ namespace Game
 		[SerializeField, Required] private UpgradeScreen upgradeScreen;
 
 		[Header("External Components")]
+		[SerializeField, Required] private SelectionManager selectionManager;
 		[SerializeField, Required] private InteractableRaycaster interactableRaycaster;
 
 		private GameState _currentGameState;
@@ -68,7 +69,7 @@ namespace Game
 
 		private void Awake()
 		{
-			_gameplayGameState = new GameplayGameState(gameplayUIState);
+			_gameplayGameState = new GameplayGameState(gameplayUIState, selectionManager);
 			_pauseMenuGameState = new PauseMenuGameState(pauseMenuUIState);
 			_interactionGameState = new InteractionGameState(interactionUIState, interactableRaycaster);
 			_contextMenuGameState = new ContextMenuGameState(contextMenuUIState, interactableRaycaster);

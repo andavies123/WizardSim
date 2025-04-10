@@ -8,8 +8,11 @@ namespace Game
 {
 	public class SelectionManager : MonoBehaviour
 	{
-		private Interactable _currentSelectedPrimary;
-		private Interactable _currentSelectedSecondary;
+		public Interactable CurrentSelectedPrimary { get; private set; }
+		public Interactable CurrentSelectedSecondary { get; private set; }
+
+		public event EventHandler<SelectionUpdatedEventArgs> PrimarySelectionUpdated;
+		public event EventHandler<SelectionUpdatedEventArgs> SecondarySelectionUpdated;
 
 		private void Awake()
 		{
@@ -38,18 +41,22 @@ namespace Game
 
 		private void HandleNewPrimarySelection(Interactable newSelection)
 		{
-			_currentSelectedPrimary = _currentSelectedPrimary == newSelection ? null : newSelection;
-			
-			GameEvents.Interaction.PrimarySelectedInteractableUpdated.Raise(this,
-				new SelectedInteractableEventArgs(_currentSelectedPrimary, SelectionType.PrimarySelection));
+			CurrentSelectedPrimary = CurrentSelectedPrimary == newSelection ? null : newSelection;
+			PrimarySelectionUpdated?.Invoke(this, new SelectionUpdatedEventArgs(CurrentSelectedPrimary));
 		}
 
 		private void HandleNewSecondarySelection(Interactable newSelection)
 		{
-			_currentSelectedSecondary = newSelection;
-			
-			GameEvents.Interaction.SecondarySelectedInteractableUpdated.Raise(this,
-				new SelectedInteractableEventArgs(_currentSelectedSecondary, SelectionType.SecondarySelection));
+			CurrentSelectedSecondary = newSelection;
+			SecondarySelectionUpdated?.Invoke(this, new SelectionUpdatedEventArgs(CurrentSelectedSecondary));
 		}
+	}
+	
+	
+	public class SelectionUpdatedEventArgs : EventArgs
+	{
+		public SelectionUpdatedEventArgs(Interactable selection) => Selection = selection;
+		
+		public Interactable Selection { get; }
 	}
 }

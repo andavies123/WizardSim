@@ -9,7 +9,8 @@ namespace Game.GameStates.GameplayStates
 	public class GameplayGameState : GameState
 	{
 		private readonly GameplayUIState _gameplayUIState;
-		private readonly GameplayInputState _gameplayInputState;
+		private readonly GameplayInputState _gameplayInputState = new();
+		private readonly SelectionManager _selectionManager;
 
 		public event EventHandler PauseGameRequested;
 		public event Action<IContextMenuUser[]> OpenContextMenuRequested;
@@ -21,10 +22,10 @@ namespace Game.GameStates.GameplayStates
 			remove => _gameplayInputState.OpenTaskManagementRequested -= value;
 		}
 
-		public GameplayGameState(GameplayUIState gameplayUIState)
+		public GameplayGameState(GameplayUIState gameplayUIState, SelectionManager selectionManager)
 		{
 			_gameplayUIState = gameplayUIState.ThrowIfNull(nameof(gameplayUIState));
-			_gameplayInputState = new GameplayInputState();
+			_selectionManager = selectionManager.ThrowIfNull(nameof(selectionManager));
 		}
 
 		public override bool AllowCameraInputs => true;
@@ -43,8 +44,9 @@ namespace Game.GameStates.GameplayStates
 			_gameplayUIState.PauseButtonPressed += OnPauseButtonPressed;
 			_gameplayUIState.HotBarItemSelected += OnPlacementModeRequested;
 
-			GameEvents.Interaction.PrimarySelectedInteractableUpdated.Raised += OnPrimarySelectedInteractableUpdated;
-			GameEvents.Interaction.SecondarySelectedInteractableUpdated.Raised += OnSecondarySelectedInteractableUpdated;
+			_selectionManager.PrimarySelectionUpdated += OnPrimarySelectionUpdated;
+			_selectionManager.SecondarySelectionUpdated += OnSecondarySelectionUpdated;
+
 			GameEvents.UI.OpenUI.Requested += OnOpenUIRequested;
 		}
 
@@ -57,9 +59,10 @@ namespace Game.GameStates.GameplayStates
 			// UI
 			_gameplayUIState.PauseButtonPressed -= OnPauseButtonPressed;
 			_gameplayUIState.HotBarItemSelected -= OnPlacementModeRequested;
+
+			_selectionManager.PrimarySelectionUpdated += OnPrimarySelectionUpdated;
+			_selectionManager.SecondarySelectionUpdated += OnSecondarySelectionUpdated;
 			
-			GameEvents.Interaction.PrimarySelectedInteractableUpdated.Raised -= OnPrimarySelectedInteractableUpdated;
-			GameEvents.Interaction.SecondarySelectedInteractableUpdated.Raised -= OnSecondarySelectedInteractableUpdated;
 			GameEvents.UI.OpenUI.Requested -= OnOpenUIRequested;
 		}
 
@@ -91,23 +94,23 @@ namespace Game.GameStates.GameplayStates
 			}
 		}
 
-		private void OnPrimarySelectedInteractableUpdated(object sender, SelectedInteractableEventArgs args)
+		private void OnPrimarySelectionUpdated(object sender, SelectionUpdatedEventArgs args)
 		{
-			if (args.SelectedInteractable)
-				_gameplayUIState.InfoWindow.OpenWindow(args.SelectedInteractable);
+			if (args.Selection)
+				_gameplayUIState.InfoWindow.OpenWindow(args.Selection);
 			else
 				_gameplayUIState.InfoWindow.CloseWindow();
 		}
 
-		private void OnSecondarySelectedInteractableUpdated(object sender, SelectedInteractableEventArgs args)
+		private void OnSecondarySelectionUpdated(object sender, SelectionUpdatedEventArgs args)
 		{
-			if (args.SelectedInteractable)
+			if (args.Selection)
 			{
-				IContextMenuUser[] contextMenuUsers = args.SelectedInteractable.GetComponents<IContextMenuUser>();
+				IContextMenuUser[] contextMenuUsers = args.Selection.GetComponents<IContextMenuUser>();
 
 				if (contextMenuUsers.Length > 0)
 				{
-					_gameplayUIState.InfoWindow.OpenWindow(args.SelectedInteractable);
+					_gameplayUIState.InfoWindow.OpenWindow(args.Selection);
 					OpenContextMenuRequested?.Invoke(contextMenuUsers);
 				}
 			}

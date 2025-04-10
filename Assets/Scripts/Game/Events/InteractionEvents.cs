@@ -6,9 +6,6 @@ namespace Game.Events
 	public class InteractionEvents
 	{
 		public GameEvent<SelectedInteractableEventArgs> InteractableSelected { get; } = new();
-
-		public GameEvent<SelectedInteractableEventArgs> PrimarySelectedInteractableUpdated { get; } = new();
-		public GameEvent<SelectedInteractableEventArgs> SecondarySelectedInteractableUpdated { get; } = new();
 	}
 
 	public class SelectedInteractableEventArgs : GameEventArgs
